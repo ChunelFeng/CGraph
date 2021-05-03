@@ -8,22 +8,28 @@
 
 #include "GraphNode.h"
 
+
 GraphNode::GraphNode() {
-    this->left_depend_ = 0;
-    this->done_ = false;
+    left_depend_ = 0;
+    done_.store(false);
+    dependence_.clear();
+    run_before_.clear();
 }
 
-GraphNode::~GraphNode() = default;
+GraphNode::~GraphNode() {
+    done_.store(true);
+    dependence_.clear();
+    run_before_.clear();
+    left_depend_ = 0;
+};
 
 CSTATUS GraphNode::init() {
     CGRAPH_FUNCTION_BEGIN
-
     CGRAPH_FUNCTION_END
 }
 
 CSTATUS GraphNode::deinit() {
     CGRAPH_FUNCTION_BEGIN
-
     CGRAPH_FUNCTION_END
 }
 
@@ -42,44 +48,24 @@ CSTATUS GraphNode::addDependNode(GraphNode* node) {
     CGRAPH_ASSERT_NOT_NULL(node)
 
     // node依赖this的执行，this节点需要在node之前运行
-    this->addDependence(node);
-    node->addRunBefore(this);
-
-    CGRAPH_FUNCTION_END
-}
-
-std::list<GraphNode *>& GraphNode::getRunBeforeList(){
-    return this->run_before_;
-}
-
-CSTATUS GraphNode::addRunBefore(GraphNode* node) {
-    CGRAPH_FUNCTION_BEGIN
-
-    CGRAPH_ASSERT_NOT_NULL(node)
-    this->run_before_.push_back(node);
-    node->left_depend_++;
-
-    CGRAPH_FUNCTION_END
-}
-
-CSTATUS GraphNode::addDependence(GraphNode* node) {
-    CGRAPH_FUNCTION_BEGIN
-
-    CGRAPH_ASSERT_NOT_NULL(node)
+    node->run_before_.push_back(this);
+    this->left_depend_++;
     this->dependence_.push_back(node);
+
     CGRAPH_FUNCTION_END
 }
 
 /**
- * 判断是否可以执行
+ * 当前节点，所有依赖均执行完毕，切未被执行的时候，则可以执行
  * @return
  */
-bool GraphNode::enableRun() const {
-    return this->left_depend_ == 0;
+bool GraphNode::isRunnable() const {
+    return 0 >= this->left_depend_ && false == this->done_.load();
 }
 
-bool GraphNode::isDone() const {
-    return this->done_;
+CSTATUS GraphNode::beforeRun() {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_FUNCTION_END
 }
 
 CSTATUS GraphNode::afterRun() {
@@ -89,7 +75,24 @@ CSTATUS GraphNode::afterRun() {
         node->left_depend_--;
     }
 
-    this->done_ = true;
+    this->done_.store(true);
+    CGRAPH_FUNCTION_END
+}
+
+/**
+ * 线程池执行本函数，包含了 beforeRun，run和afterRun功能
+ * @return
+ */
+CSTATUS GraphNode::process() {
+    CGRAPH_FUNCTION_BEGIN
+
+    status = beforeRun();
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    status = run();
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    status = afterRun();
     CGRAPH_FUNCTION_END
 }
 

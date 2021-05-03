@@ -31,5 +31,13 @@
         return status;                  \
     }                                   \
 
+/* 删除资源信息 */
+#define CGRAPH_DELETE_PTR(ptr)          \
+    if ((ptr) != nullptr)               \
+    {                                   \
+        delete (ptr);                   \
+        (ptr) = nullptr;                \
+    }                                   \
+
 
 #endif //CGRAPH_UTILSDEFINE_H

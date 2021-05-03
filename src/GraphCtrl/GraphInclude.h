@@ -11,5 +11,7 @@
 
 #include "Graphic/Graphic.h"
 #include "GraphNode/GraphNode.h"
+#include "GraphThread/GraphThreadPool.h"
+
 
 #endif //CGRAPH_GRAPHINCLUDE_H

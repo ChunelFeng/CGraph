@@ -12,4 +12,7 @@
 
 #include "../UtilsCtrl/UtilsInclude.h"
 
+const static int INIT_THREAD_NUM = 4;
+const static int MAX_THREAD_NUM = 16;
+
 #endif //CGRAPH_GRAPHDEFINE_H
