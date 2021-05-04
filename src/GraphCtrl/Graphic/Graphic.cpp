@@ -62,6 +62,7 @@ CSTATUS Graphic::run() {
     CGRAPH_ASSERT_INIT(true)
 
     int runNodeSize = 0;
+    int totalNodeSize = graph_nodes_.size();
     for (GraphNode* node : this->graph_nodes_) {
         if (!node->isRunnable()) {
             continue;    // 如果暂时无法执行，则继续
@@ -73,10 +74,10 @@ CSTATUS Graphic::run() {
     std::vector<GraphNode *> runnableNodes;
     std::vector<std::future<CSTATUS>> futures;
 
-    runnableNodes.reserve(this->graph_nodes_.size());
-    futures.reserve(this->graph_nodes_.size());
+    runnableNodes.reserve(totalNodeSize);
+    futures.reserve(totalNodeSize);
 
-    while (!queue_.empty()) {
+    while (!queue_.empty() || runNodeSize > totalNodeSize) {
         /**
          * 1，将que_中可以执行的全部node，设定为 nodes
          * 2，并行计算 nodes 中的run方法
@@ -126,6 +127,34 @@ CSTATUS Graphic::run() {
     CGRAPH_FUNCTION_END
 }
 
+/**
+ * 设置
+ * @param node
+ * @param dependNodes
+ * @return
+ */
+CSTATUS Graphic::addDependNodes(GraphNode* node,
+                                const std::set<GraphNode *>& dependNodes) {
+    CGRAPH_FUNCTION_BEGIN
+
+    CGRAPH_ASSERT_INIT(false)
+    CGRAPH_ASSERT_NOT_NULL(node)
+
+    for (GraphNode* cur : dependNodes) {
+        CGRAPH_ASSERT_NOT_NULL(cur)
+        if (cur == node) {
+            continue;        // 本节点无法依赖本节点
+        }
+
+        cur->run_before_.insert(node);
+        node->dependence_.insert(cur);
+    }
+
+    node->left_depend_ = node->dependence_.size();
+
+    CGRAPH_FUNCTION_END
+}
+
 CSTATUS Graphic::checkFinalStatus(int runNodeSize) {
     CGRAPH_FUNCTION_BEGIN
 
@@ -137,8 +166,11 @@ CSTATUS Graphic::checkFinalStatus(int runNodeSize) {
     for (GraphNode* node : graph_nodes_) {
         if (false == node->done_) {
             status = STATUS_ERR;
-            break;
         }
+
+        // 将节点信息复位，以便于开始下一次循环
+        node->done_.store(false);
+        node->left_depend_ = node->dependence_.size();
     }
 
     CGRAPH_FUNCTION_END

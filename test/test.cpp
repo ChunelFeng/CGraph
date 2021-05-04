@@ -27,19 +27,20 @@ void demo() {
     GraphNode* c = graphic->createGraphNode<MyNode1>();
     GraphNode* d = graphic->createGraphNode<MyNode2>();
 
-    status = b->addDependNode(a);    // b节点必须在a节点之后执行
+    status = graphic->addDependNodes(b, {a});    // b节点执行，依赖a节执行
     if (STATUS_OK != status) {
-        return;
+        return;    // 判断返回值是否正确
     }
-    c->addDependNode(a);    // c节点必须在a节点之后执行
-    d->addDependNode(b);    // d节点必须在b和c节点执行之后执行
-    d->addDependNode(c);
+    status = graphic->addDependNodes(c, {a});    // c节点执行，依赖a节点执行
+    status = graphic->addDependNodes(d, {b, c});    // d节点执行，依赖b和c节点
 
     /* 图信息初始化，准备开始计算 */
     status = graphic->init();
 
-    /* 运行图计算 */
-    status = graphic->run();
+    /* 运行图计算。初始化后，支持多次循环计算 */
+    for (int i = 0; i < 2; i++) {
+        status = graphic->run();
+    }
 
     /* 图信息逆初始化，准备结束计算 */
     status = graphic->deinit();

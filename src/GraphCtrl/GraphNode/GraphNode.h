@@ -10,7 +10,7 @@
 #define CGRAPH_GRAPHNODE_H
 
 #include <atomic>
-#include <list>
+#include <set>
 
 #include "../../CObject/CObject.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
@@ -26,11 +26,10 @@ public:
     ~GraphNode() override;
 
     /**
-     * 增加对应的依赖
-     * @param object
-     * @return
+     * 实现拷贝构造函数
+     * @param node
      */
-    virtual CSTATUS addDependNode(GraphNode* node) final;
+    GraphNode(const GraphNode& node);
 
 protected:
     /**
@@ -46,7 +45,8 @@ protected:
     CSTATUS afterRun();
 
     /**
-     * 线程池中的运行函数，依次执行beforeRun，run和afterRun方法，其中有任何返回值问题，则直接返回
+     * 线程池中的运行函数，依次执行beforeRun，run和afterRun方法，
+     * 其中有任何返回值问题，则直接返回
      * @return
      */
     CSTATUS process();
@@ -61,8 +61,8 @@ protected:
 
 private:
     std::atomic<bool> done_ {false};          // 标记被执行结束
-    std::list<GraphNode *> dependence_;       // 依赖的节点
-    std::list<GraphNode *> run_before_;       // 被依赖的节点
+    std::set<GraphNode *> run_before_;        // 被依赖的节点
+    std::set<GraphNode *> dependence_;        // 依赖的节点信息（做去重和计数使用）
     int left_depend_;                         // 当 left_depend_ 值为0的时候，即可以执行该node信息
 
     /* 设置友元类，使得在Graphic和GraphThreadPool中可以获取本类的信息

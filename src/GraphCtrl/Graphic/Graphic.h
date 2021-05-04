@@ -11,7 +11,6 @@
 
 #include <list>
 #include <queue>
-#include <type_traits>
 
 #include "../../CObject/CObject.h"
 #include "../GraphNode/GraphNode.h"
@@ -63,14 +62,21 @@ public:
         // 如果T类型是GraphNode的子类，则new T类型的对象，并且放到graph_nodes_中去
         if (std::is_base_of<GraphNode, T>::value) {
             node = new(std::nothrow) T();
-            if (nullptr == node) {
-                return nullptr;
+            if (node) {
+                graph_nodes_.emplace_back(dynamic_cast<GraphNode *>(node));
             }
-
-            graph_nodes_.emplace_back(dynamic_cast<GraphNode *>(node));
         }
         return node;
     }
+
+    /**
+     * node节点，添加依赖节点信息
+     * @param node
+     * @param dependNodes
+     * @return
+     */
+    CSTATUS addDependNodes(GraphNode* node,
+                           const std::set<GraphNode *>& dependNodes);
 
 protected:
     /**
