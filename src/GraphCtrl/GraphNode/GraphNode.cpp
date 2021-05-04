@@ -33,11 +33,6 @@ CSTATUS GraphNode::deinit() {
     CGRAPH_FUNCTION_END
 }
 
-CSTATUS GraphNode::run() {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_FUNCTION_END
-}
-
 /**
  * 添加相互依赖关系。本节点依赖于node节点
  * @param node

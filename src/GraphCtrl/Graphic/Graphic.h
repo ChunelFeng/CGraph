@@ -11,6 +11,7 @@
 
 #include <list>
 #include <queue>
+#include <type_traits>
 
 #include "../../CObject/CObject.h"
 #include "../GraphNode/GraphNode.h"
@@ -48,16 +49,41 @@ public:
     ~Graphic() override;
 
     /**
-     * 向图化中添加节点信息
-     * @param object
+     * 在图中创建一个节点信息
+     * @tparam T
      * @return
      */
-    CSTATUS addGraphNode(GraphNode* node);
+    template<typename T>
+    T* createGraphNode() {
+        if (true == is_init_) {
+            return nullptr;    // 图初始化之后，则不允许创建节点
+        }
+
+        T* node = nullptr;
+        // 如果T类型是GraphNode的子类，则new T类型的对象，并且放到graph_nodes_中去
+        if (std::is_base_of<GraphNode, T>::value) {
+            node = new(std::nothrow) T();
+            if (nullptr == node) {
+                return nullptr;
+            }
+
+            graph_nodes_.emplace_back(dynamic_cast<GraphNode *>(node));
+        }
+        return node;
+    }
+
+protected:
+    /**
+     * 确认图的最终执行状态
+     * @return
+     */
+    CSTATUS checkFinalStatus(int runNodeSize);
 
 private:
     std::queue<GraphNode *> queue_;          // 计算后的数据
-    std::list<GraphNode *> nodes_;           // 插进来的数据
+    std::list<GraphNode *> graph_nodes_;     // 插进来的数据
     GraphThreadPool* thread_pool_;           // 线程池
+    bool is_init_;    // 标记是否已经初始化完毕
 };
 
 

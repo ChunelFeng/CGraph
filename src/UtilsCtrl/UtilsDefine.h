@@ -39,5 +39,11 @@
         (ptr) = nullptr;                \
     }                                   \
 
+#define CGRAPH_ASSERT_INIT(isInit)      \
+    if (isInit != is_init_) {           \
+        return STATUS_ERR;              \
+    }                                   \
+
+
 
 #endif //CGRAPH_UTILSDEFINE_H

@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: GraphNode.h
 @Time: 2021/4/26 9:29 下午
-@Desc: 
+@Desc: GraphNode类有纯虚函数run，无法直接new。继承本类，必须实现run方法
 ***************************/
 
 #ifndef CGRAPH_GRAPHNODE_H
@@ -21,18 +21,16 @@ public:
 
     CSTATUS init() override;
 
-    CSTATUS run() override;
-
     CSTATUS deinit() override;
 
-    virtual ~GraphNode() override;
+    ~GraphNode() override;
 
     /**
      * 增加对应的依赖
      * @param object
      * @return
      */
-    CSTATUS addDependNode(GraphNode* node);
+    virtual CSTATUS addDependNode(GraphNode* node) final;
 
 protected:
     /**
