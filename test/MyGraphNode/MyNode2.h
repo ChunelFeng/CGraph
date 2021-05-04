@@ -17,7 +17,7 @@ class MyNode2 : public GraphNode {
 public:
     CSTATUS run () override {
         CSTATUS status = STATUS_OK;
-        std::cout << "enter node2 run functon. sleep for 2 second ..." << std::endl;
+        std::cout << "enter node2 run function. sleep for 2 second ... " << std::endl;
         this_thread::sleep_for(chrono::milliseconds(2000));
         return status;
     }

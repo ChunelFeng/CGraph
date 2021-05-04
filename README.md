@@ -9,9 +9,9 @@
 
 ## 一. 简介
 
-本工程实现了一套支持linux/mac/windows的跨平台图流程计算框架。通过框架图底层调度，实现了相互依赖节点依次顺序执行、非依赖节点同时并发执行的功能。
+本工程实现了一套跨平台图流程计算框架。通过框架图底层调度，实现了相互依赖节点依次顺序执行、非依赖节点同时并发执行的功能。
 
-使用者只需继承并实现GraphNode类的run方法，设定本节点依赖的其他节点，并且将本节点注册到图框架(graphic类)中，即可实现任务的图化执行。
+使用者只需继承GraphNode类，并实现子类的run方法，设定本节点依赖的其他节点，即可实现任务的图化执行。
 
 
 ## 二. 使用Demo
@@ -41,7 +41,7 @@ class MyNode2 : public GraphNode {
 public:
     CSTATUS run () override {
         int status = STATUS_OK;
-        std::cout << "enter node2 run functon. sleep for 2 second ... " << std::endl;
+        std::cout << "enter node2 run function. sleep for 2 second ... " << std::endl;
         this_thread::sleep_for(chrono::milliseconds(2000));
         return status;
     }
@@ -93,6 +93,7 @@ void demo() {
 }
 ```
 
+demo函数运行，首先执行a节点，a节点执行结束后并行执行b和c节点，b和c节点执行结束后再执行d节点。
 
 ------------
 #### 附录-1. 版本信息
