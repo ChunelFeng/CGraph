@@ -14,23 +14,28 @@ void demo() {
     Graphic* graphic = new Graphic();
     CSTATUS status = STATUS_OK;
 
-    /* 创建节点，其中MyNode1和MyNode2必须为GraphNode的子类，否则无法通过编译。
+    GraphNode* a = nullptr;
+    GraphNode* b = nullptr;
+    GraphNode* c = nullptr;
+    GraphNode* d = nullptr;
+
+    /* 注册节点，其中MyNode1和MyNode2必须为GraphNode的子类，否则无法通过编译。
      * MyNode1中run()执行内容为sleep(1s)
      * MyNode2中run()执行内容为sleep(2s) */
-    GraphNode* a = graphic->registerGraphNode<MyNode1>();    // a节点执行，没有任何依赖信息
-    GraphNode* b = graphic->registerGraphNode<MyNode2>({a});    // b节点执行，需要依赖a节点执行完毕
-    GraphNode* c = graphic->registerGraphNode<MyNode1>({a});
-    GraphNode* d = graphic->registerGraphNode<MyNode2>({b, c});    // d节点执行，需要依赖b和c节点执行完毕
-    if (nullptr == a || nullptr == b || nullptr == c || nullptr == d) {
-        return;
+    status = graphic->registerGraphNode<MyNode1>(&a);    // a节点执行，没有任何依赖信息
+    if (STATUS_OK != status) {
+        return;    // 使用时，请对所有CGraph接口的返回值做判定。本例子中省略
     }
+    status = graphic->registerGraphNode<MyNode2>(&b, {a});    // b节点执行，需要依赖a节点执行完毕
+    status = graphic->registerGraphNode<MyNode1>(&c, {a});
+    status = graphic->registerGraphNode<MyNode2>(&d, {b, c});    // d节点执行，需要依赖b和c节点执行完毕
 
     /* 图信息初始化，准备开始计算 */
     status = graphic->init();
-    assert(status == STATUS_OK);    // 建议对所有接口返回值做判断。
 
     /* 运行图计算。初始化后，支持多次循环计算 */
     for (int i = 0; i < 3; i++) {
+        cout << "CGraph test, loop : " << i << endl;
         status = graphic->run();
     }
 

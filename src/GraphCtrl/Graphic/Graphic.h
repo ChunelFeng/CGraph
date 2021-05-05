@@ -53,30 +53,35 @@ public:
      * @return
      */
     template<typename T>
-    T* registerGraphNode(const std::set<GraphNode *>& dependNodes = std::initializer_list<GraphNode *>()) {
-        if (true == is_init_) {
-            return nullptr;    // 图初始化之后，则不允许创建节点
+    CSTATUS registerGraphNode(GraphNode** nodeRef,
+            const std::set<GraphNode *>& dependNodes = std::initializer_list<GraphNode *>()) {
+        CGRAPH_FUNCTION_BEGIN
+        CGRAPH_ASSERT_INIT(false)
+        if (graph_nodes_.find(*nodeRef) != graph_nodes_.end()) {
+            return STATUS_ERR;    // 不可以一个节点重复注册
         }
 
-        T* node = nullptr;
+        CGRAPH_DELETE_PTR(*nodeRef)    // 每次注册，都默认为是新的节点
+
         /**
          * 如果T类型是GraphNode的子类，则new T类型的对象，并且放到graph_nodes_中去
          * 如果创建成功，则添加依赖信息。
          * 如果添加依赖信息失败，则默认创建节点失败，清空节点信息
          * */
-
         if (std::is_base_of<GraphNode, T>::value) {
-            node = new(std::nothrow) T();
-            if (node) {
-                CSTATUS status = addDependNodes(node, dependNodes);
-                if (STATUS_OK == status) {
-                    graph_nodes_.emplace_back(dynamic_cast<GraphNode *>(node));
-                } else {
-                    CGRAPH_DELETE_PTR(node)
-                }
+            (*nodeRef) = new(std::nothrow) T();
+            status = addDependNodes(*nodeRef, dependNodes);
+            if (STATUS_OK == status) {
+                graph_nodes_.insert(dynamic_cast<GraphNode *>(*nodeRef));
+            } else {
+                // 如果new成功了，但是添加依赖的时候异常，则当做没生成这个节点
+                CGRAPH_DELETE_PTR(*nodeRef)
             }
+        } else {
+            status = STATUS_ERR;
         }
-        return node;
+
+        CGRAPH_FUNCTION_END
     }
 
     /**
@@ -97,7 +102,7 @@ protected:
 
 private:
     std::queue<GraphNode *> queue_;          // 计算后的数据
-    std::list<GraphNode *> graph_nodes_;     // 插进来的数据
+    std::set<GraphNode *> graph_nodes_;      // 插进来的数据
     GraphThreadPool* thread_pool_;           // 线程池
     bool is_init_;    // 标记是否已经初始化完毕
 };
