@@ -10,8 +10,6 @@
 #include <set>
 #include "Graphic.h"
 
-using namespace std;
-
 Graphic::Graphic() {
     thread_pool_ = nullptr;
     is_init_ = false;
@@ -141,7 +139,11 @@ CSTATUS Graphic::addDependNodes(GraphNode* node,
     CGRAPH_ASSERT_NOT_NULL(node)
 
     for (GraphNode* cur : dependNodes) {
-        CGRAPH_ASSERT_NOT_NULL(cur)
+        // 如果传入的信息中，有nullptr，则所有的信息均不参与计算
+        CGRAPH_ASSERT_NOT_NULL(cur);
+    }
+
+    for (GraphNode* cur : dependNodes) {
         if (cur == node) {
             continue;        // 本节点无法依赖本节点
         }

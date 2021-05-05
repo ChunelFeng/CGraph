@@ -48,22 +48,32 @@ public:
     ~Graphic() override;
 
     /**
-     * 在图中创建一个节点信息
+     * 在图中注册一个节点信息
      * @tparam T
      * @return
      */
     template<typename T>
-    T* createGraphNode() {
+    T* registerGraphNode(const std::set<GraphNode *>& dependNodes = std::initializer_list<GraphNode *>()) {
         if (true == is_init_) {
             return nullptr;    // 图初始化之后，则不允许创建节点
         }
 
         T* node = nullptr;
-        // 如果T类型是GraphNode的子类，则new T类型的对象，并且放到graph_nodes_中去
+        /**
+         * 如果T类型是GraphNode的子类，则new T类型的对象，并且放到graph_nodes_中去
+         * 如果创建成功，则添加依赖信息。
+         * 如果添加依赖信息失败，则默认创建节点失败，清空节点信息
+         * */
+
         if (std::is_base_of<GraphNode, T>::value) {
             node = new(std::nothrow) T();
             if (node) {
-                graph_nodes_.emplace_back(dynamic_cast<GraphNode *>(node));
+                CSTATUS status = addDependNodes(node, dependNodes);
+                if (STATUS_OK == status) {
+                    graph_nodes_.emplace_back(dynamic_cast<GraphNode *>(node));
+                } else {
+                    CGRAPH_DELETE_PTR(node)
+                }
             }
         }
         return node;

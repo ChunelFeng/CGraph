@@ -19,26 +19,16 @@ void demo() {
     /* 创建节点，其中MyNode1和MyNode2必须为GraphNode的子类，否则无法通过编译。
      * MyNode1中run()执行内容为sleep(1s)
      * MyNode2中run()执行内容为sleep(2s) */
-    GraphNode* a = graphic->createGraphNode<MyNode1>();
-    if (nullptr == a) {
-        return;
-    }
-    GraphNode* b = graphic->createGraphNode<MyNode2>();
-    GraphNode* c = graphic->createGraphNode<MyNode1>();
-    GraphNode* d = graphic->createGraphNode<MyNode2>();
-
-    status = graphic->addDependNodes(b, {a});    // b节点执行，依赖a节执行
-    if (STATUS_OK != status) {
-        return;    // 判断返回值是否正确
-    }
-    status = graphic->addDependNodes(c, {a});    // c节点执行，依赖a节点执行
-    status = graphic->addDependNodes(d, {b, c});    // d节点执行，依赖b和c节点
+    GraphNode* a = graphic->registerGraphNode<MyNode1>();    // a节点执行，没有任何依赖信息
+    GraphNode* b = graphic->registerGraphNode<MyNode2>({a});    // b节点执行，需要依赖a节点执行完毕
+    GraphNode* c = graphic->registerGraphNode<MyNode1>({a});
+    GraphNode* d = graphic->registerGraphNode<MyNode2>({b, c});    // d节点执行，需要依赖b和c节点执行完毕
 
     /* 图信息初始化，准备开始计算 */
     status = graphic->init();
 
     /* 运行图计算。初始化后，支持多次循环计算 */
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 1; i++) {
         status = graphic->run();
     }
 
