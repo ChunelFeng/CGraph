@@ -53,8 +53,6 @@ public:
 #include "MyGraphNode/MyNode1.h"
 #include "MyGraphNode/MyNode2.h"
 
-/* 在正式编程中，请对所有new对象的过程做异常处理
- * 并且对所有接口的返回值做判断 */
 void demo() {
     /* 创建图化 */
     Graphic* graphic = new Graphic();
@@ -63,23 +61,17 @@ void demo() {
     /* 创建节点，其中MyNode1和MyNode2必须为GraphNode的子类，否则无法通过编译。
      * MyNode1中run()执行内容为sleep(1s)
      * MyNode2中run()执行内容为sleep(2s) */
-    GraphNode* a = graphic->registerGraphNode<MyNode1>();
-    if (nullptr == a) {
+    GraphNode* a = graphic->registerGraphNode<MyNode1>();    // a节点执行，没有任何依赖信息
+    GraphNode* b = graphic->registerGraphNode<MyNode2>({a});    // b节点执行，需要依赖a节点执行完毕
+    GraphNode* c = graphic->registerGraphNode<MyNode1>({a});
+    GraphNode* d = graphic->registerGraphNode<MyNode2>({b, c});    // d节点执行，需要依赖b和c节点执行完毕
+    if (nullptr == a || nullptr == b || nullptr == c || nullptr == d) {
         return;
     }
-    GraphNode* b = graphic->registerGraphNode<MyNode2>();
-    GraphNode* c = graphic->registerGraphNode<MyNode1>();
-    GraphNode* d = graphic->registerGraphNode<MyNode2>();
-
-    status = graphic->addDependNodes(b, {a});       // b节点执行，依赖a节执行
-    if (STATUS_OK != status) {
-        return;    // 判断返回值是否正确
-    }
-    status = graphic->addDependNodes(c, {a});       // c节点执行，依赖a节点执行
-    status = graphic->addDependNodes(d, {b, c});    // d节点执行，依赖b和c节点
 
     /* 图信息初始化，准备开始计算 */
     status = graphic->init();
+    assert(status == STATUS_OK);    // 建议对所有接口返回值做判断。
 
     /* 运行图计算。初始化后，支持多次循环计算 */
     for (int i = 0; i < 3; i++) {
@@ -89,12 +81,11 @@ void demo() {
     /* 图信息逆初始化，准备结束计算 */
     status = graphic->deinit();
     delete graphic;
-
-    return;
 }
 ```
 
 ![demo流程执行图](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraphDemo.jpg)
+<br>
 如上图所示，图结构执行的时候，首先执行a节点。a节点执行完毕后，并行执行b和c节点。b和c节点全部执行完毕后，再执行d节点。
 
 ------------
