@@ -29,8 +29,8 @@ GraphNode::GraphNode(const GraphNode& node) {
         this->run_before_.insert(cur);
     }
 
-    this->run_before_ = std::move(node.run_before_);
-    this->dependence_ = std::move(node.dependence_);
+    this->run_before_ = node.run_before_;
+    this->dependence_ = node.dependence_;
 
     this->left_depend_ = node.left_depend_;
 }

@@ -18,7 +18,7 @@ public:
     CSTATUS run () override {
         CSTATUS status = STATUS_OK;
         std::cout << "enter node2 run function. sleep for 2 second ... " << std::endl;
-        this_thread::sleep_for(chrono::milliseconds(2000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
         return status;
     }
 };

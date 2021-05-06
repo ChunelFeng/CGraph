@@ -132,7 +132,7 @@ CSTATUS Graphic::run() {
  * @return
  */
 CSTATUS Graphic::addDependNodes(GraphNode* node,
-                                const std::set<GraphNode *>& dependNodes) {
+                                const std::set<GraphNode *>& dependNodes) const {
     CGRAPH_FUNCTION_BEGIN
 
     CGRAPH_ASSERT_INIT(false)
@@ -157,6 +157,8 @@ CSTATUS Graphic::addDependNodes(GraphNode* node,
     CGRAPH_FUNCTION_END
 }
 
+
+/** protected **/
 CSTATUS Graphic::checkFinalStatus(int runNodeSize) {
     CGRAPH_FUNCTION_BEGIN
 

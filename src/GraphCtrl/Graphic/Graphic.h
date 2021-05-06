@@ -91,7 +91,7 @@ public:
      * @return
      */
     CSTATUS addDependNodes(GraphNode* node,
-                           const std::set<GraphNode *>& dependNodes);
+                           const std::set<GraphNode *>& dependNodes) const;
 
 protected:
     /**
