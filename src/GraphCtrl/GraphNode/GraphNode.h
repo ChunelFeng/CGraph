@@ -69,6 +69,7 @@ private:
      * 且外部无法继承或者修改对应函数 */
     friend class Graphic;
     friend class GraphThreadPool;
+    friend class GraphNodeManager;
 };
 
 

@@ -14,6 +14,7 @@
 
 #include "../../CObject/CObject.h"
 #include "../GraphNode/GraphNode.h"
+#include "../GraphNode/GraphNodeManager.h"
 #include "../GraphThread/GraphThreadPool.h"
 #include "../GraphDefine.h"
 
@@ -57,11 +58,12 @@ public:
             const std::set<GraphNode *>& dependNodes = std::initializer_list<GraphNode *>()) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(false)
-        if (graph_nodes_.find(*nodeRef) != graph_nodes_.end()) {
-            return STATUS_ERR;    // 不可以一个节点重复注册
-        }
+        CGRAPH_ASSERT_NOT_NULL(node_manage_)
 
-        CGRAPH_DELETE_PTR(*nodeRef)    // 每次注册，都默认为是新的节点
+        if (node_manage_->hasNode(*nodeRef)) {
+            node_manage_->deleteNode(*nodeRef);    // 每次注册，都默认为是新的节点
+        }
+        CGRAPH_DELETE_PTR(*nodeRef)
 
         /**
          * 如果T类型是GraphNode的子类，则new T类型的对象，并且放到graph_nodes_中去
@@ -70,15 +72,12 @@ public:
          * */
         if (std::is_base_of<GraphNode, T>::value) {
             (*nodeRef) = new(std::nothrow) T();
+            CGRAPH_ASSERT_NOT_NULL(*nodeRef)
             status = addDependNodes(*nodeRef, dependNodes);
-            if (STATUS_OK == status) {
-                graph_nodes_.insert(dynamic_cast<GraphNode *>(*nodeRef));
-            } else {
-                // 如果new成功了，但是添加依赖的时候异常，则当做没生成这个节点
-                CGRAPH_DELETE_PTR(*nodeRef)
-            }
-        } else {
-            status = STATUS_ERR;
+            CGRAPH_FUNCTION_CHECK_STATUS
+
+            status = node_manage_->insertNode(dynamic_cast<GraphNode *>(*nodeRef));
+            CGRAPH_FUNCTION_CHECK_STATUS
         }
 
         CGRAPH_FUNCTION_END
@@ -102,7 +101,7 @@ protected:
 
 private:
     std::queue<GraphNode *> queue_;          // 计算后的数据
-    std::set<GraphNode *> graph_nodes_;      // 插进来的数据
+    GraphNodeManager* node_manage_;          // 节点管理的内容
     GraphThreadPool* thread_pool_;           // 线程池
     bool is_init_;    // 标记是否已经初始化完毕
 };

@@ -11,42 +11,32 @@
 #include "Graphic.h"
 
 Graphic::Graphic() {
-    thread_pool_ = nullptr;
+    thread_pool_ = new(std::nothrow) GraphThreadPool();
+    if (thread_pool_ == nullptr) { return; }
+
+    node_manage_ = new(std::nothrow) GraphNodeManager();
+    if (node_manage_ == nullptr) { return; }
     is_init_ = false;
 }
 
 Graphic::~Graphic() {
     CGRAPH_DELETE_PTR(thread_pool_)
+    CGRAPH_DELETE_PTR(node_manage_)
     is_init_ = false;
-    std::for_each(graph_nodes_.begin(), graph_nodes_.end(),
-                  [](GraphNode* node){CGRAPH_DELETE_PTR(node)});
 }
 
 CSTATUS Graphic::init() {
     CGRAPH_FUNCTION_BEGIN
 
-    for (GraphNode* node : graph_nodes_) {
-        status = node->init();
-        CGRAPH_FUNCTION_CHECK_STATUS
-    }
-
-    CGRAPH_DELETE_PTR(thread_pool_)    // 确保pool_为空
-    thread_pool_ = new(std::nothrow) GraphThreadPool();
-    CGRAPH_ASSERT_NOT_NULL(thread_pool_)
-
+    node_manage_->init();
     is_init_ = true;    // 初始化完毕，设置标记位
-
     CGRAPH_FUNCTION_END
 }
 
 CSTATUS Graphic::deinit() {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_DELETE_PTR(thread_pool_)
-
-    for (GraphNode* node : graph_nodes_) {
-        status = node->deinit();
-        CGRAPH_FUNCTION_CHECK_STATUS
-    }
+    status = node_manage_->deinit();
+    CGRAPH_FUNCTION_CHECK_STATUS
 
     is_init_ = false;
 
@@ -60,8 +50,8 @@ CSTATUS Graphic::run() {
     CGRAPH_ASSERT_INIT(true)
 
     int runNodeSize = 0;
-    int totalNodeSize = graph_nodes_.size();
-    for (GraphNode* node : this->graph_nodes_) {
+    int totalNodeSize = node_manage_->graph_nodes_.size();
+    for (GraphNode* node : node_manage_->graph_nodes_) {
         if (!node->isRunnable()) {
             continue;    // 如果暂时无法执行，则继续
         }
@@ -163,11 +153,11 @@ CSTATUS Graphic::checkFinalStatus(int runNodeSize) {
     CGRAPH_FUNCTION_BEGIN
 
     // 判定是否是所有的节点均被执行1次
-    status = (runNodeSize == graph_nodes_.size()) ? STATUS_OK : STATUS_ERR;
+    status = (runNodeSize == node_manage_->graph_nodes_.size()) ? STATUS_OK : STATUS_ERR;
     CGRAPH_FUNCTION_CHECK_STATUS
 
     // 判定是否所有节点均执行到了
-    for (GraphNode* node : graph_nodes_) {
+    for (GraphNode* node : node_manage_->graph_nodes_) {
         if (false == node->done_) {
             status = STATUS_ERR;
         }

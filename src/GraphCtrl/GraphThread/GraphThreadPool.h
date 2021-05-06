@@ -18,7 +18,6 @@
 #include "../GraphDefine.h"
 #include "../GraphNode/GraphNode.h"
 
-
 class GraphThreadPool
 {
 private:
