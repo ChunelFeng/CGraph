@@ -31,6 +31,13 @@ public:
      */
     GraphNode(const GraphNode& node);
 
+    /**
+     * 赋值构造函数
+     * @param node
+     * @return
+     */
+    GraphNode& operator=(const GraphNode& node);
+
 protected:
     /**
      * run方法执行之前的执行函数
@@ -59,17 +66,25 @@ protected:
      */
     [[nodiscard]]bool isRunnable() const;
 
+    /**
+     * 判定node是否可以和前面节点一起执行
+     * @return
+     */
+    [[nodiscard]]bool isLinkable() const;
+
 private:
     std::atomic<bool> done_ {false};          // 标记被执行结束
     std::set<GraphNode *> run_before_;        // 被依赖的节点
     std::set<GraphNode *> dependence_;        // 依赖的节点信息（做去重和计数使用）
     int left_depend_;                         // 当 left_depend_ 值为0的时候，即可以执行该node信息
+    bool linkable_{ false };                  // 判定是否可以连通计算
 
     /* 设置友元类，使得在Graphic和GraphThreadPool中可以获取本类的信息
      * 且外部无法继承或者修改对应函数 */
     friend class Graphic;
     friend class GraphThreadPool;
     friend class GraphNodeManager;
+    friend class GraphNodeCluster;
 };
 
 

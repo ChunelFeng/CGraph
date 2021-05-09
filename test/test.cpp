@@ -35,8 +35,8 @@ void demo() {
 
     /* 运行图计算。初始化后，支持多次循环计算 */
     for (int i = 0; i < 3; i++) {
-        std::cout << "CGraph test, loop : " << i << std::endl;
         status = graphic->run();
+        std::cout << "[CGraph] demo, loop : " << i + 1 << ", and run status = " << status << std::endl;
     }
 
     /* 图信息逆初始化，准备结束计算 */

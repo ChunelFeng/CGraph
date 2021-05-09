@@ -5,8 +5,10 @@ project(CGraph)
 
 set(CMAKE_CXX_STANDARD 17)
 
-file(GLOB_RECURSE SRC_LIST "./src/*.cpp")
+# 如果开启此宏定义，则CGraph执行过程中，不会在控制台打印任何信息
+# add_definitions(-D_CGRAPH_SILENCE_)
 
+file(GLOB_RECURSE SRC_LIST "./src/*.cpp")
 file(GLOB_RECURSE TEST_LIST "./test/*.cpp")
 
 add_library(CGraph SHARED ${SRC_LIST})

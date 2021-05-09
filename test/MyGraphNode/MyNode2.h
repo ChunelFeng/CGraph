@@ -9,7 +9,6 @@
 #ifndef CGRAPH_MYNODE2_H
 #define CGRAPH_MYNODE2_H
 
-#include <iostream>
 #include "../../src/GraphCtrl/GraphInclude.h"
 
 class MyNode2 : public GraphNode {

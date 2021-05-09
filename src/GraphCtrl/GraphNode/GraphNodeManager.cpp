@@ -19,11 +19,15 @@ GraphNodeManager::~GraphNodeManager() {
 
 CSTATUS GraphNodeManager::init() {
     CGRAPH_FUNCTION_BEGIN
+    status = preCheck();
+    CGRAPH_FUNCTION_CHECK_STATUS
+
     for (GraphNode* node : graph_nodes_) {
         CGRAPH_ASSERT_NOT_NULL(node)
         status = node->init();
         CGRAPH_FUNCTION_CHECK_STATUS
     }
+
     CGRAPH_FUNCTION_END
 }
 
@@ -35,8 +39,32 @@ CSTATUS GraphNodeManager::deinit() {
     CGRAPH_FUNCTION_END
 }
 
+/**
+ * GraphNodeManager 不应该被执行run方法
+ * @return
+ */
 CSTATUS GraphNodeManager::run() {
+    CGRAPH_PROCESS_ERROR
+}
+
+CSTATUS GraphNodeManager::preCheck() {
     CGRAPH_FUNCTION_BEGIN
+
+    /* 优先遍历一遍节点，判定哪些是可以连接成cluster的 */
+    for (GraphNode* node : graph_nodes_) {
+        /**
+         * 认定图可以连通的判定条件：
+         * 1，当前节点仅有一个依赖
+         * 2，当前节点依赖的节点，今后一个后继
+         * 3，当前节点的依赖的后继，仍是当前节点
+         */
+        if (1 == node->dependence_.size()
+            && 1 == (*node->dependence_.begin())->run_before_.size()
+            && (*(node->dependence_.begin()))->run_before_.find(node) != (*(node->dependence_.begin()))->run_before_.end()) {
+            node->linkable_ = true;
+        }
+    }
+
     CGRAPH_FUNCTION_END
 }
 
@@ -59,15 +87,4 @@ bool GraphNodeManager::hasNode(GraphNode* node) const {
 
 void GraphNodeManager::deleteNode(GraphNode* node) {
     graph_nodes_.erase(node);
-}
-
-CSTATUS GraphNodeManager::multiProcess(const GNodeArr& nodes) {
-    CGRAPH_FUNCTION_BEGIN
-    for (GraphNode* node : nodes) {
-        CGRAPH_ASSERT_NOT_NULL(node)
-        status = node->process();
-        CGRAPH_FUNCTION_CHECK_STATUS
-    }
-
-    CGRAPH_FUNCTION_END
 }

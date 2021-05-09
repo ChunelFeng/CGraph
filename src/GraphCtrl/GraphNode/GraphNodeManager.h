@@ -23,8 +23,13 @@ public:
     CSTATUS deinit() override;
     CSTATUS run() override;
 
+protected:
+    /**
+     * 判定哪些节点是可以分到一个cluster中的
+     * @return
+     */
+    CSTATUS preCheck();
     CSTATUS insertNode(GraphNode* node);
-    CSTATUS multiProcess(const GNodeArr& nodes);
     bool hasNode(GraphNode* node) const;
     void deleteNode(GraphNode* node);
 

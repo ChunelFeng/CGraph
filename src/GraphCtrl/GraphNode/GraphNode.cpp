@@ -33,6 +33,26 @@ GraphNode::GraphNode(const GraphNode& node) {
     this->dependence_ = node.dependence_;
 
     this->left_depend_ = node.left_depend_;
+    this->linkable_ = node.linkable_;
+}
+
+GraphNode& GraphNode::operator=(const GraphNode& node) {
+    if (this == &node) {
+        return *this;
+    }
+
+    this->done_ = node.done_.load();
+    for (GraphNode* cur : node.run_before_) {
+        this->run_before_.insert(cur);
+    }
+
+    this->run_before_ = node.run_before_;
+    this->dependence_ = node.dependence_;
+
+    this->left_depend_ = node.left_depend_;
+    this->linkable_ = node.linkable_;
+
+    return *this;
 }
 
 CSTATUS GraphNode::init() {
@@ -51,6 +71,10 @@ CSTATUS GraphNode::deinit() {
  */
 bool GraphNode::isRunnable() const {
     return 0 >= this->left_depend_ && false == this->done_.load();
+}
+
+bool GraphNode::isLinkable() const {
+    return this->linkable_;
 }
 
 CSTATUS GraphNode::beforeRun() {

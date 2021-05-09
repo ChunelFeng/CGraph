@@ -16,18 +16,18 @@
 #include <condition_variable>
 
 #include "../GraphDefine.h"
-#include "../GraphNode/GraphNode.h"
+#include "../GraphNode/GraphNodeCluster.h"
 
-class GraphThreadPool
+class GraphThreadPool : public CObject
 {
 private:
     std::vector<std::thread> pool_;                   // 线程池
-    std::queue<TaskFunc> tasks_que_;             // 任务队列
-    std::mutex mtx_;                             // 同步
-    std::condition_variable task_cond_;          // 条件阻塞
-    std::atomic<bool> run_{ true };              // 线程池是否执行
-    std::atomic<int> idl_thd_num_{ 0 };          // 空闲线程数量
-    std::atomic<int> max_thd_num_{MAX_THREAD_NUM};    // 最大线程数
+    std::queue<TaskFunc> tasks_que_;                  // 任务队列
+    std::mutex mtx_;                                  // 同步
+    std::condition_variable task_cond_;               // 条件阻塞
+    std::atomic<bool> run_{ true };                   // 线程池是否执行
+    std::atomic<int> idl_thd_num_{ 0 };               // 空闲线程数量
+    std::atomic<int> max_thd_num_{ MAX_THREAD_NUM };  // 最大线程数
 
 public:
     explicit GraphThreadPool(int maxThdNum = MAX_THREAD_NUM) {
@@ -44,8 +44,8 @@ public:
         }
     }
 
-    std::future<int> commit(GraphNode* nodes) {
-        auto curTask = std::make_shared<std::packaged_task<int()>>(std::bind(&GraphNode::process, nodes));
+    std::future<int> commit(const GraphNodeCluster& cluster) {
+        auto curTask = std::make_shared<std::packaged_task<int()>>(std::bind(&GraphNodeCluster::multiProcess, cluster));
         std::future<int> future = curTask->get_future();
         {
             // 添加任务到队列
@@ -64,7 +64,7 @@ public:
         return future;
     }
 
-    void run() {
+    int run() {
         while (run_) {
             TaskFunc curFunc = nullptr;
             {
@@ -76,7 +76,7 @@ public:
                 });
 
                 if (!run_ && tasks_que_.empty()) {
-                    return;
+                    return 0;
                 }
 
                 curFunc = std::move(tasks_que_.front());    // 按先进先出从队列取一个 task
@@ -84,9 +84,13 @@ public:
             }
 
             idl_thd_num_--;
-            curFunc();
+            if (curFunc) {
+                curFunc();
+            }
             idl_thd_num_++;
         }
+
+        return 0;
     }
 
 protected:

@@ -18,7 +18,6 @@
 
 #### MyNode1.h
 ```cpp
-#include <iostream>
 #include "../../src/GraphCtrl/GraphInclude.h"    // 请根据实际情况，设定引用路径
 
 class MyNode1 : public GraphNode {
@@ -34,7 +33,6 @@ public:
 
 #### MyNode2.h
 ```cpp
-#include <iostream>
 #include "../../src/GraphCtrl/GraphInclude.h"    // 请根据实际情况，设定引用路径
 
 class MyNode2 : public GraphNode {
@@ -94,9 +92,11 @@ void demo() {
 ------------
 #### 附录-1. 版本信息
 
-[2021.05.04 - v1.0.0 - Chunel] 
+[2021.05.04 - v1.0.0 - Chunel]
 * 提供图化执行功能，支持非依赖节点并行计算
 
+[2021.05.04 - v1.1.0 - Chunel]
+* 优化图执行过程中的并发度
 
 ------------
 #### 附录-2. 联系方式: 

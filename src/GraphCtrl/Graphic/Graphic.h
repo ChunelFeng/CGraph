@@ -11,6 +11,7 @@
 
 #include <list>
 #include <queue>
+#include <memory>
 
 #include "../../CObject/CObject.h"
 #include "../GraphNode/GraphNode.h"
@@ -100,10 +101,10 @@ protected:
     CSTATUS checkFinalStatus(int runNodeSize);
 
 private:
-    std::queue<GraphNode *> queue_;          // 计算后的数据
-    GraphNodeManager* node_manage_;          // 节点管理的内容
-    GraphThreadPool* thread_pool_;           // 线程池
-    bool is_init_;    // 标记是否已经初始化完毕
+    std::queue<GraphNodeCluster> cluster_queue_;          // 计算后的数据
+    std::unique_ptr<GraphNodeManager> node_manage_;       // 节点管理的内容
+    std::unique_ptr<GraphThreadPool> thread_pool_;        // 线程池
+    bool is_init_;                                        // 标记是否已经初始化完毕
 };
 
 

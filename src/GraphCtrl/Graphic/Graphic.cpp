@@ -6,35 +6,36 @@
 @Desc: 构建图环境信息
 ***************************/
 
-
 #include <set>
+#include <memory>
+#include <vector>
 #include "Graphic.h"
 
 Graphic::Graphic() {
-    thread_pool_ = new(std::nothrow) GraphThreadPool();
-    if (thread_pool_ == nullptr) { return; }
-
-    node_manage_ = new(std::nothrow) GraphNodeManager();
-    if (node_manage_ == nullptr) { return; }
+    thread_pool_ = std::make_unique<GraphThreadPool>();
+    node_manage_ = std::make_unique<GraphNodeManager>();
     is_init_ = false;
 }
 
 Graphic::~Graphic() {
-    CGRAPH_DELETE_PTR(thread_pool_)
-    CGRAPH_DELETE_PTR(node_manage_)
     is_init_ = false;
 }
 
 CSTATUS Graphic::init() {
     CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(thread_pool_)
+    CGRAPH_ASSERT_NOT_NULL(node_manage_)
 
-    node_manage_->init();
+    status = node_manage_->init();
+    CGRAPH_FUNCTION_CHECK_STATUS
     is_init_ = true;    // 初始化完毕，设置标记位
     CGRAPH_FUNCTION_END
 }
 
 CSTATUS Graphic::deinit() {
     CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(true)
+
     status = node_manage_->deinit();
     CGRAPH_FUNCTION_CHECK_STATUS
 
@@ -48,43 +49,46 @@ CSTATUS Graphic::run() {
 
     // 必须初始化之后，才可以执行run方法
     CGRAPH_ASSERT_INIT(true)
+    CGRAPH_ASSERT_NOT_NULL(thread_pool_)
+    CGRAPH_ASSERT_NOT_NULL(node_manage_)
 
     int runNodeSize = 0;
     int totalNodeSize = node_manage_->graph_nodes_.size();
     for (GraphNode* node : node_manage_->graph_nodes_) {
-        if (!node->isRunnable()) {
-            continue;    // 如果暂时无法执行，则继续
+        if (!node->isRunnable() || node->isLinkable()) {
+            continue;    // 如果暂时无法执行，或者属于可以连接的，则不记录
         }
 
-        queue_.push(node);
+        GraphNodeCluster curCluster;
+        GraphNode* curNode = node;
+        curCluster.addNode(curNode);
+
+        /* 将linkable的节点，统一放到一个cluster中 */
+        while (1 == curNode->run_before_.size()
+               && (*curNode->run_before_.begin())->isLinkable()) {
+            curNode = (*curNode->run_before_.begin());
+            curCluster.addNode(curNode);
+        }
+
+        cluster_queue_.emplace(curCluster);
     }
 
-    std::vector<GraphNode *> runnableNodes;
+    std::vector<GraphNodeCluster> runnableClusters;    // mark，这里传递值不是很合理，今后有空修改一下
     std::vector<std::future<CSTATUS>> futures;
 
-    runnableNodes.reserve(totalNodeSize);
-    futures.reserve(totalNodeSize);
-
-    while (!queue_.empty() || runNodeSize > totalNodeSize) {
-        /**
-         * 1，将que_中可以执行的全部node，设定为 nodes
-         * 2，并行计算 nodes 中的run方法
-         * 3，等待全部执行结束，判定是否所有的返回值均ok
-         * 4，如果均为ok，则继续计算 nodes 中的node后的节点信息
-         **/
-        runnableNodes.clear();
+    while (!cluster_queue_.empty() || runNodeSize > totalNodeSize) {
+        runnableClusters.clear();
         futures.clear();
 
-        while(!queue_.empty()) {
-            runnableNodes.emplace_back(queue_.front());
-            queue_.pop();
-            runNodeSize++;
+        while(!cluster_queue_.empty()) {
+            runNodeSize += cluster_queue_.front().size();    // 记录运行的数字
+            runnableClusters.emplace_back(cluster_queue_.front());
+            cluster_queue_.pop();
         }
 
-        for (GraphNode* node : runnableNodes) {
+        for (GraphNodeCluster& cluster : runnableClusters) {
             // 放到线程池中执行
-            CGRAPH_ASSERT_NOT_NULL(node)
-            futures.emplace_back(std::move(thread_pool_->commit(node)));
+            futures.emplace_back(std::move(thread_pool_->commit(cluster)));
         }
 
         /* 这里相当于做了一层屏障，所有运行的线程停止后，再往下执行 */
@@ -94,17 +98,34 @@ CSTATUS Graphic::run() {
         }
 
         std::set<GraphNode *> duplications;    // 防止当前流程中，单个节点重复添加，做去重使用
-        for (GraphNode* node : runnableNodes) {
-            for (GraphNode* cur : node->run_before_) {
-                /**
-                 * 1，节点未被执行过且处于可执行状态
-                 * 2，节点之前未添加过
-                 */
-                if (cur->isRunnable()
-                    && duplications.end() == duplications.find(cur)) {
-                    queue_.push(cur);
+        for (GraphNodeCluster& cluster : runnableClusters) {
+            /* 把执行过的节点取出来，查看他们的后继节点是否有可以运行的 */
+            for (GraphNode* node : cluster.getNodes()) {
+                for (GraphNode* cur : node->run_before_) {
+                    /**
+                     * 判断node是否需要被加入queue_中进行下一轮循环的条件
+                     * 1，该node是可以执行的
+                     * 2，该node是非联通节点（联通节点会跟随其依赖节点，直接放入cluster中）
+                     * 3，该node本次循环是第一次被遍历
+                     */
+                    if (cur->isRunnable()
+                        && !cur->isLinkable()
+                        && duplications.find(cur) == duplications.end()) {
+
+                        GraphNodeCluster curCluster;
+                        GraphNode* curNode = cur;
+                        curCluster.addNode(curNode);
+                        duplications.insert(curNode);
+
+                        while (1 == curNode->run_before_.size()
+                               && (*curNode->run_before_.begin())->isLinkable()) {
+                            curNode = (*curNode->run_before_.begin());
+                            curCluster.addNode(curNode);
+                            duplications.insert(curNode);
+                        }
+                        cluster_queue_.emplace(curCluster);
+                    }
                 }
-                duplications.insert(cur);
             }
         }
     }

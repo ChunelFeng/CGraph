@@ -11,6 +11,7 @@
 #define CGRAPH_GRAPHDEFINE_H
 
 #include <vector>
+#include "GraphNode/GraphNode.h"
 #include "../UtilsCtrl/UtilsInclude.h"
 
 const static int INIT_THREAD_NUM = 4;
