@@ -48,6 +48,8 @@ public:
 
 #### demo.cpp
 ```cpp
+#include "MyGraphNode/MyNode1.h"
+#include "MyGraphNode/MyNode2.h"
 
 void demo() {
     /* 创建图化 */
@@ -75,8 +77,8 @@ void demo() {
 
     /* 运行图计算。初始化后，支持多次循环计算 */
     for (int i = 0; i < 3; i++) {
-        cout << "CGraph test, loop : " << i << endl;
         status = graphic->run();
+        std::cout << "[CGraph] demo, loop : " << i + 1 << ", and run status = " << status << std::endl;
     }
 
     /* 图信息逆初始化，准备结束计算 */
@@ -95,7 +97,7 @@ void demo() {
 [2021.05.04 - v1.0.0 - Chunel]
 * 提供图化执行功能，支持非依赖节点并行计算
 
-[2021.05.04 - v1.1.0 - Chunel]
+[2021.05.09 - v1.1.0 - Chunel]
 * 优化图执行过程中的并发度
 
 ------------
