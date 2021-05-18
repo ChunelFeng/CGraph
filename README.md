@@ -100,8 +100,16 @@ void demo() {
 [2021.05.09 - v1.1.0 - Chunel]
 * 优化图执行过程中的并发度
 
+[2021.05.18 - v1.1.1 - Chunel]
+* 添加节点name和session信息
+
 ------------
-#### 附录-2. 联系方式: 
+#### 附录-2. 推荐阅读
+
+* [纯序员给你介绍图化框架的简单实现](http://www.chunel.cn/archives/cgraph-simple-introduce)
+
+------------
+#### 附录-3. 联系方式
 
 * 微信： ChunelFeng
 * 邮箱： chunel@foxmail.com
