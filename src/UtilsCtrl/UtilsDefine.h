@@ -10,7 +10,6 @@
 #define CGRAPH_UTILSDEFINE_H
 
 #include <iostream>
-#include <sys/timeb.h>
 #include <ctime>
 #ifndef _WIN32
     #include <sys/timeb.h>
@@ -18,12 +17,15 @@
 
 #include "../CObject/CObject.h"
 
+static std::mutex g_check_status_mtx;
+static std::mutex g_echo_mtx;
 
 inline void CGRAPH_ECHO(const char *cmd, ...) {
 #ifdef _CGRAPH_SILENCE_
     return;
 #endif
 
+    std::lock_guard<std::mutex> lock{ g_echo_mtx };
 #ifndef _WIN32
     // 非windows系统，打印到毫秒
     timeb cur_time{};
@@ -51,6 +53,8 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
     std::cout << "" << std::endl;
 }
 
+#define likely(x)   __builtin_expect(!!(x), 1)
+#define unlikely(x) __builtin_expect(!!(x), 0)
 
 /* 开启函数流程 */
 #define CGRAPH_FUNCTION_BEGIN                       \
@@ -67,11 +71,12 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
     }                                               \
 
 /* 判断函数流程是否可以继续 */
-#define CGRAPH_FUNCTION_CHECK_STATUS                \
-    if (STATUS_OK != status) {                      \
+#define CGRAPH_FUNCTION_CHECK_STATUS                                                                       \
+    if (unlikely(STATUS_OK != status)) {                                                                   \
+        std::lock_guard<std::mutex> lock{ g_check_status_mtx };                                            \
         CGRAPH_ECHO("%s | %s | line = [%d], status = [%d].", __FILE__, __FUNCTION__, __LINE__, status);    \
-        return status;                              \
-    }                                               \
+        return status;                                                                                     \
+    }                                                                                                      \
 
 /* 删除资源信息 */
 #define CGRAPH_DELETE_PTR(ptr)                      \

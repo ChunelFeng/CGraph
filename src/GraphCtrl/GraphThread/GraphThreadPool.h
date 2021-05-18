@@ -53,11 +53,11 @@ public:
             tasks_que_.push([curTask]() {
                 (*curTask)();
             });
-        }
 
-        if (idl_thd_num_ < 1 && pool_.size() < max_thd_num_) {
-            // 如果空闲thread小于1，并且不超过max限制
-            addThread(1);
+            if (idl_thd_num_ < 1 && pool_.size() < max_thd_num_) {
+                // 如果空闲thread小于1，并且不超过max限制
+                addThread(1);
+            }
         }
 
         task_cond_.notify_one();

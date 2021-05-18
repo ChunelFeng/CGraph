@@ -6,6 +6,7 @@
 @Desc: 
 ***************************/
 
+#include <uuid/uuid.h>
 #include "GraphNode.h"
 
 
@@ -14,6 +15,7 @@ GraphNode::GraphNode() {
     done_.store(false);
     run_before_.clear();
     dependence_.clear();
+    generateSession();
 }
 
 GraphNode::~GraphNode() {
@@ -26,14 +28,15 @@ GraphNode::~GraphNode() {
 GraphNode::GraphNode(const GraphNode& node) {
     this->done_ = node.done_.load();
     for (GraphNode* cur : node.run_before_) {
-        this->run_before_.insert(cur);
+        this->run_before_.emplace(cur);
     }
 
-    this->run_before_ = node.run_before_;
     this->dependence_ = node.dependence_;
-
-    this->left_depend_ = node.left_depend_;
+    this->left_depend_.store(node.left_depend_);
     this->linkable_ = node.linkable_;
+    this->session_ = node.session_;
+    this->loop_ = node.loop_;
+    this->name_ = node.name_;
 }
 
 GraphNode& GraphNode::operator=(const GraphNode& node) {
@@ -43,14 +46,15 @@ GraphNode& GraphNode::operator=(const GraphNode& node) {
 
     this->done_ = node.done_.load();
     for (GraphNode* cur : node.run_before_) {
-        this->run_before_.insert(cur);
+        this->run_before_.emplace(cur);
     }
 
-    this->run_before_ = node.run_before_;
     this->dependence_ = node.dependence_;
-
-    this->left_depend_ = node.left_depend_;
+    this->left_depend_.store(node.left_depend_);
     this->linkable_ = node.linkable_;
+    this->session_ = node.session_;
+    this->loop_ = node.loop_;
+    this->name_ = node.name_;
 
     return *this;
 }
@@ -112,3 +116,26 @@ CSTATUS GraphNode::process() {
     CGRAPH_FUNCTION_END
 }
 
+void GraphNode::setName(const std::string& name) {
+    if (likely(!name.empty())) {
+        this->name_ = name;
+    } else {
+        this->name_ = this->session_;
+    }
+}
+
+void GraphNode::setLoop(const int loop) {
+    this->loop_ = loop;
+}
+
+void GraphNode::generateSession() {
+    uuid_t uuid;
+    char session[36] = {0};    // 36是特定值
+    uuid_generate(uuid);
+    uuid_unparse(uuid, session);
+    this->session_ = session;
+}
+
+const std::string& GraphNode::getName() const {
+    return this->name_;
+}

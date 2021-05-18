@@ -59,7 +59,7 @@ CSTATUS Graphic::run() {
             continue;    // 如果暂时无法执行，或者属于可以连接的，则不记录
         }
 
-        GraphNodeCluster curCluster;
+        GraphNodeCluster curCluster;    // 这里是临时变量，小心一点为好
         GraphNode* curNode = node;
         curCluster.addNode(curNode);
 

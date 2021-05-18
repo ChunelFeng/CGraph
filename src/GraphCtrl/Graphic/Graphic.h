@@ -56,7 +56,9 @@ public:
      */
     template<typename T>
     CSTATUS registerGraphNode(GraphNode** nodeRef,
-            const std::set<GraphNode *>& dependNodes = std::initializer_list<GraphNode *>()) {
+            const std::set<GraphNode *>& dependNodes = std::initializer_list<GraphNode *>(),
+            const std::string& name = "",
+            const int loop = 1) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(false)
         CGRAPH_ASSERT_NOT_NULL(node_manage_)
@@ -77,6 +79,8 @@ public:
             status = addDependNodes(*nodeRef, dependNodes);
             CGRAPH_FUNCTION_CHECK_STATUS
 
+            (*nodeRef)->setName(name);
+            (*nodeRef)->setLoop(loop);
             status = node_manage_->insertNode(dynamic_cast<GraphNode *>(*nodeRef));
             CGRAPH_FUNCTION_CHECK_STATUS
         }
