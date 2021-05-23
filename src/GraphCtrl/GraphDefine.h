@@ -17,7 +17,8 @@
 const static int INIT_THREAD_NUM = 4;
 const static int MAX_THREAD_NUM = 16;
 
+using GraphNodePtr = GraphNode *;
 using TaskFunc = std::function<void()>;
-using GNodeArr = std::vector<GraphNode *>;
+using GNodeArr = std::vector<GraphNodePtr>;
 
 #endif //CGRAPH_GRAPHDEFINE_H

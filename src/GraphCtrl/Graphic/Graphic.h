@@ -55,8 +55,8 @@ public:
      * @return
      */
     template<typename T>
-    CSTATUS registerGraphNode(GraphNode** nodeRef,
-            const std::set<GraphNode *>& dependNodes = std::initializer_list<GraphNode *>(),
+    CSTATUS registerGraphNode(GraphNodePtr* nodeRef,
+            const std::set<GraphNodePtr>& dependNodes = std::initializer_list<GraphNodePtr>(),
             const std::string& name = "",
             int loop = 1);
 
@@ -66,8 +66,8 @@ public:
      * @param dependNodes
      * @return
      */
-    CSTATUS addDependNodes(GraphNode* node,
-                           const std::set<GraphNode *>& dependNodes) const;
+    CSTATUS addDependNodes(GraphNodePtr node,
+                           const std::set<GraphNodePtr>& dependNodes) const;
 
 protected:
     /**

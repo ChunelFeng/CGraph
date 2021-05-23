@@ -142,8 +142,8 @@ CSTATUS Graphic::run() {
  * @param dependNodes
  * @return
  */
-CSTATUS Graphic::addDependNodes(GraphNode* node,
-                                const std::set<GraphNode *>& dependNodes) const {
+CSTATUS Graphic::addDependNodes(GraphNodePtr node,
+                                const std::set<GraphNodePtr>& dependNodes) const {
     CGRAPH_FUNCTION_BEGIN
 
     CGRAPH_ASSERT_INIT(false)

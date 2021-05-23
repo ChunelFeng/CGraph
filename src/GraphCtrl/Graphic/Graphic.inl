@@ -11,8 +11,8 @@
 
 
 template<typename T>
-CSTATUS Graphic::registerGraphNode(GraphNode** nodeRef,
-                          const std::set<GraphNode *>& dependNodes,
+CSTATUS Graphic::registerGraphNode(GraphNodePtr* nodeRef,
+                          const std::set<GraphNodePtr>& dependNodes,
                           const std::string& name,
                           int loop) {
     CGRAPH_FUNCTION_BEGIN
@@ -22,7 +22,6 @@ CSTATUS Graphic::registerGraphNode(GraphNode** nodeRef,
     if (node_manage_->hasNode(*nodeRef)) {
         node_manage_->deleteNode(*nodeRef);    // 每次注册，都默认为是新的节点
     }
-    CGRAPH_DELETE_PTR(*nodeRef)
 
     /**
      * 如果T类型是GraphNode的子类，则new T类型的对象，并且放到graph_nodes_中去

@@ -55,11 +55,7 @@ void demo() {
     /* 创建图化 */
     Graphic* graphic = new Graphic();
     CSTATUS status = STATUS_OK;
-
-    GraphNode* a = nullptr;
-    GraphNode* b = nullptr;
-    GraphNode* c = nullptr;
-    GraphNode* d = nullptr;
+    GraphNodePtr a, b, c, d = nullptr;
 
     /* 注册节点，其中MyNode1和MyNode2必须为GraphNode的子类，否则无法通过编译。
      * MyNode1中run()执行内容为sleep(1s)
@@ -102,6 +98,9 @@ void demo() {
 
 [2021.05.18 - v1.1.1 - Chunel]
 * 添加节点name和session信息
+
+[2021.05.23 - v1.2.0 - Chunel]
+* 提供单节点循环执行功能
 
 ------------
 #### 附录-2. 推荐阅读
