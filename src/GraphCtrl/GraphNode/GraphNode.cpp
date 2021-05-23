@@ -12,21 +12,21 @@
 
 GraphNode::GraphNode() {
     left_depend_ = 0;
-    done_.store(false);
+    done_ = false;
     run_before_.clear();
     dependence_.clear();
     generateSession();
 }
 
 GraphNode::~GraphNode() {
-    done_.store(true);
+    done_ = true;
     run_before_.clear();
     left_depend_ = 0;
     dependence_.clear();
 };
 
 GraphNode::GraphNode(const GraphNode& node) {
-    this->done_ = node.done_.load();
+    this->done_ = node.done_;
     for (GraphNode* cur : node.run_before_) {
         this->run_before_.emplace(cur);
     }
@@ -44,7 +44,7 @@ GraphNode& GraphNode::operator=(const GraphNode& node) {
         return *this;
     }
 
-    this->done_ = node.done_.load();
+    this->done_ = node.done_;
     for (GraphNode* cur : node.run_before_) {
         this->run_before_.emplace(cur);
     }
@@ -74,7 +74,7 @@ CSTATUS GraphNode::deinit() {
  * @return
  */
 bool GraphNode::isRunnable() const {
-    return 0 >= this->left_depend_ && false == this->done_.load();
+    return 0 >= this->left_depend_ && false == this->done_;
 }
 
 bool GraphNode::isLinkable() const {
@@ -83,7 +83,7 @@ bool GraphNode::isLinkable() const {
 
 CSTATUS GraphNode::beforeRun() {
     CGRAPH_FUNCTION_BEGIN
-    this->done_.store(false);
+    this->done_ = false;
     this->left_depend_ = this->dependence_.size();
     CGRAPH_FUNCTION_END
 }
@@ -95,7 +95,7 @@ CSTATUS GraphNode::afterRun() {
         node->left_depend_--;
     }
 
-    this->done_.store(true);
+    this->done_ = true;
     CGRAPH_FUNCTION_END
 }
 
@@ -109,8 +109,10 @@ CSTATUS GraphNode::process() {
     status = beforeRun();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    status = run();
-    CGRAPH_FUNCTION_CHECK_STATUS
+    for (int i = 0; i < this->loop_; i++) {
+        status = run();
+        CGRAPH_FUNCTION_CHECK_STATUS
+    }
 
     status = afterRun();
     CGRAPH_FUNCTION_END
@@ -124,7 +126,7 @@ void GraphNode::setName(const std::string& name) {
     }
 }
 
-void GraphNode::setLoop(const int loop) {
+void GraphNode::setLoop(int loop) {
     this->loop_ = loop;
 }
 
@@ -138,4 +140,8 @@ void GraphNode::generateSession() {
 
 const std::string& GraphNode::getName() const {
     return this->name_;
+}
+
+const std::string& GraphNode::getSession() const {
+    return this->session_;
 }

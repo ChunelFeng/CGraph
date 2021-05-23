@@ -19,9 +19,15 @@ class GraphNode : public CObject {
 public:
     /**
      * 获取节点name信息
-     * @param name
+     * name信息可以重复
      */
     const std::string& getName() const;
+
+    /**
+     * 获取节点session信息
+     * session信息不可重复
+     */
+    const std::string& getSession() const;
 
 protected:
     explicit GraphNode();    // GraphNode 节点，不允许自己new
@@ -55,7 +61,7 @@ protected:
      * 设置循环次数信息
      * @param loop
      */
-    void setLoop(const int loop = 1);
+    void setLoop(int loop = 1);
 
     /**
      * run方法执行之前的执行函数
@@ -96,15 +102,14 @@ protected:
     void generateSession();
 
 private:
-    std::atomic<bool> done_ {false};          // 标记被执行结束
+    bool done_ { false };                     // 标记被执行结束
     std::set<GraphNode *> run_before_;        // 被依赖的节点
-    std::set<GraphNode *> dependence_;        // 依赖的节点信息（做去重和计数使用）
-    std::atomic<int> left_depend_;                         // 当 left_depend_ 值为0的时候，即可以执行该node信息
+    std::set<GraphNode *> dependence_;        // 依赖的节点信息
+    std::atomic<int> left_depend_;            // 当 left_depend_ 值为0的时候，即可以执行该node信息
     bool linkable_ { false };                 // 判定是否可以连通计算
-
-    int loop_ {1};
-    std::string name_;
-    std::string session_;
+    int loop_ {1};                            // 循环次数
+    std::string name_;                        // 节点名称
+    std::string session_;                     // 节点唯一id信息
 
     /* 设置友元类，使得在Graphic和GraphThreadPool中可以获取本类的信息
      * 且外部无法继承或者修改对应函数 */

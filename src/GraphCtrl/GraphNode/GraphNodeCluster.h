@@ -17,7 +17,7 @@ class GraphNodeCluster : public CObject {
 public:
     explicit GraphNodeCluster() = default;
 
-    ~GraphNodeCluster() = default;
+    ~GraphNodeCluster() override = default;
 
     CSTATUS init() override;
 
@@ -48,7 +48,7 @@ public:
      */
     void clear();
 
-    int size() const;
+    [[nodiscard]] int size() const;
 
     GNodeArr& getNodes();
 

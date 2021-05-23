@@ -22,13 +22,13 @@ void demo() {
     /* 注册节点，其中MyNode1和MyNode2必须为GraphNode的子类，否则无法通过编译。
      * MyNode1中run()执行内容为sleep(1s)
      * MyNode2中run()执行内容为sleep(2s) */
-    status = graphic->registerGraphNode<MyNode1>(&a, {}, "nodeA");    // a节点执行，没有任何依赖信息
+    status = graphic->registerGraphNode<MyNode1>(&a, {}, "nodeA", 1);    // a节点执行，没有任何依赖信息
     if (STATUS_OK != status) {
         return;    // 使用时，请对所有CGraph接口的返回值做判定。本例子中省略
     }
-    status = graphic->registerGraphNode<MyNode2>(&b, {a}, "nodeB");    // b节点执行，需要依赖a节点执行完毕
-    status = graphic->registerGraphNode<MyNode1>(&c, {a}, "nodeC");
-    status = graphic->registerGraphNode<MyNode2>(&d, {b, c}, "nodeD");    // d节点执行，需要依赖b和c节点执行完毕
+    status = graphic->registerGraphNode<MyNode2>(&b, {a}, "nodeB", 2);    // b节点执行，需要依赖a节点执行完毕
+    status = graphic->registerGraphNode<MyNode1>(&c, {a}, "nodeC", 1);
+    status = graphic->registerGraphNode<MyNode2>(&d, {b, c}, "nodeD", 2);    // d节点执行，需要依赖b和c节点执行完毕
 
     /* 图信息初始化，准备开始计算 */
     status = graphic->init();

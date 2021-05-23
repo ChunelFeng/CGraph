@@ -184,10 +184,9 @@ CSTATUS Graphic::checkFinalStatus(int runNodeSize) {
         }
 
         // 将节点信息复位，以便于开始下一次循环
-        node->done_.store(false);
+        node->done_ = false;
         node->left_depend_ = node->dependence_.size();
     }
 
     CGRAPH_FUNCTION_END
 }
-
