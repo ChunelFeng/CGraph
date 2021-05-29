@@ -45,7 +45,7 @@ public:
     }
 
     std::future<int> commit(const GraphNodeCluster& cluster) {
-        auto curTask = std::make_shared<std::packaged_task<int()>>(std::bind(&GraphNodeCluster::multiProcess, cluster));
+        auto curTask = std::make_shared<std::packaged_task<int()>>(std::bind(&GraphNodeCluster::process, cluster));
         std::future<int> future = curTask->get_future();
         {
             // 添加任务到队列

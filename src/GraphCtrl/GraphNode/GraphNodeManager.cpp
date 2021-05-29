@@ -57,10 +57,12 @@ CSTATUS GraphNodeManager::preCheck() {
          * 1，当前节点仅有一个依赖
          * 2，当前节点依赖的节点，只有一个后继
          * 3，当前节点的依赖的后继，仍是当前节点
+         * 4，当前节点不是循环的开始/结尾节点
          */
         if (1 == node->dependence_.size()
             && 1 == (*node->dependence_.begin())->run_before_.size()
-            && (*(node->dependence_.begin()))->run_before_.find(node) != (*(node->dependence_.begin()))->run_before_.end()) {
+            && (*(node->dependence_.begin()))->run_before_.find(node) != (*(node->dependence_.begin()))->run_before_.end()
+            && node->loop_ctrl_.enableLink()) {
             node->linkable_ = true;
         }
     }

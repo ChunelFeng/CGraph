@@ -14,7 +14,7 @@ template<typename T>
 CSTATUS Graphic::registerGraphNode(GraphNodePtr* nodeRef,
                           const std::set<GraphNodePtr>& dependNodes,
                           const std::string& name,
-                          int loop) {
+                          int runTimes) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
     CGRAPH_ASSERT_NOT_NULL(node_manage_)
@@ -35,8 +35,8 @@ CSTATUS Graphic::registerGraphNode(GraphNodePtr* nodeRef,
         CGRAPH_FUNCTION_CHECK_STATUS
 
         (*nodeRef)->setName(name);
-        (*nodeRef)->setLoop(loop);
-        status = node_manage_->insertNode(dynamic_cast<GraphNode *>(*nodeRef));
+        (*nodeRef)->setRunTimes(runTimes);
+        status = node_manage_->insertNode(dynamic_cast<GraphNodePtr>(*nodeRef));
         CGRAPH_FUNCTION_CHECK_STATUS
     } else {
         status = STATUS_ERR;

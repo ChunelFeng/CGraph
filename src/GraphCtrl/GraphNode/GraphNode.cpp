@@ -15,7 +15,7 @@ GraphNode::GraphNode() {
     done_ = false;
     run_before_.clear();
     dependence_.clear();
-    generateSession();
+    this->session_ = _generateSession();
 }
 
 GraphNode::~GraphNode() {
@@ -27,16 +27,14 @@ GraphNode::~GraphNode() {
 
 GraphNode::GraphNode(const GraphNode& node) {
     this->done_ = node.done_;
-    for (GraphNode* cur : node.run_before_) {
-        this->run_before_.emplace(cur);
-    }
-
+    this->run_before_ = node.run_before_;
     this->dependence_ = node.dependence_;
     this->left_depend_.store(node.left_depend_);
     this->linkable_ = node.linkable_;
     this->session_ = node.session_;
-    this->loop_ = node.loop_;
+    this->run_times_ = node.run_times_;
     this->name_ = node.name_;
+    this->loop_ctrl_ = node.loop_ctrl_;
 }
 
 GraphNode& GraphNode::operator=(const GraphNode& node) {
@@ -45,16 +43,14 @@ GraphNode& GraphNode::operator=(const GraphNode& node) {
     }
 
     this->done_ = node.done_;
-    for (GraphNode* cur : node.run_before_) {
-        this->run_before_.emplace(cur);
-    }
-
+    this->run_before_ = node.run_before_;
     this->dependence_ = node.dependence_;
     this->left_depend_.store(node.left_depend_);
     this->linkable_ = node.linkable_;
     this->session_ = node.session_;
-    this->loop_ = node.loop_;
+    this->run_times_ = node.run_times_;
     this->name_ = node.name_;
+    this->loop_ctrl_ = node.loop_ctrl_;
 
     return *this;
 }
@@ -109,7 +105,7 @@ CSTATUS GraphNode::process() {
     status = beforeRun();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    for (int i = 0; i < this->loop_; i++) {
+    for (int i = 0; i < run_times_; i++) {
         status = run();
         CGRAPH_FUNCTION_CHECK_STATUS
     }
@@ -126,16 +122,8 @@ void GraphNode::setName(const std::string& name) {
     }
 }
 
-void GraphNode::setLoop(int loop) {
-    this->loop_ = loop;
-}
-
-void GraphNode::generateSession() {
-    uuid_t uuid;
-    char session[36] = {0};    // 36是特定值
-    uuid_generate(uuid);
-    uuid_unparse(uuid, session);
-    this->session_ = session;
+void GraphNode::setRunTimes(int runTimes) {
+    this->run_times_ = runTimes;
 }
 
 const std::string& GraphNode::getName() const {
@@ -144,4 +132,13 @@ const std::string& GraphNode::getName() const {
 
 const std::string& GraphNode::getSession() const {
     return this->session_;
+}
+
+std::string GraphNode::_generateSession() {
+    uuid_t uuid;
+    char session[36] = {0};    // 36是特定值
+    uuid_generate(uuid);
+    uuid_unparse(uuid, session);
+
+    return session;
 }

@@ -15,9 +15,22 @@
 class GraphNodeCluster : public CObject {
 
 public:
-    explicit GraphNodeCluster() = default;
+    explicit GraphNodeCluster();
 
-    ~GraphNodeCluster() override = default;
+    ~GraphNodeCluster() override;
+
+    /**
+     * 实现拷贝构造函数
+     * @param cluster
+     */
+    GraphNodeCluster(const GraphNodeCluster& cluster);
+
+    /**
+     * 赋值构造函数
+     * @param cluster
+     * @return
+     */
+    GraphNodeCluster& operator=(const GraphNodeCluster& cluster);
 
     CSTATUS init() override;
 
@@ -33,7 +46,7 @@ public:
      * 批量执行cluster内部节点
      * @return
      */
-    CSTATUS multiProcess();
+    CSTATUS process();
 
     /**
      * 加入节点信息
@@ -50,10 +63,21 @@ public:
 
     [[nodiscard]] int size() const;
 
-    GNodeArr& getNodes();
+    [[nodiscard]] const GNodeArr& getNodes() const;
+
+protected:
+    /**
+     * 预演执行，供图分簇使用
+     * @return
+     */
+    CSTATUS fakeProcess();
 
 private:
     GNodeArr node_arr_;
+    int loop_ { 1 };
+
+    friend class Graphic;
+    friend class GraphNodeLoopRegion;
 };
 
 
