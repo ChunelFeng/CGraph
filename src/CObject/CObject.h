@@ -16,7 +16,7 @@ public:
     /**
      * 构造函数
      */
-    CObject();
+    explicit CObject();
 
     /**
      * 初始化函数
