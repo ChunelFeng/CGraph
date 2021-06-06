@@ -15,8 +15,6 @@
 #include "../../GraphThread/GraphThreadPool.h"
 
 /* region 中包含了 cluster 信息 */
-using GClusterArr = std::vector<GCluster>;
-using ParaWorkedClusterArrs = std::vector<GClusterArr>;
 
 class GRegion : public GElement {
 protected:
@@ -34,17 +32,14 @@ protected:
     CSTATUS beforeRun() override;
     CSTATUS afterRun() override;
 
-    CSTATUS analyse();
     CSTATUS setThreadPool(GraphThreadPool* pool);
     CSTATUS addElement(GElementPtr element);
     int getElementNum();
     bool isElementDone();
-    CSTATUS checkFinalStatus(int runNodeSize);
 
 private:
     GElementManager* manager_;
     GraphThreadPool* thread_pool_;    // 这里需要使用GFlow类的线程池
-    ParaWorkedClusterArrs para_cluster_arrs_;
     GElementPtrArr region_elements_;
 
     friend class GFlow;

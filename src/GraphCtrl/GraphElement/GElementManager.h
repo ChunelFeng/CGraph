@@ -10,9 +10,13 @@
 #define CGRAPH_GELEMENTMANAGER_H
 
 #include "GElement.h"
+#include "GCluster/GCluster.h"
+
+using GClusterArr = std::vector<GCluster>;
+using ParaWorkedClusterArrs = std::vector<GClusterArr>;
 
 class GElementManager : public CObject {
-public:
+protected:
     explicit GElementManager();
     ~GElementManager() override;    // 注意，manager中的节点，在析构的时候不需要释放。所有的节点信息在CFlow类中统一申请和释放
     GElementManager(const GElementManager& manager);
@@ -22,18 +26,34 @@ public:
     CSTATUS run() override;
     CSTATUS deinit() override;
 
-protected:
     /**
      * 判定哪些节点是可以分到一个cluster中的
      * @return
      */
-    CSTATUS preCheck();
+    CSTATUS preRunCheck();
+
+    /**
+     * 将所有的节点，分发到para_cluster_arrs_中，运行的时候使用。
+     * @return
+     */
+    CSTATUS analyse();
+
+    /**
+     * 执行完毕后，确认运行是否正常
+     * 正常指的是，所有节点被运行loop次
+     * @param runNodeSize
+     * @return
+     */
+    CSTATUS afterRunCheck(int runNodeSize);
+
     CSTATUS addElement(GElementPtr element);
     bool hasElement(GElementPtr element) const;
     void deleteElement(GElementPtr element);
 
+
 private:
     GElementPtrSet manager_elements_;    // 保存节点信息的内容
+    ParaWorkedClusterArrs para_cluster_arrs_;            // 可以并行的cluster数组
 
     friend class GFlow;
     friend class GRegion;

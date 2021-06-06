@@ -67,12 +67,6 @@ public:
 
 protected:
     /**
-     * 分析 GFlow 信息
-     * @return
-     */
-    CSTATUS analyse();
-
-    /**
      * element元素，添加依赖节点信息
      * @param element
      * @param dependElements
@@ -81,18 +75,12 @@ protected:
     CSTATUS addDependElements(GElementPtr element,
                               const std::set<GElementPtr>& dependElements) const;
 
-    /**
-     * 确认图的最终执行状态
-     * @return
-     */
-    CSTATUS checkFinalStatus(int runNodeSize);
 
 private:
     bool is_init_;                                       // 标志位
     GElementManager* manager_;                           // 节点管理类（管理所有注册过的element信息）
     GraphThreadPool* thread_pool_;                       // 线程池类
-    ParaWorkedClusterArrs para_cluster_arrs_;            // 可以并行的cluster数组
-    GElementPtrSet element_repository_;                     // 标记创建的所有节点，最终释放使用
+    GElementPtrSet element_repository_;                  // 标记创建的所有节点，最终释放使用
 };
 
 #include "GFlow.inl"

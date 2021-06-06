@@ -35,9 +35,6 @@ CSTATUS GFlow::init() {
     status = manager_->init();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    status = analyse();
-    CGRAPH_FUNCTION_CHECK_STATUS
-
     is_init_ = true;
     CGRAPH_FUNCTION_END
 }
@@ -53,7 +50,7 @@ CSTATUS GFlow::run() {
     int runElementSize = 0;
     std::vector<std::future<CSTATUS>> futures;
 
-    for (GClusterArr& clusterArr : para_cluster_arrs_) {
+    for (GClusterArr& clusterArr : manager_->para_cluster_arrs_) {
         futures.clear();
 
         for (GCluster& cluster : clusterArr) {
@@ -67,8 +64,7 @@ CSTATUS GFlow::run() {
         }
     }
 
-    status = checkFinalStatus(runElementSize);
-
+    status = manager_->afterRunCheck(runElementSize);
     CGRAPH_FUNCTION_END
 }
 
@@ -77,84 +73,6 @@ CSTATUS GFlow::deinit() {
     CGRAPH_FUNCTION_BEGIN
 
     status = manager_->deinit();
-    CGRAPH_FUNCTION_END
-}
-
-
-CSTATUS GFlow::analyse() {
-    CGRAPH_FUNCTION_BEGIN
-
-    CGRAPH_ASSERT_INIT(false)
-    int runElementSize = 0;
-    int totalElementSize = manager_->manager_elements_.size();
-
-    GClusterArr curClusterArr;    // 记录每一层，可以并行的逻辑
-    for (GElementPtr element : manager_->manager_elements_) {
-        if (!element->isRunnable() || element->isLinkable()) {
-            continue;
-        }
-
-        GCluster curCluster;
-        GElementPtr curElement = element;
-        curCluster.addElement(curElement);
-
-        /* 将linkable的节点，统一放到一个cluster中 */
-        while (1 == curElement->run_before_.size()
-               && (*curElement->run_before_.begin())->isLinkable()) {
-            // 将下一个放到cluster中处理
-            curElement = (*curElement->run_before_.begin());
-            curCluster.addElement(curElement);
-        }
-        curClusterArr.emplace_back(curCluster);
-    }
-    para_cluster_arrs_.emplace_back(curClusterArr);
-
-    GClusterArr runnableClusterArr;
-    while (!curClusterArr.empty() && runElementSize <= totalElementSize) {
-        runnableClusterArr = curClusterArr;
-        curClusterArr.clear();
-
-        for (GCluster& cluster : runnableClusterArr) {
-            status = cluster.process(true);    // 不执行run方法的process
-            CGRAPH_FUNCTION_CHECK_STATUS
-        }
-        runElementSize += runnableClusterArr.size();
-
-        std::set<GElementPtr> duplications;
-        for (GCluster& cluster : runnableClusterArr) {
-            for (GElementPtr element : cluster.cluster_elements_) {
-                for (GElementPtr cur : element->run_before_) {
-                    /**
-                     * 判断element是否需要被加入
-                     * 1，该元素是可以执行的
-                     * 2，改元素本次循环是第一次被遍历
-                     */
-                    if (cur->isRunnable()
-                        && duplications.find(cur) == duplications.end()) {
-                        GCluster curCluster;
-                        GElementPtr curElement = cur;
-                        curCluster.addElement(curElement);
-                        duplications.insert(curElement);
-
-                        while (curElement->isLinkable()
-                               && 1 == curElement->run_before_.size()
-                               && (*curElement->run_before_.begin())->isLinkable()) {
-                            curElement = (*curElement->run_before_.begin());
-                            curCluster.addElement(curElement);
-                            duplications.insert(curElement);
-                        }
-                        curClusterArr.emplace_back(curCluster);
-                    }
-                }
-            }
-        }
-
-        /* 为空的话，直接退出循环；不为空的话，放入para信息中 */
-        if (!curClusterArr.empty()) {
-            para_cluster_arrs_.emplace_back(curClusterArr);
-        }
-    }
-
     CGRAPH_FUNCTION_END
 }
 
@@ -181,24 +99,6 @@ CSTATUS GFlow::addDependElements(GElementPtr element,
     }
 
     element->left_depend_ = element->dependence_.size();
-
-    CGRAPH_FUNCTION_END
-}
-
-
-CSTATUS GFlow::checkFinalStatus(int runNodeSize) {
-    CGRAPH_FUNCTION_BEGIN
-
-    status = (runNodeSize == manager_->manager_elements_.size()) ? STATUS_OK : STATUS_ERR;
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    /* 需要验证每个cluster里的每个内容是否被执行过一次 */
-    for (GClusterArr& clusterArr : para_cluster_arrs_) {
-        for (GCluster& cluster : clusterArr) {
-            status = cluster.isElementsDone() ? STATUS_OK : STATUS_ERR;
-            CGRAPH_FUNCTION_CHECK_STATUS
-        }
-    }
 
     CGRAPH_FUNCTION_END
 }

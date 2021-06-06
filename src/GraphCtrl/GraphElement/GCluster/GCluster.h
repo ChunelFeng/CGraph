@@ -39,6 +39,7 @@ public:
 private:
     GElementPtrArr cluster_elements_;    // cluster中包含的元素信息
 
+    friend class GElementManager;
     friend class GRegion;
     friend class GFlow;
 };
