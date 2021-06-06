@@ -1,54 +1,38 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: GRegion.cpp
-@Time: 2021/6/1 10:14 下午
+@File: Graphic.cpp
+@Time: 2021/6/2 10:15 下午
 @Desc: 
 ***************************/
 
-#include "GRegion.h"
+#include <set>
+#include "GFlow.h"
 
-GRegion::GRegion() : GElement() {
+GFlow::GFlow() {
+    thread_pool_ = new(std::nothrow) GraphThreadPool();
     manager_ = new(std::nothrow) GElementManager();
-    thread_pool_ = nullptr;
     is_init_ = false;
 }
 
 
-GRegion::~GRegion() {
+GFlow::~GFlow() {
+    CGRAPH_DELETE_PTR(thread_pool_)
     CGRAPH_DELETE_PTR(manager_)
+
+    // 结束的时候，清空所有创建的节点信息。所有节点信息，仅在这一处释放
+    for (GElementPtr element : element_repository_) {
+        CGRAPH_DELETE_PTR(element);
+    }
 }
 
 
-GRegion::GRegion(const GRegion& region) {
-    for (GElementPtr element : region.manager_->manager_elements_) {
-        this->manager_->manager_elements_.insert(element);
-    }
-    this->thread_pool_ = region.thread_pool_;
-}
-
-
-GRegion& GRegion::operator=(const GRegion& region){
-    if (this == &region) {
-        return (*this);
-    }
-
-    for (GElementPtr element : region.manager_->manager_elements_) {
-        this->manager_->manager_elements_.insert(element);
-    }
-    this->thread_pool_ = region.thread_pool_;
-
-    return (*this);
-}
-
-
-CSTATUS GRegion::init() {
+CSTATUS GFlow::init() {
     CGRAPH_FUNCTION_BEGIN
-    // 在这里将初始化所有的节点信息，并且实现分析，联通等功能
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
     CGRAPH_ASSERT_NOT_NULL(manager_)
 
-    status = this->manager_->init();
+    status = manager_->init();
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status = analyse();
@@ -59,21 +43,14 @@ CSTATUS GRegion::init() {
 }
 
 
-CSTATUS GRegion::deinit() {
+CSTATUS GFlow::run() {
     CGRAPH_FUNCTION_BEGIN
-    status = manager_->deinit();
 
-    CGRAPH_FUNCTION_END
-}
-
-
-CSTATUS GRegion::run() {
-    CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(true)
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
     CGRAPH_ASSERT_NOT_NULL(manager_)
 
-    int runNodeSize = 0;
+    int runElementSize = 0;
     std::vector<std::future<CSTATUS>> futures;
 
     for (GClusterArr& clusterArr : para_cluster_arrs_) {
@@ -81,7 +58,7 @@ CSTATUS GRegion::run() {
 
         for (GCluster& cluster : clusterArr) {
             futures.push_back(std::move(this->thread_pool_->commit(cluster)));
-            runNodeSize += cluster.getElementNum();
+            runElementSize += cluster.getElementNum();
         }
 
         for (auto& fut : futures) {
@@ -90,59 +67,24 @@ CSTATUS GRegion::run() {
         }
     }
 
-    status = checkFinalStatus(runNodeSize);
-    CGRAPH_FUNCTION_END
-}
-
-
-CSTATUS GRegion::process(bool isMock) {
-    CGRAPH_FUNCTION_BEGIN
-    status = this->beforeRun();
-    CGRAPH_FUNCTION_CHECK_STATUS
-    if (!isMock) {
-        // 运行region中的信息。这里的信息，已经提前被解析了。
-        status = run();
-        CGRAPH_FUNCTION_CHECK_STATUS
-    }
-
-    status = this->afterRun();
-    CGRAPH_FUNCTION_END
-}
-
-
-CSTATUS GRegion::beforeRun() {
-    CGRAPH_FUNCTION_BEGIN
-
-    for (GElementPtr element : this->region_elements_) {
-        status = element->beforeRun();
-        CGRAPH_FUNCTION_CHECK_STATUS
-    }
-
-    this->done_ = false;
-    this->left_depend_ = this->dependence_.size();
+    status = checkFinalStatus(runElementSize);
 
     CGRAPH_FUNCTION_END
 }
 
 
-CSTATUS GRegion::afterRun() {
+CSTATUS GFlow::deinit() {
     CGRAPH_FUNCTION_BEGIN
-    for (GElementPtr element : this->region_elements_) {
-        status = element->afterRun();
-        CGRAPH_FUNCTION_CHECK_STATUS
-    }
 
-    for (auto& element : this->run_before_) {
-        element->left_depend_--;
-    }
-    this->done_ = true;
+    status = manager_->deinit();
     CGRAPH_FUNCTION_END
 }
 
 
-CSTATUS GRegion::analyse() {
+CSTATUS GFlow::analyse() {
     CGRAPH_FUNCTION_BEGIN
 
+    CGRAPH_ASSERT_INIT(false)
     int runElementSize = 0;
     int totalElementSize = manager_->manager_elements_.size();
 
@@ -217,40 +159,34 @@ CSTATUS GRegion::analyse() {
 }
 
 
-CSTATUS GRegion::setThreadPool(GraphThreadPool* pool) {
+CSTATUS GFlow::addDependElements(GElementPtr element,
+                                 const std::set<GElementPtr>& dependElements) const {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(pool)
 
-    this->thread_pool_ = pool;
-    CGRAPH_FUNCTION_END
-}
-
-
-CSTATUS GRegion::addElement(GElementPtr element) {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(element)
     CGRAPH_ASSERT_INIT(false)
+    CGRAPH_ASSERT_NOT_NULL(element)
 
-    this->region_elements_.emplace_back(element);
+    for (GElementPtr cur : dependElements) {
+        // 如果传入的信息中，有nullptr，则所有的信息均不参与计算
+        CGRAPH_ASSERT_NOT_NULL(cur);
+    }
+
+    for (const GElementPtr cur : dependElements) {
+        if (cur == element) {
+            continue;        // 本节点无法依赖本节点
+        }
+
+        cur->run_before_.insert(element);
+        element->dependence_.insert(cur);
+    }
+
+    element->left_depend_ = element->dependence_.size();
+
     CGRAPH_FUNCTION_END
 }
 
 
-int GRegion::getElementNum() {
-    return this->region_elements_.size();
-}
-
-
-bool GRegion::isElementDone() {
-    /* 所有内容均被执行过 */
-    return std::all_of(region_elements_.begin(), region_elements_.end(),
-                       [](const GElementPtr element) {
-        return element->done_;
-    });
-}
-
-
-CSTATUS GRegion::checkFinalStatus(int runNodeSize) {
+CSTATUS GFlow::checkFinalStatus(int runNodeSize) {
     CGRAPH_FUNCTION_BEGIN
 
     status = (runNodeSize == manager_->manager_elements_.size()) ? STATUS_OK : STATUS_ERR;
@@ -265,4 +201,72 @@ CSTATUS GRegion::checkFinalStatus(int runNodeSize) {
     }
 
     CGRAPH_FUNCTION_END
+}
+
+
+GClusterPtr GFlow::createGCluster(const GElementPtrArr& elements,
+                                  const GElementPtrSet& dependElements,
+                                  const std::string& name,
+                                  int loop) {
+    // 如果有一个element为null，则创建失败
+    if (std::any_of(elements.begin(), elements.end(),
+                    [](GElementPtr element) {
+        return (nullptr == element);
+    })) {
+        return nullptr;
+    }
+
+    if (std::any_of(dependElements.begin(), dependElements.end(),
+                    [](GElementPtr element) {
+            return (nullptr == element);
+        })) {
+        return nullptr;
+    }
+
+    auto cluster = new(std::nothrow) GCluster();
+    if (nullptr == cluster) {
+        return nullptr;
+    }
+
+    for (const GElementPtr element : elements) {
+        cluster->addElement(element);
+    }
+
+    cluster->setName(name);
+    cluster->setLoop(loop);
+    cluster->dependence_ = dependElements;
+
+    this->element_repository_.insert(cluster);
+    return cluster;
+}
+
+
+GRegionPtr GFlow::createGRegion(const GElementPtrArr& elements,
+                                const GElementPtrSet& dependElements,
+                                const std::string& name,
+                                int loop) {
+    // 如果有一个element为null，则创建失败
+    if (std::any_of(elements.begin(), elements.end(),
+                    [](GElementPtr element) {
+        return (nullptr == element);
+    })) {
+        return nullptr;
+    }
+
+    auto region = new(std::nothrow) GRegion();
+    if (nullptr == region) {
+        return nullptr;
+    }
+
+    for (const GElementPtr element : elements) {
+        // region与cluster的区别，cluster是线性的，但是region是通过manager类来管理element的
+        region->manager_->addElement(element);
+    }
+
+    region->dependence_ = dependElements;
+    region->name_ = name;
+    region->loop_ = loop;
+    region->setThreadPool(this->thread_pool_);
+    this->element_repository_.insert(region);
+    return region;
 }

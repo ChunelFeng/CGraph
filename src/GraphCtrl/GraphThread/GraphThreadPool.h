@@ -15,8 +15,8 @@
 #include <future>
 #include <condition_variable>
 
+#include "../GraphElement/GCluster/GCluster.h"
 #include "../GraphDefine.h"
-#include "../GraphNode/GraphNodeCluster.h"
 
 class GraphThreadPool : public CObject
 {
@@ -44,8 +44,8 @@ public:
         }
     }
 
-    std::future<int> commit(const GraphNodeCluster& cluster) {
-        auto curTask = std::make_shared<std::packaged_task<int()>>(std::bind(&GraphNodeCluster::process, cluster));
+    std::future<int> commit(const GCluster& cluster) {
+        auto curTask = std::make_shared<std::packaged_task<int()>>(std::bind(&GCluster::process, cluster, false));
         std::future<int> future = curTask->get_future();
         {
             // 添加任务到队列

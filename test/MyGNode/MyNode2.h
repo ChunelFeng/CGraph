@@ -11,7 +11,7 @@
 
 #include "../../src/GraphCtrl/GraphInclude.h"
 
-class MyNode2 : public GraphNode {
+class MyNode2 : public GNode {
 
 public:
     CSTATUS run () override {
