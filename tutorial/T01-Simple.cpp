@@ -24,7 +24,7 @@ void tutorial_simple() {
     }
     status = pipeline->registerGElement<MyNode2>(&b, {a}, "nodeB", 3);    // 将名为nodeB，依赖a执行且自循环3次的信息，注册入pipeline中
     status = pipeline->registerGElement<MyNode1>(&c, {a}, "nodeC");
-    status = pipeline->registerGElement<MyNode2>(&d, {b, c}, "nodeD");    // 将名为nodeB，依赖{b,c}执行的信息，注册入pipeline中
+    status = pipeline->registerGElement<MyNode2>(&d, {b, c}, "nodeD");    // 将名为nodeD，依赖{b,c}执行的信息，注册入pipeline中
 
     /* 图信息初始化，准备开始计算 */
     status = pipeline->init();
