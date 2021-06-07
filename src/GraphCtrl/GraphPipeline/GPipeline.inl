@@ -6,15 +6,15 @@
 @Desc:
 ***************************/
 
-#ifndef CGRAPH_GFLOW_INL
-#define CGRAPH_GFLOW_INL
+#ifndef CGRAPH_GPIPELINE_INL
+#define CGRAPH_GPIPELINE_INL
 
 
 template<typename T>
-CSTATUS GFlow::registerGElement(GElementPtr* elementRef,
-                                const GElementPtrSet& dependElements,
-                                const std::string& name,
-                                int loop) {
+CSTATUS GPipeline::registerGElement(GElementPtr* elementRef,
+                                    const GElementPtrSet& dependElements,
+                                    const std::string& name,
+                                    int loop) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
 
@@ -50,7 +50,7 @@ CSTATUS GFlow::registerGElement(GElementPtr* elementRef,
 
 
 template<typename T>
-GNodePtr GFlow::createGNode(const GNodeInfo& info) {
+GNodePtr GPipeline::createGNode(const GNodeInfo& info) {
     GNodePtr node = nullptr;
     if (std::is_base_of<GNode, T>::value) {
         node = new(std::nothrow) T();

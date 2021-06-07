@@ -11,6 +11,6 @@
 
 #include "GraphThread/GraphThreadPool.h"
 #include "GraphElement/GElementInclude.h"
-#include "GraphSkeleton/GFlow.h"
+#include "GraphPipeline/GPipeline.h"
 
 #endif //CGRAPH_GRAPHINCLUDE_H

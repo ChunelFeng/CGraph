@@ -42,7 +42,7 @@ private:
     GraphThreadPool* thread_pool_;    // 这里需要使用GFlow类的线程池
     GElementPtrArr region_elements_;
 
-    friend class GFlow;
+    friend class GPipeline;
 };
 
 using GRegionPtr = GRegion *;

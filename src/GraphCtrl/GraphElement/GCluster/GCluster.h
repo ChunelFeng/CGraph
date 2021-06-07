@@ -14,11 +14,13 @@
 
 class GCluster : public GElement {
 public:
+    /* 涉及到与线程池的联动，cluster类无法将构造函数申明成protected类型 */
     explicit GCluster();
     ~GCluster() override;
     GCluster(const GCluster& cluster);
     GCluster& operator=(const GCluster& cluster);
 
+protected:
     CSTATUS init() override;
     CSTATUS deinit() override;
     CSTATUS run() override;
@@ -41,7 +43,8 @@ private:
 
     friend class GElementManager;
     friend class GRegion;
-    friend class GFlow;
+    friend class GPipeline;
+    friend class GraphThreadPool;
 };
 
 using GClusterPtr = GCluster *;

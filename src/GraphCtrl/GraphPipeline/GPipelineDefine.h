@@ -6,8 +6,8 @@
 @Desc: 
 ***************************/
 
-#ifndef CGRAPH_GRAPHSKELETONDEFINE_H
-#define CGRAPH_GRAPHSKELETONDEFINE_H
+#ifndef CGRAPH_GPIPELINEDEFINE_H
+#define CGRAPH_GPIPELINEDEFINE_H
 
 #include <utility>
 #include <vector>
@@ -27,7 +27,7 @@ struct GNodeInfo {
     GElementPtrSet dependence;
 
     // 无依赖版本，适用于cluster创建
-    GNodeInfo(const std::string& name, int loop) {
+    GNodeInfo(const std::string& name = "", int loop = 1) {
         this->name = name;
         this->loop = loop;
     }
@@ -42,4 +42,4 @@ struct GNodeInfo {
     }
 };
 
-#endif //CGRAPH_GRAPHSKELETONDEFINE_H
+#endif //CGRAPH_GPIPELINEDEFINE_H

@@ -7,16 +7,16 @@
 ***************************/
 
 #include <set>
-#include "GFlow.h"
+#include "GPipeline.h"
 
-GFlow::GFlow() {
+GPipeline::GPipeline() {
     thread_pool_ = new(std::nothrow) GraphThreadPool();
     manager_ = new(std::nothrow) GElementManager();
     is_init_ = false;
 }
 
 
-GFlow::~GFlow() {
+GPipeline::~GPipeline() {
     CGRAPH_DELETE_PTR(thread_pool_)
     CGRAPH_DELETE_PTR(manager_)
 
@@ -27,7 +27,7 @@ GFlow::~GFlow() {
 }
 
 
-CSTATUS GFlow::init() {
+CSTATUS GPipeline::init() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
     CGRAPH_ASSERT_NOT_NULL(manager_)
@@ -40,7 +40,7 @@ CSTATUS GFlow::init() {
 }
 
 
-CSTATUS GFlow::run() {
+CSTATUS GPipeline::run() {
     CGRAPH_FUNCTION_BEGIN
 
     CGRAPH_ASSERT_INIT(true)
@@ -69,7 +69,7 @@ CSTATUS GFlow::run() {
 }
 
 
-CSTATUS GFlow::deinit() {
+CSTATUS GPipeline::deinit() {
     CGRAPH_FUNCTION_BEGIN
 
     status = manager_->deinit();
@@ -77,8 +77,8 @@ CSTATUS GFlow::deinit() {
 }
 
 
-CSTATUS GFlow::addDependElements(GElementPtr element,
-                                 const std::set<GElementPtr>& dependElements) const {
+CSTATUS GPipeline::addDependElements(GElementPtr element,
+                                     const std::set<GElementPtr>& dependElements) const {
     CGRAPH_FUNCTION_BEGIN
 
     CGRAPH_ASSERT_INIT(false)
@@ -104,10 +104,10 @@ CSTATUS GFlow::addDependElements(GElementPtr element,
 }
 
 
-GClusterPtr GFlow::createGCluster(const GElementPtrArr& elements,
-                                  const GElementPtrSet& dependElements,
-                                  const std::string& name,
-                                  int loop) {
+GClusterPtr GPipeline::createGCluster(const GElementPtrArr& elements,
+                                      const GElementPtrSet& dependElements,
+                                      const std::string& name,
+                                      int loop) {
     // 如果有一个element为null，则创建失败
     if (std::any_of(elements.begin(), elements.end(),
                     [](GElementPtr element) {
@@ -124,27 +124,29 @@ GClusterPtr GFlow::createGCluster(const GElementPtrArr& elements,
     }
 
     auto cluster = new(std::nothrow) GCluster();
-    if (nullptr == cluster) {
-        return nullptr;
-    }
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(cluster)
 
     for (const GElementPtr element : elements) {
         cluster->addElement(element);
     }
 
+    CSTATUS status = addDependElements(cluster, dependElements);
+    if (STATUS_OK != status) {
+        return nullptr;
+    }
     cluster->setName(name);
     cluster->setLoop(loop);
-    cluster->dependence_ = dependElements;
-
     this->element_repository_.insert(cluster);
     return cluster;
 }
 
 
-GRegionPtr GFlow::createGRegion(const GElementPtrArr& elements,
-                                const GElementPtrSet& dependElements,
-                                const std::string& name,
-                                int loop) {
+GRegionPtr GPipeline::createGRegion(const GElementPtrArr& elements,
+                                    const GElementPtrSet& dependElements,
+                                    const std::string& name,
+                                    int loop) {
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(thread_pool_)
+
     // 如果有一个element为null，则创建失败
     if (std::any_of(elements.begin(), elements.end(),
                     [](GElementPtr element) {
@@ -154,16 +156,17 @@ GRegionPtr GFlow::createGRegion(const GElementPtrArr& elements,
     }
 
     auto region = new(std::nothrow) GRegion();
-    if (nullptr == region) {
-        return nullptr;
-    }
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(region)
 
     for (const GElementPtr element : elements) {
         // region与cluster的区别，cluster是线性的，但是region是通过manager类来管理element的
         region->manager_->addElement(element);
     }
 
-    region->dependence_ = dependElements;
+    CSTATUS status = addDependElements(region, dependElements);
+    if (STATUS_OK != status) {
+        return nullptr;
+    }
     region->name_ = name;
     region->loop_ = loop;
     region->setThreadPool(this->thread_pool_);

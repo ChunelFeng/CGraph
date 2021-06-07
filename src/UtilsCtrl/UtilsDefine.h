@@ -70,6 +70,12 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
         return STATUS_RES;                          \
     }                                               \
 
+#define CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)     \
+    if (nullptr == (ptr)) {                         \
+        return nullptr;                             \
+    }                                               \
+
+
 /* 判断函数流程是否可以继续 */
 #define CGRAPH_FUNCTION_CHECK_STATUS                                                                       \
     if (unlikely(STATUS_OK != status)) {                                                                   \

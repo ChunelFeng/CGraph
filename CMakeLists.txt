@@ -9,10 +9,17 @@ set(CMAKE_CXX_STANDARD 17)
 # add_definitions(-D_CGRAPH_SILENCE_)
 
 file(GLOB_RECURSE SRC_LIST "./src/*.cpp")
-file(GLOB_RECURSE TEST_LIST "./test/*.cpp")
 
-add_library(CGraph SHARED ${SRC_LIST})
+set(TUTORIAL_LIST
+        T01-Simple
+        T02-Cluster
+        T03-Region
+        T04-Complex)
 
-add_executable(CGraphTest test/test.cpp
-        ${SRC_LIST}
-        ${TEST_LIST})
+# 编译libCGraph动态库
+# add_library(CGraph SHARED ${SRC_LIST})
+
+foreach(tut ${TUTORIAL_LIST})
+    add_executable(${tut} tutorial/${tut}.cpp ${SRC_LIST})
+endforeach()
+

@@ -55,7 +55,7 @@ private:
     GElementPtrSet manager_elements_;    // 保存节点信息的内容
     ParaWorkedClusterArrs para_cluster_arrs_;            // 可以并行的cluster数组
 
-    friend class GFlow;
+    friend class GPipeline;
     friend class GRegion;
 };
 

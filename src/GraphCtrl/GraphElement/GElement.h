@@ -113,7 +113,7 @@ protected:
     friend class GCluster;
     friend class GRegion;
     friend class GElementManager;
-    friend class GFlow;
+    friend class GPipeline;
 };
 
 using GElementPtr = GElement *;

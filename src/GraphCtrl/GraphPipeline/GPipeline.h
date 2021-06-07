@@ -6,8 +6,8 @@
 @Desc: 
 ***************************/
 
-#ifndef CGRAPH_GFLOW_H
-#define CGRAPH_GFLOW_H
+#ifndef CGRAPH_GPIPELINE_H
+#define CGRAPH_GPIPELINE_H
 
 #include <vector>
 #include <memory>
@@ -16,18 +16,27 @@
 #include "../../UtilsCtrl/UtilsInclude.h"
 #include "../GraphThread/GraphThreadPool.h"
 #include "../GraphElement/GElementManager.h"
-#include "GraphSkeletonDefine.h"
+#include "GPipelineDefine.h"
 
 
-class GFlow : public CObject {
+class GPipeline : public CObject {
 
 public:
-    explicit GFlow();
-    ~GFlow() override;
+    explicit GPipeline();
+    ~GPipeline() override;
 
     CSTATUS init() override;
     CSTATUS run() override;
     CSTATUS deinit() override;
+
+    /**
+     * 根据传入的info信息，创建GNode
+     * @tparam T
+     * @param info
+     * @return
+     */
+    template<typename T>
+    GNodePtr createGNode(const GNodeInfo& info);
 
     /**
      * 创建一个 cluster 信息
@@ -61,9 +70,6 @@ public:
                              const GElementPtrSet& dependElements = std::initializer_list<GElementPtr>(),
                              const std::string& name = "",
                              int loop = 1);
-    template<typename T>
-    GNodePtr createGNode(const GNodeInfo& info);
-
 
 protected:
     /**
@@ -83,6 +89,8 @@ private:
     GElementPtrSet element_repository_;                  // 标记创建的所有节点，最终释放使用
 };
 
-#include "GFlow.inl"
+using GPipelinePtr = GPipeline *;
 
-#endif //CGRAPH_GFLOW_H
+#include "GPipeline.inl"
+
+#endif //CGRAPH_GPIPELINE_H

@@ -25,7 +25,7 @@ protected:
     CSTATUS beforeRun() override;
     CSTATUS afterRun() override;
 
-    friend class GFlow;
+    friend class GPipeline;
 };
 
 using GNodePtr = GNode *;

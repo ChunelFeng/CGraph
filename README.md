@@ -24,7 +24,7 @@ class MyNode1 : public GNode {
 public:
     CSTATUS run () override {
         CSTATUS status = STATUS_OK;
-        std::cout << this->getName() << ", enter MyNode1 run function. sleep for 1 second ... " << std::endl;
+        CGRAPH_ECHO("[%s], enter MyNode1 run function. Sleep for 1 second ... ", this->getName().c_str());
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         return status;
     }
@@ -36,16 +36,14 @@ public:
 #include "../../src/GraphCtrl/GraphInclude.h"
 
 class MyNode2 : public GNode {
-
 public:
     CSTATUS run () override {
         CSTATUS status = STATUS_OK;
-        std::cout << this->getName() << ", enter MyNode2 run function. sleep for 2 second ... " << std::endl;
+        CGRAPH_ECHO("[%s], enter MyNode2 run function. Sleep for 2 second ... ", this->getName().c_str());
         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
         return status;
     }
 };
-
 ```
 
 #### demo.cpp
@@ -53,35 +51,35 @@ public:
 #include "MyGNode/MyNode1.h"
 #include "MyGNode/MyNode2.h"
 
-void demo() {
+void tutorial_simple() {
     /* 创建图化 */
-    GFlow* flow = new GFlow();
+    GPipelinePtr pipeline = new GPipeline();
     CSTATUS status = STATUS_OK;
     GElementPtr a, b, c, d = nullptr;
 
     /* 注册节点，其中MyNode1和MyNode2必须为GraphNode的子类，否则无法通过编译。
      * MyNode1中run()执行内容为sleep(1s)
      * MyNode2中run()执行内容为sleep(2s) */
-    status = flow->registerGElement<MyNode1>(&a, {}, "nodeA");    // a节点执行，没有任何依赖信息
+    status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");    // 将名为nodeA，无执行依赖的node信息，注册入pipeline中
     if (STATUS_OK != status) {
         return;    // 使用时，请对所有CGraph接口的返回值做判定。本例子中省略
     }
-    status = flow->registerGElement<MyNode2>(&b, {a}, "nodeB");    // b节点执行，需要依赖a节点执行完毕
-    status = flow->registerGElement<MyNode1>(&c, {a}, "nodeC");
-    status = flow->registerGElement<MyNode2>(&d, {b, c}, "nodeD");    // d节点执行，需要依赖b和c节点执行完毕
+    status = pipeline->registerGElement<MyNode2>(&b, {a}, "nodeB", 3);    // 将名为nodeB，依赖a执行且自循环3次的信息，注册入pipeline中
+    status = pipeline->registerGElement<MyNode1>(&c, {a}, "nodeC");
+    status = pipeline->registerGElement<MyNode2>(&d, {b, c}, "nodeD");    // 将名为nodeB，依赖{b,c}执行的信息，注册入pipeline中
 
     /* 图信息初始化，准备开始计算 */
-    status = flow->init();
+    status = pipeline->init();
 
     /* 运行图计算。初始化后，支持多次循环计算 */
     for (int i = 0; i < 3; i++) {
-        status = flow->run();
-        std::cout << "[CGraph] demo, loop : " << i + 1 << ", and run status = " << status << std::endl;
+        status = pipeline->run();
+        std::cout << "[CGraph] tutorial_simple, loop : " << i + 1 << ", and run status = " << status << std::endl;
     }
 
     /* 图信息逆初始化，准备结束计算 */
-    status = flow->deinit();
-    delete flow;
+    status = pipeline->deinit();
+    delete pipeline;
 }
 ```
 
@@ -99,14 +97,14 @@ void demo() {
 * 优化图执行过程中的并发度
 
 [2021.05.18 - v1.1.1 - Chunel]
-* 添加节点name和session信息
+* 添加节点`name`和`session`信息
 
 [2021.05.23 - v1.2.0 - Chunel]
 * 提供单节点循环执行功能
 
 [2021.06.29 - v1.3.0 - Chunel]
-* 提供簇（cluster）和区域（region）划分和循环执行功能
-* 优化图底层结构
+* 提供`cluster`（簇）和`region`（区域）划分和循环执行功能
+* 提供`tutorial`内容，包含多种使用样例
 
 ------------
 #### 附录-2. 推荐阅读
