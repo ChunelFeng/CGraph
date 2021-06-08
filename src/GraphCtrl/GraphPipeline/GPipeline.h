@@ -30,32 +30,25 @@ public:
     CSTATUS deinit() override;
 
     /**
-     * 根据传入的info信息，创建GNode
+     * 根据传入的info信息，创建node节点
      * @tparam T
      * @param info
      * @return
      */
     template<typename T>
-    GNodePtr createGNode(const GNodeInfo& info);
+    GElementPtr createGNode(const GNodeInfo& info);
 
     /**
-     * 创建一个 cluster 信息
+     * 根据传入的信息，创建节点集合（包含cluster和region）
+     * @tparam T
      * @param elements
+     * @param dependElements
+     * @param name
+     * @param loop
      * @return
      */
-    GClusterPtr createGCluster(const GElementPtrArr& elements,
-                               const GElementPtrSet& dependElements = std::initializer_list<GElementPtr>(),
-                               const std::string& name = "",
-                               int loop = 1);
-
-    /**
-     * 创建一个 region 信息
-     * region与cluster的区别，在于内部elements管理的方式不同
-     * cluster是线性的，region是有依赖关系的
-     * @param elements
-     * @return
-     */
-    GRegionPtr createGRegion(const GElementPtrArr& elements,
+    template<typename T>
+    GElementPtr createGNodes(const GElementPtrArr& elements,
                              const GElementPtrSet& dependElements = std::initializer_list<GElementPtr>(),
                              const std::string& name = "",
                              int loop = 1);

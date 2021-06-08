@@ -33,9 +33,6 @@ protected:
     CSTATUS afterRun() override;
 
     CSTATUS setThreadPool(GraphThreadPool* pool);
-    CSTATUS addElement(GElementPtr element);
-    int getElementNum();
-    bool isElementDone();
 
 private:
     GElementManager* manager_;

@@ -16,11 +16,11 @@ void tutorial_region () {
 
     GElementPtr b1, b2, b3, b4 = nullptr;
     b1 = pipeline->createGNode<MyNode1>(GNodeInfo({}, "nodeB1", 1));    // 创建名为nodeB1的node信息
-    b2 = pipeline->createGNode<MyNode1>(GNodeInfo({b1}, "nodeB2", 2));    // 创建名为nodeB2且自循环2次的node信息
+    b2 = pipeline->createGNode<MyNode2>(GNodeInfo({b1}, "nodeB2", 2));    // 创建名为nodeB2且自循环2次的node信息
     b3 = pipeline->createGNode<MyNode1>(GNodeInfo({b1}, "nodeB3", 1));
     b4 = pipeline->createGNode<MyNode1>(GNodeInfo({b2,b3}, "nodeB4", 1));
 
-    b_region = pipeline->createGRegion({b1, b2, b3, b4});    // 将 b1、b2、b3、b4 注册入b_region中
+    b_region = pipeline->createGNodes<GRegion>({b1, b2, b3, b4});    // 将 b1、b2、b3、b4 注册入b_region中
     if (nullptr == b_region) {
         return;
     }
@@ -29,7 +29,7 @@ void tutorial_region () {
     if (STATUS_OK != status) {
         return;
     }
-    status = pipeline->registerGElement<GRegion>(&b_region, {a}, "regionB", 2);    // 将名为regionB，依赖a执行且自循环2次的cluster信息，注册入pipeline中
+    status = pipeline->registerGElement<GRegion>(&b_region, {a}, "regionB", 1);    // 将名为regionB，依赖a执行且自循环2次的cluster信息，注册入pipeline中
     status = pipeline->registerGElement<MyNode2>(&c, {b_region}, "nodeC", 1);
 
     status = pipeline->init();

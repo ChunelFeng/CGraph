@@ -89,7 +89,7 @@ CSTATUS GPipeline::addDependElements(GElementPtr element,
         CGRAPH_ASSERT_NOT_NULL(cur);
     }
 
-    for (const GElementPtr cur : dependElements) {
+    for (GElementPtr cur : dependElements) {
         if (cur == element) {
             continue;        // 本节点无法依赖本节点
         }
@@ -103,73 +103,3 @@ CSTATUS GPipeline::addDependElements(GElementPtr element,
     CGRAPH_FUNCTION_END
 }
 
-
-GClusterPtr GPipeline::createGCluster(const GElementPtrArr& elements,
-                                      const GElementPtrSet& dependElements,
-                                      const std::string& name,
-                                      int loop) {
-    // 如果有一个element为null，则创建失败
-    if (std::any_of(elements.begin(), elements.end(),
-                    [](GElementPtr element) {
-        return (nullptr == element);
-    })) {
-        return nullptr;
-    }
-
-    if (std::any_of(dependElements.begin(), dependElements.end(),
-                    [](GElementPtr element) {
-            return (nullptr == element);
-        })) {
-        return nullptr;
-    }
-
-    auto cluster = new(std::nothrow) GCluster();
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(cluster)
-
-    for (const GElementPtr element : elements) {
-        cluster->addElement(element);
-    }
-
-    CSTATUS status = addDependElements(cluster, dependElements);
-    if (STATUS_OK != status) {
-        return nullptr;
-    }
-    cluster->setName(name);
-    cluster->setLoop(loop);
-    this->element_repository_.insert(cluster);
-    return cluster;
-}
-
-
-GRegionPtr GPipeline::createGRegion(const GElementPtrArr& elements,
-                                    const GElementPtrSet& dependElements,
-                                    const std::string& name,
-                                    int loop) {
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(thread_pool_)
-
-    // 如果有一个element为null，则创建失败
-    if (std::any_of(elements.begin(), elements.end(),
-                    [](GElementPtr element) {
-        return (nullptr == element);
-    })) {
-        return nullptr;
-    }
-
-    auto region = new(std::nothrow) GRegion();
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(region)
-
-    for (const GElementPtr element : elements) {
-        // region与cluster的区别，cluster是线性的，但是region是通过manager类来管理element的
-        region->manager_->addElement(element);
-    }
-
-    CSTATUS status = addDependElements(region, dependElements);
-    if (STATUS_OK != status) {
-        return nullptr;
-    }
-    region->name_ = name;
-    region->loop_ = loop;
-    region->setThreadPool(this->thread_pool_);
-    this->element_repository_.insert(region);
-    return region;
-}

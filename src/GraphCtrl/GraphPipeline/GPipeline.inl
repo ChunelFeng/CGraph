@@ -30,9 +30,9 @@ CSTATUS GPipeline::registerGElement(GElementPtr* elementRef,
     if (std::is_base_of<GNode, T>::value) {
         (*elementRef) = new(std::nothrow) T();
         CGRAPH_ASSERT_NOT_NULL(*elementRef)
-    } else if (std::is_base_of<GCluster, T>::value) {
+    } else if (std::is_same<GCluster, T>::value) {
         CGRAPH_ASSERT_NOT_NULL(elementRef)
-    } else if (std::is_base_of<GRegion, T>::value) {
+    } else if (std::is_same<GRegion, T>::value) {
         CGRAPH_ASSERT_NOT_NULL(elementRef)
     } else {
         return STATUS_ERR;
@@ -50,24 +50,71 @@ CSTATUS GPipeline::registerGElement(GElementPtr* elementRef,
 
 
 template<typename T>
-GNodePtr GPipeline::createGNode(const GNodeInfo& info) {
-    GNodePtr node = nullptr;
+GElementPtr GPipeline::createGNode(const GNodeInfo& info) {
+    GElementPtr node = nullptr;
     if (std::is_base_of<GNode, T>::value) {
         node = new(std::nothrow) T();
-
+        CSTATUS status = addDependElements(node, info.dependence);
+        if (STATUS_OK != status) {
+            return nullptr;
+        }
         node->setName(info.name);
         node->setLoop(info.loop);
-        node->dependence_ = info.dependence;
-        node->left_depend_ = node->dependence_.size();
-
-        for (GElementPtr ptr : node->dependence_) {
-            ptr->run_before_.insert(node);
-        }
-
         element_repository_.insert(node);
     }
 
     return node;
+}
+
+
+template<typename T>
+GElementPtr GPipeline::createGNodes(const GElementPtrArr& elements,
+                                    const GElementPtrSet& dependElements,
+                                    const std::string& name,
+                                    int loop) {
+    // 如果有一个element为null，则创建失败
+    if (std::any_of(elements.begin(), elements.end(),
+                    [](GElementPtr element) {
+                        return (nullptr == element);
+                    })) {
+        return nullptr;
+    }
+
+    // 如果有一个依赖为null的，则创建失败
+    if (std::any_of(dependElements.begin(), dependElements.end(),
+                    [](GElementPtr element) {
+                        return (nullptr == element);
+                    })) {
+        return nullptr;
+    }
+
+    GElementPtr ptr = nullptr;
+    if (std::is_same<GCluster, T>::value) {
+        ptr = new(std::nothrow) GCluster();
+        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
+        for (GElementPtr element : elements) {
+            ((GCluster *)ptr)->addElement(element);
+        }
+    } else if (std::is_same<GRegion, T>::value) {
+        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(this->thread_pool_)
+        ptr = new(std::nothrow) GRegion();
+        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
+        ((GRegion *)ptr)->setThreadPool(this->thread_pool_);
+        for (GElementPtr element : elements) {
+            ((GRegion *)ptr)->manager_->addElement(element);
+        }
+    }
+
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
+
+    CSTATUS status = addDependElements(ptr, dependElements);
+    if (STATUS_OK != status) {
+        return nullptr;
+    }
+    ptr->setName(name);
+    ptr->setLoop(loop);
+    this->element_repository_.insert(ptr);
+    return ptr;
 }
 
 

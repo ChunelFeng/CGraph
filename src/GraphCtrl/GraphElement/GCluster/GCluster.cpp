@@ -94,13 +94,12 @@ CSTATUS GCluster::process(bool isMock) {
 CSTATUS GCluster::beforeRun() {
     CGRAPH_FUNCTION_BEGIN
 
+    this->done_ = false;
+    this->left_depend_ = this->dependence_.size();
     for (GElementPtr element : this->cluster_elements_) {
         status = element->beforeRun();
         CGRAPH_FUNCTION_CHECK_STATUS
     }
-
-    this->done_ = false;
-    this->left_depend_ = this->dependence_.size();
 
     CGRAPH_FUNCTION_END
 }

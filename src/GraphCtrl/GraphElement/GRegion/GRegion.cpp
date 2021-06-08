@@ -24,6 +24,8 @@ GRegion::GRegion(const GRegion& region) {
     for (GElementPtr element : region.manager_->manager_elements_) {
         this->manager_->manager_elements_.insert(element);
     }
+
+    this->manager_ = region.manager_;
     this->thread_pool_ = region.thread_pool_;
 }
 
@@ -36,6 +38,8 @@ GRegion& GRegion::operator=(const GRegion& region){
     for (GElementPtr element : region.manager_->manager_elements_) {
         this->manager_->manager_elements_.insert(element);
     }
+
+    this->manager_ = region.manager_;
     this->thread_pool_ = region.thread_pool_;
 
     return (*this);
@@ -110,13 +114,12 @@ CSTATUS GRegion::process(bool isMock) {
 CSTATUS GRegion::beforeRun() {
     CGRAPH_FUNCTION_BEGIN
 
-    for (GElementPtr element : this->region_elements_) {
+    this->done_ = false;
+    this->left_depend_ = this->dependence_.size();
+    for (GElementPtr element : this->manager_->manager_elements_) {
         status = element->beforeRun();
         CGRAPH_FUNCTION_CHECK_STATUS
     }
-
-    this->done_ = false;
-    this->left_depend_ = this->dependence_.size();
 
     CGRAPH_FUNCTION_END
 }
@@ -144,29 +147,3 @@ CSTATUS GRegion::setThreadPool(GraphThreadPool* pool) {
     this->thread_pool_ = pool;
     CGRAPH_FUNCTION_END
 }
-
-
-CSTATUS GRegion::addElement(GElementPtr element) {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(element)
-    CGRAPH_ASSERT_INIT(false)
-
-    this->region_elements_.emplace_back(element);
-    CGRAPH_FUNCTION_END
-}
-
-
-int GRegion::getElementNum() {
-    return this->region_elements_.size();
-}
-
-
-bool GRegion::isElementDone() {
-    /* 所有内容均被执行过 */
-    return std::all_of(region_elements_.begin(), region_elements_.end(),
-                       [](const GElementPtr element) {
-        return element->done_;
-    });
-}
-
-
