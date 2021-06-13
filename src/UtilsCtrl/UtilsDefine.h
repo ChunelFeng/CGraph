@@ -10,6 +10,7 @@
 #define CGRAPH_UTILSDEFINE_H
 
 #include <iostream>
+#include <shared_mutex>
 #include <ctime>
 #ifndef _WIN32
     #include <sys/timeb.h>
@@ -56,6 +57,9 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
 #define likely(x)   __builtin_expect(!!(x), 1)
 #define unlikely(x) __builtin_expect(!!(x), 0)
 
+typedef std::shared_lock<std::shared_mutex> CGRAPH_RLOCK;
+typedef std::unique_lock<std::shared_mutex> CGRAPH_WLOCK;
+
 /* 开启函数流程 */
 #define CGRAPH_FUNCTION_BEGIN                       \
     CSTATUS status = STATUS_OK;                     \
@@ -101,7 +105,7 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
     status = node->process();                       \
     CGRAPH_FUNCTION_CHECK_STATUS                    \
 
-#define CGRAPH_PROCESS_ERROR                        \
+#define CGRAPH_NO_SUPPORT                           \
     return STATUS_ERR;                              \
 
 

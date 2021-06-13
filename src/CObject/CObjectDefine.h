@@ -16,5 +16,4 @@ using CSTATUS = int;
 #define STATUS_ERR        (-1)
 #define STATUS_RES        (-2)
 
-
 #endif //CGRAPH_COBJECTDEFINE_H

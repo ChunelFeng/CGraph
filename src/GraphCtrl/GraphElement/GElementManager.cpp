@@ -65,7 +65,7 @@ CSTATUS GElementManager::deinit() {
  * @return
  */
 CSTATUS GElementManager::run() {
-    CGRAPH_PROCESS_ERROR
+    CGRAPH_NO_SUPPORT
 }
 
 

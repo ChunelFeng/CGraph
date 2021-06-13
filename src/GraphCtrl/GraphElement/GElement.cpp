@@ -91,7 +91,7 @@ bool GElement::isLinkable() const {
 
 
 CSTATUS GElement::process(bool isMock) {
-    CGRAPH_PROCESS_ERROR
+    CGRAPH_NO_SUPPORT
 }
 
 
