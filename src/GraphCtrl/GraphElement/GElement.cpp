@@ -24,7 +24,7 @@ std::string GElement::getSession() const {
 
 /******** protected ********/
 GElement::GElement() {
-    this->session_ = _generateSession();
+    this->session_ = CGRAPH_GENERATE_SESSION();
 }
 
 
@@ -94,12 +94,3 @@ CSTATUS GElement::process(bool isMock) {
     CGRAPH_NO_SUPPORT
 }
 
-
-std::string GElement::_generateSession() {
-    uuid_t uuid;
-    char session[36] = {0};    // 36是特定值
-    uuid_generate(uuid);
-    uuid_unparse(uuid, session);
-
-    return session;
-}

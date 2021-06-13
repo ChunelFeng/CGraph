@@ -19,8 +19,6 @@ struct GParam : public CObject {
 protected:
     explicit GParam() = default;
     ~GParam() override = default;
-    GParam(const GParam& param) = delete;
-    GParam& operator=(const GParam& param) = delete;
 
 private:
     std::shared_mutex param_lock_;

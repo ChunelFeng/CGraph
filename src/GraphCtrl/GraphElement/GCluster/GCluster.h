@@ -48,5 +48,8 @@ private:
 };
 
 using GClusterPtr = GCluster *;
+using GClusterArr = std::vector<GCluster>;
+using ParaWorkedClusterArrs = std::vector<GClusterArr>;
+
 
 #endif //CGRAPH_GCLUSTER_H

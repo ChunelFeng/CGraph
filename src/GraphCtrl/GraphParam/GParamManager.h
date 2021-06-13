@@ -17,42 +17,38 @@
 
 class GParamManager : public CObject {
 public:
+    /**
+     * 创建一个特定类型的参数
+     * @tparam T
+     * @param key
+     * @return
+     */
     template<typename T>
-    CSTATUS create(const std::string& key) {
-        CGRAPH_FUNCTION_BEGIN
-        CGRAPH_WLOCK rLock(this->mtx_);
-        if (params_map_.find(key) != params_map_.end()) {
-            // 如果有，不重复创建
-            return STATUS_OK;
-        }
+    CSTATUS create(const std::string& key);
 
-        T* ptr = new(std::nothrow) T();
-        CGRAPH_ASSERT_NOT_NULL(ptr)
-
-        params_map_.insert(std::pair<std::string, T*>(key, ptr));
-        CGRAPH_FUNCTION_END
-    }
-
-
-    GParamPtr get(const std::string& key) {
-        CGRAPH_WLOCK wLock(this->mtx_);
-        auto result = params_map_.find(key);
-        if (result == params_map_.end()) {
-            return nullptr;
-        }
-
-        return params_map_.find(key)->second;;
-    }
+    /**
+     * 获取一个特定类型的参数
+     * @param key
+     * @return
+     */
+    GParamPtr get(const std::string& key);
 
 
 protected:
     CSTATUS run() override;
-
+    explicit GParamManager();
+    virtual ~GParamManager() override;
 
 private:
     std::unordered_map<std::string, GParamPtr> params_map_;
     std::shared_mutex mtx_;
+
+    friend class GPipeline;
 };
+
+using GParamManagerPtr = GParamManager *;
+
+#include "GParamManager.inl"
 
 
 #endif //CGRAPH_GPARAMMANAGER_H

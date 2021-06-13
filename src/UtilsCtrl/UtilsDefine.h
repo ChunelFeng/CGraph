@@ -11,8 +11,10 @@
 
 #include <iostream>
 #include <shared_mutex>
+#include <string>
 #include <ctime>
 #ifndef _WIN32
+    #include <uuid/uuid.h>
     #include <sys/timeb.h>
 #endif
 
@@ -57,8 +59,23 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
 #define likely(x)   __builtin_expect(!!(x), 1)
 #define unlikely(x) __builtin_expect(!!(x), 0)
 
+inline std::string CGRAPH_GENERATE_SESSION() {
+#ifndef _WIN32
+    uuid_t uuid;
+    char session[36] = {0};    // 36是特定值
+    uuid_generate(uuid);
+    uuid_unparse(uuid, session);
+
+    return session;
+#else
+    return "";    // windows平台暂时不记录session信息
+#endif
+}
+
 typedef std::shared_lock<std::shared_mutex> CGRAPH_RLOCK;
 typedef std::unique_lock<std::shared_mutex> CGRAPH_WLOCK;
+typedef std::lock_guard<std::mutex>         CGRAPH_LOCK_GUARD;
+typedef std::unique_lock<std::mutex>        CGRAPH_UNIQUE_LOCK;
 
 /* 开启函数流程 */
 #define CGRAPH_FUNCTION_BEGIN                       \

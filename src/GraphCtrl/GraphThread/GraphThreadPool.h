@@ -107,5 +107,6 @@ protected:
     }
 };
 
+using GraphThreadPoolPtr = GraphThreadPool *;
 
 #endif //CGRAPH_GRAPHTHREADPOOL_H

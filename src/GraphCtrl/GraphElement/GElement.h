@@ -92,11 +92,6 @@ protected:
      */
     virtual CSTATUS process(bool isMock);
 
-    /**
-     * 生成session信息
-     * @param head
-     */
-    static std::string _generateSession();
 
 protected:
     bool done_ { false };                     // 判定被执行结束

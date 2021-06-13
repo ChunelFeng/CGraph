@@ -12,8 +12,6 @@
 #include "GElement.h"
 #include "GCluster/GCluster.h"
 
-using GClusterArr = std::vector<GCluster>;
-using ParaWorkedClusterArrs = std::vector<GClusterArr>;
 
 class GElementManager : public CObject {
 protected:
@@ -58,6 +56,8 @@ private:
     friend class GPipeline;
     friend class GRegion;
 };
+
+using GElementManagerPtr = GElementManager *;
 
 
 #endif //CGRAPH_GELEMENTMANAGER_H

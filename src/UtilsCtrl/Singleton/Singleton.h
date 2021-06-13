@@ -33,9 +33,10 @@ protected:
     CSTATUS create() {
         CGRAPH_FUNCTION_BEGIN
         if (nullptr == handle_) {
-            CGRAPH_WLOCK lock(lock_);
+            CGRAPH_LOCK_GUARD lock(lock_);
             if (nullptr == handle_) {
-                handle_ = new T();
+                handle_ = new(std::nothrow) T();
+                CGRAPH_ASSERT_NOT_NULL(handle_)
             }
         }
 
@@ -48,14 +49,14 @@ protected:
 
     CSTATUS destroy() {
         CGRAPH_FUNCTION_BEGIN
-        CGRAPH_WLOCK lock(lock_);
+        CGRAPH_LOCK_GUARD lock(lock_);
         CGRAPH_DELETE_PTR(handle_)
         CGRAPH_FUNCTION_END
     }
 
 private:
     T* handle_ { nullptr };
-    std::shared_mutex lock_;
+    std::mutex lock_;
 };
 
 
