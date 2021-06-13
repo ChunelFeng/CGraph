@@ -33,9 +33,9 @@ void tutorial_cluster () {
     status = pipeline->registerGElement<MyNode1>(&c, {a}, "nodeC", 1);
     status = pipeline->registerGElement<MyNode2>(&d, {b_cluster, c}, "nodeD", 2);
 
-    status = pipeline->init();            // 初始化 pipeline信息
-    status = pipeline->run();             // 执行 pipeline信息
-    status = pipeline->deinit();          // 逆初始化 pipeline信息
+    status = pipeline->process();
+    CGRAPH_ECHO("pipeline process status is : [%d]", status);
+
     delete pipeline;
 }
 

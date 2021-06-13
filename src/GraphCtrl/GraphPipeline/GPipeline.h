@@ -26,9 +26,30 @@ public:
     explicit GPipeline();
     ~GPipeline() override;
 
+    /**
+     * 初始化pipeline信息
+     * @return
+     */
     CSTATUS init() override;
+
+    /**
+     * 执行pipeline信息
+     * @return
+     */
     CSTATUS run() override;
+
+    /**
+     * 逆初始化pipeline信息
+     * @return
+     */
     CSTATUS deinit() override;
+
+    /**
+     * 一次性执行完成初始化，执行runTimes次，和逆初始化的过程
+     * @param runTimes
+     * @return
+     */
+    CSTATUS process(int runTimes = 1);
 
     /**
      * 根据传入的info信息，创建node节点

@@ -87,12 +87,12 @@ typedef std::unique_lock<std::mutex>        CGRAPH_UNIQUE_LOCK;
 
 /* 判断传入的指针信息是否为空 */
 #define CGRAPH_ASSERT_NOT_NULL(ptr)                 \
-    if (nullptr == (ptr)) {                         \
+    if (unlikely(nullptr == (ptr))) {               \
         return STATUS_RES;                          \
     }                                               \
 
 #define CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)     \
-    if (nullptr == (ptr)) {                         \
+    if (unlikely(nullptr == (ptr))) {               \
         return nullptr;                             \
     }                                               \
 
@@ -125,10 +125,10 @@ typedef std::unique_lock<std::mutex>        CGRAPH_UNIQUE_LOCK;
 #define CGRAPH_NO_SUPPORT                           \
     return STATUS_ERR;                              \
 
-#define CGRAPH_PARAM_WRITE_REGION(param)            \
+#define CGRAPH_PARAM_WRITE_CODE_BLOCK(param)        \
     CGRAPH_WRITE_LOCK paramWLock(param->lock_);     \
 
-#define CGRAPH_PARAM_READ_REGION(param)             \
+#define CGRAPH_PARAM_READ_CODE_BLOCK(param)         \
     CGRAPH_READ_LOCK paramRLock(param->lock_);      \
 
 #endif //CGRAPH_UTILSDEFINE_H

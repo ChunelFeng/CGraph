@@ -15,11 +15,15 @@
 #include "../../UtilsCtrl/UtilsInclude.h"
 #include "GParamDefine.h"
 
-struct GParam : public CObject {
+class GParam : public CObject {
 public:
     std::shared_mutex lock_;
 
 private:
+    /**
+     * param信息不允许被执行，直接返回no-support信息
+     * @return
+     */
     CSTATUS run() override;
 
     /**
@@ -32,6 +36,5 @@ private:
 };
 
 using GParamPtr = GParam *;
-
 
 #endif //CGRAPH_GPARAM_H

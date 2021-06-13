@@ -85,6 +85,21 @@ CSTATUS GPipeline::deinit() {
 }
 
 
+CSTATUS GPipeline::process(int runTimes) {
+    CGRAPH_FUNCTION_BEGIN
+    status = init();
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    while (runTimes-- > 0) {
+        status = run();
+        CGRAPH_FUNCTION_CHECK_STATUS
+    }
+
+    status = deinit();
+    CGRAPH_FUNCTION_END
+}
+
+
 CSTATUS GPipeline::addDependElements(GElementPtr element,
                                      const std::set<GElementPtr>& dependElements) const {
     CGRAPH_FUNCTION_BEGIN
