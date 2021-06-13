@@ -6,7 +6,6 @@
 @Desc: 
 ***************************/
 
-#include <uuid/uuid.h>
 #include "GElement.h"
 
 /******** public ********/
