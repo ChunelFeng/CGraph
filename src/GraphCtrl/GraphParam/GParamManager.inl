@@ -10,7 +10,7 @@ CSTATUS GParamManager::create(const std::string& key) {
         return STATUS_OK;
     }
 
-    CGRAPH_WLOCK wLock(this->mtx_);
+    CGRAPH_WRITE_LOCK wLock(this->lock_);
     T* ptr = new(std::nothrow) T();
     CGRAPH_ASSERT_NOT_NULL(ptr)
 

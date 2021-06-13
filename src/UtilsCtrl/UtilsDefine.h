@@ -72,8 +72,8 @@ inline std::string CGRAPH_GENERATE_SESSION() {
 #endif
 }
 
-typedef std::shared_lock<std::shared_mutex> CGRAPH_RLOCK;
-typedef std::unique_lock<std::shared_mutex> CGRAPH_WLOCK;
+typedef std::shared_lock<std::shared_mutex> CGRAPH_READ_LOCK;
+typedef std::unique_lock<std::shared_mutex> CGRAPH_WRITE_LOCK;
 typedef std::lock_guard<std::mutex>         CGRAPH_LOCK_GUARD;
 typedef std::unique_lock<std::mutex>        CGRAPH_UNIQUE_LOCK;
 
@@ -125,5 +125,10 @@ typedef std::unique_lock<std::mutex>        CGRAPH_UNIQUE_LOCK;
 #define CGRAPH_NO_SUPPORT                           \
     return STATUS_ERR;                              \
 
+#define CGRAPH_PARAM_WRITE_REGION(param)            \
+    CGRAPH_WRITE_LOCK paramWLock(param->lock_);     \
+
+#define CGRAPH_PARAM_READ_REGION(param)             \
+    CGRAPH_READ_LOCK paramRLock(param->lock_);      \
 
 #endif //CGRAPH_UTILSDEFINE_H

@@ -14,6 +14,25 @@
 
 class GNode : public GElement {
 
+public:
+    /**
+     * 获取参数信息，如果未找到，则返回nullptr
+     * @tparam T
+     * @param key
+     * @return
+     */
+    template<typename T>
+    T* getGParam(const std::string& key);
+
+    /**
+     * 创建param信息，如果过了，则直接返回ok
+     * @tparam T
+     * @param key
+     * @return
+     */
+    template<typename T>
+    CSTATUS createGParam(const std::string& key);
+
 protected:
     explicit GNode();
     ~GNode() override;
@@ -27,7 +46,6 @@ protected:
     CSTATUS afterRun() override;
 
     CSTATUS setParamManager(const GParamManagerPtr manager);
-    GParamManagerPtr getParamManager() const;
 
     friend class GPipeline;
 
@@ -38,5 +56,7 @@ private:
 using GNodePtr = GNode *;
 using GNodePtrArr = std::vector<GNodePtr>;
 using GNodePtrSet = std::set<GNodePtr>;
+
+#include "GNode.inl"
 
 #endif //CGRAPH_GNODE_H

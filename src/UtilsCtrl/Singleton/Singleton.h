@@ -25,7 +25,7 @@ public:
     }
 
     T* get() {
-        CGRAPH_RLOCK lock(lock_);
+        CGRAPH_READ_LOCK lock(lock_);
         return handle_;
     }
 

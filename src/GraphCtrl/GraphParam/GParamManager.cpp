@@ -47,13 +47,16 @@ GParamPtr GParamManager::get(const std::string& key) {
         return nullptr;
     }
 
-    CGRAPH_WLOCK wLock(this->mtx_);
     return params_map_.find(key)->second;;
 }
 
 
 void GParamManager::reset() {
     for (auto cur : params_map_) {
+        if (!cur.second) {
+            continue;
+        }
+
         cur.second->reset();
     }
 }

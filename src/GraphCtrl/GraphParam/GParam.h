@@ -16,16 +16,17 @@
 #include "GParamDefine.h"
 
 struct GParam : public CObject {
-protected:
+public:
+    std::shared_mutex lock_;
+
+private:
+    CSTATUS run() override;
+
     /**
      * 每次pipeline执行结束，会调用一次reset，防止pipeline执行的时候，参数污染
      * @return
      */
     virtual void reset() = 0;
-
-private:
-    CSTATUS run() override;
-    std::shared_mutex param_lock_;
 
     friend class GParamManager;
 };

@@ -66,6 +66,3 @@ CSTATUS GNode::setParamManager(const GParamManagerPtr manager) {
     CGRAPH_FUNCTION_END
 }
 
-GParamManagerPtr GNode::getParamManager() const {
-    return this->param_manager_;
-}

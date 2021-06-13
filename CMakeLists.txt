@@ -14,7 +14,8 @@ set(TUTORIAL_LIST
         T01-Simple
         T02-Cluster
         T03-Region
-        T04-Complex)
+        T04-Complex
+        T05-Param)
 
 # 编译libCGraph动态库
 # add_library(CGraph SHARED ${SRC_LIST})
