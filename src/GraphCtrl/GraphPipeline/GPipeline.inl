@@ -30,6 +30,8 @@ CSTATUS GPipeline::registerGElement(GElementPtr* elementRef,
     if (std::is_base_of<GNode, T>::value) {
         (*elementRef) = new(std::nothrow) T();
         CGRAPH_ASSERT_NOT_NULL(*elementRef)
+        status = ((GNodePtr)(*elementRef))->setParamManager(this->param_manager_);
+        CGRAPH_FUNCTION_CHECK_STATUS
     } else if (std::is_same<GCluster, T>::value) {
         CGRAPH_ASSERT_NOT_NULL(elementRef)
     } else if (std::is_same<GRegion, T>::value) {
@@ -51,7 +53,7 @@ CSTATUS GPipeline::registerGElement(GElementPtr* elementRef,
 
 template<typename T>
 GElementPtr GPipeline::createGNode(const GNodeInfo& info) {
-    GElementPtr node = nullptr;
+    GNodePtr node = nullptr;
     if (std::is_base_of<GNode, T>::value) {
         node = new(std::nothrow) T();
         CSTATUS status = addDependElements(node, info.dependence);
@@ -60,6 +62,7 @@ GElementPtr GPipeline::createGNode(const GNodeInfo& info) {
         }
         node->setName(info.name);
         node->setLoop(info.loop);
+        node->setParamManager(this->param_manager_);    // 设置参数信息类
         element_repository_.insert(node);
     }
 
@@ -68,23 +71,22 @@ GElementPtr GPipeline::createGNode(const GNodeInfo& info) {
 
 
 template<typename T>
-GElementPtr GPipeline::createGNodes(const GElementPtrArr& elements,
+GElementPtr GPipeline::createGNodeS(const GElementPtrArr& elements,
                                     const GElementPtrSet& dependElements,
                                     const std::string& name,
                                     int loop) {
-    // 如果有一个element为null，则创建失败
-    if (std::any_of(elements.begin(), elements.end(),
-                    [](GElementPtr element) {
-                        return (nullptr == element);
-                    })) {
+    // 如果不是所有的都非空，则创建失败
+    if (!std::all_of(elements.begin(), elements.end(),
+                     [](GElementPtr element) {
+                        return (nullptr != element);
+                     })) {
         return nullptr;
     }
 
-    // 如果有一个依赖为null的，则创建失败
-    if (std::any_of(dependElements.begin(), dependElements.end(),
-                    [](GElementPtr element) {
-                        return (nullptr == element);
-                    })) {
+    if (!std::all_of(dependElements.begin(), dependElements.end(),
+                     [](GElementPtr element) {
+                         return (nullptr != element);
+                     })) {
         return nullptr;
     }
 

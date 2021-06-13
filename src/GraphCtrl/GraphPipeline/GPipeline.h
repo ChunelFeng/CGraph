@@ -49,7 +49,7 @@ public:
      * @return
      */
     template<typename T>
-    GElementPtr createGNodes(const GElementPtrArr& elements,
+    GElementPtr createGNodeS(const GElementPtrArr& elements,
                              const GElementPtrSet& dependElements = std::initializer_list<GElementPtr>(),
                              const std::string& name = "",
                              int loop = 1);

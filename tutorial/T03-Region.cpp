@@ -20,7 +20,7 @@ void tutorial_region () {
     b3 = pipeline->createGNode<MyNode1>(GNodeInfo({b1}, "nodeB3", 1));
     b4 = pipeline->createGNode<MyNode1>(GNodeInfo({b2,b3}, "nodeB4", 1));
 
-    b_region = pipeline->createGNodes<GRegion>({b1, b2, b3, b4});    // 将 b1、b2、b3、b4 注册入b_region中
+    b_region = pipeline->createGNodeS<GRegion>({b1, b2, b3, b4});    // 将 b1、b2、b3、b4 注册入b_region中
     if (nullptr == b_region) {
         return;
     }

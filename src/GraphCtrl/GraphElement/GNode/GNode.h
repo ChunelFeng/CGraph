@@ -10,6 +10,7 @@
 #define CGRAPH_GNODE_H
 
 #include "../GElement.h"
+#include "../../GraphParam/GParamManager.h"
 
 class GNode : public GElement {
 
@@ -25,7 +26,13 @@ protected:
     CSTATUS beforeRun() override;
     CSTATUS afterRun() override;
 
+    CSTATUS setParamManager(const GParamManagerPtr manager);
+    GParamManagerPtr getParamManager() const;
+
     friend class GPipeline;
+
+private:
+    GParamManagerPtr param_manager_;    // 整体流程的参数管理类，所有pipeline中的所有节点共享
 };
 
 using GNodePtr = GNode *;

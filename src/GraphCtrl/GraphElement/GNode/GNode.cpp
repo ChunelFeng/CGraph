@@ -9,7 +9,7 @@
 #include "GNode.h"
 
 GNode::GNode() : GElement() {
-
+    param_manager_ = nullptr;
 }
 
 GNode::~GNode() = default;
@@ -53,4 +53,19 @@ CSTATUS GNode::afterRun() {
 
     this->done_ = true;
     CGRAPH_FUNCTION_END
+}
+
+
+CSTATUS GNode::setParamManager(const GParamManagerPtr manager) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(manager)
+    CGRAPH_ASSERT_INIT(false)
+
+    this->param_manager_ = manager;
+
+    CGRAPH_FUNCTION_END
+}
+
+GParamManagerPtr GNode::getParamManager() const {
+    return this->param_manager_;
 }

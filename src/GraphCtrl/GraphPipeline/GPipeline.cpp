@@ -12,6 +12,7 @@
 GPipeline::GPipeline() {
     thread_pool_ = new(std::nothrow) GraphThreadPool();
     element_manager_ = new(std::nothrow) GElementManager();
+    param_manager_ = new(std::nothrow) GParamManager();
     is_init_ = false;
 }
 
@@ -19,6 +20,7 @@ GPipeline::GPipeline() {
 GPipeline::~GPipeline() {
     CGRAPH_DELETE_PTR(thread_pool_)
     CGRAPH_DELETE_PTR(element_manager_)
+    CGRAPH_DELETE_PTR(param_manager_)
 
     // 结束的时候，清空所有创建的节点信息。所有节点信息，仅在这一处释放
     for (GElementPtr element : element_repository_) {
@@ -31,6 +33,7 @@ CSTATUS GPipeline::init() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
+    CGRAPH_ASSERT_NOT_NULL(param_manager_)
 
     status = element_manager_->init();
     CGRAPH_FUNCTION_CHECK_STATUS
@@ -46,6 +49,7 @@ CSTATUS GPipeline::run() {
     CGRAPH_ASSERT_INIT(true)
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
+    CGRAPH_ASSERT_NOT_NULL(param_manager_)
 
     int runElementSize = 0;
     std::vector<std::future<CSTATUS>> futures;
@@ -73,6 +77,9 @@ CSTATUS GPipeline::deinit() {
     CGRAPH_FUNCTION_BEGIN
 
     status = element_manager_->deinit();
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    status = param_manager_->deinit();
     CGRAPH_FUNCTION_END
 }
 
@@ -81,6 +88,7 @@ CSTATUS GPipeline::addDependElements(GElementPtr element,
                                      const std::set<GElementPtr>& dependElements) const {
     CGRAPH_FUNCTION_BEGIN
 
+    // TODO 这个功能可以下沉到element里去实现
     CGRAPH_ASSERT_INIT(false)
     CGRAPH_ASSERT_NOT_NULL(element)
 

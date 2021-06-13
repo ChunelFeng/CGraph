@@ -22,7 +22,7 @@ void tutorial_simple() {
     if (STATUS_OK != status) {
         return;    // 使用时，请对所有CGraph接口的返回值做判定。本例子中省略
     }
-    status = pipeline->registerGElement<MyNode2>(&b, {a}, "nodeB", 3);    // 将名为nodeB，依赖a执行且自循环3次的node信息，注册入pipeline中
+    status = pipeline->registerGElement<MyNode2>(&b, {a}, "nodeB");    // 将名为nodeB，依赖a执行的node信息，注册入pipeline中
     status = pipeline->registerGElement<MyNode1>(&c, {a}, "nodeC");
     status = pipeline->registerGElement<MyNode2>(&d, {b, c}, "nodeD");    // 将名为nodeD，依赖{b,c}执行的node信息，注册入pipeline中
 
