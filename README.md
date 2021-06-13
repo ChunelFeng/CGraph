@@ -113,7 +113,8 @@ void tutorial_simple() {
 ------------
 #### 附录-2. 推荐阅读
 
-* [纯序员给你介绍图化框架的简单实现](http://www.chunel.cn/archives/cgraph-simple-introduce)
+* [纯序员给你介绍图化框架的简单实现——执行逻辑](http://www.chunel.cn/archives/cgraph-run-introduce)
+* [纯序员给你介绍图化框架的简单实现——循环逻辑](http://www.chunel.cn/archives/cgraph-loop-introduce)
 
 ------------
 #### 附录-3. 联系方式
