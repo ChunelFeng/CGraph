@@ -32,8 +32,8 @@ CSTATUS GParamManager::run() {
 
 CSTATUS GParamManager::deinit() {
     CGRAPH_FUNCTION_BEGIN
-    for (auto param : params_map_) {
-        CGRAPH_ASSERT_NOT_NULL(param.second)
+    for (auto& param : params_map_) {
+        CGRAPH_DELETE_PTR(param.second)
     }
 
     params_map_.clear();
@@ -49,4 +49,11 @@ GParamPtr GParamManager::get(const std::string& key) {
 
     CGRAPH_WLOCK wLock(this->mtx_);
     return params_map_.find(key)->second;;
+}
+
+
+void GParamManager::reset() {
+    for (auto cur : params_map_) {
+        cur.second->reset();
+    }
 }

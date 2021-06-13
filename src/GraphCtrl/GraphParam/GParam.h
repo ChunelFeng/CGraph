@@ -17,10 +17,14 @@
 
 struct GParam : public CObject {
 protected:
-    explicit GParam() = default;
-    ~GParam() override = default;
+    /**
+     * 每次pipeline执行结束，会调用一次reset，防止pipeline执行的时候，参数污染
+     * @return
+     */
+    virtual void reset() = 0;
 
 private:
+    CSTATUS run() override;
     std::shared_mutex param_lock_;
 
     friend class GParamManager;

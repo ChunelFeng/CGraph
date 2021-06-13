@@ -35,11 +35,13 @@ public:
 
 
 protected:
+    explicit GParamManager();
+    virtual ~GParamManager() override;
     CSTATUS run() override;
     CSTATUS init() override;
     CSTATUS deinit() override;
-    explicit GParamManager();
-    virtual ~GParamManager() override;
+    void reset();
+
 
 private:
     std::unordered_map<std::string, GParamPtr> params_map_;

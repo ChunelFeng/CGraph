@@ -68,6 +68,7 @@ CSTATUS GPipeline::run() {
         }
     }
 
+    param_manager_->reset();
     status = element_manager_->afterRunCheck(runElementSize);
     CGRAPH_FUNCTION_END
 }
