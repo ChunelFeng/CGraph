@@ -9,6 +9,7 @@
 #ifndef CGRAPH_GPIPELINE_INL
 #define CGRAPH_GPIPELINE_INL
 
+#include <algorithm>
 
 template<typename T>
 CSTATUS GPipeline::registerGElement(GElementPtr* elementRef,
@@ -76,16 +77,16 @@ GElementPtr GPipeline::createGNodeS(const GElementPtrArr& elements,
                                     const std::string& name,
                                     int loop) {
     // 如果不是所有的都非空，则创建失败
-    if (!std::all_of(elements.begin(), elements.end(),
+    if (std::any_of(elements.begin(), elements.end(),
                      [](GElementPtr element) {
-                        return (nullptr != element);
+                        return (nullptr == element);
                      })) {
         return nullptr;
     }
 
-    if (!std::all_of(dependElements.begin(), dependElements.end(),
+    if (std::any_of(dependElements.begin(), dependElements.end(),
                      [](GElementPtr element) {
-                         return (nullptr != element);
+                         return (nullptr == element);
                      })) {
         return nullptr;
     }

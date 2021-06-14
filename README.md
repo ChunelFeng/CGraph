@@ -14,7 +14,19 @@
 使用者只需继承`GNode`类，实现子类的run方法，并设定本节点依赖的其他节点，即可实现任务的图化执行。同时，使用者还可以通过自行设定`GCluster`（簇）和`GRegion`（区域），自行控制图的循环和并发执行逻辑。
 
 
-## 二. 使用Demo
+## 二. 编译说明
+* 本工程目前支持MacOS和Linux环境，无任何第三方依赖。使用CLion作为IDE的开发者，直接打开CMakeLists.txt文件作为工程，即可编译。
+
+* Linux环境开发者，在命令行模式下，输入以下指令，即可编译通过
+  ```shell
+  $ git clone https://github.com/ChunelFeng/CGraph.git
+  $ cd CGraph/
+  $ cmake . -Bbuild
+  $ cd build/
+  $ make
+  ```
+
+## 三. 使用Demo
 
 #### MyNode1.h
 ```cpp
@@ -108,7 +120,7 @@ void tutorial_simple() {
 
 [2021.06.14 - v1.4.0 - Chunel]
 * 提供`param`（参数）传递机制
-* 优化`tutorial`内容
+* 添加对Linux系统的支持
 
 ------------
 #### 附录-2. 推荐阅读

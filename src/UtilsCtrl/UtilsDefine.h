@@ -13,9 +13,10 @@
 #include <shared_mutex>
 #include <string>
 #include <ctime>
-#ifndef _WIN32
+#include <cstdarg>
+
+#ifdef _GENERATE_SESSION_
     #include <uuid/uuid.h>
-    #include <sys/timeb.h>
 #endif
 
 #include "../CObject/CObject.h"
@@ -31,15 +32,17 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
     std::lock_guard<std::mutex> lock{ g_echo_mtx };
 #ifndef _WIN32
     // 非windows系统，打印到毫秒
-    timeb cur_time{};
-    char timeInfo[32] = {0};
-
-    ftime(&cur_time);
-    tm *ptm = localtime(&cur_time.time);
-    sprintf(timeInfo, " [%04d-%02d-%02d %02d:%02d:%02d.%03d] ",
-            ptm->tm_year+1900, ptm->tm_mon+1, ptm->tm_mday,
-            ptm->tm_hour, ptm->tm_min, ptm->tm_sec, cur_time.millitm);
-    std::cout << "[CGraph]" << timeInfo;
+    auto now = std::chrono::system_clock::now();
+    //通过不同精度获取相差的毫秒数
+    uint64_t disMs = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count()
+                      - std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count() * 1000;
+    time_t tt = std::chrono::system_clock::to_time_t(now);
+    auto time_tm = localtime(&tt);
+    char strTime[32] = { 0 };
+    sprintf(strTime, " [%d-%02d-%02d %02d:%02d:%02d.%03d]", time_tm->tm_year + 1900,
+            time_tm->tm_mon + 1, time_tm->tm_mday, time_tm->tm_hour,
+            time_tm->tm_min, time_tm->tm_sec, (int)disMs);
+    std::cout << "[CGraph]" << strTime << " ";
 #else
     // windows系统，打印到秒
     time_t cur_time = time(nullptr);
@@ -60,7 +63,7 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
 #define unlikely(x) __builtin_expect(!!(x), 0)
 
 inline std::string CGRAPH_GENERATE_SESSION() {
-#ifndef _WIN32
+#ifdef _GENERATE_SESSION_
     uuid_t uuid;
     char session[36] = {0};    // 36是特定值
     uuid_generate(uuid);
@@ -68,7 +71,7 @@ inline std::string CGRAPH_GENERATE_SESSION() {
 
     return session;
 #else
-    return "";    // windows平台暂时不记录session信息
+    return "";    // 非mac平台，暂时不支持自动生成session信息
 #endif
 }
 

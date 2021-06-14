@@ -12,6 +12,8 @@
 #include <set>
 #include <string>
 #include <atomic>
+#include <algorithm>
+
 #include "../../CObject/CObject.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
 
@@ -32,7 +34,7 @@ protected:
     /**
      * 析构函数
      */
-    virtual ~GElement() override;
+    ~GElement() override;
 
     /**
      * 实现拷贝构造函数
