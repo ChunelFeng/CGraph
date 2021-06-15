@@ -21,15 +21,21 @@
 
 #include "../CObject/CObject.h"
 
+typedef std::shared_lock<std::shared_mutex> CGRAPH_READ_LOCK;
+typedef std::unique_lock<std::shared_mutex> CGRAPH_WRITE_LOCK;
+typedef std::lock_guard<std::mutex>         CGRAPH_LOCK_GUARD;
+typedef std::unique_lock<std::mutex>        CGRAPH_UNIQUE_LOCK;
+
 static std::mutex g_check_status_mtx;
 static std::mutex g_echo_mtx;
+static std::mutex g_session_mtx;
 
 inline void CGRAPH_ECHO(const char *cmd, ...) {
 #ifdef _CGRAPH_SILENCE_
     return;
 #endif
 
-    std::lock_guard<std::mutex> lock{ g_echo_mtx };
+    CGRAPH_LOCK_GUARD lock{ g_echo_mtx };
 #ifndef _WIN32
     // 非windows系统，打印到毫秒
     auto now = std::chrono::system_clock::now();
@@ -64,6 +70,7 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
 
 inline std::string CGRAPH_GENERATE_SESSION() {
 #ifdef _GENERATE_SESSION_
+    CGRAPH_LOCK_GUARD lock{ g_session_mtx };
     uuid_t uuid;
     char session[36] = {0};    // 36是特定值
     uuid_generate(uuid);
@@ -74,11 +81,6 @@ inline std::string CGRAPH_GENERATE_SESSION() {
     return "";    // 非mac平台，暂时不支持自动生成session信息
 #endif
 }
-
-typedef std::shared_lock<std::shared_mutex> CGRAPH_READ_LOCK;
-typedef std::unique_lock<std::shared_mutex> CGRAPH_WRITE_LOCK;
-typedef std::lock_guard<std::mutex>         CGRAPH_LOCK_GUARD;
-typedef std::unique_lock<std::mutex>        CGRAPH_UNIQUE_LOCK;
 
 /* 开启函数流程 */
 #define CGRAPH_FUNCTION_BEGIN                       \

@@ -61,7 +61,7 @@ public:
     GElementPtr createGNode(const GNodeInfo& info);
 
     /**
-     * 根据传入的信息，创建节点集合（包含cluster和region）
+     * 根据传入的信息，创建Block信息（节点集合）
      * @tparam T
      * @param elements
      * @param dependElements
@@ -70,7 +70,7 @@ public:
      * @return
      */
     template<typename T>
-    GElementPtr createGNodeS(const GElementPtrArr& elements,
+    GElementPtr createGBlock(const GElementPtrArr& elements,
                              const GElementPtrSet& dependElements = std::initializer_list<GElementPtr>(),
                              const std::string& name = "",
                              int loop = 1);
@@ -99,8 +99,8 @@ protected:
 
 private:
     bool is_init_;                                       // 标志位
-    GElementManagerPtr element_manager_;                           // 节点管理类（管理所有注册过的element信息）
-    GraphThreadPoolPtr thread_pool_;                       // 线程池类
+    GElementManagerPtr element_manager_;                 // 节点管理类（管理所有注册过的element信息）
+    GraphThreadPoolPtr thread_pool_;                     // 线程池类
     GElementPtrSet element_repository_;                  // 标记创建的所有节点，最终释放使用
     GParamManagerPtr param_manager_;
 };

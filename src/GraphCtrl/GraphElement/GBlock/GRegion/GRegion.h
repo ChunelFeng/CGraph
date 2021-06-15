@@ -10,13 +10,13 @@
 #ifndef CGRAPH_GREGION_H
 #define CGRAPH_GREGION_H
 
-#include "../GElement.h"
-#include "../GElementManager.h"
-#include "../../GraphThread/GraphThreadPool.h"
+#include "../GBlock.h"
+#include "../../GElementManager.h"
+#include "../../../GraphThread/GraphThreadPool.h"
 
 /* region 中包含了 cluster 信息 */
 
-class GRegion : public GElement {
+class GRegion : public GBlock {
 protected:
     explicit GRegion();
     ~GRegion() override;
@@ -32,12 +32,14 @@ protected:
     CSTATUS beforeRun() override;
     CSTATUS afterRun() override;
 
+    CSTATUS addElement(GElementPtr element) override;
+
     CSTATUS setThreadPool(GraphThreadPool* pool);
 
 private:
     GElementManager* manager_;
     GraphThreadPool* thread_pool_;    // 这里需要使用GFlow类的线程池
-    GElementPtrArr region_elements_;
+    GElementPtrArr region_elements_;    // 包含的元素信息
 
     friend class GPipeline;
 };

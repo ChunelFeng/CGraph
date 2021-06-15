@@ -11,8 +11,7 @@
 #define CGRAPH_CELEMENTINCLUDE_H
 
 #include "GElement.h"
-#include "GNode/GNode.h"
-#include "GCluster/GCluster.h"
-#include "GRegion/GRegion.h"
+#include "GNode/GNodeInclude.h"
+#include "GBlock/GBlockInclude.h"
 
 #endif //CGRAPH_CELEMENTINCLUDE_H

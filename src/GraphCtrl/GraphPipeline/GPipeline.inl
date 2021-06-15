@@ -72,7 +72,7 @@ GElementPtr GPipeline::createGNode(const GNodeInfo& info) {
 
 
 template<typename T>
-GElementPtr GPipeline::createGNodeS(const GElementPtrArr& elements,
+GElementPtr GPipeline::createGBlock(const GElementPtrArr& elements,
                                     const GElementPtrSet& dependElements,
                                     const std::string& name,
                                     int loop) {
@@ -91,33 +91,28 @@ GElementPtr GPipeline::createGNodeS(const GElementPtrArr& elements,
         return nullptr;
     }
 
-    GElementPtr ptr = nullptr;
-    if (std::is_same<GCluster, T>::value) {
-        ptr = new(std::nothrow) GCluster();
-        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
-        for (GElementPtr element : elements) {
-            ((GCluster *)ptr)->addElement(element);
-        }
-    } else if (std::is_same<GRegion, T>::value) {
-        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(this->thread_pool_)
-        ptr = new(std::nothrow) GRegion();
-        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
-        ((GRegion *)ptr)->setThreadPool(this->thread_pool_);
-        for (GElementPtr element : elements) {
-            ((GRegion *)ptr)->manager_->addElement(element);
-        }
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(this->thread_pool_)    // 所有的pipeline必须有线程池
+
+    GBlockPtr block = new(std::nothrow) T();
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(block)
+    for (GElementPtr element : elements) {
+        block->addElement(element);
     }
 
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
+    if (std::is_same<GRegion, T>::value) {
+        // 如果是GRegion类型，需要设置线程池信息。因为GRegion内部可能需要并行
+        ((GRegion *)block)->setThreadPool(this->thread_pool_);
+    }
 
-    CSTATUS status = addDependElements(ptr, dependElements);
+    CSTATUS status = addDependElements(block, dependElements);
     if (STATUS_OK != status) {
+        CGRAPH_DELETE_PTR(block)
         return nullptr;
     }
-    ptr->setName(name);
-    ptr->setLoop(loop);
-    this->element_repository_.insert(ptr);
-    return ptr;
+    block->setName(name);
+    block->setLoop(loop);
+    this->element_repository_.insert(block);
+    return block;
 }
 
 

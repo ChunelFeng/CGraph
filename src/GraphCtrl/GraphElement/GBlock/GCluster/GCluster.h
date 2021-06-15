@@ -10,9 +10,9 @@
 #define CGRAPH_GCLUSTER_H
 
 #include <vector>
-#include "../GElement.h"
+#include "../GBlock.h"
 
-class GCluster : public GElement {
+class GCluster : public GBlock {
 public:
     /* 涉及到与线程池的联动，cluster类无法将构造函数申明成protected类型 */
     explicit GCluster();
@@ -29,7 +29,7 @@ protected:
     CSTATUS beforeRun() override;
     CSTATUS afterRun() override;
 
-    CSTATUS addElement(GElementPtr element);
+    CSTATUS addElement(GElementPtr element) override;
     int getElementNum();
 
     /**
@@ -39,7 +39,7 @@ protected:
     bool isElementsDone();
 
 private:
-    GElementPtrArr cluster_elements_;    // cluster中包含的元素信息
+    GElementPtrArr cluster_elements_;    // 包含的元素信息
 
     friend class GElementManager;
     friend class GRegion;

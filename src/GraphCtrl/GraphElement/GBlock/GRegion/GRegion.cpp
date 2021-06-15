@@ -8,7 +8,7 @@
 
 #include "GRegion.h"
 
-GRegion::GRegion() : GElement() {
+GRegion::GRegion() : GBlock() {
     manager_ = new(std::nothrow) GElementManager();
     thread_pool_ = nullptr;
     is_init_ = false;
@@ -136,6 +136,17 @@ CSTATUS GRegion::afterRun() {
         element->left_depend_--;
     }
     this->done_ = true;
+    CGRAPH_FUNCTION_END
+}
+
+
+CSTATUS GRegion::addElement(GElementPtr element) {
+    CGRAPH_FUNCTION_BEGIN
+
+    CGRAPH_ASSERT_NOT_NULL(element)
+    CGRAPH_ASSERT_NOT_NULL(manager_)
+
+    manager_->manager_elements_.emplace(element);
     CGRAPH_FUNCTION_END
 }
 
