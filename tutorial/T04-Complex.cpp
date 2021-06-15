@@ -15,16 +15,14 @@ void tutorial_complex () {
     GElementPtr a, b_cluster, c, d_region, e = nullptr;
 
     b_cluster = pipeline->createGSegment<GCluster>({
-                                                           pipeline->createGNode<MyNode1>(GNodeInfo("nodeB1",
-                                                                                                    1)),    // 创建名为nodeB1的node信息，并将其放入b_cluster中
-                                                           pipeline->createGNode<MyNode1>(GNodeInfo("nodeB2",
-                                                                                                    1)),    // 创建名为nodeB2且自循环3次的node信息，并将其放入b_cluster中
-                                                           pipeline->createGNode<MyNode2>(GNodeInfo("nodeB3", 1))
-                                                   });
+        pipeline->createGNode<MyNode1>(GNodeInfo("nodeB1", 1)),    // 创建名为nodeB1的node信息，并将其放入b_cluster中
+        pipeline->createGNode<MyNode1>(GNodeInfo("nodeB2", 3)),    // 创建名为nodeB2且自循环3次的node信息，并将其放入b_cluster中
+        pipeline->createGNode<MyNode2>(GNodeInfo("nodeB3", 1))
+    });
 
     GElementPtr d1, d2, d3, d4, d23_cluster = nullptr;
     d1 = pipeline->createGNode<MyNode1>(GNodeInfo({}, "nodeD1", 1));
-    d2 = pipeline->createGNode<MyNode1>(GNodeInfo("nodeD2", 1));
+    d2 = pipeline->createGNode<MyNode1>(GNodeInfo("nodeD2", 1));    // 创建node，稍后放入cluster中
     d3 = pipeline->createGNode<MyNode1>(GNodeInfo("nodeD3", 1));
     d23_cluster = pipeline->createGSegment<GCluster>({d2, d3}, {d1}, "clusterD23", 1);
     d4 = pipeline->createGNode<MyNode2>(GNodeInfo({d1}, "nodeD4", 1));

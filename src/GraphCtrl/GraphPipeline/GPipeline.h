@@ -78,6 +78,10 @@ public:
     /**
      * 在图中注册一个Element信息
      * @tparam T
+     * @param elementRef
+     * @param dependElements
+     * @param name
+     * @param loop
      * @return
      */
     template<typename T>
