@@ -7,11 +7,11 @@
 ***************************/
 
 
-#ifndef CGRAPH_GBLOCKINCLUDE_H
-#define CGRAPH_GBLOCKINCLUDE_H
+#ifndef CGRAPH_GSEGMENTINCLUDE_H
+#define CGRAPH_GSEGMENTINCLUDE_H
 
-#include "GBlock.h"
+#include "GSegment.h"
 #include "GCluster/GCluster.h"
 #include "GRegion/GRegion.h"
 
-#endif //CGRAPH_GBLOCKINCLUDE_H
+#endif //CGRAPH_GSEGMENTINCLUDE_H

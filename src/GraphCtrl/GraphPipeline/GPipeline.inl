@@ -33,9 +33,7 @@ CSTATUS GPipeline::registerGElement(GElementPtr* elementRef,
         CGRAPH_ASSERT_NOT_NULL(*elementRef)
         status = ((GNodePtr)(*elementRef))->setParamManager(this->param_manager_);
         CGRAPH_FUNCTION_CHECK_STATUS
-    } else if (std::is_same<GCluster, T>::value) {
-        CGRAPH_ASSERT_NOT_NULL(elementRef)
-    } else if (std::is_same<GRegion, T>::value) {
+    } else if (std::is_base_of<GSegment, T>::value) {
         CGRAPH_ASSERT_NOT_NULL(elementRef)
     } else {
         return STATUS_ERR;
@@ -47,6 +45,7 @@ CSTATUS GPipeline::registerGElement(GElementPtr* elementRef,
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status = element_manager_->addElement(dynamic_cast<GElementPtr>(*elementRef));
+    CGRAPH_FUNCTION_CHECK_STATUS
     element_repository_.insert(*elementRef);
     CGRAPH_FUNCTION_END
 }
@@ -72,10 +71,10 @@ GElementPtr GPipeline::createGNode(const GNodeInfo& info) {
 
 
 template<typename T>
-GElementPtr GPipeline::createGBlock(const GElementPtrArr& elements,
-                                    const GElementPtrSet& dependElements,
-                                    const std::string& name,
-                                    int loop) {
+GElementPtr GPipeline::createGSegment(const GElementPtrArr& elements,
+                                      const GElementPtrSet& dependElements,
+                                      const std::string& name,
+                                      int loop) {
     // 如果不是所有的都非空，则创建失败
     if (std::any_of(elements.begin(), elements.end(),
                      [](GElementPtr element) {

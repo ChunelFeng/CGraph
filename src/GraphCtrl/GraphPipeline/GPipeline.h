@@ -61,7 +61,7 @@ public:
     GElementPtr createGNode(const GNodeInfo& info);
 
     /**
-     * 根据传入的信息，创建Block信息（节点集合）
+     * 根据传入的信息，创建Segment信息（节点集合）
      * @tparam T
      * @param elements
      * @param dependElements
@@ -70,10 +70,10 @@ public:
      * @return
      */
     template<typename T>
-    GElementPtr createGBlock(const GElementPtrArr& elements,
-                             const GElementPtrSet& dependElements = std::initializer_list<GElementPtr>(),
-                             const std::string& name = "",
-                             int loop = 1);
+    GElementPtr createGSegment(const GElementPtrArr& elements,
+                               const GElementPtrSet& dependElements = std::initializer_list<GElementPtr>(),
+                               const std::string& name = "",
+                               int loop = 1);
 
     /**
      * 在图中注册一个Element信息

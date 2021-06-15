@@ -8,7 +8,7 @@
 
 #include "GRegion.h"
 
-GRegion::GRegion() : GBlock() {
+GRegion::GRegion() : GSegment() {
     manager_ = new(std::nothrow) GElementManager();
     thread_pool_ = nullptr;
     is_init_ = false;

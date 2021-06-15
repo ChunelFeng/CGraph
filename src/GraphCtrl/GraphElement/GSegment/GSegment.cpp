@@ -1,15 +1,15 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: GBlock.cpp
+@File: GSegment.cpp
 @Time: 2021/6/15 1:49 下午
 @Desc: 
 ***************************/
 
-#include "GBlock.h"
+#include "GSegment.h"
 
-GBlock::GBlock() : GElement() {
+GSegment::GSegment() : GElement() {
 
 }
 
-GBlock::~GBlock() = default;
+GSegment::~GSegment() = default;

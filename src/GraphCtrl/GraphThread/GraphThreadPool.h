@@ -15,7 +15,7 @@
 #include <future>
 #include <condition_variable>
 
-#include "../GraphElement/GBlock/GCluster/GCluster.h"
+#include "../GraphElement/GSegment//GCluster/GCluster.h"
 #include "../GraphDefine.h"
 
 class GraphThreadPool : public CObject

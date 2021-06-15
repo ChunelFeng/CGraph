@@ -14,10 +14,10 @@ void tutorial_cluster () {
     GPipelinePtr pipeline = new GPipeline();
     GElementPtr a, b_cluster, c, d = nullptr;
 
-    b_cluster = pipeline->createGBlock<GCluster>({
-         pipeline->createGNode<MyNode1>(GNodeInfo("nodeB1", 1)),    // 创建名为nodeB1的node信息，并将其放入b_cluster中
-         pipeline->createGNode<MyNode1>(GNodeInfo("nodeB2", 3)),    // 创建名为nodeB2且自循环3次的node信息，并将其放入b_cluster中
-         pipeline->createGNode<MyNode2>(GNodeInfo("nodeB3", 1))
+    b_cluster = pipeline->createGSegment<GCluster>({
+        pipeline->createGNode<MyNode1>(GNodeInfo("nodeB1", 1)),    // 创建名为nodeB1的node信息，并将其放入b_cluster中
+        pipeline->createGNode<MyNode1>(GNodeInfo("nodeB2", 3)),    // 创建名为nodeB2且自循环3次的node信息，并将其放入b_cluster中
+        pipeline->createGNode<MyNode2>(GNodeInfo("nodeB3", 1))
     });    // 创建cluster信息，包含了三个node信息
 
     if (nullptr == b_cluster) {

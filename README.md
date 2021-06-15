@@ -120,7 +120,7 @@ void tutorial_simple() {
 
 [2021.06.14 - v1.4.0 - Chunel]
 * 提供`param`（参数）传递机制
-* 提供`block`（块）功能，多节点模块，统一继承自`block`模块
+* 提供`Segment`（部分）功能，多节点模块统一继承自`Segment`模块
 * 添加对Linux系统的支持
 
 ------------

@@ -10,9 +10,9 @@
 #define CGRAPH_GCLUSTER_H
 
 #include <vector>
-#include "../GBlock.h"
+#include "../GSegment.h"
 
-class GCluster : public GBlock {
+class GCluster : public GSegment {
 public:
     /* 涉及到与线程池的联动，cluster类无法将构造函数申明成protected类型 */
     explicit GCluster();

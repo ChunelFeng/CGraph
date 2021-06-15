@@ -10,13 +10,13 @@
 #ifndef CGRAPH_GREGION_H
 #define CGRAPH_GREGION_H
 
-#include "../GBlock.h"
+#include "../GSegment.h"
 #include "../../GElementManager.h"
 #include "../../../GraphThread/GraphThreadPool.h"
 
 /* region 中包含了 cluster 信息 */
 
-class GRegion : public GBlock {
+class GRegion : public GSegment {
 protected:
     explicit GRegion();
     ~GRegion() override;
