@@ -33,7 +33,7 @@ CSTATUS GPipeline::registerGElement(GElementPtr* elementRef,
         CGRAPH_ASSERT_NOT_NULL(*elementRef)
         status = ((GNodePtr)(*elementRef))->setParamManager(this->param_manager_);
         CGRAPH_FUNCTION_CHECK_STATUS
-    } else if (std::is_base_of<GSegment, T>::value) {
+    } else if (std::is_base_of<GGroup, T>::value) {
         CGRAPH_ASSERT_NOT_NULL(elementRef)
     } else {
         return STATUS_ERR;
@@ -71,10 +71,10 @@ GElementPtr GPipeline::createGNode(const GNodeInfo& info) {
 
 
 template<typename T>
-GElementPtr GPipeline::createGSegment(const GElementPtrArr& elements,
-                                      const GElementPtrSet& dependElements,
-                                      const std::string& name,
-                                      int loop) {
+GElementPtr GPipeline::createGGroup(const GElementPtrArr& elements,
+                                    const GElementPtrSet& dependElements,
+                                    const std::string& name,
+                                    int loop) {
     // 如果不是所有的都非空，则创建失败
     if (std::any_of(elements.begin(), elements.end(),
                      [](GElementPtr element) {
@@ -92,26 +92,26 @@ GElementPtr GPipeline::createGSegment(const GElementPtrArr& elements,
 
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(this->thread_pool_)    // 所有的pipeline必须有线程池
 
-    GBlockPtr block = new(std::nothrow) T();
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(block)
+    GGroupPtr group = new(std::nothrow) T();
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(group)
     for (GElementPtr element : elements) {
-        block->addElement(element);
+        group->addElement(element);
     }
 
     if (std::is_same<GRegion, T>::value) {
         // 如果是GRegion类型，需要设置线程池信息。因为GRegion内部可能需要并行
-        ((GRegion *)block)->setThreadPool(this->thread_pool_);
+        ((GRegion *)group)->setThreadPool(this->thread_pool_);
     }
 
-    CSTATUS status = addDependElements(block, dependElements);
+    CSTATUS status = addDependElements(group, dependElements);
     if (STATUS_OK != status) {
-        CGRAPH_DELETE_PTR(block)
+        CGRAPH_DELETE_PTR(group)
         return nullptr;
     }
-    block->setName(name);
-    block->setLoop(loop);
-    this->element_repository_.insert(block);
-    return block;
+    group->setName(name);
+    group->setLoop(loop);
+    this->element_repository_.insert(group);
+    return group;
 }
 
 

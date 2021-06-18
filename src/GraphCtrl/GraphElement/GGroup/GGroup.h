@@ -1,27 +1,26 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: GSegment.h
+@File: GGroup.h
 @Time: 2021/6/15 1:49 下午
 @Desc: 
 ***************************/
 
 
-#ifndef CGRAPH_GSEGMENT_H
-#define CGRAPH_GSEGMENT_H
+#ifndef CGRAPH_GGROUP_H
+#define CGRAPH_GGROUP_H
 
-#include <vector>
 #include "../GElement.h"
 
 /* 所有节点组合的基类，所有节点组合功能，均继承自此类 */
-class GSegment : public GElement {
+class GGroup : public GElement {
 public:
-    explicit GSegment();
-    ~GSegment() override;
+    explicit GGroup();
+    ~GGroup() override;
 
     virtual CSTATUS addElement(GElementPtr element) = 0;
 };
 
-using GBlockPtr = GSegment *;
+using GGroupPtr = GGroup *;
 
-#endif //CGRAPH_GSEGMENT_H
+#endif //CGRAPH_GGROUP_H

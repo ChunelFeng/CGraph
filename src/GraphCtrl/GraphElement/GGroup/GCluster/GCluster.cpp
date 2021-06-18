@@ -8,13 +8,13 @@
 
 #include "GCluster.h"
 
-GCluster::GCluster() : GSegment() {
+GCluster::GCluster() : GGroup() {
 
 }
 
 GCluster::~GCluster() = default;
 
-GCluster::GCluster(const GCluster& cluster)  : GSegment(cluster) {
+GCluster::GCluster(const GCluster& cluster)  : GGroup(cluster) {
     this->cluster_elements_ = cluster.cluster_elements_;
 }
 

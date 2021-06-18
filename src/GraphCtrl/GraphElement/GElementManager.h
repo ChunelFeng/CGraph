@@ -10,7 +10,7 @@
 #define CGRAPH_GELEMENTMANAGER_H
 
 #include "GElement.h"
-#include "GSegment//GCluster/GCluster.h"
+#include "GGroup/GCluster/GCluster.h"
 
 
 class GElementManager : public CObject {

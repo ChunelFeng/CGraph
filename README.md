@@ -1,17 +1,19 @@
 <p align="left">
-  <a href="https://github.com/ChunelFeng/caiss"><img src="https://badgen.net/badge/langs/C++/cyan?list=1" alt="languages"></a>
-  <a href="https://github.com/ChunelFeng/caiss"><img src="https://badgen.net/badge/os/MacOS,Linux,Windows/cyan?list=1" alt="os"></a>
+  <a href="https://github.com/ChunelFeng/CGraph"><img src="https://badgen.net/badge/langs/C++/cyan?list=1" alt="languages"></a>
+  <a href="https://github.com/ChunelFeng/CGraph"><img src="https://badgen.net/badge/os/MacOS,Linux,Windows/cyan?list=1" alt="os"></a>
 </p>
 
 <h1 align="center">
-  CGraph说明文档
+  CGraph 说明文档
 </h1>
 
 ## 一. 简介
 
 本工程实现了一套跨平台图流程计算框架。通过框架图底层调度，实现了相互依赖节点依次顺序执行、非依赖节点同时并发执行的调度功能。
 
-使用者只需继承`GNode`类，实现子类的run方法，并设定本节点依赖的其他节点，即可实现任务的图化执行。同时，使用者还可以通过自行设定`GCluster`（簇）和`GRegion`（区域），自行控制图的循环和并发执行逻辑。
+使用者只需继承`GNode`类，实现子类的run方法，并设定本节点依赖的其他节点，即可实现任务的图化执行。
+
+同时，使用者还可以通过自行设定各种包含多节点信息的`GGroup`（组），自行控制图的循环和并发执行逻辑。
 
 
 ## 二. 编译说明
@@ -120,7 +122,7 @@ void tutorial_simple() {
 
 [2021.06.14 - v1.4.0 - Chunel]
 * 提供`param`（参数）传递机制
-* 提供`Segment`（部分）功能，多节点模块统一继承自`Segment`模块
+* 提供`group`（组）功能，多节点模块统一继承自`group`模块
 * 添加对Linux系统的支持
 
 ------------

@@ -12,6 +12,6 @@
 
 #include "GElement.h"
 #include "GNode/GNodeInclude.h"
-#include "GSegment/GSegmentInclude.h"
+#include "GGroup/GGroupInclude.h"
 
 #endif //CGRAPH_CELEMENTINCLUDE_H
