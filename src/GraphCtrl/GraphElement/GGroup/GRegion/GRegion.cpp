@@ -117,12 +117,9 @@ CSTATUS GRegion::process(bool isMock) {
 CSTATUS GRegion::beforeRun() {
     CGRAPH_FUNCTION_BEGIN
 
+    // GRegion的beforeRun和afterRun中，不需要对其中的element进行处理，因为已经在预处理的时候，处理过了
     this->done_ = false;
     this->left_depend_ = this->dependence_.size();
-    for (GElementPtr element : this->manager_->manager_elements_) {
-        status = element->beforeRun();
-        CGRAPH_FUNCTION_CHECK_STATUS
-    }
 
     CGRAPH_FUNCTION_END
 }
@@ -130,10 +127,6 @@ CSTATUS GRegion::beforeRun() {
 
 CSTATUS GRegion::afterRun() {
     CGRAPH_FUNCTION_BEGIN
-    for (GElementPtr element : this->region_elements_) {
-        status = element->afterRun();
-        CGRAPH_FUNCTION_CHECK_STATUS
-    }
 
     for (auto& element : this->run_before_) {
         element->left_depend_--;

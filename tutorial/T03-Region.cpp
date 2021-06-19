@@ -16,7 +16,7 @@ void tutorial_region () {
 
     GElementPtr b1, b2, b3, b4 = nullptr;
     b1 = pipeline->createGNode<MyNode1>(GNodeInfo({}, "nodeB1", 1));    // 创建名为nodeB1的node信息
-    b2 = pipeline->createGNode<MyNode2>(GNodeInfo({b1}, "nodeB2", 2));    // 创建名为nodeB2且自循环2次的node信息
+    b2 = pipeline->createGNode<MyNode2>(GNodeInfo({b1}, "nodeB2", 1));    // 创建名为nodeB2且自循环2次的node信息
     b3 = pipeline->createGNode<MyNode1>(GNodeInfo({b1}, "nodeB3", 1));
     b4 = pipeline->createGNode<MyNode1>(GNodeInfo({b2,b3}, "nodeB4", 1));
 

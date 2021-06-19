@@ -13,8 +13,8 @@
 
 /**
  * MyParam 是GParam的具体实现类
- * 本例中使用 struct 类型，是为了使得 iValue 默认为是public类型
- * 如果使用 class 类型创建，请注意 iValue 默认是private类型信息
+ * 本例中使用 struct 类型，是为了使得 参数权限 默认为是public类型
+ * 如果使用 class 类型，请注意 参数权限 默认是private类型信息
  */
 struct MyParam : public GParam {
     /**

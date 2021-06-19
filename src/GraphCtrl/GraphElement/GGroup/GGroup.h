@@ -10,6 +10,7 @@
 #ifndef CGRAPH_GGROUP_H
 #define CGRAPH_GGROUP_H
 
+#include <vector>
 #include "../GElement.h"
 
 /* 所有节点组合的基类，所有节点组合功能，均继承自此类 */

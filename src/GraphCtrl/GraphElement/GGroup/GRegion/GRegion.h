@@ -38,8 +38,7 @@ protected:
 
 private:
     GElementManagerPtr manager_;
-    GraphThreadPoolPtr thread_pool_;    // 这里需要使用GFlow类的线程池
-    GElementPtrArr region_elements_;    // 包含的元素信息
+    GraphThreadPoolPtr thread_pool_;    // 这里需要使用GPipeline类的线程池
 
     friend class GPipeline;
 };
