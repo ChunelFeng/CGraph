@@ -25,7 +25,11 @@ GRegion::GRegion(const GRegion& region) {
         this->manager_->manager_elements_.insert(element);
     }
 
-    this->manager_ = region.manager_;
+    this->manager_ = new(std::nothrow) GElementManager();
+    for (auto element : region.manager_->manager_elements_) {
+        this->manager_->manager_elements_.insert(element);
+    }
+
     this->thread_pool_ = region.thread_pool_;
 }
 
@@ -35,11 +39,10 @@ GRegion& GRegion::operator=(const GRegion& region){
         return (*this);
     }
 
-    for (GElementPtr element : region.manager_->manager_elements_) {
+    this->manager_ = new(std::nothrow) GElementManager();
+    for (auto element : region.manager_->manager_elements_) {
         this->manager_->manager_elements_.insert(element);
     }
-
-    this->manager_ = region.manager_;
     this->thread_pool_ = region.thread_pool_;
 
     return (*this);

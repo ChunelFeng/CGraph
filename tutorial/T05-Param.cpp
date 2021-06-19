@@ -25,9 +25,14 @@ void tutorial_param() {
     status = pipeline->registerGElement<MyReadParamNode>(&e, {a}, "readNodeE");
     status = pipeline->registerGElement<MyWriteParamNode>(&f, {b, c, d, e}, "writeNodeF");
 
-    /* 运行pipeline信息 */
-    status = pipeline->process();
-    std::cout << "[CGraph] tutorial_param process status = " << status << std::endl;
+    status = pipeline->init();
+
+    for (int i = 0; i < 3; i++) {
+        status = pipeline->run();
+        std::cout << "[CGraph] tutorial_param, loop : " << i + 1 << ", and run status = " << status << std::endl;
+    }
+
+    status = pipeline->deinit();
     delete pipeline;
 }
 

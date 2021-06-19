@@ -21,10 +21,10 @@
 
 #include "../CObject/CObject.h"
 
-typedef std::shared_lock<std::shared_mutex> CGRAPH_READ_LOCK;
-typedef std::unique_lock<std::shared_mutex> CGRAPH_WRITE_LOCK;
-typedef std::lock_guard<std::mutex>         CGRAPH_LOCK_GUARD;
-typedef std::unique_lock<std::mutex>        CGRAPH_UNIQUE_LOCK;
+using CGRAPH_READ_LOCK = std::shared_lock<std::shared_mutex>;
+using CGRAPH_WRITE_LOCK = std::unique_lock<std::shared_mutex>;
+using CGRAPH_LOCK_GUARD = std::lock_guard<std::mutex>;
+using CGRAPH_UNIQUE_LOCK = std::unique_lock<std::mutex>;
 
 static std::mutex g_check_status_mtx;
 static std::mutex g_echo_mtx;
@@ -130,10 +130,10 @@ inline std::string CGRAPH_GENERATE_SESSION() {
 #define CGRAPH_NO_SUPPORT                           \
     return STATUS_ERR;                              \
 
-#define CGRAPH_PARAM_WRITE_CODE_BLOCK(param)        \
-    CGRAPH_WRITE_LOCK paramWLock(param->lock_);     \
+#define CGRAPH_PARAM_WRITE_CODE_BLOCK(param)                     \
+    CGRAPH_WRITE_LOCK __paramWLock__(param->__shared_lock_);     \
 
-#define CGRAPH_PARAM_READ_CODE_BLOCK(param)         \
-    CGRAPH_READ_LOCK paramRLock(param->lock_);      \
+#define CGRAPH_PARAM_READ_CODE_BLOCK(param)                      \
+    CGRAPH_READ_LOCK __paramRLock__(param->__shared_lock_);      \
 
 #endif //CGRAPH_UTILSDEFINE_H

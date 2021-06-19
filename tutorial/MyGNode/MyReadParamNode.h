@@ -10,21 +10,21 @@
 #define CGRAPH_MYREADPARAMNODE_H
 
 #include "../../src/GraphCtrl/GraphInclude.h"
-#include "../MyGParam/MyParam1.h"
+#include "../MyGParam/MyIntParam.h"
 
 class MyReadParamNode : public GNode {
 public:
     CSTATUS run () {
-        MyParam1* param1 = this->getGParam<MyParam1>("param1");    // 获取类型为MyParam1且名为"myParam1"的参数
-        if (nullptr == param1) {
+        MyIntParam* intParam = this->getGParam<MyIntParam>("param1");    // 获取类型为MyParam1且名为"myParam1"的参数
+        if (nullptr == intParam) {
             return STATUS_ERR;    // 如果没有获取到参数，则返回执行失败
         }
 
         int val = 0;
         {
             /* 对需要使用（读或写）参数的位置，加括号{}范围限定，以减少互斥等待时间 */
-            CGRAPH_PARAM_READ_CODE_BLOCK(param1)
-            val = param1->iValue;
+            CGRAPH_PARAM_READ_CODE_BLOCK(intParam)
+            val = intParam->iValue;
         }
         CGRAPH_ECHO("[%s], iValue is : [%d] ... ", this->getName().c_str(), val);
 
