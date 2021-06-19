@@ -40,7 +40,7 @@ void tutorial_condition() {
     status = pipeline->registerGElement<MyReadParamNode>(&c, {b_condition}, "readNodeC", 1);
     status = pipeline->registerGElement<MyParamCondition>(&d_condition, {c}, "conditionD", 1);
 
-    status = pipeline->process(10);
+    status = pipeline->process();
     delete pipeline;
 }
 
