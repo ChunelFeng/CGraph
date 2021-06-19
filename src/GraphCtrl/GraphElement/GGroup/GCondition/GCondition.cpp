@@ -37,7 +37,7 @@ CSTATUS GCondition::addElement(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(element)
 
-    this->condition_elements_.push_back(element);
+    this->condition_elements_.emplace_back(element);
     CGRAPH_FUNCTION_END
 }
 
@@ -61,17 +61,31 @@ CSTATUS GCondition::process(bool isMock) {
 CSTATUS GCondition::run() {
     CGRAPH_FUNCTION_BEGIN
 
+    int loop = 0;
     int index = this->choose();
     if (GROUP_LAST_ELEMENT_INDEX == index && this->condition_elements_.size() > 0) {
         // 如果返回-1，则直接执行最后一个条件（模仿default功能）
-        status = (*this->condition_elements_.end())->run();
-    } else if (index >= 0 && index < condition_elements_.size()) {
+        loop = condition_elements_.back()->loop_;
+        while (loop--) {
+            status = condition_elements_.back()->run();
+            CGRAPH_FUNCTION_CHECK_STATUS
+        }
+    } else if (0 <= index && index < condition_elements_.size()) {
         // 如果返回的内容，在元素范围之内，则直接执行元素的内容
-        status = condition_elements_[index]->run();
+        loop = condition_elements_[index]->loop_;
+        while (loop--) {
+            status = condition_elements_[index]->run();
+            CGRAPH_FUNCTION_CHECK_STATUS
+        }
     } else {
         // 设定的index不在范围内，返回错误信息
         status = STATUS_ERR;
     }
 
     CGRAPH_FUNCTION_END
+}
+
+
+int GCondition::getRange() const {
+    return this->condition_elements_.size();
 }

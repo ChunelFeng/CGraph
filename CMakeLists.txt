@@ -25,10 +25,11 @@ set(TUTORIAL_LIST
         T02-Cluster
         T03-Region
         T04-Complex
-        T05-Param)
+        T05-Param
+        T06-Condition)
 
 # 编译libCGraph动态库
-# add_library(CGraph SHARED ${SRC_LIST})
+add_library(CGraph SHARED ${SRC_LIST})
 
 foreach(tut ${TUTORIAL_LIST})
     add_executable(${tut} tutorial/${tut}.cpp ${SRC_LIST})

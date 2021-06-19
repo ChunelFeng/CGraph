@@ -125,6 +125,9 @@ void tutorial_simple() {
 * 提供`group`（组）功能，多节点模块统一继承自`group`模块
 * 添加对Linux系统的支持
 
+[2021.06.20 - v1.4.1 - Chunel]
+* 提供`condition`（条件）功能
+
 ------------
 #### 附录-2. 推荐阅读
 

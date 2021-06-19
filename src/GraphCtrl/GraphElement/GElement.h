@@ -135,6 +135,7 @@ protected:
     friend class GNode;
     friend class GCluster;
     friend class GRegion;
+    friend class GCondition;
     friend class GElementManager;
     friend class GGroup;
     friend class GPipeline;

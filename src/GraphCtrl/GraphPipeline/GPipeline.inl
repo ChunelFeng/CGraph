@@ -31,7 +31,7 @@ CSTATUS GPipeline::registerGElement(GElementPtr* elementRef,
         (*elementRef) = new(std::nothrow) T();
     }
 
-    CGRAPH_ASSERT_NOT_NULL(elementRef)
+    CGRAPH_ASSERT_NOT_NULL(*elementRef)
     status = (*elementRef)->setParamManager(this->param_manager_);
     CGRAPH_FUNCTION_CHECK_STATUS
 
