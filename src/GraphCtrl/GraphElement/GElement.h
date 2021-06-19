@@ -16,6 +16,7 @@
 
 #include "../../CObject/CObject.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
+#include "../GraphParam/GParamInclude.h"
 
 class GElement : public CObject {
 public:
@@ -24,6 +25,24 @@ public:
 
     /* 获取session信息（全局唯一） */
     std::string getSession() const;
+
+    /**
+     * 获取参数信息，如果未找到，则返回nullptr
+     * @tparam T
+     * @param key
+     * @return
+     */
+    template<typename T>
+    T* getGParam(const std::string& key);
+
+    /**
+     * 创建param信息，如果过了，则直接返回ok
+     * @tparam T
+     * @param key
+     * @return
+     */
+    template<typename T>
+    CSTATUS createGParam(const std::string& key);
 
 protected:
     /**
@@ -94,6 +113,12 @@ protected:
      */
     virtual CSTATUS process(bool isMock);
 
+    /**
+     * 设置当前参数管理类信息
+     * @param manager
+     * @return
+     */
+    virtual CSTATUS setParamManager(const GParamManagerPtr manager);
 
 protected:
     bool done_ { false };                     // 判定被执行结束
@@ -105,16 +130,20 @@ protected:
     std::set<GElement *> run_before_;         // 被依赖的节点
     std::set<GElement *> dependence_;         // 依赖的节点信息
     std::atomic<int> left_depend_{ 0 };       // 当 left_depend_ 值为0的时候，即可以执行该node信息
+    GParamManagerPtr param_manager_;    // 整体流程的参数管理类，所有pipeline中的所有节点共享
 
     friend class GNode;
     friend class GCluster;
     friend class GRegion;
     friend class GElementManager;
+    friend class GGroup;
     friend class GPipeline;
 };
 
 using GElementPtr = GElement *;
 using GElementPtrArr = std::vector<GElementPtr>;
 using GElementPtrSet = std::set<GElementPtr>;
+
+#include "GElement.inl"
 
 #endif //CGRAPH_GELEMENT_H

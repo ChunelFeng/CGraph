@@ -11,15 +11,19 @@
 #define CGRAPH_GGROUP_H
 
 #include <vector>
+#include "GGroupDefine.h"
 #include "../GElement.h"
+#include "../../GraphParam/GParamInclude.h"
 
 /* 所有节点组合的基类，所有节点组合功能，均继承自此类 */
 class GGroup : public GElement {
-public:
-    explicit GGroup();
-    ~GGroup() override;
 
+public:
     virtual CSTATUS addElement(GElementPtr element) = 0;
+
+protected:
+    CSTATUS beforeRun() override;
+    CSTATUS afterRun() override;
 };
 
 using GGroupPtr = GGroup *;

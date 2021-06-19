@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: GRegion.h
 @Time: 2021/6/1 10:14 下午
-@Desc: 
+@Desc: 实现多个element，根据依赖关系执行的功能
 ***************************/
 
 
@@ -28,9 +28,6 @@ protected:
     CSTATUS deinit() override;
     CSTATUS run() override;
     CSTATUS process(bool isMock) override;
-
-    CSTATUS beforeRun() override;
-    CSTATUS afterRun() override;
 
     CSTATUS addElement(GElementPtr element) override;
 

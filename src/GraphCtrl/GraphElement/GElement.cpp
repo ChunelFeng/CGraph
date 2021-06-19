@@ -93,3 +93,13 @@ CSTATUS GElement::process(bool isMock) {
     CGRAPH_NO_SUPPORT
 }
 
+
+CSTATUS GElement::setParamManager(const GParamManagerPtr manager) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(manager)
+    CGRAPH_ASSERT_INIT(false)
+
+    this->param_manager_ = manager;
+
+    CGRAPH_FUNCTION_END
+}

@@ -77,6 +77,7 @@ public:
 
     /**
      * 在图中注册一个Element信息
+     * 如果注册的是可执行节点，则内部自动生成；如果注册的是不可执行节点（如region或cluster），则需外部提前生成，然后注册进来
      * @tparam T
      * @param elementRef
      * @param dependElements

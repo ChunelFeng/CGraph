@@ -24,20 +24,16 @@ CSTATUS GPipeline::registerGElement(GElementPtr* elementRef,
     }
 
     /**
-     * 如果T类型是 GElement 的子类，则new T类型的对象，并且放到 element_manager_ 中去
-     * 如果创建成功，则添加依赖信息。
-     * 如果添加依赖信息失败，则默认创建节点失败，清空节点信息
+     * 如果是GNode类型，则直接创建节点
+     * 如果不是GNode类型，则需要外部创建好，然后注册进来
      * */
     if (std::is_base_of<GNode, T>::value) {
         (*elementRef) = new(std::nothrow) T();
-        CGRAPH_ASSERT_NOT_NULL(*elementRef)
-        status = ((GNodePtr)(*elementRef))->setParamManager(this->param_manager_);
-        CGRAPH_FUNCTION_CHECK_STATUS
-    } else if (std::is_base_of<GGroup, T>::value) {
-        CGRAPH_ASSERT_NOT_NULL(elementRef)
-    } else {
-        return STATUS_ERR;
     }
+
+    CGRAPH_ASSERT_NOT_NULL(elementRef)
+    status = (*elementRef)->setParamManager(this->param_manager_);
+    CGRAPH_FUNCTION_CHECK_STATUS
 
     (*elementRef)->setName(name);
     (*elementRef)->setLoop(loop);
