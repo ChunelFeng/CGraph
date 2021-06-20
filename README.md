@@ -13,11 +13,13 @@
 
 使用者只需继承`GNode`类，实现子类的run方法，并设定本节点依赖的其他节点，即可实现任务的图化执行。
 
-同时，使用者还可以通过自行设定各种包含多节点信息的`GGroup`（组），自行控制图的循环和并发执行逻辑。
+同时，使用者还可以通过自行设定各种包含多节点信息的`GGroup`（组），自行控制图的条件判断、循环和并发执行逻辑。
 
+![CGraph Skeleton](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Skeleton.jpg)
+<br>
 
 ## 二. 编译说明
-* 本工程目前支持MacOS和Linux环境，无任何第三方依赖。使用CLion作为IDE的开发者，直接打开CMakeLists.txt文件作为工程，即可编译。
+* 本工程目前支持MacOS、Linux和Windows系统，无任何第三方依赖。使用CLion作为IDE的开发者，直接打开CMakeLists.txt文件作为工程，即可编译。
 
 * Linux环境开发者，在命令行模式下，输入以下指令，即可编译通过
   ```shell
@@ -71,7 +73,7 @@ void tutorial_simple() {
     CSTATUS status = STATUS_OK;
     GElementPtr a, b, c, d = nullptr;
 
-    /* 注册节点，其中MyNode1和MyNode2必须为GraphNode的子类，否则无法通过编译。
+    /* 注册节点，其中MyNode1和MyNode2必须为GraphNode的子类
      * MyNode1中run()执行内容为sleep(1s)
      * MyNode2中run()执行内容为sleep(2s) */
     status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");    // 将名为nodeA，无执行依赖的node信息，注册入pipeline中
@@ -82,22 +84,13 @@ void tutorial_simple() {
     status = pipeline->registerGElement<MyNode1>(&c, {a}, "nodeC");
     status = pipeline->registerGElement<MyNode2>(&d, {b, c}, "nodeD");    // 将名为nodeD，依赖{b,c}执行的node信息，注册入pipeline中
 
-    /* 图信息初始化，准备开始计算 */
-    status = pipeline->init();
-
-    /* 运行图计算。初始化后，支持多次循环计算 */
-    for (int i = 0; i < 3; i++) {
-        status = pipeline->run();
-        std::cout << "[CGraph] tutorial_simple, loop : " << i + 1 << ", and run status = " << status << std::endl;
-    }
-
-    /* 图信息逆初始化，准备结束计算 */
-    status = pipeline->deinit();
+    /* 执行流图信息 */
+    status = pipeline->process();
     delete pipeline;
 }
 ```
 
-![demo流程执行图](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraphDemo.jpg)
+![CGraph Demo](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Demo.jpg)
 <br>
 如上图所示，图结构执行的时候，首先执行`a`节点。`a`节点执行完毕后，并行执行`b`和`c`节点。`b`和`c`节点全部执行完毕后，再执行`d`节点。
 
@@ -123,10 +116,11 @@ void tutorial_simple() {
 [2021.06.14 - v1.4.0 - Chunel]
 * 提供`param`（参数）传递机制
 * 提供`group`（组）功能，多节点模块统一继承自`group`模块
-* 添加对Linux系统的支持
+* 添加对Linux系统的的支持
 
 [2021.06.20 - v1.4.1 - Chunel]
 * 提供`condition`（条件）功能
+* 添加对windows系统的支持
 
 ------------
 #### 附录-2. 推荐阅读
@@ -141,3 +135,6 @@ void tutorial_simple() {
 * 邮箱： chunel@foxmail.com
 * 源码： https://github.com/ChunelFeng/CGraph
 * 论坛： www.chunel.cn
+
+<br>
+![CGraph Author](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Author.jpg)
