@@ -13,6 +13,7 @@
 #include <queue>
 #include <atomic>
 #include <future>
+#include <functional>
 #include <condition_variable>
 
 #include "../GraphElement/GGroup/GCluster/GCluster.h"

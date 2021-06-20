@@ -10,6 +10,7 @@
 #define CGRAPH_GELEMENT_H
 
 #include <set>
+#include <vector>
 #include <string>
 #include <atomic>
 #include <algorithm>

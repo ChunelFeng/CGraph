@@ -54,7 +54,7 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
     time_t cur_time = time(nullptr);
         std::string ct = ctime(&cur_time);
         std::cout << "[cgraph] ["
-                  << ct.assign(ct.begin(), ct.tail()-1)    // 去掉时间的最后一位\n信息
+                  << ct.assign(ct.begin(), ct.end()-1)    // 去掉时间的最后一位\n信息
                   << "] ";
 #endif
 
