@@ -136,5 +136,4 @@ void tutorial_simple() {
 * 源码： https://github.com/ChunelFeng/CGraph
 * 论坛： www.chunel.cn
 
-<br>
 ![CGraph Author](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Author.jpg)
