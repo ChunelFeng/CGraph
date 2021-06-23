@@ -20,6 +20,7 @@ ENDIF()
 file(GLOB_RECURSE SRC_LIST "./src/*.cpp")
 
 set(TUTORIAL_LIST
+        T00-HelloWorld
         T01-Simple
         T02-Cluster
         T03-Region

@@ -134,6 +134,7 @@ void tutorial_simple() {
 
 [2021.06.24 - v1.5.0 - Chunel]
 * 提供`pipeline`工厂创建方法
+* 更新`tutorial`内容
 
 ------------
 #### 附录-2. 推荐阅读
