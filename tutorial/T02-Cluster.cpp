@@ -11,7 +11,7 @@
 
 void tutorial_cluster () {
     CSTATUS status = STATUS_OK;
-    GPipelinePtr pipeline = new GPipeline();
+    GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b_cluster, c, d = nullptr;
 
     b_cluster = pipeline->createGGroup<GCluster>({
@@ -36,7 +36,7 @@ void tutorial_cluster () {
     status = pipeline->process();
     CGRAPH_ECHO("pipeline process status is : [%d]", status);
 
-    delete pipeline;
+    GPipelineFactory::destroy(pipeline);
 }
 
 int main () {

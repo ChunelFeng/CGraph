@@ -10,8 +10,9 @@
 #include "MyGNode/MyNode2.h"
 
 void tutorial_simple() {
-    /* 创建图化 */
-    GPipelinePtr pipeline = new GPipeline();
+    /* 创建图 */
+    GPipelinePtr pipeline = GPipelineFactory::create();
+
     CSTATUS status = STATUS_OK;
     GElementPtr a, b, c, d = nullptr;
 
@@ -37,7 +38,7 @@ void tutorial_simple() {
 
     /* 图信息逆初始化，准备结束计算 */
     status = pipeline->deinit();
-    delete pipeline;
+    GPipelineFactory::destroy(pipeline);
 }
 
 int main () {

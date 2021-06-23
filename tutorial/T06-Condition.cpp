@@ -16,7 +16,7 @@
 void tutorial_condition() {
     /* 根据MyCondition的信息， */
     CSTATUS status = STATUS_OK;
-    GPipelinePtr pipeline = new GPipeline();
+    GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b_condition, c, d_condition = nullptr;
 
     b_condition = pipeline->createGGroup<MyCondition>({
@@ -40,8 +40,16 @@ void tutorial_condition() {
     status = pipeline->registerGElement<MyReadParamNode>(&c, {b_condition}, "readNodeC", 1);
     status = pipeline->registerGElement<MyParamCondition>(&d_condition, {c}, "conditionD", 1);
 
-    status = pipeline->process();
-    delete pipeline;
+    status = pipeline->init();
+
+    for (int i = 0; i < 3; i++) {
+        status = pipeline->run();
+        std::cout << "[CGraph] tutorial_condition, loop : " << i + 1 << ", and run status = " << status << std::endl;
+    }
+
+    status = pipeline->deinit();
+
+    GPipelineFactory::destroy(pipeline);
 }
 
 

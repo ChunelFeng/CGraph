@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <memory>
+#include <list>
 
 #include "../../CObject/CObject.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
@@ -23,9 +24,6 @@
 class GPipeline : public CObject {
 
 public:
-    explicit GPipeline();
-    ~GPipeline() override;
-
     /**
      * 初始化pipeline信息
      * @return
@@ -58,7 +56,7 @@ public:
      * @return
      */
     template<typename T>
-    GElementPtr createGNode(const GNodeInfo& info);
+    GElementPtr createGNode(const GNodeInfo &info);
 
     /**
      * 根据传入的信息，创建Group信息
@@ -70,9 +68,9 @@ public:
      * @return
      */
     template<typename T>
-    GElementPtr createGGroup(const GElementPtrArr& elements,
-                             const GElementPtrSet& dependElements = std::initializer_list<GElementPtr>(),
-                             const std::string& name = "",
+    GElementPtr createGGroup(const GElementPtrArr &elements,
+                             const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
+                             const std::string &name = "",
                              int loop = 1);
 
     /**
@@ -86,12 +84,16 @@ public:
      * @return
      */
     template<typename T>
-    CSTATUS registerGElement(GElementPtr* elementRef,
-                             const GElementPtrSet& dependElements = std::initializer_list<GElementPtr>(),
-                             const std::string& name = "",
+    CSTATUS registerGElement(GElementPtr *elementRef,
+                             const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
+                             const std::string &name = "",
                              int loop = 1);
 
 protected:
+    explicit GPipeline();
+
+    ~GPipeline() override;
+
     /**
      * element元素，添加依赖节点信息
      * @param element
@@ -99,7 +101,7 @@ protected:
      * @return
      */
     CSTATUS addDependElements(GElementPtr element,
-                              const std::set<GElementPtr>& dependElements) const;
+                              const std::set<GElementPtr> &dependElements) const;
 
 
 private:
@@ -108,9 +110,12 @@ private:
     GraphThreadPoolPtr thread_pool_;                     // 线程池类
     GElementPtrSet element_repository_;                  // 标记创建的所有节点，最终释放使用
     GParamManagerPtr param_manager_;
+
+    friend class GPipelineFactory;
 };
 
 using GPipelinePtr = GPipeline *;
+using GPipelinePtrList = std::list<GPipelinePtr>;
 
 #include "GPipeline.inl"
 

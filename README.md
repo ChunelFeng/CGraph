@@ -68,25 +68,35 @@ public:
 #include "MyGNode/MyNode2.h"
 
 void tutorial_simple() {
-    /* 创建图化 */
-    GPipelinePtr pipeline = new GPipeline();
+    /* 创建图 */
+    GPipelinePtr pipeline = GPipelineFactory::create();
+
     CSTATUS status = STATUS_OK;
     GElementPtr a, b, c, d = nullptr;
 
-    /* 注册节点，其中MyNode1和MyNode2必须为GraphNode的子类
+    /* 注册节点，其中MyNode1和MyNode2必须为GraphNode的子类，否则无法通过编译。
      * MyNode1中run()执行内容为sleep(1s)
      * MyNode2中run()执行内容为sleep(2s) */
     status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");    // 将名为nodeA，无执行依赖的node信息，注册入pipeline中
     if (STATUS_OK != status) {
         return;    // 使用时，请对所有CGraph接口的返回值做判定。本例子中省略
     }
-    status = pipeline->registerGElement<MyNode2>(&b, {a}, "nodeB", 3);    // 将名为nodeB，依赖a执行且自循环3次的node信息，注册入pipeline中
+    status = pipeline->registerGElement<MyNode2>(&b, {a}, "nodeB");    // 将名为nodeB，依赖a执行的node信息，注册入pipeline中
     status = pipeline->registerGElement<MyNode1>(&c, {a}, "nodeC");
     status = pipeline->registerGElement<MyNode2>(&d, {b, c}, "nodeD");    // 将名为nodeD，依赖{b,c}执行的node信息，注册入pipeline中
 
-    /* 执行流图信息 */
-    status = pipeline->process();
-    delete pipeline;
+    /* 图信息初始化，准备开始计算 */
+    status = pipeline->init();
+
+    /* 运行图计算。初始化后，支持多次循环计算 */
+    for (int i = 0; i < 3; i++) {
+        status = pipeline->run();
+        std::cout << "[CGraph] tutorial_simple, loop : " << i + 1 << ", and run status = " << status << std::endl;
+    }
+
+    /* 图信息逆初始化，准备结束计算 */
+    status = pipeline->deinit();
+    GPipelineFactory::destroy(pipeline);
 }
 ```
 
@@ -121,6 +131,9 @@ void tutorial_simple() {
 [2021.06.20 - v1.4.1 - Chunel]
 * 提供`condition`（条件）功能
 * 添加对windows系统的支持
+
+[2021.06.20 - v1.5.0 - Chunel]
+* 提供`pipeline`工厂创建方法
 
 ------------
 #### 附录-2. 推荐阅读

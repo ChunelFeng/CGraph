@@ -12,9 +12,9 @@
 #include <algorithm>
 
 template<typename T>
-CSTATUS GPipeline::registerGElement(GElementPtr* elementRef,
-                                    const GElementPtrSet& dependElements,
-                                    const std::string& name,
+CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
+                                    const GElementPtrSet &dependElements,
+                                    const std::string &name,
                                     int loop) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
@@ -48,7 +48,7 @@ CSTATUS GPipeline::registerGElement(GElementPtr* elementRef,
 
 
 template<typename T>
-GElementPtr GPipeline::createGNode(const GNodeInfo& info) {
+GElementPtr GPipeline::createGNode(const GNodeInfo &info) {
     GNodePtr node = nullptr;
     if (std::is_base_of<GNode, T>::value) {
         node = new(std::nothrow) T();
@@ -67,22 +67,22 @@ GElementPtr GPipeline::createGNode(const GNodeInfo& info) {
 
 
 template<typename T>
-GElementPtr GPipeline::createGGroup(const GElementPtrArr& elements,
-                                    const GElementPtrSet& dependElements,
-                                    const std::string& name,
+GElementPtr GPipeline::createGGroup(const GElementPtrArr &elements,
+                                    const GElementPtrSet &dependElements,
+                                    const std::string &name,
                                     int loop) {
     // 如果不是所有的都非空，则创建失败
     if (std::any_of(elements.begin(), elements.end(),
-                     [](GElementPtr element) {
+                    [](GElementPtr element) {
                         return (nullptr == element);
-                     })) {
+                    })) {
         return nullptr;
     }
 
     if (std::any_of(dependElements.begin(), dependElements.end(),
-                     [](GElementPtr element) {
-                         return (nullptr == element);
-                     })) {
+                    [](GElementPtr element) {
+                        return (nullptr == element);
+                    })) {
         return nullptr;
     }
 

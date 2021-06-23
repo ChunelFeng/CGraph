@@ -11,7 +11,7 @@
 
 void tutorial_complex () {
     CSTATUS status = STATUS_OK;
-    GPipelinePtr pipeline = new GPipeline();
+    GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b_cluster, c, d_region, e = nullptr;
 
     b_cluster = pipeline->createGGroup<GCluster>({
@@ -38,7 +38,7 @@ void tutorial_complex () {
     status = pipeline->registerGElement<MyNode1>(&e, {c, d_region}, "nodeE", 1);
 
     status = pipeline->process();
-    return;
+    GPipelineFactory::destroy(pipeline);
 }
 
 int main () {
