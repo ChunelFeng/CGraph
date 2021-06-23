@@ -132,7 +132,7 @@ void tutorial_simple() {
 * 提供`condition`（条件）功能
 * 添加对windows系统的支持
 
-[2021.06.20 - v1.5.0 - Chunel]
+[2021.06.24 - v1.5.0 - Chunel]
 * 提供`pipeline`工厂创建方法
 
 ------------
