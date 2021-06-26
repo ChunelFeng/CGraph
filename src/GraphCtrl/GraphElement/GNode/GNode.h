@@ -13,18 +13,15 @@
 #include "../../GraphParam/GParamManager.h"
 
 class GNode : public GElement {
-
-public:
-
 protected:
     explicit GNode();
     ~GNode() override;
 
+private:
     GNode(const GNode& node);
     GNode& operator=(const GNode& node);
 
     CSTATUS process(bool isMock) override;
-
     CSTATUS beforeRun() override;
     CSTATUS afterRun() override;
 
