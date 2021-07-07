@@ -17,7 +17,7 @@
 
 class GParam : public CObject {
 public:
-    [[maybe_unused]] std::shared_mutex _param_shared_lock_;
+    std::shared_mutex _param_shared_lock_;
 
 private:
     /**
