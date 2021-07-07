@@ -16,7 +16,7 @@
 class GElementManager : public CObject {
 protected:
     explicit GElementManager();
-    ~GElementManager() override;    // 注意，manager中的节点，在析构的时候不需要释放。所有的节点信息在CFlow类中统一申请和释放
+    ~GElementManager() override;    // 注意，manager中的节点，在析构的时候不需要释放。所有的节点信息在GPipeLine类中统一申请和释放
     GElementManager(const GElementManager& manager);
     GElementManager& operator=(const GElementManager& manager);
 

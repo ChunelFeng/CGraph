@@ -29,9 +29,10 @@ set(TUTORIAL_LIST
         T06-Condition)
 
 # 编译libCGraph动态库
-add_library(CGraph SHARED ${SRC_LIST})
+# add_library(CGraph SHARED ${SRC_LIST})
 
 foreach(tut ${TUTORIAL_LIST})
     add_executable(${tut} tutorial/${tut}.cpp ${SRC_LIST})
 endforeach()
+
 

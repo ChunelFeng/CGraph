@@ -21,11 +21,15 @@
 
 class GElement : public CObject {
 public:
-    /* 获取name信息 */
-    std::string getName() const;
+    /**
+     * 获取name信息
+     */
+    const std::string& getName() const;
 
-    /* 获取session信息（全局唯一） */
-    std::string getSession() const;
+    /**
+     * 获取session信息（全局唯一）
+     */
+    const std::string& getSession() const;
 
     /**
      * 获取参数信息，如果未找到，则返回nullptr

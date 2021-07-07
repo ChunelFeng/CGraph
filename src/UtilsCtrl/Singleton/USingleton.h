@@ -6,21 +6,21 @@
 @Desc: 
 ***************************/
 
-#ifndef CGRAPH_SINGLETON_H
-#define CGRAPH_SINGLETON_H
+#ifndef CGRAPH_USINGLETON_H
+#define CGRAPH_USINGLETON_H
 
 #include <shared_mutex>
 #include "../UtilsInclude.h"
 #include "../../CObject/CObject.h"
 
 template<typename T>
-class Singleton : public CObject {
+class USingleton : public CObject {
 public:
-    explicit Singleton() {
+    explicit USingleton() {
         create();
     }
 
-    ~Singleton() override {
+    ~USingleton() override {
         destroy();
     }
 
@@ -42,7 +42,7 @@ protected:
         CGRAPH_FUNCTION_END
     }
 
-    CSTATUS run() {
+    CSTATUS run() override {
         CGRAPH_NO_SUPPORT
     }
 

@@ -84,7 +84,7 @@ CSTATUS GRegion::run() {
         futures.clear();
 
         for (GCluster& cluster : clusterArr) {
-            futures.push_back(std::move(this->thread_pool_->commit(cluster)));
+            futures.push_back(thread_pool_->commit(std::bind(&GCluster::process, cluster, false)));
             runNodeSize += cluster.getElementNum();
         }
 
@@ -125,7 +125,7 @@ CSTATUS GRegion::addElement(GElementPtr element) {
 }
 
 
-CSTATUS GRegion::setThreadPool(GraphThreadPool* pool) {
+CSTATUS GRegion::setThreadPool(UThreadPoolPtr pool) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(pool)
 

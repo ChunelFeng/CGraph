@@ -10,13 +10,13 @@
 
 /******** public ********/
 /* 获取name信息 */
-std::string GElement::getName() const {
+const std::string& GElement::getName() const {
     return this->name_;
 }
 
 
 /* 获取session信息（全局唯一） */
-std::string GElement::getSession() const {
+const std::string& GElement::getSession() const {
     return this->session_;
 }
 

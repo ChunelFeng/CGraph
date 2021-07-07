@@ -10,7 +10,7 @@
 #include "GPipeline.h"
 
 GPipeline::GPipeline() {
-    thread_pool_ = new(std::nothrow) GraphThreadPool();
+    thread_pool_ = new(std::nothrow) UThreadPool();
     element_manager_ = new(std::nothrow) GElementManager();
     param_manager_ = new(std::nothrow) GParamManager();
     is_init_ = false;
@@ -58,7 +58,7 @@ CSTATUS GPipeline::run() {
         futures.clear();
 
         for (GCluster& cluster : clusterArr) {
-            futures.push_back(std::move(this->thread_pool_->commit(cluster)));
+            futures.push_back(thread_pool_->commit(std::bind(&GCluster::process, cluster, false)));
             runElementSize += cluster.getElementNum();
         }
 

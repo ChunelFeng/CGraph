@@ -30,7 +30,6 @@ private:
 
 using GNodePtr = GNode *;
 using GNodePtrArr = std::vector<GNodePtr>;
-using GNodePtrSet = std::set<GNodePtr>;
 
 
 #endif //CGRAPH_GNODE_H

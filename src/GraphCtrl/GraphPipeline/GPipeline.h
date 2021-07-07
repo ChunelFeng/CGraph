@@ -15,7 +15,6 @@
 
 #include "../../CObject/CObject.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
-#include "../GraphThread/GraphThreadPool.h"
 #include "../GraphElement/GElementManager.h"
 #include "../GraphParam/GParamInclude.h"
 #include "GPipelineDefine.h"
@@ -107,9 +106,9 @@ protected:
 private:
     bool is_init_;                                       // 标志位
     GElementManagerPtr element_manager_;                 // 节点管理类（管理所有注册过的element信息）
-    GraphThreadPoolPtr thread_pool_;                     // 线程池类
     GElementPtrSet element_repository_;                  // 标记创建的所有节点，最终释放使用
-    GParamManagerPtr param_manager_;
+    GParamManagerPtr param_manager_;                     // 参数管理类
+    UThreadPoolPtr thread_pool_;                         // 线程池类
 
     friend class GPipelineFactory;
 };

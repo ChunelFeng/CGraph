@@ -12,7 +12,6 @@
 
 #include "../GGroup.h"
 #include "../../GElementManager.h"
-#include "../../../GraphThread/GraphThreadPool.h"
 
 /* region 中包含了 cluster 信息 */
 
@@ -31,11 +30,11 @@ protected:
 
     CSTATUS addElement(GElementPtr element) override;
 
-    CSTATUS setThreadPool(GraphThreadPool* pool);
+    CSTATUS setThreadPool(UThreadPoolPtr pool);
 
 private:
     GElementManagerPtr manager_;
-    GraphThreadPoolPtr thread_pool_;    // 这里需要使用GPipeline类的线程池
+    UThreadPoolPtr thread_pool_;    // 这里需要使用GPipeline类的线程池
 
     friend class GPipeline;
 };

@@ -85,17 +85,8 @@ void tutorial_simple() {
     status = pipeline->registerGElement<MyNode1>(&c, {a}, "nodeC");
     status = pipeline->registerGElement<MyNode2>(&d, {b, c}, "nodeD");    // 将名为nodeD，依赖{b,c}执行的node信息，注册入pipeline中
 
-    /* 图信息初始化，准备开始计算 */
-    status = pipeline->init();
-
-    /* 运行图计算。初始化后，支持多次循环计算 */
-    for (int i = 0; i < 3; i++) {
-        status = pipeline->run();
-        std::cout << "[CGraph] tutorial_simple, loop : " << i + 1 << ", and run status = " << status << std::endl;
-    }
-
-    /* 图信息逆初始化，准备结束计算 */
-    status = pipeline->deinit();
+    /* 执行流图框架 */
+    status = pipeline->process();
     GPipelineFactory::destroy(pipeline);
 }
 ```
@@ -135,6 +126,9 @@ void tutorial_simple() {
 [2021.06.24 - v1.5.0 - Chunel]
 * 提供`pipeline`工厂创建方法
 * 更新`tutorial`内容
+
+[2021.07.07 - v1.5.1 - Chunel]
+* 优化线程池功能
 
 ------------
 #### 附录-2. 推荐阅读

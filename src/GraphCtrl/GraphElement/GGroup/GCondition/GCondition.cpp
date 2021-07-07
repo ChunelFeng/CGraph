@@ -78,8 +78,7 @@ CSTATUS GCondition::run() {
             CGRAPH_FUNCTION_CHECK_STATUS
         }
     } else {
-        // 设定的index不在范围内，返回错误信息
-        status = STATUS_ERR;
+        // 设定的index不在范围内，则不进行任何操作
     }
 
     CGRAPH_FUNCTION_END

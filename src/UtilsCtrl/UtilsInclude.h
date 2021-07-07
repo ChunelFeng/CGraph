@@ -11,6 +11,7 @@
 #define CGRAPH_UTILSINCLUDE_H
 
 #include "UtilsDefine.h"
-#include "Singleton/Singleton.h"
+#include "ThreadPool/UThreadPoolInclude.h"
+#include "Singleton/USingleton.h"
 
 #endif //CGRAPH_UTILSINCLUDE_H
