@@ -38,6 +38,9 @@ CSTATUS GPipeline::init() {
     status = element_manager_->init();
     CGRAPH_FUNCTION_CHECK_STATUS
 
+    status = thread_pool_->init();
+    CGRAPH_FUNCTION_CHECK_STATUS
+
     is_init_ = true;
     CGRAPH_FUNCTION_END
 }
@@ -76,6 +79,9 @@ CSTATUS GPipeline::run() {
 
 CSTATUS GPipeline::deinit() {
     CGRAPH_FUNCTION_BEGIN
+
+    status = thread_pool_->deinit();
+    CGRAPH_FUNCTION_CHECK_STATUS
 
     status = element_manager_->deinit();
     CGRAPH_FUNCTION_CHECK_STATUS

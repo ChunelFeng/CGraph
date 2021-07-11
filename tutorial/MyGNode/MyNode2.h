@@ -18,7 +18,7 @@ public:
     CSTATUS run () override {
         CSTATUS status = STATUS_OK;
         CGRAPH_ECHO("[%s], enter MyNode2 run function. Sleep for 2 second ... ", this->getName().c_str());
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+        CGRAPH_SLEEP_SECOND(2)
         return status;
     }
 };

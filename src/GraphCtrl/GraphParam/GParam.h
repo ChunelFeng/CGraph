@@ -27,7 +27,7 @@ private:
     CSTATUS run() override;
 
     /**
-     * 每次pipeline执行结束，会调用一次reset，防止pipeline执行的时候，参数污染
+     * 每次pipeline执行结束，会调用一次reset
      * @return
      */
     virtual void reset() = 0;

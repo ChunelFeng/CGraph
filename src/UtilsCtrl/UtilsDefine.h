@@ -120,6 +120,12 @@ inline std::string CGRAPH_GENERATE_SESSION() {
 #define CGRAPH_NO_SUPPORT                           \
     return STATUS_ERR;                              \
 
+#define CGRAPH_SLEEP_MILLISECOND(ms)                                    \
+    std::this_thread::sleep_for(std::chrono::milliseconds(ms));         \
+
+#define CGRAPH_SLEEP_SECOND(s)                                          \
+    std::this_thread::sleep_for(std::chrono::seconds(s));               \
+
 #define CGRAPH_PARAM_WRITE_CODE_BLOCK(param)                            \
     CGRAPH_WRITE_LOCK __paramWLock__((param)->_param_shared_lock_);     \
 

@@ -18,7 +18,10 @@ using CGRAPH_WRITE_LOCK = std::unique_lock<std::shared_mutex>;
 using CGRAPH_LOCK_GUARD = std::lock_guard<std::mutex>;
 using CGRAPH_UNIQUE_LOCK = std::unique_lock<std::mutex>;
 
-static const int DEFAULT_THREAD_SIZE = std::thread::hardware_concurrency() + 1;
-static const int MAX_THREAD_SIZE = DEFAULT_THREAD_SIZE * 2;
+static const int CGRAPH_DEFAULT_THREAD_SIZE = std::thread::hardware_concurrency();
+static const int CGRAPH_MAX_THREAD_SIZE = CGRAPH_DEFAULT_THREAD_SIZE * 2 + 1;
 
-#endif //CGRAPH_UTHREADPOOLDEFINE_H
+static const int CGRAPH_SECONDARY_THREAD_TTL = 20;
+static const int CGRAPH_MONITOR_SPAN = 5;
+
+#endif // CGRAPH_UTHREADPOOLDEFINE_H
