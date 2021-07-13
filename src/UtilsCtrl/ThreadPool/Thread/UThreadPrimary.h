@@ -111,6 +111,14 @@ public:
             return false;
         }
 
+        if (std::any_of(pool_threads_->begin(), pool_threads_->end(),
+                        [](UThreadPrimary* thd) {
+                            return nullptr == thd;
+                        })) {
+            // 防止线程初始化失败的情况，导致的崩溃
+            return false;
+        }
+
         // 窃取的时候，仅从primary线程中窃取
         int size = std::min((int)pool_threads_->size(), CGRAPH_DEFAULT_THREAD_SIZE);
         for (int i = 0; i < (size - 1); i++) {

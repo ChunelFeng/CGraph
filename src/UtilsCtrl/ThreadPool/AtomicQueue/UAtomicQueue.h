@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: UAtomicQueue.h
 @Time: 2021/7/2 11:28 下午
-@Desc: 
+@Desc: 设计了一个安全队列
 ***************************/
 
 #ifndef CGRAPH_UATOMICQUEUE_H
@@ -23,6 +23,10 @@ class UAtomicQueue : public UThreadObject {
 public:
     UAtomicQueue() {}
 
+    /**
+     * 等待弹出
+     * @param value
+     */
     void waitPop(T& value) {
         CGRAPH_LOCK_GUARD lk(mutex_);
         cv_.wait(lk, [this] { return !queue_.empty(); });
@@ -30,6 +34,12 @@ public:
         queue_.pop();
     }
 
+
+    /**
+     * 尝试弹出
+     * @param value
+     * @return
+     */
     bool tryPop(T& value) {
         CGRAPH_LOCK_GUARD lk(mutex_);
         if (queue_.empty()) {
@@ -40,6 +50,7 @@ public:
         return true;
     }
 
+
     std::unique_ptr<T> waitPop() {
         CGRAPH_LOCK_GUARD lk(mutex_);
         cv_.wait(lk, [this] { return !queue_.empty(); });
@@ -47,6 +58,7 @@ public:
         queue_.pop();
         return result;
     }
+
 
     std::unique_ptr<T> tryPop() {
         CGRAPH_LOCK_GUARD lk(mutex_);
@@ -58,6 +70,11 @@ public:
         return res;
     }
 
+
+    /**
+     * 传入数据
+     * @param value
+     */
     void push(T&& value) {
         std::unique_ptr<T> task(std::make_unique<T>(std::move(value)));
         CGRAPH_LOCK_GUARD lk(mutex_);

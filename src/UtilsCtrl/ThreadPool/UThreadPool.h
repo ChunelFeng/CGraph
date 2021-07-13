@@ -28,6 +28,10 @@ public:
     explicit UThreadPool() {
         cur_index_ = 0;
         is_init_ = false;
+
+        /* 开启监控线程 */
+        is_monitor_ = true;
+        monitor_thread_ = std::move(std::thread(&UThreadPool::monitor, this));
     }
 
     /**
@@ -50,7 +54,6 @@ public:
         }
 
         is_init_ = true;
-        monitor_thread_ = std::move(std::thread(&UThreadPool::monitor, this));
         CGRAPH_FUNCTION_END
     }
 
@@ -63,10 +66,6 @@ public:
         CGRAPH_FUNCTION_BEGIN
 
         is_init_ = false;
-        if (monitor_thread_.joinable()) {
-            monitor_thread_.join();
-        }
-
         // primary 线程是普通指针，需要delete
         for (auto& thread : primary_threads_) {
             status = thread->deinit();
@@ -85,7 +84,14 @@ public:
         CGRAPH_FUNCTION_END
     }
 
+
     ~UThreadPool() override {
+        // 在析构的时候，才释放监控线程
+        is_monitor_ = false;
+        if (monitor_thread_.joinable()) {
+            monitor_thread_.join();
+        }
+
         deinit();
     }
 
@@ -103,7 +109,7 @@ public:
         std::packaged_task<resultType()> task(func);
         std::future<resultType> result(task.get_future());
 
-        if (cur_index_ < CGRAPH_DEFAULT_THREAD_SIZE) {
+        if (cur_index_ >= 0 && cur_index_ < CGRAPH_DEFAULT_THREAD_SIZE) {
             // 部分任务直接放到线程的队列中执行
             primary_threads_[cur_index_]->work_stealing_queue_.push(std::move(task));
         } else {
@@ -112,7 +118,7 @@ public:
         }
 
         cur_index_++;
-        if (cur_index_ >= CGRAPH_MAX_THREAD_SIZE) {
+        if (cur_index_ >= CGRAPH_MAX_THREAD_SIZE || cur_index_ < 0) {
             cur_index_ = 0;
         }
         return result;
@@ -124,9 +130,15 @@ public:
      * 增/删 操作，仅针对secondary类型线程生效
      */
     void monitor() {
-        while (is_init_) {
+        while (is_monitor_) {
+            while (is_monitor_ && !is_init_) {
+                // 如果没有init，则一直处于空跑状态
+                CGRAPH_SLEEP_SECOND(1);
+                continue;
+            }
+
             int span = CGRAPH_MONITOR_SPAN;
-            while (is_init_ && span--) {
+            while (is_monitor_ && is_init_ && span--) {
                 CGRAPH_SLEEP_SECOND(1)    // 保证可以快速退出
             }
 
@@ -157,6 +169,7 @@ public:
 
 private:
     bool is_init_ { false };                                                        // 是否初始化
+    bool is_monitor_ { true };                                                      // 是否需要监控
     int cur_index_;                                                                 // 记录放入的线程数
     UAtomicQueue<UTaskWrapper> task_queue_;                                         // 用于存放普通任务
     std::vector<UThreadPrimaryPtr> primary_threads_;                                // 记录所有的核心线程
