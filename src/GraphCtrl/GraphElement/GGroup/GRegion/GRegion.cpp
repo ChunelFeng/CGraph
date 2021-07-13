@@ -6,6 +6,8 @@
 @Desc: 
 ***************************/
 
+#include <functional>
+
 #include "GRegion.h"
 
 GRegion::GRegion() : GGroup() {
@@ -20,7 +22,7 @@ GRegion::~GRegion() {
 }
 
 
-GRegion::GRegion(const GRegion& region) {
+GRegion::GRegion(const GRegion& region)  : GGroup(region) {
     for (GElementPtr element : region.manager_->manager_elements_) {
         this->manager_->manager_elements_.insert(element);
     }

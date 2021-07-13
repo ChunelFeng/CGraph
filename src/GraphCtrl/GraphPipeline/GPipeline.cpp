@@ -7,6 +7,8 @@
 ***************************/
 
 #include <set>
+#include <functional>
+
 #include "GPipeline.h"
 
 GPipeline::GPipeline() {
