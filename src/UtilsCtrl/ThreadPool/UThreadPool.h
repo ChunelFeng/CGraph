@@ -134,7 +134,6 @@ public:
             while (is_monitor_ && !is_init_) {
                 // 如果没有init，则一直处于空跑状态
                 CGRAPH_SLEEP_SECOND(1);
-                continue;
             }
 
             int span = CGRAPH_MONITOR_SPAN;
