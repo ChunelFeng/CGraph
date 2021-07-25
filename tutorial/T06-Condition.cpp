@@ -14,7 +14,6 @@
 #include "MyGNode/MyWriteParamNode.h"
 
 void tutorial_condition() {
-    /* 根据MyCondition的信息， */
     CSTATUS status = STATUS_OK;
     GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b_condition, c, d_condition = nullptr;
