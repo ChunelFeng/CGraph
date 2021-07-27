@@ -7,7 +7,7 @@ CSTATUS GParamManager::create(const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
     if (params_map_.find(key) != params_map_.end()) {
         // 如果有，不重复创建
-        return STATUS_ERR;
+        return STATUS_OK;
     }
 
     CGRAPH_WRITE_LOCK wLock(this->lock_);

@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 IF(APPLE)
     # 非mac平台，暂时不支持自动生成session信息
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64 -O2")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64")
     add_definitions(-D_GENERATE_SESSION_)
 ELSEIF(UNIX)
     # linux平台加入多线程内容
