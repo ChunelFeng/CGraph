@@ -25,6 +25,7 @@ static std::mutex g_check_status_mtx;
 static std::mutex g_echo_mtx;
 static std::mutex g_session_mtx;
 
+/* CGRAPH 个性化输出 */
 inline void CGRAPH_ECHO(const char *cmd, ...) {
 #ifdef _CGRAPH_SILENCE_
     return;
@@ -63,6 +64,16 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
 #define likely(x)   __builtin_expect(!!(x), 1)
 #define unlikely(x) __builtin_expect(!!(x), 0)
 
+template<typename T>
+inline T* SafeMallocCObject() {
+    T* ptr = nullptr;
+    while (!ptr && std::is_base_of_v<CObject, T>) {
+        ptr = new(std::nothrow) T();
+    }
+    return ptr;
+}
+
+
 inline std::string CGRAPH_GENERATE_SESSION() {
 #ifdef _GENERATE_SESSION_
     CGRAPH_LOCK_GUARD lock{ g_session_mtx };
@@ -76,6 +87,11 @@ inline std::string CGRAPH_GENERATE_SESSION() {
     return "";    // 非mac平台，暂时不支持自动生成session信息
 #endif
 }
+
+
+/* 创建CObject对象 */
+#define CGRAPH_SAFE_MALLOC_COBJECT(TYPE)             \
+    SafeMallocCObject<TYPE>();                       \
 
 /* 开启函数流程 */
 #define CGRAPH_FUNCTION_BEGIN                       \

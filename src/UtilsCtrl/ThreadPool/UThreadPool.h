@@ -43,7 +43,7 @@ public:
 
         primary_threads_.reserve(CGRAPH_DEFAULT_THREAD_SIZE);
         for (int i = 0; i < CGRAPH_DEFAULT_THREAD_SIZE; ++i) {
-            auto ptr = new(std::nothrow) UThreadPrimary();    // 创建核心线程数
+            auto ptr = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary);    // 创建核心线程数
             CGRAPH_ASSERT_NOT_NULL(ptr)
 
             ptr->setThreadPoolInfo(i, &this->task_queue_, &this->primary_threads_);

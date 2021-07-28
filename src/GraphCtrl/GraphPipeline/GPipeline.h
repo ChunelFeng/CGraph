@@ -15,13 +15,10 @@
 
 #include "../../CObject/CObject.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
-#include "../GraphElement/GElementManager.h"
-#include "../GraphParam/GParamInclude.h"
 #include "GPipelineDefine.h"
 
 
 class GPipeline : public CObject {
-
 public:
     /**
      * 初始化pipeline信息

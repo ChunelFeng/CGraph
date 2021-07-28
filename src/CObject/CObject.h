@@ -14,14 +14,16 @@
 class CObject {
 public:
     /**
-     * 构造函数
+     * 默认构造函数
      */
-    explicit CObject();
+    explicit CObject() = default;
 
     /**
      * 初始化函数
      */
-    virtual CSTATUS init();
+    virtual CSTATUS init() {
+        return STATUS_OK;
+    }
 
     /**
      * 流程处理函数，必须实现
@@ -33,12 +35,14 @@ public:
      * 逆初始化函数
      * @return
      */
-    virtual CSTATUS deinit();
+    virtual CSTATUS deinit() {
+        return STATUS_OK;
+    }
 
     /**
-     * 析构函数
+     * 默认析构函数
      */
-    virtual ~CObject();
+    virtual ~CObject() = default;
 };
 
 

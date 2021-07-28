@@ -12,7 +12,7 @@
 #include "GPipeline.h"
 
 GPipeline::GPipeline() {
-    thread_pool_ = new(std::nothrow) UThreadPool();
+    thread_pool_ = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPool);
     element_manager_ = new(std::nothrow) GElementManager();
     param_manager_ = new(std::nothrow) GParamManager();
     is_init_ = false;
