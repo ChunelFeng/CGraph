@@ -67,7 +67,7 @@ public:
         bool result = false;
         if (mutex_.try_lock()) {
             int i = CGRAPH_MAX_TASK_BATCH_SIZE;    // 一次批量执行，最多执行这么多个
-            while (!queue_.empty() && --i) {
+            while (!queue_.empty() && i--) {
                 taskArr.emplace_back(std::move(queue_.front()));
                 queue_.pop_front();
                 result = true;
@@ -108,7 +108,7 @@ public:
         bool result = false;
         if (mutex_.try_lock()) {
             int i = CGRAPH_MAX_TASK_BATCH_SIZE;
-            while (!queue_.empty() && --i) {
+            while (!queue_.empty() && i--) {
                 taskArr.emplace_back(std::move(queue_.back()));
                 queue_.pop_back();
                 result = true;

@@ -63,7 +63,7 @@ public:
         }
 
         int i = CGRAPH_MAX_TASK_BATCH_SIZE;
-        while (!queue_.empty() && --i) {
+        while (!queue_.empty() && i--) {
             values.emplace_back(std::move(*queue_.front()));
             queue_.pop();
         }

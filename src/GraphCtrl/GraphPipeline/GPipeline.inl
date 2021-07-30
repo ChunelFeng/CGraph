@@ -1,7 +1,7 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: CFLow.inl
+@File: GPipeline.inl
 @Time: 2021/4/26 9:16 下午
 @Desc:
 ***************************/
@@ -104,6 +104,7 @@ GElementPtr GPipeline::createGGroup(const GElementPtrArr &elements,
         CGRAPH_DELETE_PTR(group)
         return nullptr;
     }
+
     group->setName(name);
     group->setLoop(loop);
     this->element_repository_.insert(group);
@@ -111,4 +112,4 @@ GElementPtr GPipeline::createGGroup(const GElementPtrArr &elements,
 }
 
 
-#endif //CGRAPH_CFLOW_INL
+#endif //CGRAPH_GPIPELINE_INL
