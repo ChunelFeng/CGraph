@@ -13,7 +13,7 @@
 using CSTATUS = int;
 
 #define STATUS_OK         (0)
-#define STATUS_ERR        (-1)
-#define STATUS_RES        (-2)
+#define STATUS_ERR        (-1)                // 流程异常
+#define STATUS_RES        (-2)                // 资源异常
 
 #endif //CGRAPH_COBJECTDEFINE_H

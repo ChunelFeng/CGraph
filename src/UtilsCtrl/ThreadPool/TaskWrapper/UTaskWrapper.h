@@ -9,6 +9,7 @@
 #ifndef CGRAPH_UTASKWRAPPER_H
 #define CGRAPH_UTASKWRAPPER_H
 
+#include <vector>
 #include <memory>
 
 #include "../UThreadObject.h"
@@ -31,8 +32,7 @@ class UTaskWrapper : public UThreadObject {
 
 public:
     template<typename F>
-    UTaskWrapper(F&& f):
-            impl_(new implType<F>(std::forward<F>(f))) {
+    UTaskWrapper(F&& f) : impl_(new implType<F>(std::forward<F>(f))) {
     }
 
     void operator()() {
@@ -57,7 +57,8 @@ public:
 };
 
 
-using UFunctionWapperRef = UTaskWrapper &;
-using UFunctionWapperPtr = UTaskWrapper *;
+using UTaskWrapperRef = UTaskWrapper &;
+using UTaskWrapperPtr = UTaskWrapper *;
+using UTaskWrapperArr = std::vector<UTaskWrapper>;
 
 #endif //CGRAPH_UTASKWRAPPER_H

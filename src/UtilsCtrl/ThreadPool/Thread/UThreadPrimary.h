@@ -56,6 +56,18 @@ public:
     CSTATUS run() override {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
+        CGRAPH_ASSERT_NOT_NULL(pool_threads_)
+
+        /**
+         * 线程池中任何一个primary线程为null都不可以执行
+         * 防止线程初始化失败的情况，导致的崩溃
+         */
+        if (std::any_of(pool_threads_->begin(), pool_threads_->end(),
+                        [](UThreadPrimary* thd) {
+                            return nullptr == thd;
+                        })) {
+            return STATUS_RES;
+        }
 
         while (done_) {
             runTask();
@@ -82,12 +94,41 @@ public:
 
 
     /**
+     * 批量执行task信息
+     * 简单测试，效果不如runTask接口，暂时不启用
+     */
+    void runTasks() {
+        UTaskWrapperArr tasks;
+        if (popTasks(tasks) || popPoolTasks(tasks) || stealTasks(tasks)) {
+            // 尝试从主线程中获取/盗取批量task，如果成功，则依次执行
+            is_running_ = true;
+            for (auto& curTask : tasks) {
+                curTask();
+            }
+            is_running_ = false;
+        } else {
+            std::this_thread::yield();
+        }
+    }
+
+
+    /**
      * 从本地弹出一个任务
      * @param task
      * @return
      */
-    bool popTask(UFunctionWapperRef task) {
+    bool popTask(UTaskWrapperRef task) {
         return work_stealing_queue_.tryPop(task);
+    }
+
+
+    /**
+     * 从本地弹出一批任务
+     * @param tasks
+     * @return
+     */
+    bool popTasks(UTaskWrapperArr& tasks) {
+        return work_stealing_queue_.tryMultiPop(tasks);
     }
 
 
@@ -96,8 +137,18 @@ public:
      * @param task
      * @return
      */
-    bool popPoolTask(UFunctionWapperRef task) {
+    bool popPoolTask(UTaskWrapperRef task) {
         return (pool_task_queue_ && pool_task_queue_->tryPop(task));
+    }
+
+
+    /**
+     * 从线程池的队列中中，获取批量信息
+     * @param tasks
+     * @return
+     */
+    bool popPoolTasks(UTaskWrapperArr& tasks) {
+        return (pool_task_queue_ && pool_task_queue_->tryMultiPop(tasks));
     }
 
 
@@ -106,30 +157,42 @@ public:
      * @param task
      * @return
      */
-    bool stealTask(UFunctionWapperRef task) {
-        if (nullptr == pool_threads_) {
-            return false;
-        }
-
-        if (std::any_of(pool_threads_->begin(), pool_threads_->end(),
-                        [](UThreadPrimary* thd) {
-                            return nullptr == thd;
-                        })) {
-            // 防止线程初始化失败的情况，导致的崩溃
-            return false;
-        }
-
-        // 窃取的时候，仅从primary线程中窃取
-        int size = std::min((int)pool_threads_->size(), CGRAPH_DEFAULT_THREAD_SIZE);
+    bool stealTask(UTaskWrapperRef task) {
+        /**
+         * 窃取的时候，仅从相邻的primary线程中窃取
+         * 相邻的数量，不能超过默认primary线程数
+         */
+        int size = std::min((int)pool_threads_->size(),
+                            CGRAPH_MAX_TASK_STEAL_RANGE % CGRAPH_DEFAULT_THREAD_SIZE);
         for (int i = 0; i < (size - 1); i++) {
             /**
-             * 从线程中周围的thread中，窃取任务。
-             * 如果成功，则返回true，并且执行任务。
-             * 重新获取一下size，是考虑到动态扩容可能会影响
-             */
+            * 从线程中周围的thread中，窃取任务。
+            * 如果成功，则返回true，并且执行任务。
+            * 重新获取一下size，是考虑到动态扩容可能会影响
+            */
             int curIndex = (index_ + i + 1) % size;
             if (nullptr != (*pool_threads_)[curIndex]
                 && (((*pool_threads_)[curIndex]))->work_stealing_queue_.trySteal(task)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * 从其他线程盗取一批任务
+     * @param tasks
+     * @return
+     */
+    bool stealTasks(UTaskWrapperArr& tasks) {
+        int size = std::min((int)pool_threads_->size(),
+                            CGRAPH_MAX_TASK_STEAL_RANGE % CGRAPH_DEFAULT_THREAD_SIZE);
+        for (int i = 0; i < (size - 1); i++) {
+            int curIndex = (index_ + i + 1) % size;
+            if (nullptr != (*pool_threads_)[curIndex]
+                && (((*pool_threads_)[curIndex]))->work_stealing_queue_.tryMultiSteal(tasks)) {
                 return true;
             }
         }

@@ -62,7 +62,7 @@ public:
      * @param task
      * @return
      */
-    bool popPoolTask(UFunctionWapperRef task) {
+    bool popPoolTask(UTaskWrapperRef task) {
         return (pool_task_queue_ && pool_task_queue_->tryPop(task));
     }
 
@@ -99,9 +99,7 @@ public:
 
 private:
     int ttl_;                                                             // 最大生存周期
-
-    // 线程池传递下来的信息
-    UAtomicQueue<UTaskWrapper>* pool_task_queue_{};
+    UAtomicQueue<UTaskWrapper>* pool_task_queue_{};                       // 线程池传递下来的信息
 
     friend class UThreadPool;
 };

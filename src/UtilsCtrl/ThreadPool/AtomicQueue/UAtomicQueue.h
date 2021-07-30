@@ -51,6 +51,27 @@ public:
     }
 
 
+    /**
+     * 尝试弹出多个任务
+     * @param values
+     * @return
+     */
+    bool tryMultiPop(std::vector<T>& values) {
+        CGRAPH_LOCK_GUARD lk(mutex_);
+        if (queue_.empty()) {
+            return false;
+        }
+
+        int i = CGRAPH_MAX_TASK_BATCH_SIZE;
+        while (!queue_.empty() && --i) {
+            values.emplace_back(std::move(*queue_.front()));
+            queue_.pop();
+        }
+
+        return true;
+    }
+
+
     std::unique_ptr<T> waitPop() {
         CGRAPH_LOCK_GUARD lk(mutex_);
         cv_.wait(lk, [this] { return !queue_.empty(); });

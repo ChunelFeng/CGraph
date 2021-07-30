@@ -38,7 +38,7 @@ public:
 
 
     /**
-     * 弹出节点，从前部进行
+     * 弹出节点，从头部进行
      * @param task
      * @return
      */
@@ -59,7 +59,28 @@ public:
 
 
     /**
-     * 窃取节点，从后方进行
+     * 从头部开始批量获取可执行任务信息
+     * @param taskArr
+     * @return
+     */
+    bool tryMultiPop(UTaskWrapperArr& taskArr) {
+        bool result = false;
+        if (mutex_.try_lock()) {
+            int i = CGRAPH_MAX_TASK_BATCH_SIZE;    // 一次批量执行，最多执行这么多个
+            while (!queue_.empty() && --i) {
+                taskArr.emplace_back(std::move(queue_.front()));
+                queue_.pop_front();
+                result = true;
+            }
+            mutex_.unlock();
+        }
+
+        return result;    // 如果弹出成功，则arr非空
+    }
+
+
+    /**
+     * 窃取节点，从尾部进行
      * @param task
      * @return
      */
@@ -76,6 +97,28 @@ public:
 
         return result;
     }
+
+
+    /**
+     * 批量窃取节点，从尾部进行
+     * @param taskArr
+     * @return
+     */
+    bool tryMultiSteal(UTaskWrapperArr& taskArr) {
+        bool result = false;
+        if (mutex_.try_lock()) {
+            int i = CGRAPH_MAX_TASK_BATCH_SIZE;
+            while (!queue_.empty() && --i) {
+                taskArr.emplace_back(std::move(queue_.back()));
+                queue_.pop_back();
+                result = true;
+            }
+            mutex_.unlock();
+        }
+
+        return result;    // 如果非空，表示盗取成功
+    }
+
 
     /* 禁止直接创建 */
     UWorkStealingQueue() = default;
