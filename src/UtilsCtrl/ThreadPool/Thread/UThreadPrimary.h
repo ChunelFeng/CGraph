@@ -61,16 +61,24 @@ public:
         /**
          * 线程池中任何一个primary线程为null都不可以执行
          * 防止线程初始化失败的情况，导致的崩溃
+         * 理论不会走到这个判断逻辑里面
          */
         if (std::any_of(pool_threads_->begin(), pool_threads_->end(),
                         [](UThreadPrimary* thd) {
                             return nullptr == thd;
                         })) {
+            CGRAPH_ECHO("thread [%ld] init run failed...", std::this_thread::get_id());
             return STATUS_RES;
         }
 
-        while (done_) {
-            runTask();
+        if (CGRAPH_BATCH_TASK_ENABLE) {
+            while (done_) {
+                runTasks();    // 批量任务获取执行接口
+            }
+        } else {
+            while (done_) {
+                runTask();    // 单个任务获取执行接口
+            }
         }
 
         CGRAPH_FUNCTION_END
@@ -95,7 +103,6 @@ public:
 
     /**
      * 批量执行task信息
-     * 简单测试，效果不如runTask接口，暂时不启用
      */
     void runTasks() {
         UTaskWrapperArr tasks;
@@ -158,19 +165,26 @@ public:
      * @return
      */
     bool stealTask(UTaskWrapperRef task) {
+        if (unlikely(pool_threads_->size() < CGRAPH_DEFAULT_THREAD_SIZE)) {
+            /**
+             * 线程池还未初始化完毕的时候，无法进行steal。
+             * 确保程序安全运行。
+             */
+            return false;
+        }
+
         /**
          * 窃取的时候，仅从相邻的primary线程中窃取
-         * 相邻的数量，不能超过默认primary线程数
+         * 待窃取相邻的数量，不能超过默认primary线程数
          */
-        int size = std::min((int)pool_threads_->size(),
-                            CGRAPH_MAX_TASK_STEAL_RANGE % CGRAPH_DEFAULT_THREAD_SIZE);
-        for (int i = 0; i < (size - 1); i++) {
+        int range = CGRAPH_MAX_TASK_STEAL_RANGE % CGRAPH_DEFAULT_THREAD_SIZE;
+        for (int i = 0; i < range; i++) {
             /**
             * 从线程中周围的thread中，窃取任务。
             * 如果成功，则返回true，并且执行任务。
-            * 重新获取一下size，是考虑到动态扩容可能会影响
+            * 重新获取一下range，是考虑到动态扩容可能会影响
             */
-            int curIndex = (index_ + i + 1) % size;
+            int curIndex = (index_ + i + 1) % range;
             if (nullptr != (*pool_threads_)[curIndex]
                 && (((*pool_threads_)[curIndex]))->work_stealing_queue_.trySteal(task)) {
                 return true;
@@ -187,10 +201,13 @@ public:
      * @return
      */
     bool stealTasks(UTaskWrapperArr& tasks) {
-        int size = std::min((int)pool_threads_->size(),
-                            CGRAPH_MAX_TASK_STEAL_RANGE % CGRAPH_DEFAULT_THREAD_SIZE);
-        for (int i = 0; i < (size - 1); i++) {
-            int curIndex = (index_ + i + 1) % size;
+        if (unlikely(pool_threads_->size() < CGRAPH_DEFAULT_THREAD_SIZE)) {
+            return false;
+        }
+
+        int range = CGRAPH_MAX_TASK_STEAL_RANGE % CGRAPH_DEFAULT_THREAD_SIZE;
+        for (int i = 0; i < range; i++) {
+            int curIndex = (index_ + i + 1) % range;
             if (nullptr != (*pool_threads_)[curIndex]
                 && (((*pool_threads_)[curIndex]))->work_stealing_queue_.tryMultiSteal(tasks)) {
                 return true;
