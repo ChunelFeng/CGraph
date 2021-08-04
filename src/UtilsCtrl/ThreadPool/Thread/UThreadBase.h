@@ -22,8 +22,8 @@ protected:
         done_ = true;
         is_init_ = false;
         is_running_ = false;
+        pool_task_queue_ = nullptr;
     }
-
 
     ~UThreadBase() override {
         deinit();    // 是不会重复deinit两次的，这样写虽然返回值非0，但是不会存在任何问题
@@ -49,10 +49,32 @@ protected:
         CGRAPH_FUNCTION_END
     }
 
+
+    /**
+     * 从线程池的队列中，获取任务
+     * @param task
+     * @return
+     */
+    virtual bool popPoolTask(UTaskWrapperRef task) {
+        return (pool_task_queue_ && pool_task_queue_->tryPop(task));
+    }
+
+
+    /**
+     * 从线程池的队列中中，获取批量任务
+     * @param tasks
+     * @return
+     */
+    virtual bool popPoolTasks(UTaskWrapperArr& tasks) {
+        return (pool_task_queue_ && pool_task_queue_->tryMultiPop(tasks));
+    }
+
 protected:
     bool done_;                                               // 线程状态标记
     bool is_init_;                                            // 标记初始化状态
     bool is_running_;                                         // 是否正在执行
+
+    UAtomicQueue<UTaskWrapper>* pool_task_queue_{};           // 用于存放线程池中的普通任务
     std::thread thread_;                                      // 线程类
 };
 

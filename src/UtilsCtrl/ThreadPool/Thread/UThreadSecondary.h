@@ -14,7 +14,6 @@
 class UThreadSecondary : public UThreadBase {
 public:
     explicit UThreadSecondary() {
-        pool_task_queue_ = nullptr;
         ttl_ = 0;
     }
 
@@ -49,21 +48,17 @@ public:
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
 
-        while (done_) {
-            runTask();
+        if (CGRAPH_BATCH_TASK_ENABLE) {
+            while (done_) {
+                runTasks();    // 批量任务获取执行接口
+            }
+        } else {
+            while (done_) {
+                runTask();    // 单个任务获取执行接口
+            }
         }
 
         CGRAPH_FUNCTION_END
-    }
-
-
-    /**
-     * 从线程池的队列中中，获取信息
-     * @param task
-     * @return
-     */
-    bool popPoolTask(UTaskWrapperRef task) {
-        return (pool_task_queue_ && pool_task_queue_->tryPop(task));
     }
 
 
@@ -83,6 +78,22 @@ public:
 
 
     /**
+     * 批量执行n个任务
+     */
+    void runTasks() {
+        UTaskWrapperArr tasks;
+        if (popPoolTasks(tasks)) {
+            is_running_ = true;
+            for (auto& curTask : tasks) {
+                curTask();
+            }
+            is_running_ = false;
+        } else {
+            std::this_thread::yield();
+        }
+    }
+
+    /**
      * 判断本线程是否需要被自动释放
      * @return
      */
@@ -99,7 +110,6 @@ public:
 
 private:
     int ttl_;                                                             // 最大生存周期
-    UAtomicQueue<UTaskWrapper>* pool_task_queue_{};                       // 线程池传递下来的信息
 
     friend class UThreadPool;
 };

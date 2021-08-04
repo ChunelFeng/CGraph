@@ -15,7 +15,6 @@ class UThreadPrimary : public UThreadBase {
 public:
     explicit UThreadPrimary() {
         index_ = -1;
-        pool_task_queue_ = nullptr;    // 初始化的时候，需要
         pool_threads_ = nullptr;
     }
 
@@ -67,7 +66,7 @@ public:
                         [](UThreadPrimary* thd) {
                             return nullptr == thd;
                         })) {
-            CGRAPH_ECHO("thread [%ld] init run failed...", std::this_thread::get_id());
+            CGRAPH_ECHO("thread [%ld] run failed...", std::this_thread::get_id());
             return STATUS_RES;
         }
 
@@ -140,26 +139,6 @@ public:
 
 
     /**
-     * 从线程池的队列中中，获取信息
-     * @param task
-     * @return
-     */
-    bool popPoolTask(UTaskWrapperRef task) {
-        return (pool_task_queue_ && pool_task_queue_->tryPop(task));
-    }
-
-
-    /**
-     * 从线程池的队列中中，获取批量信息
-     * @param tasks
-     * @return
-     */
-    bool popPoolTasks(UTaskWrapperArr& tasks) {
-        return (pool_task_queue_ && pool_task_queue_->tryMultiPop(tasks));
-    }
-
-
-    /**
      * 从其他线程窃取一个任务
      * @param task
      * @return
@@ -222,7 +201,6 @@ private:
     UWorkStealingQueue work_stealing_queue_;                       // 内部队列信息
 
     /* 以下两个信息，用于同步本线程所属的线程池中的信息 */
-    UAtomicQueue<UTaskWrapper>* pool_task_queue_{};                // 用于存放线程池中的普通任务
     std::vector<UThreadPrimary *>* pool_threads_{};                // 用于存放线程池中的线程信息
 
     friend class UThreadPool;
