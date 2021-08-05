@@ -161,9 +161,8 @@ public:
             /**
             * 从线程中周围的thread中，窃取任务。
             * 如果成功，则返回true，并且执行任务。
-            * 重新获取一下range，是考虑到动态扩容可能会影响
             */
-            int curIndex = (index_ + i + 1) % range;
+            int curIndex = (index_ + i + 1) % CGRAPH_DEFAULT_THREAD_SIZE;
             if (nullptr != (*pool_threads_)[curIndex]
                 && (((*pool_threads_)[curIndex]))->work_stealing_queue_.trySteal(task)) {
                 return true;
