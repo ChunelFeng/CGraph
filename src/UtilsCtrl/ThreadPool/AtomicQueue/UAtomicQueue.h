@@ -103,6 +103,7 @@ public:
         cv_.notify_one();
     }
 
+
     bool empty() const {
         CGRAPH_LOCK_GUARD lk(mutex_);
         return queue_.empty();

@@ -63,7 +63,7 @@ CSTATUS GPipeline::run() {
         futures.clear();
 
         for (GCluster& cluster : clusterArr) {
-            futures.push_back(thread_pool_->commit(std::bind(&GCluster::process, cluster, false)));
+            futures.emplace_back(thread_pool_->commit(std::bind(&GCluster::process, cluster, false)));
             runElementSize += cluster.getElementNum();
         }
 
