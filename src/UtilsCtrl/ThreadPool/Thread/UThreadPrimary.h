@@ -187,7 +187,7 @@ public:
         for (int i = 0; i < range; i++) {
             int curIndex = (index_ + i + 1) % range;
             if (nullptr != (*pool_threads_)[curIndex]
-                && (((*pool_threads_)[curIndex]))->work_stealing_queue_.tryMultiSteal(tasks)) {
+                && ((*pool_threads_)[curIndex])->work_stealing_queue_.tryMultiSteal(tasks)) {
                 return true;
             }
         }
