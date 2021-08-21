@@ -27,7 +27,7 @@ public:
     void push(UTaskWrapper&& task) {
         while (true) {
             if (mutex_.try_lock()) {
-                queue_.push_front(std::move(task));
+                queue_.emplace_front(std::move(task));
                 mutex_.unlock();
                 break;
             } else {

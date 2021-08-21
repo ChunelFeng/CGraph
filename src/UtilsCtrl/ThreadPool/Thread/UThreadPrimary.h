@@ -66,7 +66,6 @@ public:
                         [](UThreadPrimary* thd) {
                             return nullptr == thd;
                         })) {
-            CGRAPH_ECHO("thread [%ld] run failed...", std::this_thread::get_id());
             return STATUS_RES;
         }
 
@@ -164,7 +163,7 @@ public:
             */
             int curIndex = (index_ + i + 1) % CGRAPH_DEFAULT_THREAD_SIZE;
             if (nullptr != (*pool_threads_)[curIndex]
-                && (((*pool_threads_)[curIndex]))->work_stealing_queue_.trySteal(task)) {
+                && ((*pool_threads_)[curIndex])->work_stealing_queue_.trySteal(task)) {
                 return true;
             }
         }
@@ -185,7 +184,7 @@ public:
 
         int range = CGRAPH_MAX_TASK_STEAL_RANGE % CGRAPH_DEFAULT_THREAD_SIZE;
         for (int i = 0; i < range; i++) {
-            int curIndex = (index_ + i + 1) % range;
+            int curIndex = (index_ + i + 1) % CGRAPH_DEFAULT_THREAD_SIZE;
             if (nullptr != (*pool_threads_)[curIndex]
                 && ((*pool_threads_)[curIndex])->work_stealing_queue_.tryMultiSteal(tasks)) {
                 return true;

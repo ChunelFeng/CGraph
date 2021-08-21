@@ -25,7 +25,9 @@ public:
     }
 
     T* get() {
-        return handle_;
+        CGRAPH_LOCK_GUARD lock(lock_);
+        T* handle = handle_;
+        return handle;
     }
 
 protected:

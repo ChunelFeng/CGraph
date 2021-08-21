@@ -21,14 +21,14 @@ class UTaskWrapper : public UThreadObject {
         virtual ~implBase() = default;
     };
 
-    std::unique_ptr<implBase> impl_;
-
     template<typename F>
     struct implType : implBase {
         F func_;
         explicit implType(F&& func) : func_(std::move(func)) {}
         void call() override { func_(); }
     };
+
+    std::unique_ptr<implBase> impl_ = nullptr;
 
 public:
     template<typename F>

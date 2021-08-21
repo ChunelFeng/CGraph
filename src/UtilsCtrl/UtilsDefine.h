@@ -58,7 +58,7 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
     va_start(args, cmd);
     vprintf(cmd, args);
     va_end(args);
-    std::cout << "" << std::endl;
+    std::cout << "\n";
 }
 
 #define likely(x)   __builtin_expect(!!(x), 1)
