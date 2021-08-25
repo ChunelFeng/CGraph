@@ -145,8 +145,7 @@ CSTATUS GElementManager::analyse() {
                         curCluster.addElement(curElement);
                         duplications.insert(curElement);
 
-                        while (curElement->isLinkable()
-                               && 1 == curElement->run_before_.size()
+                        while (1 == curElement->run_before_.size()
                                && (*curElement->run_before_.begin())->isLinkable()) {
                             curElement = (*curElement->run_before_.begin());
                             curCluster.addElement(curElement);

@@ -21,7 +21,7 @@
 template<typename T>
 class UAtomicQueue : public UThreadObject {
 public:
-    UAtomicQueue() {}
+    UAtomicQueue() = default;
 
     /**
      * 等待弹出
@@ -86,7 +86,8 @@ public:
         if (queue_.empty()) {
             return std::unique_ptr<T>();
         }
-        std::unique_ptr<T> res = queue_.front();
+
+        std::unique_ptr<T> res = std::move(queue_.front());
         queue_.pop();
         return res;
     }

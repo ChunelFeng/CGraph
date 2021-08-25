@@ -135,7 +135,7 @@ protected:
     std::set<GElement *> run_before_;         // 被依赖的节点
     std::set<GElement *> dependence_;         // 依赖的节点信息
     std::atomic<int> left_depend_{ 0 };       // 当 left_depend_ 值为0的时候，即可以执行该node信息
-    GParamManagerPtr param_manager_;    // 整体流程的参数管理类，所有pipeline中的所有节点共享
+    GParamManagerPtr param_manager_;          // 整体流程的参数管理类，所有pipeline中的所有节点共享
 
     friend class GNode;
     friend class GCluster;
