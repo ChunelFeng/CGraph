@@ -32,19 +32,63 @@ public:
         /* 开启监控线程 */
         is_monitor_ = true;
         monitor_thread_ = std::move(std::thread(&UThreadPool::monitor, this));
+        init();
     }
 
+
+    ~UThreadPool() override {
+        // 在析构的时候，才释放监控线程
+        deinit();
+
+        is_monitor_ = false;
+        if (monitor_thread_.joinable()) {
+            monitor_thread_.join();
+        }
+
+        deinit();
+    }
+
+
+    /**
+     * 提交任务信息
+     * @tparam FunctionType
+     * @param func
+     * @return
+     */
+    template<typename FunctionType>
+    std::future<typename std::result_of<FunctionType()>::type> commit(FunctionType func) {
+        typedef typename std::result_of<FunctionType()>::type resultType;
+
+        std::packaged_task<resultType()> task(func);
+        std::future<resultType> result(task.get_future());
+
+        if (cur_index_ >= 0 && cur_index_ < CGRAPH_DEFAULT_THREAD_SIZE) {
+            // 部分任务直接放到线程的队列中执行
+            primary_threads_[cur_index_]->work_stealing_queue_.push(std::move(task));
+        } else {
+            // 部分数据被分流到线程池（总体）的任务队列中
+            task_queue_.push(std::move(task));
+        }
+
+        cur_index_++;
+        if (cur_index_ >= CGRAPH_MAX_THREAD_SIZE || cur_index_ < 0) {
+            cur_index_ = 0;
+        }
+        return result;
+    }
+
+protected:
     /**
      * 开启所有的线程信息
      * @return
      */
     CSTATUS init() override {
         CGRAPH_FUNCTION_BEGIN
+        CGRAPH_ASSERT_INIT(false)
 
         primary_threads_.reserve(CGRAPH_DEFAULT_THREAD_SIZE);
         for (int i = 0; i < CGRAPH_DEFAULT_THREAD_SIZE; ++i) {
             auto ptr = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary);    // 创建核心线程数
-            CGRAPH_ASSERT_NOT_NULL(ptr)
 
             ptr->setThreadPoolInfo(i, &this->task_queue_, &this->primary_threads_);
             status = ptr->init();
@@ -84,45 +128,6 @@ public:
         CGRAPH_FUNCTION_END
     }
 
-
-    ~UThreadPool() override {
-        // 在析构的时候，才释放监控线程
-        is_monitor_ = false;
-        if (monitor_thread_.joinable()) {
-            monitor_thread_.join();
-        }
-
-        deinit();
-    }
-
-
-    /**
-     * 提交任务信息
-     * @tparam FunctionType
-     * @param func
-     * @return
-     */
-    template<typename FunctionType>
-    std::future<typename std::result_of<FunctionType()>::type> commit(FunctionType func) {
-        typedef typename std::result_of<FunctionType()>::type resultType;
-
-        std::packaged_task<resultType()> task(func);
-        std::future<resultType> result(task.get_future());
-
-        if (cur_index_ >= 0 && cur_index_ < CGRAPH_DEFAULT_THREAD_SIZE) {
-            // 部分任务直接放到线程的队列中执行
-            primary_threads_[cur_index_]->work_stealing_queue_.push(std::move(task));
-        } else {
-            // 部分数据被分流到线程池（总体）的任务队列中
-            task_queue_.push(std::move(task));
-        }
-
-        cur_index_++;
-        if (cur_index_ >= CGRAPH_MAX_THREAD_SIZE || cur_index_ < 0) {
-            cur_index_ = 0;
-        }
-        return result;
-    }
 
 
     /**

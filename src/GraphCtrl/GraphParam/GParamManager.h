@@ -37,9 +37,9 @@ public:
 protected:
     explicit GParamManager();
     virtual ~GParamManager() override;
-    CSTATUS run() override;
-    CSTATUS init() override;
-    CSTATUS deinit() override;
+    CSTATUS run() final;
+    CSTATUS init() final;
+    CSTATUS deinit() final;
     void reset();
 
 

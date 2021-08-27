@@ -11,8 +11,11 @@
 
 #include "GPipeline.h"
 
+
+static USingleton<UThreadPool> G_SINGLETON_THREAD_POOL;
+
 GPipeline::GPipeline() {
-    thread_pool_ = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPool);
+    thread_pool_ = G_SINGLETON_THREAD_POOL.get();
     element_manager_ = new(std::nothrow) GElementManager();
     param_manager_ = new(std::nothrow) GParamManager();
     is_init_ = false;
@@ -20,7 +23,6 @@ GPipeline::GPipeline() {
 
 
 GPipeline::~GPipeline() {
-    CGRAPH_DELETE_PTR(thread_pool_)
     CGRAPH_DELETE_PTR(element_manager_)
     CGRAPH_DELETE_PTR(param_manager_)
 
@@ -38,9 +40,6 @@ CSTATUS GPipeline::init() {
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
 
     status = element_manager_->init();
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    status = thread_pool_->init();
     CGRAPH_FUNCTION_CHECK_STATUS
 
     is_init_ = true;
@@ -81,9 +80,6 @@ CSTATUS GPipeline::run() {
 
 CSTATUS GPipeline::deinit() {
     CGRAPH_FUNCTION_BEGIN
-
-    status = thread_pool_->deinit();
-    CGRAPH_FUNCTION_CHECK_STATUS
 
     status = element_manager_->deinit();
     CGRAPH_FUNCTION_CHECK_STATUS

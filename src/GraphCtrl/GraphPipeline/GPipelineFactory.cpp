@@ -40,6 +40,8 @@ void GPipelineFactory::clear() {
     for (GPipelinePtr pipeline : GPipelineFactory::pipeline_list_) {
         CGRAPH_DELETE_PTR(pipeline)
     }
+
+    pipeline_list_.clear();
 }
 
 
