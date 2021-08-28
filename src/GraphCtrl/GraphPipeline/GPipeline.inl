@@ -23,12 +23,20 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
         element_manager_->deleteElement(*elementRef);    // 每次注册，都默认为是新的节点
     }
 
-    /**
-     * 如果是GNode类型，则直接创建节点
-     * 如果不是GNode类型，则需要外部创建好，然后注册进来
-     * */
-    if (std::is_base_of<GNode, T>::value) {
+    if (std::is_base_of_v<GNode, T>) {
+        /* 如果是GNode的话，不允许外部传入实体。仅可以通过内部生成 */
         (*elementRef) = new(std::nothrow) T();
+    } else if (std::is_base_of_v<GGroup, T>) {
+        /**
+         * 如果是GGroup类型的信息，则：
+         * 1，必须外部创建
+         * 2，未被注册到其他的pipeline中
+         */
+        if ((*elementRef) != nullptr
+            && (*elementRef)->param_manager_ != nullptr) {
+            CGRAPH_ECHO("This group has already been registered to another pipeline.");
+            return STATUS_ERR;
+        }
     }
 
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
@@ -51,7 +59,7 @@ template<typename T>
 GElementPtr GPipeline::createGNode(const GNodeInfo &info) {
     GNodePtr node = nullptr;
     if (std::is_base_of<GNode, T>::value) {
-        node = new(std::nothrow) T();
+        node = CGRAPH_SAFE_MALLOC_COBJECT(T);
         CSTATUS status = addDependElements(node, info.dependence);
         if (STATUS_OK != status) {
             return nullptr;

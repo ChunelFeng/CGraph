@@ -10,10 +10,17 @@
 #include "MyGNode/MyNode2.h"
 
 void tutorial_simple() {
-    /* 创建图 */
+    /* 创建图对应的pipeline */
     GPipelinePtr pipeline = GPipelineFactory::create();
 
     CSTATUS status = STATUS_OK;
+    /**
+     * 本例中为了简化流程，做此写法。实际使用中，建议每个变量定义一行，例：
+     * GElementPtr a = nullptr;
+     * GElementPtr b = nullptr;
+     * GElementPtr c = nullptr;
+     * GElementPtr d = nullptr;
+     */
     GElementPtr a, b, c, d = nullptr;
 
     /* 注册节点，其中MyNode1和MyNode2必须为GraphNode的子类，否则无法通过编译。

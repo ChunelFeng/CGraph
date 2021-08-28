@@ -126,16 +126,16 @@ protected:
     virtual CSTATUS setParamManager(const GParamManagerPtr manager);
 
 protected:
-    bool done_ { false };                     // 判定被执行结束
-    bool is_init_ { false };                  // 是否初始化了
-    bool linkable_ { false };                 // 判定是否可以连通计算
-    int loop_ { 1 };                          // 节点执行次数
-    std::string name_;                        // 节点名称
-    std::string session_;                     // 节点唯一id信息
-    std::set<GElement *> run_before_;         // 被依赖的节点
-    std::set<GElement *> dependence_;         // 依赖的节点信息
-    std::atomic<int> left_depend_{ 0 };       // 当 left_depend_ 值为0的时候，即可以执行该node信息
-    GParamManagerPtr param_manager_;          // 整体流程的参数管理类，所有pipeline中的所有节点共享
+    bool done_ { false };                            // 判定被执行结束
+    bool is_init_ { false };                         // 是否初始化了
+    bool linkable_ { false };                        // 判定是否可以连通计算
+    int loop_ { 1 };                                 // 节点执行次数
+    std::string name_;                               // 节点名称
+    std::string session_;                            // 节点唯一id信息
+    std::set<GElement *> run_before_;                // 被依赖的节点
+    std::set<GElement *> dependence_;                // 依赖的节点信息
+    std::atomic<int> left_depend_{ 0 };              // 当 left_depend_ 值为0的时候，即可以执行该node信息
+    GParamManagerPtr param_manager_ { nullptr };     // 整体流程的参数管理类，所有pipeline中的所有节点共享
 
     friend class GNode;
     friend class GCluster;

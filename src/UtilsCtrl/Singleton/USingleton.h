@@ -10,6 +10,7 @@
 #define CGRAPH_USINGLETON_H
 
 #include <shared_mutex>
+
 #include "../UtilsInclude.h"
 #include "../../CObject/CObject.h"
 
@@ -59,7 +60,6 @@ private:
     T* handle_ { nullptr };
     std::mutex lock_;
 };
-
 
 
 #endif //CGRAPH_SINGLETONPROC_H

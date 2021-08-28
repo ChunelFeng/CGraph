@@ -63,7 +63,8 @@ CSTATUS GCondition::run() {
 
     int loop = 0;
     int index = this->choose();
-    if (GROUP_LAST_ELEMENT_INDEX == index && this->condition_elements_.size() > 0) {
+    if (GROUP_LAST_ELEMENT_INDEX == index
+        && this->condition_elements_.size() > 0) {
         // 如果返回-1，则直接执行最后一个条件（模仿default功能）
         loop = condition_elements_.back()->loop_;
         while (loop--) {
