@@ -12,10 +12,8 @@
 #include "GPipeline.h"
 
 
-static USingleton<UThreadPool> G_SINGLETON_THREAD_POOL;
-
 GPipeline::GPipeline() {
-    thread_pool_ = G_SINGLETON_THREAD_POOL.get();
+    thread_pool_ = UThreadPoolFactory::get();
     element_manager_ = new(std::nothrow) GElementManager();
     param_manager_ = new(std::nothrow) GParamManager();
     is_init_ = false;

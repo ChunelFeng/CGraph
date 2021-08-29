@@ -22,9 +22,11 @@ static const int CGRAPH_DEFAULT_THREAD_SIZE = (int)std::thread::hardware_concurr
 static const int CGRAPH_MAX_THREAD_SIZE = CGRAPH_DEFAULT_THREAD_SIZE * 2 + 1;
 static const int CGRAPH_MAX_TASK_STEAL_RANGE = 2;            // 盗取机制相邻范围
 static const bool CGRAPH_BATCH_TASK_ENABLE = false;          // 是否开启批量任务功能
-static const int CGRAPH_MAX_TASK_BATCH_SIZE = 2;             // 批量执行任务最大值
+static const int CGRAPH_MAX_LOCAL_BATCH_SIZE = 2;            // 批量执行本地任务最大值
+static const int CGRAPH_MAX_POOL_BATCH_SIZE = 2;             // 批量执行通用任务最大值
+static const int CGRAPH_MAX_STEAL_BATCH_SIZE = 2;            // 批量盗取任务最大值
 
-static const int CGRAPH_SECONDARY_THREAD_TTL = 10;
-static const int CGRAPH_MONITOR_SPAN = 5;
+static const int CGRAPH_SECONDARY_THREAD_TTL = 10;           // 辅助线程TTL
+static const int CGRAPH_MONITOR_SPAN = 5;                    // 监控线程执行间隔
 
 #endif // CGRAPH_UTHREADPOOLDEFINE_H

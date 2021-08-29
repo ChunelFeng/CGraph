@@ -155,7 +155,7 @@ public:
          * 窃取的时候，仅从相邻的primary线程中窃取
          * 待窃取相邻的数量，不能超过默认primary线程数
          */
-        int range = CGRAPH_MAX_TASK_STEAL_RANGE % CGRAPH_DEFAULT_THREAD_SIZE;
+        int range = std::min(CGRAPH_MAX_TASK_STEAL_RANGE, CGRAPH_DEFAULT_THREAD_SIZE - 1);
         for (int i = 0; i < range; i++) {
             /**
             * 从线程中周围的thread中，窃取任务。
@@ -182,7 +182,7 @@ public:
             return false;
         }
 
-        int range = CGRAPH_MAX_TASK_STEAL_RANGE % CGRAPH_DEFAULT_THREAD_SIZE;
+        int range = std::min(CGRAPH_MAX_TASK_STEAL_RANGE, CGRAPH_DEFAULT_THREAD_SIZE - 1);
         for (int i = 0; i < range; i++) {
             int curIndex = (index_ + i + 1) % CGRAPH_DEFAULT_THREAD_SIZE;
             if (nullptr != (*pool_threads_)[curIndex]

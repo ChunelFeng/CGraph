@@ -62,7 +62,7 @@ public:
             return false;
         }
 
-        int i = CGRAPH_MAX_TASK_BATCH_SIZE;
+        int i = CGRAPH_MAX_POOL_BATCH_SIZE;
         while (!queue_.empty() && i--) {
             values.emplace_back(std::move(*queue_.front()));
             queue_.pop();

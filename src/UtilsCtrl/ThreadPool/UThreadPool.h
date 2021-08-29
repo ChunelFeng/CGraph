@@ -32,14 +32,11 @@ public:
         /* 开启监控线程 */
         is_monitor_ = true;
         monitor_thread_ = std::move(std::thread(&UThreadPool::monitor, this));
-        init();
     }
 
 
     ~UThreadPool() override {
         // 在析构的时候，才释放监控线程
-        deinit();
-
         is_monitor_ = false;
         if (monitor_thread_.joinable()) {
             monitor_thread_.join();
@@ -77,7 +74,7 @@ public:
         return result;
     }
 
-protected:
+
     /**
      * 开启所有的线程信息
      * @return
@@ -129,7 +126,7 @@ protected:
     }
 
 
-
+protected:
     /**
      * 监控线程执行函数，主要是判断是否需要增加线程，或销毁线程
      * 增/删 操作，仅针对secondary类型线程生效

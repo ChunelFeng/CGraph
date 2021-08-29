@@ -15,5 +15,6 @@
 #include "TaskWrapper/UTaskWrapper.h"
 #include "AtomicQueue/UAtomicQueue.h"
 #include "WorkStealingQueue/UWorkStealingQueue.h"
+#include "UThreadPoolFactory.h"
 
 #endif //CGRAPH_UTHREADPOOLINCLUDE_H
