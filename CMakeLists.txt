@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.5.1)
 
-project(CGraph VERSION 1.5.3)
+project(CGraph VERSION 1.6.0)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -14,7 +14,7 @@ IF(APPLE)
     add_definitions(-D_GENERATE_SESSION_)
 ELSEIF(UNIX)
     # linux平台加入多线程内容
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64 -O2 -pthread -Wno-format-overflow")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64 -O3 -pthread -Wno-format-overflow")
 ENDIF()
 
 file(GLOB_RECURSE SRC_LIST "./src/*.cpp")
