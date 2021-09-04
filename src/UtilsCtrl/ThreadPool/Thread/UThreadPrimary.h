@@ -69,7 +69,7 @@ public:
             return STATUS_RES;
         }
 
-        if (CGRAPH_BATCH_TASK_ENABLE) {
+        if (CGRAPH_BATCH_TASK_ENABLE && !CGRAPH_FAIR_LOCK_ENABLE) {
             while (done_) {
                 runTasks();    // 批量任务获取执行接口
             }

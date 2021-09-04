@@ -13,7 +13,7 @@
 
 
 GPipeline::GPipeline() {
-    thread_pool_ = UThreadPoolFactory::get();
+    thread_pool_ = UThreadPoolSingleton::get();
     element_manager_ = new(std::nothrow) GElementManager();
     param_manager_ = new(std::nothrow) GParamManager();
     is_init_ = false;

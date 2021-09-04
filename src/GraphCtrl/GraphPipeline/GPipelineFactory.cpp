@@ -16,7 +16,7 @@ GPipelinePtr GPipelineFactory::create() {
     CGRAPH_LOCK_GUARD lock(lock_);
 
     if (pipeline_list_.empty()) {
-        status = UThreadPoolFactory::get()->init();
+        status = UThreadPoolSingleton::get()->init();
         if (STATUS_OK != status) {
             return nullptr;
         }
@@ -26,8 +26,8 @@ GPipelinePtr GPipelineFactory::create() {
     while (!pipeline) {
         pipeline = new(std::nothrow) GPipeline();
     }
-    pipeline_list_.emplace_back(pipeline);
 
+    pipeline_list_.emplace_back(pipeline);
     return pipeline;
 }
 
@@ -42,7 +42,7 @@ void GPipelineFactory::destroy(GPipelinePtr pipeline) {
     CGRAPH_DELETE_PTR(pipeline)
 
     if (pipeline_list_.empty()) {
-        UThreadPoolFactory::get()->deinit();
+        UThreadPoolSingleton::get()->deinit();
     }
 }
 
@@ -54,7 +54,7 @@ void GPipelineFactory::clear() {
         CGRAPH_DELETE_PTR(pipeline)
     }
 
-    UThreadPoolFactory::get()->deinit();
+    UThreadPoolSingleton::get()->deinit();
     pipeline_list_.clear();
 }
 

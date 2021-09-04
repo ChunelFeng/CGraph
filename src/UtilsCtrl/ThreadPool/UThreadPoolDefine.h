@@ -25,6 +25,7 @@ static const bool CGRAPH_BATCH_TASK_ENABLE = false;          // 是否开启批�
 static const int CGRAPH_MAX_LOCAL_BATCH_SIZE = 2;            // 批量执行本地任务最大值
 static const int CGRAPH_MAX_POOL_BATCH_SIZE = 2;             // 批量执行通用任务最大值
 static const int CGRAPH_MAX_STEAL_BATCH_SIZE = 2;            // 批量盗取任务最大值
+static const bool CGRAPH_FAIR_LOCK_ENABLE = false;           // 是否开启公平锁（非必须场景不建议开启，开启后CGRAPH_BATCH_TASK_ENABLE无效）
 
 static const int CGRAPH_SECONDARY_THREAD_TTL = 10;           // 辅助线程TTL
 static const int CGRAPH_MONITOR_SPAN = 5;                    // 监控线程执行间隔

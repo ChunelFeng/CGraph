@@ -27,7 +27,8 @@ set(TUTORIAL_LIST
         T04-Complex
         T05-Param
         T06-Condition
-        T07-MultiPipeline)
+        T07-MultiPipeline
+        TU01-ThreadPool)
 
 # 编译libCGraph动态库
 # add_library(CGraph SHARED ${SRC_LIST})

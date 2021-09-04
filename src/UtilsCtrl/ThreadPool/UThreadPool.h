@@ -32,6 +32,7 @@ public:
         /* 开启监控线程 */
         is_monitor_ = true;
         monitor_thread_ = std::move(std::thread(&UThreadPool::monitor, this));
+        init();
     }
 
 
@@ -59,7 +60,7 @@ public:
         std::packaged_task<resultType()> task(func);
         std::future<resultType> result(task.get_future());
 
-        if (cur_index_ >= 0 && cur_index_ < CGRAPH_DEFAULT_THREAD_SIZE) {
+        if (!CGRAPH_FAIR_LOCK_ENABLE && cur_index_ >= 0 && cur_index_ < CGRAPH_DEFAULT_THREAD_SIZE) {
             // 部分任务直接放到线程的队列中执行
             primary_threads_[cur_index_]->work_stealing_queue_.push(std::move(task));
         } else {
@@ -81,7 +82,9 @@ public:
      */
     CSTATUS init() override {
         CGRAPH_FUNCTION_BEGIN
-        CGRAPH_ASSERT_INIT(false)
+        if (is_init_) {
+            CGRAPH_FUNCTION_END
+        }
 
         primary_threads_.reserve(CGRAPH_DEFAULT_THREAD_SIZE);
         for (int i = 0; i < CGRAPH_DEFAULT_THREAD_SIZE; ++i) {
@@ -105,6 +108,9 @@ public:
      */
     CSTATUS deinit() override {
         CGRAPH_FUNCTION_BEGIN
+        if (!is_init_) {
+            CGRAPH_FUNCTION_END
+        }
 
         is_init_ = false;
         // primary 线程是普通指针，需要delete
