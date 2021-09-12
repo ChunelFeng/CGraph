@@ -12,13 +12,17 @@ GNode::GNode() : GElement() {
     param_manager_ = nullptr;
 }
 
+
 GNode::~GNode() = default;
 
+
 GNode::GNode(const GNode& node) = default;
+
 
 GNode& GNode::operator=(const GNode& node) {
     return *this;
 }
+
 
 CSTATUS GNode::process(bool isMock) {
     CGRAPH_FUNCTION_BEGIN

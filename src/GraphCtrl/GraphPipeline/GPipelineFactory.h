@@ -37,8 +37,8 @@ public:
     static void clear();
 
 protected:
-    CSTATUS run();
-    GPipelineFactory();
+    CSTATUS run() override;
+    GPipelineFactory() = default;
 
 private:
     static GPipelinePtrList pipeline_list_;    // 记录所有的

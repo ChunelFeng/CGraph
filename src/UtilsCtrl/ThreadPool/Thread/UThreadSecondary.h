@@ -48,7 +48,7 @@ public:
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
 
-        if (CGRAPH_BATCH_TASK_ENABLE && !CGRAPH_FAIR_LOCK_ENABLE) {
+        if (REAL_BATCH_TASKS_RATIO) {
             while (done_) {
                 runTasks();    // 批量任务获取执行接口
             }
@@ -98,14 +98,14 @@ public:
      * @return
      */
     bool freeze() {
-        if (is_running_) {
+        if (likely(is_running_)) {
             ttl_++;
             ttl_ = std::min(ttl_, CGRAPH_SECONDARY_THREAD_TTL);
         } else {
             ttl_--;    // 如果当前线程没有在执行，则ttl-1
         }
 
-        return ttl_ <= 0 ? true : false;
+        return ttl_ <= 0;
     }
 
 private:

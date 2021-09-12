@@ -94,7 +94,7 @@ CSTATUS GElementManager::analyse() {
     CGRAPH_FUNCTION_BEGIN
 
     int runElementSize = 0;
-    int totalElementSize = manager_elements_.size();
+    int totalElementSize = (int)manager_elements_.size();
     para_cluster_arrs_.clear();
 
     GClusterArr curClusterArr;    // 记录每一层，可以并行的逻辑
@@ -127,7 +127,7 @@ CSTATUS GElementManager::analyse() {
             status = cluster.process(true);    // 不执行run方法的process
             CGRAPH_FUNCTION_CHECK_STATUS
         }
-        runElementSize += runnableClusterArr.size();
+        runElementSize += (int)runnableClusterArr.size();
 
         std::set<GElementPtr> duplications;
         for (GCluster& cluster : runnableClusterArr) {

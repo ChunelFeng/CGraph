@@ -46,7 +46,7 @@ protected:
 private:
     std::unordered_map<std::string, GParamPtr> params_map_;           // 记录param信息的hash表
     std::shared_mutex lock_;                                          // 读写锁
-    bool is_init_;                                                    // 标记是否初始化结束
+    bool is_init_ { false };                                          // 标记是否初始化结束
 
     friend class GPipeline;
 };

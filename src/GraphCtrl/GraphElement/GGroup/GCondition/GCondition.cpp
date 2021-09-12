@@ -64,7 +64,7 @@ CSTATUS GCondition::run() {
     int loop = 0;
     int index = this->choose();
     if (GROUP_LAST_ELEMENT_INDEX == index
-        && this->condition_elements_.size() > 0) {
+        && !this->condition_elements_.empty()) {
         // 如果返回-1，则直接执行最后一个条件（模仿default功能）
         loop = condition_elements_.back()->loop_;
         while (loop--) {
@@ -87,5 +87,5 @@ CSTATUS GCondition::run() {
 
 
 int GCondition::getRange() const {
-    return this->condition_elements_.size();
+    return (int)condition_elements_.size();
 }

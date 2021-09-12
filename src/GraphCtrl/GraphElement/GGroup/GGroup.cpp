@@ -12,7 +12,7 @@
 CSTATUS GGroup::beforeRun() {
     CGRAPH_FUNCTION_BEGIN
     this->done_ = false;
-    this->left_depend_ = this->dependence_.size();
+    this->left_depend_ = (int)dependence_.size();
 
     CGRAPH_FUNCTION_END
 }

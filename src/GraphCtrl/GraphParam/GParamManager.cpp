@@ -53,7 +53,7 @@ GParamPtr GParamManager::get(const std::string& key) {
 
 void GParamManager::reset() {
     for (auto cur : params_map_) {
-        if (!cur.second) {
+        if (unlikely(!cur.second)) {
             continue;
         }
 

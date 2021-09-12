@@ -15,6 +15,8 @@
 #include "../WorkStealingQueue/UWorkStealingQueue.h"
 #include "../AtomicQueue/UAtomicQueue.h"
 
+constexpr bool REAL_BATCH_TASKS_RATIO = CGRAPH_BATCH_TASK_ENABLE && !CGRAPH_FAIR_LOCK_ENABLE;
+
 class UThreadBase : public UThreadObject {
 
 protected:
@@ -25,8 +27,9 @@ protected:
         pool_task_queue_ = nullptr;
     }
 
+
     ~UThreadBase() override {
-        deinit();    // 是不会重复deinit两次的，这样写虽然返回值非0，但是不会存在任何问题
+        stop();
     }
 
 
@@ -39,13 +42,7 @@ protected:
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
 
-        done_ = false;
-        if (thread_.joinable()) {
-            thread_.join();    // 等待线程结束
-        }
-        is_init_ = false;
-        is_running_ = false;
-
+        stop();
         CGRAPH_FUNCTION_END
     }
 
@@ -67,6 +64,17 @@ protected:
      */
     virtual bool popPoolTasks(UTaskWrapperArr& tasks) {
         return (pool_task_queue_ && pool_task_queue_->tryMultiPop(tasks));
+    }
+
+
+protected:
+    void stop() {
+        done_ = false;
+        if (thread_.joinable()) {
+            thread_.join();    // 等待线程结束
+        }
+        is_init_ = false;
+        is_running_ = false;
     }
 
 protected:

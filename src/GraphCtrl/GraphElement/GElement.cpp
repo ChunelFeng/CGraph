@@ -27,9 +27,7 @@ GElement::GElement() {
 }
 
 
-GElement::~GElement() {
-
-}
+GElement::~GElement() = default;
 
 
 GElement::GElement(const GElement& element) {
@@ -80,7 +78,7 @@ void GElement::setLoop(int loop) {
 
 
 bool GElement::isRunnable() const {
-    return 0 >= this->left_depend_ && false == this->done_;
+    return 0 >= this->left_depend_ && !this->done_;
 }
 
 

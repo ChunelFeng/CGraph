@@ -12,11 +12,14 @@ GCluster::GCluster() : GGroup() {
 
 }
 
+
 GCluster::~GCluster() = default;
+
 
 GCluster::GCluster(const GCluster& cluster)  : GGroup(cluster) {
     this->cluster_elements_ = cluster.cluster_elements_;
 }
+
 
 GCluster& GCluster::operator=(const GCluster& cluster) {
     if (this == &cluster) {
@@ -26,6 +29,7 @@ GCluster& GCluster::operator=(const GCluster& cluster) {
     this->cluster_elements_ = cluster.cluster_elements_;
     return *this;
 }
+
 
 CSTATUS GCluster::init() {
     CGRAPH_FUNCTION_BEGIN
@@ -103,6 +107,7 @@ CSTATUS GCluster::beforeRun() {
 
     CGRAPH_FUNCTION_END
 }
+
 
 CSTATUS GCluster::afterRun() {
     CGRAPH_FUNCTION_BEGIN

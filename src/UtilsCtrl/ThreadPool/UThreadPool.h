@@ -72,6 +72,7 @@ public:
         if (cur_index_ >= CGRAPH_MAX_THREAD_SIZE || cur_index_ < 0) {
             cur_index_ = 0;
         }
+
         return result;
     }
 
@@ -153,7 +154,7 @@ protected:
             bool busy = std::all_of(primary_threads_.begin(), primary_threads_.end(),
                                     [](UThreadPrimaryPtr ptr) {
                                         return ptr->is_running_;
-                                    }) ? true : false;
+                                    });
 
             // 如果忙碌，则需要添加 secondary线程
             if (busy && secondary_threads_.size() + CGRAPH_DEFAULT_THREAD_SIZE < CGRAPH_MAX_THREAD_SIZE) {

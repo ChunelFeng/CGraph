@@ -124,7 +124,7 @@ CSTATUS GPipeline::addDependElements(GElementPtr element,
         element->dependence_.insert(cur);
     }
 
-    element->left_depend_ = element->dependence_.size();
+    element->left_depend_ = (int)element->dependence_.size();
 
     CGRAPH_FUNCTION_END
 }

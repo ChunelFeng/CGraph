@@ -44,7 +44,6 @@ private:
     friend class GElementManager;
     friend class GRegion;
     friend class GPipeline;
-    friend class GraphThreadPool;
 };
 
 using GClusterPtr = GCluster *;

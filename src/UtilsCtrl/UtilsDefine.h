@@ -123,13 +123,13 @@ inline std::string CGRAPH_GENERATE_SESSION() {
 
 /* 删除资源信息 */
 #define CGRAPH_DELETE_PTR(ptr)                      \
-    if ((ptr) != nullptr) {                         \
+    if (unlikely((ptr) != nullptr)) {               \
         delete (ptr);                               \
         (ptr) = nullptr;                            \
     }                                               \
 
 #define CGRAPH_ASSERT_INIT(isInit)                  \
-    if ((isInit) != is_init_) {                     \
+    if (unlikely((isInit) != is_init_)) {           \
         return STATUS_ERR;                          \
     }                                               \
 
