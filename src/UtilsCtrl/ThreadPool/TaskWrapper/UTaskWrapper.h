@@ -22,9 +22,9 @@ class UTaskWrapper : public UThreadObject {
     };
 
     template<typename F>
-    struct implType : implBase {
+    struct implDeride : implBase {
         F func_;
-        explicit implType(F&& func) : func_(std::move(func)) {}
+        explicit implDeride(F&& func) : func_(std::move(func)) {}
         void call() override { func_(); }
     };
 
@@ -32,11 +32,11 @@ class UTaskWrapper : public UThreadObject {
 
 public:
     template<typename F>
-    UTaskWrapper(F&& f) : impl_(new implType<F>(std::forward<F>(f))) {
+    UTaskWrapper(F&& f) : impl_(new implDeride<F>(std::forward<F>(f))) {
     }
 
     void operator()() {
-        if (impl_ != nullptr) {
+        if (unlikely(impl_ != nullptr)) {
             impl_->call();
         }
     }
@@ -46,7 +46,7 @@ public:
     UTaskWrapper(UTaskWrapper&& task) noexcept:
             impl_(std::move(task.impl_)) {}
 
-    UTaskWrapper &operator=(UTaskWrapper&& task) {
+    UTaskWrapper &operator=(UTaskWrapper&& task) noexcept {
         impl_ = std::move(task.impl_);
         return *this;
     }

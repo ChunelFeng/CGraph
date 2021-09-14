@@ -61,8 +61,14 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
     std::cout << "\n";
 }
 
-#define likely(x)   __builtin_expect(!!(x), 1)
-#define unlikely(x) __builtin_expect(!!(x), 0)
+#ifdef _ENABLE_LIKELY_
+    #define likely(x)   __builtin_expect(!!(x), 1)
+    #define unlikely(x) __builtin_expect(!!(x), 0)
+#else
+    #define likely
+    #define unlikely
+#endif
+
 
 template<typename T>
 inline T* SafeMallocCObject() {
