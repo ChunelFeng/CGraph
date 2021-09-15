@@ -16,23 +16,23 @@
 
 
 class UTaskWrapper : public UThreadObject {
-    struct implBase {
+    struct taskBased {
         virtual void call() = 0;
-        virtual ~implBase() = default;
+        virtual ~taskBased() = default;
     };
 
     template<typename F>
-    struct implDeride : implBase {
+    struct taskDerided : taskBased {
         F func_;
-        explicit implDeride(F&& func) : func_(std::move(func)) {}
+        explicit taskDerided(F&& func) : func_(std::move(func)) {}
         void call() override { func_(); }
     };
 
-    std::unique_ptr<implBase> impl_ = nullptr;
+    std::unique_ptr<taskBased> impl_ = nullptr;
 
 public:
     template<typename F>
-    UTaskWrapper(F&& f) : impl_(new implDeride<F>(std::forward<F>(f))) {
+    UTaskWrapper(F&& f) : impl_(new taskDerided<F>(std::forward<F>(f))) {
     }
 
     void operator()() {
