@@ -15,6 +15,7 @@
 #include <thread>
 #include <algorithm>
 #include <memory>
+#include <functional>
 
 #include "UThreadObject.h"
 #include "AtomicQueue/UAtomicQueue.h"
