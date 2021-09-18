@@ -78,7 +78,7 @@ CSTATUS GCluster::process(bool isMock) {
     status = this->beforeRun();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    if (!isMock) {
+    if (likely(!isMock)) {
         // 如果是mock执行，则不进入这里
         for (GElementPtr element : this->cluster_elements_) {
             int clusterLoop = element->loop_;
@@ -99,7 +99,7 @@ CSTATUS GCluster::beforeRun() {
     CGRAPH_FUNCTION_BEGIN
 
     this->done_ = false;
-    this->left_depend_ = this->dependence_.size();
+    this->left_depend_ = (int)dependence_.size();
     for (GElementPtr element : this->cluster_elements_) {
         status = element->beforeRun();
         CGRAPH_FUNCTION_CHECK_STATUS
@@ -135,15 +135,16 @@ CSTATUS GCluster::addElement(GElementPtr element) {
     CGRAPH_FUNCTION_END
 }
 
+
 int GCluster::getElementNum() {
-    return this->cluster_elements_.size();
+    return (int)cluster_elements_.size();
 }
 
 
 bool GCluster::isElementsDone() {
     /* 所有的element均被执行过，则提示true */
     return std::all_of(cluster_elements_.begin(), cluster_elements_.end(),
-                       [](const GElementPtr element) {
+                       [](GElementPtr element) {
          return element->done_;
     });
 }

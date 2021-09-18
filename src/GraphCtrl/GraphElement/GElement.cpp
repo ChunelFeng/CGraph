@@ -63,7 +63,7 @@ GElement& GElement::operator=(const GElement& element) {
 
 
 void GElement::setName(const std::string& name) {
-    if (likely(!name.empty())) {
+    if (!name.empty()) {
         this->name_ = name;
     } else {
         this->name_ = this->session_;
@@ -72,7 +72,6 @@ void GElement::setName(const std::string& name) {
 
 
 void GElement::setLoop(int loop) {
-    /* 至少执行一次 */
     this->loop_ = (loop >= 0) ? loop : 0;
 }
 
@@ -92,7 +91,7 @@ CSTATUS GElement::process(bool isMock) {
 }
 
 
-CSTATUS GElement::setParamManager(const GParamManagerPtr manager) {
+CSTATUS GElement::setParamManager(GParamManagerPtr manager) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(manager)
     CGRAPH_ASSERT_INIT(false)

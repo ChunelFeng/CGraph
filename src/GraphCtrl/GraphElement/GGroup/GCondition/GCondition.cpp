@@ -48,7 +48,7 @@ CSTATUS GCondition::process(bool isMock) {
     status = this->beforeRun();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    if (!isMock) {
+    if (likely(!isMock)) {
         status = run();
         CGRAPH_FUNCTION_CHECK_STATUS
     }

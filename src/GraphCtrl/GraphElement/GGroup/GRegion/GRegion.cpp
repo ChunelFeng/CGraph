@@ -22,7 +22,7 @@ GRegion::~GRegion() {
 }
 
 
-GRegion::GRegion(const GRegion& region)  : GGroup(region) {
+GRegion::GRegion(const GRegion& region) : GGroup(region) {
     for (GElementPtr element : region.manager_->manager_elements_) {
         this->manager_->manager_elements_.insert(element);
     }
@@ -105,7 +105,7 @@ CSTATUS GRegion::process(bool isMock) {
     CGRAPH_FUNCTION_BEGIN
     status = this->beforeRun();
     CGRAPH_FUNCTION_CHECK_STATUS
-    if (!isMock) {
+    if (likely(!isMock)) {
         // 运行region中的信息。这里的信息，已经提前被解析了。
         status = run();
         CGRAPH_FUNCTION_CHECK_STATUS

@@ -43,7 +43,7 @@ CSTATUS GNode::process(bool isMock) {
 CSTATUS GNode::beforeRun() {
     CGRAPH_FUNCTION_BEGIN
     this->done_ = false;
-    this->left_depend_ = this->dependence_.size();
+    this->left_depend_ = (int)dependence_.size();
     CGRAPH_FUNCTION_END
 }
 
@@ -58,6 +58,4 @@ CSTATUS GNode::afterRun() {
     this->done_ = true;
     CGRAPH_FUNCTION_END
 }
-
-
 

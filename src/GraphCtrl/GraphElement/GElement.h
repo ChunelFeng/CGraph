@@ -123,7 +123,7 @@ protected:
      * @param manager
      * @return
      */
-    virtual CSTATUS setParamManager(const GParamManagerPtr manager);
+    virtual CSTATUS setParamManager(GParamManagerPtr manager);
 
 protected:
     bool done_ { false };                            // 判定被执行结束
