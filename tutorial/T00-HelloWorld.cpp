@@ -8,7 +8,6 @@
 
 #include "MyGNode/HelloWorldNode.h"
 
-
 void tutorial_helloworld() {
     GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr hw = nullptr;

@@ -9,7 +9,7 @@
 #ifndef CGRAPH_HELLOWORLDNODE_H
 #define CGRAPH_HELLOWORLDNODE_H
 
-#include "../../src/GraphCtrl/GraphInclude.h"
+#include "../../src/CGraph.h"
 
 class HelloWorldNode : public GNode {
 

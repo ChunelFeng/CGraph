@@ -9,12 +9,12 @@
 #ifndef CGRAPH_MYWRITEPARAMNODE_H
 #define CGRAPH_MYWRITEPARAMNODE_H
 
-#include "../../src/GraphCtrl/GraphInclude.h"
+#include "../../src/CGraph.h"
 #include "../MyGParam/MyParam.h"
 
 class MyWriteParamNode : public GNode {
 public:
-    CSTATUS init () {
+    CSTATUS init () override {
         CSTATUS status = STATUS_OK;
         /**
          * 推荐在init()中，将可能用到的参数创建好。也支持在run的时候创建
@@ -24,7 +24,7 @@ public:
         return status;
     }
 
-    CSTATUS run () {
+    CSTATUS run () override {
         MyParam* myParam = this->getGParam<MyParam>("param1");
         if (nullptr == myParam) {
             return STATUS_ERR;    // 如果获取myParam1失败，则返回错误码信息

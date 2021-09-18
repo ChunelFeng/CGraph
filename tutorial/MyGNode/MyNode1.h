@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYNODE1_H
 #define CGRAPH_MYNODE1_H
 
-#include "../../src/GraphCtrl/GraphInclude.h"
+#include "../../src/CGraph.h"
 
 class MyNode1 : public GNode {
 

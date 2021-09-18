@@ -140,6 +140,10 @@ void tutorial_simple() {
 * 提供多`pipeline`功能，优化底层逻辑
 * 更新`tutorial`内容
 
+[2021.09.19 - v1.6.1 - Chunel]
+* 提供Lru算子和模板节点功能，优化底层逻辑
+* 更新`tutorial`内容
+
 ------------
 #### 附录-2. 推荐阅读
 

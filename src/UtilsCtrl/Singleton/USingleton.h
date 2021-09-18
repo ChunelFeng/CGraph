@@ -9,13 +9,10 @@
 #ifndef CGRAPH_USINGLETON_H
 #define CGRAPH_USINGLETON_H
 
-#include <shared_mutex>
-
-#include "../UtilsInclude.h"
-#include "../../CObject/CObject.h"
+#include "../UtilsObject.h"
 
 template<typename T>
-class USingleton : public CObject {
+class USingleton : public UtilsObject {
 public:
     explicit USingleton() {
         create();
@@ -43,10 +40,6 @@ protected:
         }
 
         CGRAPH_FUNCTION_END
-    }
-
-    CSTATUS run() override {
-        CGRAPH_NO_SUPPORT
     }
 
     CSTATUS destroy() {

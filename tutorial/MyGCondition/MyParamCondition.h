@@ -9,8 +9,8 @@
 #ifndef CGRAPH_MYPARAMCONDITION_H
 #define CGRAPH_MYPARAMCONDITION_H
 
+#include "../../src/CGraph.h"
 #include "../MyGParam/MyParam.h"
-#include "../../src/GraphCtrl/GraphInclude.h"
 
 class MyParamCondition : public GCondition {
 

@@ -6,12 +6,12 @@
 @Desc: 
 ***************************/
 
-
 #ifndef CGRAPH_UTILSINCLUDE_H
 #define CGRAPH_UTILSINCLUDE_H
 
 #include "UtilsDefine.h"
 #include "ThreadPool/UThreadPoolInclude.h"
 #include "Singleton/USingleton.h"
+#include "Lru/ULru.h"
 
 #endif //CGRAPH_UTILSINCLUDE_H

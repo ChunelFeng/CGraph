@@ -6,10 +6,8 @@
 @Desc: 
 ***************************/
 
-
 #include "MyGNode/MyNode1.h"
 #include "MyGNode/MyNode2.h"
-
 
 void tutorial_pipeline_1(GPipelinePtr pipeline_1) {
     if (nullptr == pipeline_1) {
@@ -71,7 +69,7 @@ void tutorial_pipeline_3(GPipelinePtr pipeline_3) {
 void tutorial_multi_pipeline() {
     /**
      * 通过多线程，同时构造3个pipeline，并执行
-     * CGraph底层，pipeline参数系统相互独立，线程池资源共享
+     * CGraph底层，pipeline参数系统和执行逻辑相互独立，线程池资源共享
      */
     GPipelinePtr pipeline_1 = GPipelineFactory::create();
     GPipelinePtr pipeline_2 = GPipelineFactory::create();

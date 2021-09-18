@@ -125,6 +125,13 @@ protected:
      */
     virtual CSTATUS setParamManager(GParamManagerPtr manager);
 
+    /**
+     * 添加依赖节点信息
+     * @param dependElements
+     * @return
+     */
+    CSTATUS addDependElements(const std::set<GElement *> &dependElements);
+
 protected:
     bool done_ { false };                            // 判定被执行结束
     bool is_init_ { false };                         // 是否初始化了

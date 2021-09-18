@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.5.1)
 
-project(CGraph VERSION 1.6.0)
+project(CGraph VERSION 1.6.1)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -30,7 +30,9 @@ set(TUTORIAL_LIST
         T05-Param
         T06-Condition
         T07-MultiPipeline
-        TU01-ThreadPool)
+        T08-Template
+        TU01-ThreadPool
+        TU02-Lru)
 
 # 编译libCGraph动态库
 # add_library(CGraph SHARED ${SRC_LIST})

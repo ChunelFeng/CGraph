@@ -100,3 +100,26 @@ CSTATUS GElement::setParamManager(GParamManagerPtr manager) {
 
     CGRAPH_FUNCTION_END
 }
+
+
+CSTATUS GElement::addDependElements(const GElementPtrSet& dependElements) {
+    CGRAPH_FUNCTION_BEGIN
+
+    for (GElementPtr cur: dependElements) {
+        // 如果传入的信息中，有nullptr，则所有的信息均不参与计算
+        CGRAPH_ASSERT_NOT_NULL(cur);
+    }
+
+    for (GElementPtr cur: dependElements) {
+        if (this == cur) {
+            continue;
+        }
+
+        cur->run_before_.insert(this);
+        this->dependence_.insert(cur);
+    }
+
+    this->left_depend_ = (int)this->dependence_.size();
+
+    CGRAPH_FUNCTION_END
+}

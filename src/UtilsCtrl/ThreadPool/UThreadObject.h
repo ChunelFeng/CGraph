@@ -9,10 +9,9 @@
 #ifndef CGRAPH_UTHREADOBJECT_H
 #define CGRAPH_UTHREADOBJECT_H
 
-#include "../UtilsDefine.h"
-#include "../../CObject/CObject.h"
+#include "../UtilsObject.h"
 
-class UThreadObject : public CObject {
+class UThreadObject : public UtilsObject {
 
 protected:
     /**

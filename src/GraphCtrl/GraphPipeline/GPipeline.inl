@@ -45,7 +45,7 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
 
     (*elementRef)->setName(name);
     (*elementRef)->setLoop(loop);
-    status = addDependElements(*elementRef, dependElements);
+    status = (*elementRef)->addDependElements(dependElements);
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status = element_manager_->addElement(dynamic_cast<GElementPtr>(*elementRef));
@@ -57,10 +57,12 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
 
 template<typename T>
 GElementPtr GPipeline::createGNode(const GNodeInfo &info) {
+    CGRAPH_FUNCTION_BEGIN
     GNodePtr node = nullptr;
     if (std::is_base_of<GNode, T>::value) {
         node = CGRAPH_SAFE_MALLOC_COBJECT(T);
-        CSTATUS status = addDependElements(node, info.dependence);
+        status = node->addDependElements(info.dependence);
+
         if (STATUS_OK != status) {
             return nullptr;
         }
@@ -79,6 +81,8 @@ GElementPtr GPipeline::createGGroup(const GElementPtrArr &elements,
                                     const GElementPtrSet &dependElements,
                                     const std::string &name,
                                     int loop) {
+    CGRAPH_FUNCTION_BEGIN
+
     // 如果不是所有的都非空，则创建失败
     if (std::any_of(elements.begin(), elements.end(),
                     [](GElementPtr element) {
@@ -107,7 +111,7 @@ GElementPtr GPipeline::createGGroup(const GElementPtrArr &elements,
         ((GRegion *)group)->setThreadPool(this->thread_pool_);
     }
 
-    CSTATUS status = addDependElements(group, dependElements);
+    status = group->addDependElements(dependElements);
     if (STATUS_OK != status) {
         CGRAPH_DELETE_PTR(group)
         return nullptr;
