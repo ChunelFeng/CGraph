@@ -23,7 +23,7 @@ public:
 
 private:
     UThreadPoolSingleton() = default;
-    ~UThreadPoolSingleton() = default;
+    ~UThreadPoolSingleton() override = default;
 
     static USingleton<UThreadPool> pool_;
 };

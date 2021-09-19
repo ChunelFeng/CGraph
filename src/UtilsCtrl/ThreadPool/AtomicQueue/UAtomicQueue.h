@@ -105,7 +105,7 @@ public:
     }
 
 
-    bool empty() const {
+    [[nodiscard]] bool empty() const {
         CGRAPH_LOCK_GUARD lk(mutex_);
         return queue_.empty();
     }

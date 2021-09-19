@@ -100,32 +100,3 @@ CSTATUS GPipeline::process(int runTimes) {
     status = deinit();
     CGRAPH_FUNCTION_END
 }
-
-
-CSTATUS GPipeline::addDependElements(GElementPtr element,
-                                     const std::set<GElementPtr>& dependElements) const {
-    CGRAPH_FUNCTION_BEGIN
-
-    // TODO 这个功能可以下沉到element里去实现
-    CGRAPH_ASSERT_INIT(false)
-    CGRAPH_ASSERT_NOT_NULL(element)
-
-    for (GElementPtr cur : dependElements) {
-        // 如果传入的信息中，有nullptr，则所有的信息均不参与计算
-        CGRAPH_ASSERT_NOT_NULL(cur);
-    }
-
-    for (GElementPtr cur : dependElements) {
-        if (cur == element) {
-            continue;        // 本节点无法依赖本节点
-        }
-
-        cur->run_before_.insert(element);
-        element->dependence_.insert(cur);
-    }
-
-    element->left_depend_ = (int)element->dependence_.size();
-
-    CGRAPH_FUNCTION_END
-}
-

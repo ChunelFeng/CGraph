@@ -91,16 +91,6 @@ protected:
 
     ~GPipeline() override;
 
-    /**
-     * element元素，添加依赖节点信息
-     * @param element
-     * @param dependElements
-     * @return
-     */
-    CSTATUS addDependElements(GElementPtr element,
-                              const std::set<GElementPtr> &dependElements) const;
-
-
 private:
     bool is_init_;                                       // 标志位
     GElementManagerPtr element_manager_;                 // 节点管理类（管理所有注册过的element信息）

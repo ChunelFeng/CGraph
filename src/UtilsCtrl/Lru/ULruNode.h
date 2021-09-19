@@ -16,7 +16,7 @@ struct ULruNode : public UtilsObject {
     K key_;
     V value_;
 
-    ULruNode(const K key, const V value) {
+    ULruNode(const K& key, const V& value) {
         this->key_ = key;
         this->value_ = value;
     }

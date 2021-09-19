@@ -50,7 +50,7 @@ public:
             cur_size_--;
         }
 
-        nodes_.push_front(ULruNode<K, V>(key, value));
+        nodes_.emplace_front(ULruNode<K, V>(key, value));
         cache_[key] = nodes_.begin();
         cur_size_++;
     }

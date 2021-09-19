@@ -13,13 +13,14 @@
 
 template <typename T>
 class MyTemplateNode : public GNode {
+
 public:
     CSTATUS run () override {
-        if (strcmp(typeid(val_).name(), "c") == 0) {
+        if (std::string("c") == typeid(val_).name()) {
             CGRAPH_ECHO("This node template type is [char].");    // 对应模板类型是 char 类型
-        } else if (strcmp(typeid(val_).name(), "f") == 0) {
+        } else if (std::string("f") == typeid(val_).name()) {
             CGRAPH_ECHO("This node template type is [float].");    // 对应模板类型是 float 类型
-        } else if (strcmp(typeid(val_).name(), "i") == 0) {
+        } else if (std::string("i") == typeid(val_).name()) {
             CGRAPH_ECHO("This node template type is [int].");    // 对应模板类型是 int 类型
         } else {
             CGRAPH_ECHO("This node template type is others.");
