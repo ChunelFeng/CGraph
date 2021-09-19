@@ -141,7 +141,7 @@ void tutorial_simple() {
 * 更新`tutorial`内容
 
 [2021.09.19 - v1.6.1 - Chunel]
-* 提供Lru算子和模板节点功能，优化底层逻辑
+* 提供Lru算子、Trie算子和模板节点功能，优化底层逻辑
 * 更新`tutorial`内容
 
 ------------

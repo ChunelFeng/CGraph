@@ -55,7 +55,7 @@ public:
      * @return
      */
     template<typename FunctionType>
-    std::future<typename std::result_of<FunctionType()>::type> commit(FunctionType func) {
+    std::future<typename std::result_of<FunctionType()>::type> commit(const FunctionType& func) {
         typedef typename std::result_of<FunctionType()>::type resultType;
 
         std::packaged_task<resultType()> task(func);

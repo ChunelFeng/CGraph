@@ -32,7 +32,8 @@ set(TUTORIAL_LIST
         T07-MultiPipeline
         T08-Template
         TU01-ThreadPool
-        TU02-Lru)
+        TU02-Lru
+        TU03-Trie)
 
 # 编译libCGraph动态库
 # add_library(CGraph SHARED ${SRC_LIST})

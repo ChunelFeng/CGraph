@@ -86,7 +86,7 @@ CSTATUS GRegion::run() {
         futures.clear();
 
         for (GCluster& cluster : clusterArr) {
-            futures.emplace_back(thread_pool_->commit(std::bind(&GCluster::process, cluster, false)));
+            futures.emplace_back(thread_pool_->commit(std::bind(&GCluster::process, std::ref(cluster), false)));
             runNodeSize += cluster.getElementNum();
         }
 

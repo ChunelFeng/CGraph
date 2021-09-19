@@ -13,5 +13,6 @@
 #include "ThreadPool/UThreadPoolInclude.h"
 #include "Singleton/USingleton.h"
 #include "Lru/ULru.h"
+#include "Trie/UTrie.h"
 
 #endif //CGRAPH_UTILSINCLUDE_H
