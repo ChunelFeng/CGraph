@@ -1,9 +1,9 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: CGraphInclude.h
+@File: CGraph.h
 @Time: 2021/9/18 10:20 下午
-@Desc: 
+@Desc: 包含了CGraph项目中，所有可用的头文件信息
 ***************************/
 
 #ifndef CGRAPH_CGRAPH_H

@@ -82,7 +82,7 @@ CSTATUS GCluster::process(bool isMock) {
         // 如果是mock执行，则不进入这里
         for (GElementPtr element : this->cluster_elements_) {
             int clusterLoop = element->loop_;
-            while (clusterLoop--) {
+            while (clusterLoop-- > 0) {
                 // cluster 需要被执行loop次
                 status = element->run();
                 CGRAPH_FUNCTION_CHECK_STATUS

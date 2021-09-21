@@ -10,6 +10,7 @@
 #define CGRAPH_GCLUSTER_H
 
 #include <vector>
+
 #include "../GGroup.h"
 
 class GCluster : public GGroup {
@@ -33,7 +34,7 @@ protected:
     int getElementNum();
 
     /**
-     * 判断是否所有elment均执行结束了
+     * 判断是否所有element均执行结束了
      * @return
      */
     bool isElementsDone();

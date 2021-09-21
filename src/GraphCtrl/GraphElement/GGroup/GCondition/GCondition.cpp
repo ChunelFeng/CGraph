@@ -67,14 +67,14 @@ CSTATUS GCondition::run() {
         && !this->condition_elements_.empty()) {
         // 如果返回-1，则直接执行最后一个条件（模仿default功能）
         loop = condition_elements_.back()->loop_;
-        while (loop--) {
+        while (loop-- > 0) {
             status = condition_elements_.back()->run();
             CGRAPH_FUNCTION_CHECK_STATUS
         }
     } else if (0 <= index && index < condition_elements_.size()) {
         // 如果返回的内容，在元素范围之内，则直接执行元素的内容
         loop = condition_elements_[index]->loop_;
-        while (loop--) {
+        while (loop-- > 0) {
             status = condition_elements_[index]->run();
             CGRAPH_FUNCTION_CHECK_STATUS
         }
