@@ -48,7 +48,7 @@ protected:
     void innerEraser(UTrieNodePtr node, const std::string& path, int index, bool& isErased);
 
 private:
-    UTrieNodePtr head_;
+    UTrieNodePtr head_ { nullptr };
 };
 
 #endif //CGRAPH_UTRIE_H

@@ -22,6 +22,11 @@ public:
         destroy();
     }
 
+
+    /**
+     * 获取singleton句柄信息
+     * @return
+     */
     T* get() {
         CGRAPH_LOCK_GUARD lock(lock_);
         T* handle = handle_;

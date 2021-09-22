@@ -14,6 +14,7 @@ UTrie::UTrie() {
 
 UTrie::~UTrie() {
     clear();
+    CGRAPH_DELETE_PTR(head_)
 }
 
 
