@@ -11,21 +11,15 @@
 #define CGRAPH_GPARAM_H
 
 #include <shared_mutex>
-#include "../../CObject/CObject.h"
+#include "GParamObject.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
 #include "GParamDefine.h"
 
-class GParam : public CObject {
+class GParam : public GParamObject {
 public:
     std::shared_mutex _param_shared_lock_;
 
 private:
-    /**
-     * param信息不允许被执行，直接返回no-support信息
-     * @return
-     */
-    CSTATUS run() override;
-
     /**
      * 每次pipeline执行结束，会调用一次reset
      * @return

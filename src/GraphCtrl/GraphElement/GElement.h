@@ -77,13 +77,13 @@ protected:
      * run方法执行之前的执行函数
      * @return
      */
-    virtual CSTATUS beforeRun() = 0;
+    virtual CSTATUS beforeRun();
 
     /**
      * run方法执行之后的执行函数
      * @return
      */
-    virtual CSTATUS afterRun() = 0;
+    virtual CSTATUS afterRun();
 
     /**
      * 设置name信息
@@ -150,6 +150,7 @@ protected:
     friend class GCondition;
     friend class GElementManager;
     friend class GGroup;
+    template<typename T> friend class GAspectObject;
     friend class GPipeline;
 };
 

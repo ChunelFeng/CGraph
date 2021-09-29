@@ -144,6 +144,10 @@ void tutorial_simple() {
 * 提供Lru算子、Trie算子和模板节点功能，优化底层逻辑
 * 更新`tutorial`内容
 
+[2021.09.29 - v1.7.0 - Chunel]
+* 提供`aspect`(切面)功能，用于横向扩展`node`或`group`功能
+* 更新`tutorial`内容
+
 ------------
 #### 附录-2. 推荐阅读
 

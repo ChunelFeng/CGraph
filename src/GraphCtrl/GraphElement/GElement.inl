@@ -27,5 +27,4 @@ T* GElement::getGParam(const std::string& key) {
     return ptr;
 }
 
-
 #endif // CGRAPH_GELEMENT_INL

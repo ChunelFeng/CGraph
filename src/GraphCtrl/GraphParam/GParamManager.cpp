@@ -25,11 +25,6 @@ CSTATUS GParamManager::init() {
 }
 
 
-CSTATUS GParamManager::run() {
-    CGRAPH_NO_SUPPORT
-}
-
-
 CSTATUS GParamManager::deinit() {
     CGRAPH_FUNCTION_BEGIN
     for (auto& param : params_map_) {

@@ -22,8 +22,6 @@ private:
     GNode& operator=(const GNode& node);
 
     CSTATUS process(bool isMock) override;
-    CSTATUS beforeRun() override;
-    CSTATUS afterRun() override;
 
     friend class GPipeline;
 };

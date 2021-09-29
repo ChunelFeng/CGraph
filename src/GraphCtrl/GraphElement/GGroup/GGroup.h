@@ -20,10 +20,6 @@ class GGroup : public GElement {
 
 public:
     virtual CSTATUS addElement(GElementPtr element) = 0;
-
-protected:
-    CSTATUS beforeRun() override;
-    CSTATUS afterRun() override;
 };
 
 using GGroupPtr = GGroup *;

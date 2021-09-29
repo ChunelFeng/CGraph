@@ -23,10 +23,7 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
         element_manager_->deleteElement(*elementRef);    // 每次注册，都默认为是新的节点
     }
 
-    if (std::is_base_of_v<GNode, T>) {
-        /* 如果是GNode的话，不允许外部传入实体。仅可以通过内部生成 */
-        (*elementRef) = new(std::nothrow) T();
-    } else if (std::is_base_of_v<GGroup, T>) {
+    if (std::is_base_of_v<GGroup, T>) {
         /**
          * 如果是GGroup类型的信息，则：
          * 1，必须外部创建
@@ -37,6 +34,12 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
             CGRAPH_ECHO("This group has already been registered to another pipeline.");
             return STATUS_ERR;
         }
+    } else if (std::is_base_of_v<GElement, T>) {
+        /**
+         * 如果不是group信息的话，且属于element（包含node和aspect）
+         * 则直接内部创建该信息
+         */
+        (*elementRef) = CGRAPH_SAFE_MALLOC_COBJECT(T);
     }
 
     CGRAPH_ASSERT_NOT_NULL(*elementRef)

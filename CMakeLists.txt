@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.5.1)
 
-project(CGraph VERSION 1.6.1)
+project(CGraph VERSION 1.7.0)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -31,6 +31,7 @@ set(TUTORIAL_LIST
         T06-Condition
         T07-MultiPipeline
         T08-Template
+        T09-Aspect
         TU01-ThreadPool
         TU02-Lru
         TU03-Trie)

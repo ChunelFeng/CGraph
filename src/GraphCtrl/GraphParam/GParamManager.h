@@ -15,7 +15,7 @@
 #include "../../UtilsCtrl/UtilsInclude.h"
 #include "GParam.h"
 
-class GParamManager : public CObject {
+class GParamManager : public GParamObject {
 public:
     /**
      * 创建一个特定类型的参数
@@ -37,7 +37,6 @@ public:
 protected:
     explicit GParamManager();
     ~GParamManager() override;
-    CSTATUS run() final;
     CSTATUS init() final;
     CSTATUS deinit() final;
     void reset();
