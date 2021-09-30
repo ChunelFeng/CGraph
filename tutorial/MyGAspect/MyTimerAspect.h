@@ -15,13 +15,16 @@
 template <typename T>
 class MyTimerAspect : public GAspect<T> {
 public:
-    void begin() override {
+    /**
+     * 实现计时切面逻辑，打印 run() 方法的执行时间
+     */
+    void beginRun() override {
         start_ts_ = std::chrono::high_resolution_clock::now();
     }
 
-    void finish() override {
+    void finishRun(CSTATUS status) override {
         std::chrono::duration<double, std::milli> time_span = std::chrono::high_resolution_clock::now() - start_ts_;
-        CGRAPH_ECHO("----> this node time cost is : [%0.2lf] ms", time_span.count());
+        CGRAPH_ECHO("[MyTimerAspect] ----> [%s] time cost is : [%0.2lf] ms", this->getName().c_str(), time_span.count());
     }
 
 private:

@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: GAspect.h
 @Time: 2021/9/27 11:28 下午
-@Desc: 
+@Desc: 提供了6个位置的切面信息，供调用
 ***************************/
 
 #ifndef CGRAPH_GASPECT_H
@@ -16,22 +16,34 @@ template <typename T>
 class GAspect : public GAspectObject<T> {
 public:
     /**
-     * 切面开始期间动作
+     * init()函数切面开始期间动作
      */
-    virtual void begin() = 0;
-
+    virtual void beginInit();
 
     /**
-     * 切面结束期间动作
+     * init()函数切面结束期间动作
      */
-    virtual void finish() = 0;
-
+    virtual void finishInit(CSTATUS status);
 
     /**
-     * 切面执行函数
-     * @return
+     * run()函数切面开始期间动作
      */
-    CSTATUS run() override;
+    virtual void beginRun();
+
+    /**
+     * run()函数切面结束期间动作
+     */
+    virtual void finishRun(CSTATUS status);
+
+    /**
+     * deinit()函数切面开始期间动作
+     */
+    virtual void beginDeinit();
+
+    /**
+     * init()函数切面结束期间动作
+     */
+    virtual void finishDeinit(CSTATUS status);
 };
 
 template <typename T>

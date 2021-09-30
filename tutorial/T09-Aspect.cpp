@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: T09-Aspect.cpp
 @Time: 2021/9/28 10:40 下午
-@Desc: 
+@Desc:
 ***************************/
 
 #include "MyGNode/HelloWorldNode.h"
@@ -18,7 +18,7 @@ void tutorial_aspect() {
     GElementPtr a, b, c = nullptr;
 
     /* 给 HelloWorldNode 类型的节点，添加 MyLoggerAspect 类型的切面 */
-    pipeline->registerGElement<MyLoggerAspect<HelloWorldNode>>(&a);
+    pipeline->registerGElement<MyLoggerAspect<HelloWorldNode>>(&a, {}, "nodeA");
 
     pipeline->registerGElement<MyTimerAspect<MyNode1>>(&b, {a}, "nodeB", 2);
 

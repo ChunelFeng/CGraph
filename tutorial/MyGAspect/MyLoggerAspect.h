@@ -13,14 +13,28 @@
 
 template <typename T>
 class MyLoggerAspect : public GAspect<T> {
-
 public:
-    void begin() override {
-        CGRAPH_ECHO("----> begin to run this node ...");
+    /**
+     * 实现几个切面函数逻辑，模拟在对应执行的位置，输出log内容
+     */
+    void beginInit() override {
+        CGRAPH_ECHO("[MyLoggerAspect] ----> [%s] begin init ...", this->getName().c_str());
     }
 
-    void finish() override {
-        CGRAPH_ECHO("----> run this node finished ...");
+    /**
+     * 根据run方法执行的结果，记录对应的信息
+     * @param status
+     */
+    void finishRun(CSTATUS status) override {
+        if (STATUS_OK == status) {
+            CGRAPH_ECHO("[MyLoggerAspect] ----> [%s] run finished, status is ok ...", this->getName().c_str());
+        } else {
+            CGRAPH_ECHO("[MyLoggerAspect] ----> [%s] run finished, error code is [%d] ...", this->getName().c_str(), status);
+        }
+    }
+
+    void beginDeinit() override {
+        CGRAPH_ECHO("[MyLoggerAspect] ----> [%s] begin deinit ...", this->getName().c_str());
     }
 };
 

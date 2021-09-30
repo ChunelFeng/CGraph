@@ -39,7 +39,7 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
          * 如果不是group信息的话，且属于element（包含node和aspect）
          * 则直接内部创建该信息
          */
-        (*elementRef) = CGRAPH_SAFE_MALLOC_COBJECT(T);
+        (*elementRef) = new(std::nothrow) T();
     }
 
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
@@ -65,10 +65,10 @@ GElementPtr GPipeline::createGNode(const GNodeInfo &info) {
     if (std::is_base_of<GNode, T>::value) {
         node = CGRAPH_SAFE_MALLOC_COBJECT(T);
         status = node->addDependElements(info.dependence);
-
         if (STATUS_OK != status) {
             return nullptr;
         }
+
         node->setName(info.name);
         node->setLoop(info.loop);
         node->setParamManager(this->param_manager_);    // 设置参数信息类
