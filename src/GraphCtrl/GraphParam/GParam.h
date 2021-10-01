@@ -6,14 +6,13 @@
 @Desc: 
 ***************************/
 
-
 #ifndef CGRAPH_GPARAM_H
 #define CGRAPH_GPARAM_H
 
 #include <shared_mutex>
 #include "GParamObject.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
-#include "GParamDefine.h"
+
 
 class GParam : public GParamObject {
 public:

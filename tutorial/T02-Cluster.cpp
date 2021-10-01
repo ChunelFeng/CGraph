@@ -25,7 +25,7 @@ void tutorial_cluster () {
     }
 
     /* 正式使用时，请对所有返回值进行判定 */
-    status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA", 1);        // 将名为nodeA的node信息，注册入pipeline中
+    status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA", 1);    // 将名为nodeA的node信息，注册入pipeline中
     if (STATUS_OK != status) {
         return;
     }

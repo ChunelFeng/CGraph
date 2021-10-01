@@ -112,17 +112,6 @@ CSTATUS GElement::process(bool isMock) {
 }
 
 
-CSTATUS GElement::setParamManager(GParamManagerPtr manager) {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(manager)
-    CGRAPH_ASSERT_INIT(false)
-
-    this->param_manager_ = manager;
-
-    CGRAPH_FUNCTION_END
-}
-
-
 CSTATUS GElement::addDependElements(const GElementPtrSet& dependElements) {
     CGRAPH_FUNCTION_BEGIN
 
@@ -142,5 +131,20 @@ CSTATUS GElement::addDependElements(const GElementPtrSet& dependElements) {
 
     this->left_depend_ = (int)this->dependence_.size();
 
+    CGRAPH_FUNCTION_END
+}
+
+
+CSTATUS GElement::setElementInfo(const GElementPtrSet& dependElements,
+                                 const std::string& name,
+                                 int loop,
+                                 GParamManagerPtr paramManager) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(false)
+
+    this->setName(name);
+    this->setLoop(loop);
+    param_manager_ = paramManager;
+    status = this->addDependElements(dependElements);
     CGRAPH_FUNCTION_END
 }

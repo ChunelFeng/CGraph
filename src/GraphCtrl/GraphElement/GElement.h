@@ -119,18 +119,24 @@ protected:
     virtual CSTATUS process(bool isMock);
 
     /**
-     * 设置当前参数管理类信息
-     * @param manager
-     * @return
-     */
-    virtual CSTATUS setParamManager(GParamManagerPtr manager);
-
-    /**
      * 添加依赖节点信息
      * @param dependElements
      * @return
      */
     CSTATUS addDependElements(const std::set<GElement *> &dependElements);
+
+    /**
+     * 设置element信息
+     * @param dependElements
+     * @param name
+     * @param loop
+     * @param paramManager
+     * @return
+     */
+    CSTATUS setElementInfo(const std::set<GElement *> &dependElements = std::initializer_list<GElement *>(),
+                           const std::string &name = "",
+                           int loop = 1,
+                           GParamManagerPtr paramManager = nullptr);
 
 protected:
     bool done_ { false };                            // 判定被执行结束

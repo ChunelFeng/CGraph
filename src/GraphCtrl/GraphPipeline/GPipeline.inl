@@ -43,12 +43,7 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
     }
 
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
-    status = (*elementRef)->setParamManager(this->param_manager_);
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    (*elementRef)->setName(name);
-    (*elementRef)->setLoop(loop);
-    status = (*elementRef)->addDependElements(dependElements);
+    status = (*elementRef)->setElementInfo(dependElements, name, loop, this->param_manager_);
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status = element_manager_->addElement(dynamic_cast<GElementPtr>(*elementRef));
@@ -64,14 +59,12 @@ GElementPtr GPipeline::createGNode(const GNodeInfo &info) {
     GNodePtr node = nullptr;
     if (std::is_base_of<GNode, T>::value) {
         node = CGRAPH_SAFE_MALLOC_COBJECT(T);
-        status = node->addDependElements(info.dependence);
+        status = node->setElementInfo(info.dependence, info.name, info.loop, this->param_manager_);
         if (STATUS_OK != status) {
+            CGRAPH_DELETE_PTR(node);
             return nullptr;
         }
 
-        node->setName(info.name);
-        node->setLoop(info.loop);
-        node->setParamManager(this->param_manager_);    // 设置参数信息类
         element_repository_.insert(node);
     }
 
@@ -114,17 +107,14 @@ GElementPtr GPipeline::createGGroup(const GElementPtrArr &elements,
         ((GRegion *)group)->setThreadPool(this->thread_pool_);
     }
 
-    status = group->addDependElements(dependElements);
+    status = group->setElementInfo(dependElements, name, loop);    // 注册group信息的时候，不能注册paramManager信息
     if (STATUS_OK != status) {
         CGRAPH_DELETE_PTR(group)
         return nullptr;
     }
 
-    group->setName(name);
-    group->setLoop(loop);
     this->element_repository_.insert(group);
     return group;
 }
-
 
 #endif //CGRAPH_GPIPELINE_INL
