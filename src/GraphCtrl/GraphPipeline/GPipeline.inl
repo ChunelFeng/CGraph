@@ -11,7 +11,7 @@
 
 #include <algorithm>
 
-template<typename T>
+template<typename T, std::enable_if_t<std::is_base_of_v<GElement, T>, int>>
 CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
                                     const GElementPtrSet &dependElements,
                                     const std::string &name,
@@ -23,7 +23,7 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
         element_manager_->deleteElement(*elementRef);    // 每次注册，都默认为是新的节点
     }
 
-    if (std::is_base_of_v<GGroup, T>) {
+    if constexpr (std::is_base_of_v<GGroup, T>) {
         /**
          * 如果是GGroup类型的信息，则：
          * 1，必须外部创建
@@ -34,7 +34,7 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
             CGRAPH_ECHO("This group has already been registered to another pipeline.");
             return STATUS_ERR;
         }
-    } else if (std::is_base_of_v<GElement, T>) {
+    } else if constexpr (std::is_base_of_v<GElement, T>) {
         /**
          * 如果不是group信息的话，且属于element（包含node和aspect）
          * 则直接内部创建该信息
@@ -53,11 +53,11 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
 }
 
 
-template<typename T>
+template<typename T, std::enable_if_t<std::is_base_of_v<GNode, T>, int>>
 GElementPtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_FUNCTION_BEGIN
     GNodePtr node = nullptr;
-    if (std::is_base_of<GNode, T>::value) {
+    if constexpr (std::is_base_of<GNode, T>::value) {
         node = CGRAPH_SAFE_MALLOC_COBJECT(T);
         status = node->setElementInfo(info.dependence, info.name, info.loop, this->param_manager_);
         if (STATUS_OK != status) {
@@ -72,7 +72,7 @@ GElementPtr GPipeline::createGNode(const GNodeInfo &info) {
 }
 
 
-template<typename T>
+template<typename T, std::enable_if_t<std::is_base_of_v<GGroup, T>, int>>
 GElementPtr GPipeline::createGGroup(const GElementPtrArr &elements,
                                     const GElementPtrSet &dependElements,
                                     const std::string &name,

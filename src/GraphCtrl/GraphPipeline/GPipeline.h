@@ -51,7 +51,7 @@ public:
      * @param info
      * @return
      */
-    template<typename T>
+    template<typename T, std::enable_if_t<std::is_base_of_v<GNode, T>, int> = 0>
     GElementPtr createGNode(const GNodeInfo &info);
 
     /**
@@ -63,7 +63,7 @@ public:
      * @param loop
      * @return
      */
-    template<typename T>
+    template<typename T, std::enable_if_t<std::is_base_of_v<GGroup, T>, int> = 0>
     GElementPtr createGGroup(const GElementPtrArr &elements,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = "",
@@ -71,8 +71,8 @@ public:
 
     /**
      * 在图中注册一个Element信息
-     * 如果注册的是GNode节点信息，则内部自动生成
-     * 如果注册的是GGroup节点信息，则需外部提前生成，然后注册进来
+     * 如果注册的是GNode、GAspect信息，则内部自动生成
+     * 如果注册的是GGroup信息，则需外部提前生成，然后注册进来
      * @tparam T
      * @param elementRef
      * @param dependElements
@@ -80,7 +80,7 @@ public:
      * @param loop
      * @return
      */
-    template<typename T>
+    template<typename T, std::enable_if_t<std::is_base_of_v<GElement, T>, int> = 0>
     CSTATUS registerGElement(GElementPtr *elementRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = "",
