@@ -51,7 +51,7 @@ public:
      * @param info
      * @return
      */
-    template<typename T, std::enable_if_t<std::is_base_of_v<GNode, T>, int> = 0>
+    template<typename T, std::enable_if_t<std::is_base_of_v<GElement, T>, int> = 0>
     GElementPtr createGNode(const GNodeInfo &info);
 
     /**

@@ -53,12 +53,13 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
 }
 
 
-template<typename T, std::enable_if_t<std::is_base_of_v<GNode, T>, int>>
+template<typename T, std::enable_if_t<std::is_base_of_v<GElement, T>, int>>
 GElementPtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_FUNCTION_BEGIN
-    GNodePtr node = nullptr;
-    if constexpr (std::is_base_of<GNode, T>::value) {
-        node = CGRAPH_SAFE_MALLOC_COBJECT(T);
+    GElementPtr node = nullptr;
+    if constexpr (std::is_base_of_v<GElement, T>) {
+        // 这里不能仅申明成GNode，是因为需要考虑GAspect的注册方式
+        node = new(std::nothrow) T;
         status = node->setElementInfo(info.dependence, info.name, info.loop, this->param_manager_);
         if (STATUS_OK != status) {
             CGRAPH_DELETE_PTR(node);
