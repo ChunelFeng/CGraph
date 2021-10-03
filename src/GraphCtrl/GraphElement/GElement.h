@@ -15,11 +15,12 @@
 #include <atomic>
 #include <algorithm>
 
-#include "../../CObject/CObject.h"
+#include "../GraphObject.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
 #include "../GraphParam/GParamInclude.h"
+#include "../GraphAspect/GAspectInclude.h"
 
-class GElement : public CObject {
+class GElement : public GraphObject {
 public:
     /**
      * 获取name信息
@@ -49,10 +50,27 @@ public:
     template<typename T>
     CSTATUS createGParam(const std::string& key);
 
-protected:
     /**
-     * 构造函数
+     * 实现添加切面的逻辑
+     * @tparam T
+     * @tparam Args
+     * @return
      */
+    template<typename T, std::enable_if_t<std::is_base_of_v<GAspect, T>, int> = 0>
+    GElement* addAspect();
+
+    /**
+     * 依次添加两个aspect信息
+     * @tparam T1
+     * @tparam T2
+     * @return
+     */
+    template<typename T1, typename T2,
+            std::enable_if_t<std::is_base_of_v<GAspect, T1>, int> = 0,
+            std::enable_if_t<std::is_base_of_v<GAspect, T2>, int> = 0>
+    GElement* addAspect();
+
+protected:
     explicit GElement();
 
     /**
@@ -138,6 +156,13 @@ protected:
                            int loop = 1,
                            GParamManagerPtr paramManager = nullptr);
 
+    /**
+     * 执行切面逻辑
+     * @param aspectType
+     * @param status
+     */
+    void doAspect(GAspectType aspectType, CSTATUS status = STATUS_OK);
+
 protected:
     bool done_ { false };                            // 判定被执行结束
     bool is_init_ { false };                         // 是否初始化了
@@ -147,8 +172,9 @@ protected:
     std::string session_;                            // 节点唯一id信息
     std::set<GElement *> run_before_;                // 被依赖的节点
     std::set<GElement *> dependence_;                // 依赖的节点信息
-    std::atomic<int> left_depend_{ 0 };           // 当 left_depend_ 值为0的时候，即可以执行该node信息
+    std::atomic<int> left_depend_ { 0 };          // 当 left_depend_ 值为0的时候，即可以执行该node信息
     GParamManagerPtr param_manager_ { nullptr };     // 整体流程的参数管理类，所有pipeline中的所有节点共享
+    GAspectManagerPtr aspect_manager_ { nullptr };   // 整体流程的切面管理类
 
     friend class GNode;
     friend class GCluster;
@@ -156,7 +182,6 @@ protected:
     friend class GCondition;
     friend class GElementManager;
     friend class GGroup;
-    template<typename T> friend class GAspectObject;
     friend class GPipeline;
 };
 

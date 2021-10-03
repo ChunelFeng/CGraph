@@ -24,10 +24,13 @@ const std::string& GElement::getSession() const {
 /******** protected ********/
 GElement::GElement() {
     this->session_ = CGRAPH_GENERATE_SESSION();
+    aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager);
 }
 
 
-GElement::~GElement() = default;
+GElement::~GElement() {
+    CGRAPH_DELETE_PTR(aspect_manager_);
+}
 
 
 GElement::GElement(const GElement& element) {
@@ -40,6 +43,9 @@ GElement::GElement(const GElement& element) {
     this->session_ = element.session_;
     this->loop_ = element.loop_;
     this->name_ = element.name_;
+    this->aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager);
+    this->aspect_manager_->aspect_arr_ = element.aspect_manager_->aspect_arr_;
+    this->aspect_manager_->setName(element.aspect_manager_->getName());
 }
 
 
@@ -57,6 +63,9 @@ GElement& GElement::operator=(const GElement& element) {
     this->session_ = element.session_;
     this->loop_ = element.loop_;
     this->name_ = element.name_;
+    this->aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager);
+    this->aspect_manager_->aspect_arr_ = element.aspect_manager_->aspect_arr_;
+    this->aspect_manager_->setName(element.aspect_manager_->getName());
 
     return *this;
 }
@@ -141,10 +150,21 @@ CSTATUS GElement::setElementInfo(const GElementPtrSet& dependElements,
                                  GParamManagerPtr paramManager) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
+    CGRAPH_ASSERT_NOT_NULL(aspect_manager_)
 
     this->setName(name);
     this->setLoop(loop);
     param_manager_ = paramManager;
+    aspect_manager_->setName(name);
     status = this->addDependElements(dependElements);
     CGRAPH_FUNCTION_END
+}
+
+
+void GElement::doAspect(GAspectType aspectType, CSTATUS status) {
+    // 如果切面管理类为空，或者未添加切面，直接返回
+    if (this->aspect_manager_
+        && 0 != this->aspect_manager_->getSize()) {
+        aspect_manager_->reflect(aspectType, status);
+    }
 }

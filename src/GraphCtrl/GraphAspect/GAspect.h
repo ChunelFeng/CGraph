@@ -2,53 +2,52 @@
 @Author: Chunel
 @Contact: chunel@foxmail.com
 @File: GAspect.h
-@Time: 2021/9/27 11:28 下午
-@Desc: 提供了6个位置的切面信息，供调用
+@Time: 2021/10/2 9:46 下午
+@Desc: 
 ***************************/
 
 #ifndef CGRAPH_GASPECT_H
 #define CGRAPH_GASPECT_H
 
+#include <vector>
+
 #include "GAspectObject.h"
 
-
-template <typename T>
-class GAspect : public GAspectObject<T> {
+class GAspect : public GAspectObject {
 public:
     /**
      * init()函数切面开始期间动作
      */
-    virtual void beginInit();
+    virtual void beginInit() {}
 
     /**
      * init()函数切面结束期间动作
      */
-    virtual void finishInit(CSTATUS status);
+    virtual void finishInit(CSTATUS status) {}
 
     /**
      * run()函数切面开始期间动作
      */
-    virtual void beginRun();
+    virtual void beginRun() {}
 
     /**
      * run()函数切面结束期间动作
      */
-    virtual void finishRun(CSTATUS status);
+    virtual void finishRun(CSTATUS status) {}
 
     /**
      * deinit()函数切面开始期间动作
      */
-    virtual void beginDeinit();
+    virtual void beginDeinit() {}
 
     /**
      * init()函数切面结束期间动作
      */
-    virtual void finishDeinit(CSTATUS status);
+    virtual void finishDeinit(CSTATUS status) {}
 };
 
-template <typename T>
-using GAspectPtr = GAspect<T> *;
+using GAspectPtr = GAspect *;
+using GAspectPtrArr = std::vector<GAspectPtr>;
 
-#include "GAspect.inl"
 
 #endif //CGRAPH_GASPECT_H

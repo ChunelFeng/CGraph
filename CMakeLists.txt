@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.5.1)
 
-project(CGraph VERSION 1.7.0)
+project(CGraph VERSION 1.7.1)
 
 set(CMAKE_CXX_STANDARD 17)
 

@@ -12,5 +12,6 @@
 #include "GraphElement/GElementInclude.h"
 #include "GraphPipeline/GPipelineInclude.h"
 #include "GraphParam/GParamInclude.h"
+#include "GraphAspect/GAspectInclude.h"
 
 #endif //CGRAPH_GRAPHINCLUDE_H

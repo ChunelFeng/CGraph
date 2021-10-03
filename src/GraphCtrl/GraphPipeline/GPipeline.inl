@@ -34,7 +34,7 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
             CGRAPH_ECHO("This group has already been registered to another pipeline.");
             return STATUS_ERR;
         }
-    } else if constexpr (std::is_base_of_v<GElement, T>) {
+    } else if constexpr (std::is_base_of_v<GNode, T>) {
         /**
          * 如果不是group信息的话，且属于element（包含node和aspect）
          * 则直接内部创建该信息
@@ -53,22 +53,19 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
 }
 
 
-template<typename T, std::enable_if_t<std::is_base_of_v<GElement, T>, int>>
-GElementPtr GPipeline::createGNode(const GNodeInfo &info) {
+template<typename T, std::enable_if_t<std::is_base_of_v<GNode, T>, int>>
+GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_FUNCTION_BEGIN
-    GElementPtr node = nullptr;
-    if constexpr (std::is_base_of_v<GElement, T>) {
-        // 这里不能仅申明成GNode，是因为需要考虑GAspect的注册方式
-        node = new(std::nothrow) T;
-        status = node->setElementInfo(info.dependence, info.name, info.loop, this->param_manager_);
-        if (STATUS_OK != status) {
-            CGRAPH_DELETE_PTR(node);
-            return nullptr;
-        }
+    GNodePtr node = new(std::nothrow) T();
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(node)
 
-        element_repository_.insert(node);
+    status = node->setElementInfo(info.dependence, info.name, info.loop, this->param_manager_);
+    if (STATUS_OK != status) {
+        CGRAPH_DELETE_PTR(node);
+        return nullptr;
     }
 
+    element_repository_.insert(node);
     return node;
 }
 

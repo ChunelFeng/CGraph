@@ -2,7 +2,7 @@
 @Author: Chunel
 @Contact: chunel@foxmail.com
 @File: GAspectInclude.h
-@Time: 2021/9/27 11:33 下午
+@Time: 2021/10/2 9:48 下午
 @Desc: 
 ***************************/
 
@@ -10,5 +10,6 @@
 #define CGRAPH_GASPECTINCLUDE_H
 
 #include "GAspect.h"
+#include "GAspectManager.h"
 
 #endif //CGRAPH_GASPECTINCLUDE_H

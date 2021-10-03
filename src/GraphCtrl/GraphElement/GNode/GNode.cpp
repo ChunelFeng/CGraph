@@ -35,6 +35,6 @@ CSTATUS GNode::process(bool isMock) {
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 
-    status = this->afterRun();
+    status = this->afterRun();    // node层级的信息，执行后，直接执行afterRun逻辑
     CGRAPH_FUNCTION_END
 }

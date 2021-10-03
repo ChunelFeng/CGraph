@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: T02-Cluster.cpp
 @Time: 2021/6/7 8:51 下午
-@Desc: 
+@Desc:
 ***************************/
 
 #include "MyGNode/MyNode1.h"

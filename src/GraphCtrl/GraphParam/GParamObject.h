@@ -9,12 +9,12 @@
 #ifndef CGRAPH_GPARAMOBJECT_H
 #define CGRAPH_GPARAMOBJECT_H
 
-#include "../../CObject/CObject.h"
+#include "../GraphObject.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
 
 
-class GParamObject : public CObject {
-private:
+class GParamObject : public GraphObject {
+protected:
     /**
      * GParam相关内容，无法通过run()方法执行
      * @return

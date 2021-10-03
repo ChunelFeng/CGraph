@@ -13,12 +13,12 @@
 #include <memory>
 #include <list>
 
-#include "../../CObject/CObject.h"
-#include "../../UtilsCtrl/UtilsInclude.h"
+#include "../GraphObject.h"
 #include "GPipelineDefine.h"
+#include "../../UtilsCtrl/UtilsInclude.h"
 
 
-class GPipeline : public CObject {
+class GPipeline : public GraphObject {
 public:
     /**
      * 初始化pipeline信息
@@ -51,8 +51,8 @@ public:
      * @param info
      * @return
      */
-    template<typename T, std::enable_if_t<std::is_base_of_v<GElement, T>, int> = 0>
-    GElementPtr createGNode(const GNodeInfo &info);
+    template<typename T, std::enable_if_t<std::is_base_of_v<GNode, T>, int> = 0>
+    GNodePtr createGNode(const GNodeInfo &info);
 
     /**
      * 根据传入的信息，创建Group信息
@@ -71,7 +71,7 @@ public:
 
     /**
      * 在图中注册一个Element信息
-     * 如果注册的是GNode、GAspect信息，则内部自动生成
+     * 如果注册的是GNode信息，则内部自动生成
      * 如果注册的是GGroup信息，则需外部提前生成，然后注册进来
      * @tparam T
      * @param elementRef

@@ -41,7 +41,10 @@ CSTATUS GElementManager::init() {
     // manager 中的所有element初始化
     status = std::all_of(manager_elements_.begin(), manager_elements_.end(),
                          [](GElementPtr element) {
-        return STATUS_OK == element->init();
+        element->doAspect(GAspectType::BEGIN_INIT);
+        CSTATUS result = element->init();
+        element->doAspect(GAspectType::FINISH_INIT, result);
+        return STATUS_OK == result;
     }) ? STATUS_OK : STATUS_ERR;
 
     CGRAPH_FUNCTION_END
@@ -53,7 +56,10 @@ CSTATUS GElementManager::deinit() {
 
     status = std::all_of(manager_elements_.begin(), manager_elements_.end(),
                          [](GElementPtr element) {
-        return STATUS_OK == element->deinit();
+        element->doAspect(GAspectType::BEGIN_DEINIT);
+        CSTATUS result = element->deinit();
+        element->doAspect(GAspectType::FINISH_DEINIT, result);
+        return STATUS_OK == result;
     }) ? STATUS_OK : STATUS_ERR;
 
     CGRAPH_FUNCTION_END

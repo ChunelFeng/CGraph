@@ -10,7 +10,7 @@
 #define CGRAPH_GNODE_H
 
 #include "../GElement.h"
-#include "../../GraphParam/GParamManager.h"
+#include "../../GraphParam/GParamInclude.h"
 
 class GNode : public GElement {
 protected:
