@@ -22,7 +22,7 @@ void tutorial_aspect() {
     });
 
     pipeline->registerGElement<MyNode1>(&a, {}, "nodeA", 1);
-    pipeline->registerGElement<GCluster>(&b_region, {a}, "regionB", 1);
+    pipeline->registerGElement<GRegion>(&b_region, {a}, "regionB", 1);
     pipeline->registerGElement<MyNode1>(&c, {b_region}, "nodeC", 1);
     pipeline->registerGElement<MyNode2>(&d, {a}, "nodeD", 1);
 

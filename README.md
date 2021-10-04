@@ -15,7 +15,7 @@
 
 同时，使用者还可以通过自行设定各种包含多节点信息的`GGroup`（组），自行控制图的条件判断、循环和并发执行逻辑。
 
-还可以对以上各种类型信息，添加一层或多层`GAspect`(切面)，从而实现功能的横向扩展。
+此外，还可以对以上各种类型元素，添加一层或多层`GAspect`(切面)，从而实现功能的横向扩展。
 
 ![CGraph Skeleton](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Skeleton.jpg)
 <br>
@@ -43,7 +43,7 @@ public:
     CSTATUS run () override {
         CSTATUS status = STATUS_OK;
         CGRAPH_ECHO("[%s], enter MyNode1 run function. Sleep for 1 second ... ", this->getName().c_str());
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        CGRAPH_SLEEP_SECOND(1)
         return status;
     }
 };
@@ -58,7 +58,7 @@ public:
     CSTATUS run () override {
         CSTATUS status = STATUS_OK;
         CGRAPH_ECHO("[%s], enter MyNode2 run function. Sleep for 2 second ... ", this->getName().c_str());
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+        CGRAPH_SLEEP_SECOND(2)
         return status;
     }
 };
