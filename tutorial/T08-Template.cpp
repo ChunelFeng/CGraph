@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: T08-Template.cpp
 @Time: 2021/9/18 9:52 下午
-@Desc: 
+@Desc: 本例主要演示，注册节点的时候，传入模板类型的情况
 ***************************/
 
 #include "MyGNode/MyTemplateNode.h"

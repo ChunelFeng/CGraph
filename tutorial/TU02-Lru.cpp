@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: TU02-Lru.cpp
 @Time: 2021/9/19 12:43 上午
-@Desc: 
+@Desc: 本例主要演示，Lru工具的使用方法
 ***************************/
 
 #include "../src/CGraph.h"

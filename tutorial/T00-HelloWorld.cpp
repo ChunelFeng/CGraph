@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: T00-HelloWorld.cpp
 @Time: 2021/6/24 1:03 上午
-@Desc: 
+@Desc: 本例主要演示，GPipeline中注册GNode，并执行的流程
 ***************************/
 
 #include "MyGNode/HelloWorldNode.h"

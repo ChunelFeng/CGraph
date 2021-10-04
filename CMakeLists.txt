@@ -32,6 +32,7 @@ set(TUTORIAL_LIST
         T07-MultiPipeline
         T08-Template
         T09-Aspect
+        T10-AspectParam
         TU01-ThreadPool
         TU02-Lru
         TU03-Trie)

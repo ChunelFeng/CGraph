@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: T06-Condition.cpp
 @Time: 2021/6/19 10:44 下午
-@Desc: 
+@Desc: 本例主要演示，根据条件进行逻辑判断的功能
 ***************************/
 
 #include "MyGCondition/MyCondition.h"

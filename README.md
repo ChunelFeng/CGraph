@@ -150,8 +150,9 @@ void tutorial_simple() {
 * 提供`aspect`(切面)功能，用于横向扩展`node`或`group`功能
 * 更新`tutorial`内容
 
-[2021.10.03 - v1.7.1 - Chunel]
-* 优化`aspect`(切面)实现逻辑
+[2021.10.05 - v1.7.1 - Chunel]
+* 优化`aspect`(切面)实现逻辑，提供切面参数功能
+* 更新`tutorial`内容
 
 ------------
 #### 附录-2. 推荐阅读

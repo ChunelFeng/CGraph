@@ -24,7 +24,6 @@ const std::string& GElement::getSession() const {
 /******** protected ********/
 GElement::GElement() {
     this->session_ = CGRAPH_GENERATE_SESSION();
-    aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager);
 }
 
 
@@ -43,9 +42,12 @@ GElement::GElement(const GElement& element) {
     this->session_ = element.session_;
     this->loop_ = element.loop_;
     this->name_ = element.name_;
-    this->aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager);
-    this->aspect_manager_->aspect_arr_ = element.aspect_manager_->aspect_arr_;
-    this->aspect_manager_->setName(element.aspect_manager_->getName());
+
+    if (element.aspect_manager_) {
+        this->aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager);
+        this->aspect_manager_->aspect_arr_ = element.aspect_manager_->aspect_arr_;
+        this->aspect_manager_->setName(element.aspect_manager_->getName());
+    }
 }
 
 
@@ -63,9 +65,12 @@ GElement& GElement::operator=(const GElement& element) {
     this->session_ = element.session_;
     this->loop_ = element.loop_;
     this->name_ = element.name_;
-    this->aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager);
-    this->aspect_manager_->aspect_arr_ = element.aspect_manager_->aspect_arr_;
-    this->aspect_manager_->setName(element.aspect_manager_->getName());
+
+    if (element.aspect_manager_) {
+        this->aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager);
+        this->aspect_manager_->aspect_arr_ = element.aspect_manager_->aspect_arr_;
+        this->aspect_manager_->setName(element.aspect_manager_->getName());
+    }
 
     return *this;
 }
@@ -150,12 +155,13 @@ CSTATUS GElement::setElementInfo(const GElementPtrSet& dependElements,
                                  GParamManagerPtr paramManager) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
-    CGRAPH_ASSERT_NOT_NULL(aspect_manager_)
 
     this->setName(name);
     this->setLoop(loop);
     param_manager_ = paramManager;
-    aspect_manager_->setName(name);
+    if (aspect_manager_) {
+        aspect_manager_->setName(name);
+    }
     status = this->addDependElements(dependElements);
     CGRAPH_FUNCTION_END
 }

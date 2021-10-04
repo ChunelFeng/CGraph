@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: T03-Trie.cpp
 @Time: 2021/9/19 5:28 下午
-@Desc: 
+@Desc: 本例主要演示，Trie的使用方法
 ***************************/
 
 #include "../src/CGraph.h"

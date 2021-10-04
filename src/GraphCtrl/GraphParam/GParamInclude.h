@@ -10,6 +10,8 @@
 #define CGRAPH_GPARAMINCLUDE_H
 
 #include "GParam.h"
+#include "GAspectParam.h"
+#include "GAspectDefaultParam.h"
 #include "GParamManager.h"
 
 #endif //CGRAPH_GPARAMINCLUDE_H

@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: T01-Simple.cpp
 @Time: 2021/5/4 4:09 下午
-@Desc:
+@Desc: 本例主要演示，GPipeline注册和添加依赖关系的流程
 ***************************/
 
 #include "MyGNode/MyNode1.h"

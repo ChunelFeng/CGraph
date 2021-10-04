@@ -52,23 +52,16 @@ public:
 
     /**
      * 实现添加切面的逻辑
-     * @tparam T
-     * @tparam Args
+     * @tparam TAspect
+     * @tparam TParam
+     * @param param
      * @return
      */
-    template<typename T, std::enable_if_t<std::is_base_of_v<GAspect, T>, int> = 0>
-    GElement* addAspect();
+    template<typename TAspect, typename TParam = GAspectDefaultParam,
+            std::enable_if_t<std::is_base_of_v<GAspect, TAspect>, int> = 0,
+            std::enable_if_t<std::is_base_of_v<GAspectParam, TParam>, int> = 0>
+    GElement* addAspect(TParam* param = nullptr);
 
-    /**
-     * 依次添加两个aspect信息
-     * @tparam T1
-     * @tparam T2
-     * @return
-     */
-    template<typename T1, typename T2,
-            std::enable_if_t<std::is_base_of_v<GAspect, T1>, int> = 0,
-            std::enable_if_t<std::is_base_of_v<GAspect, T2>, int> = 0>
-    GElement* addAspect();
 
 protected:
     explicit GElement();

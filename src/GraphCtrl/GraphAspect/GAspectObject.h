@@ -11,11 +11,16 @@
 
 #include <string>
 
-#include "../GraphObject.h"
 #include "GAspectDefine.h"
+#include "../GraphObject.h"
+#include "../GraphParam/GParamInclude.h"
 
 class GAspectObject : public GraphObject {
 public:
+    ~GAspectObject() override {
+        CGRAPH_DELETE_PTR(param_)
+    }
+
     /**
      * 获取name信息
      * @return
@@ -25,6 +30,23 @@ public:
     }
 
     /**
+     * 获取切面参数内容
+     * @return
+     */
+    template <typename T = GAspectParam,
+              std::enable_if_t<std::is_base_of_v<GAspectParam, T>, int> = 0>
+    T* getParam();
+
+    /**
+     * 设置切面参数内容
+     * @param param
+     */
+    template <typename T,
+              std::enable_if_t<std::is_base_of_v<GAspectParam, T>, int> = 0>
+    GAspectObject* setParam(T* param);
+
+protected:
+    /**
      * 设置名称
      * @param name
      */
@@ -32,7 +54,6 @@ public:
         this->name_ = name;
     }
 
-protected:
     /**
      * GAspect 相关内容，不需要执行run方法
      * @return
@@ -42,8 +63,15 @@ protected:
     }
 
 private:
-    std::string name_;            // 切面类名称，跟element名称保持相同
+    std::string name_;                       // 切面类名称，跟element名称保持相同
+    GAspectParamPtr param_ { nullptr };            // 参数信息
+
+    friend class GAspectManager;
+    friend class GElement;
 };
 
+using GAspectObjectPtr = GAspectObject *;
+
+#include "GAspectObject.inl"
 
 #endif //CGRAPH_GASPECTOBJECT_H
