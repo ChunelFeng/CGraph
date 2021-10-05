@@ -84,7 +84,9 @@ CSTATUS GCluster::process(bool isMock) {
             int clusterLoop = element->loop_;
             while (clusterLoop-- > 0) {
                 // cluster 需要被执行loop次
-                element->doAspect(GAspectType::BEGIN_RUN);
+                status = element->doAspect(GAspectType::BEGIN_RUN);
+                CGRAPH_FUNCTION_CHECK_STATUS
+
                 status = element->run();
                 element->doAspect(GAspectType::FINISH_RUN, status);
                 CGRAPH_FUNCTION_CHECK_STATUS

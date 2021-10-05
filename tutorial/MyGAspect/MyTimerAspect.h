@@ -17,8 +17,9 @@ public:
     /**
      * 实现计时切面逻辑，打印 run() 方法的执行时间
      */
-    void beginRun() override {
+    CSTATUS beginRun() override {
         start_ts_ = std::chrono::high_resolution_clock::now();
+        return STATUS_OK;
     }
 
     void finishRun(CSTATUS status) override {

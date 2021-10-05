@@ -8,9 +8,11 @@
 
 #include "MyGNode/MyNode1.h"
 #include "MyGNode/MyNode2.h"
+#include "MyGNode/MyWriteParamNode.h"
 #include "MyGAspect/MyConnAspect.h"
 #include "MyGParam/MyConnParam.h"
 #include "MyGAspect/MyTimerAspect.h"
+#include "MyGAspect/MyPipeLineParamAspect.h"
 
 void tutorial_aspect_param() {
     GPipelinePtr pipeline = GPipelineFactory::create();
@@ -22,15 +24,19 @@ void tutorial_aspect_param() {
     paramB.ip = "255.255.255.255";
     paramB.port = 9999;
 
-    GElementPtr a, b = nullptr;
+    GElementPtr a, b, c = nullptr;
     pipeline->registerGElement<MyNode1>(&a, {}, "nodeA", 1);
     pipeline->registerGElement<MyNode2>(&b, {a}, "nodeB", 1);
+    pipeline->registerGElement<MyWriteParamNode>(&c, {b}, "nodeC", 2);
 
     /** 给a节点添加 MyConnAspect 切面的逻辑，并且传入 paramA 相关参数 */
     a->addAspect<MyConnAspect, MyConnParam>(&paramA);
 
     /** 给b节点添加多个切面，有的传递参数，有的不传递 */
     b->addAspect<MyConnAspect, MyConnParam>(&paramB)->addAspect<MyTimerAspect>();
+
+    /** 在切面中，获取pipeline中的参数，并且进行对应处理 */
+    c->addAspect<MyPipeLineParamAspect>();
 
     pipeline->process();
     GPipelineFactory::clear();

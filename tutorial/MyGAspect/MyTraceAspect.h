@@ -16,16 +16,18 @@ public:
     /**
      * 实现几个切面函数逻辑，模拟在对应执行的位置，打印trace信息
      */
-    void beginInit() override {
+    CSTATUS beginInit() override {
         CGRAPH_ECHO("----> [MyTraceAspect] [%s] init begin ...", this->getName().c_str());
+        return STATUS_OK;
     }
 
     void finishInit(CSTATUS status) override {
         CGRAPH_ECHO("----> [MyTraceAspect] [%s] init finished, error code is [%d] ...", this->getName().c_str(), status);
     }
 
-    void beginRun() override {
+    CSTATUS beginRun() override {
         CGRAPH_ECHO("----> [MyTraceAspect] [%s] run begin ...", this->getName().c_str());
+        return STATUS_OK;
     }
 
     void finishRun(CSTATUS status) override {
@@ -36,8 +38,9 @@ public:
         }
     }
 
-    void beginDeinit() override {
+    CSTATUS beginDeinit() override {
         CGRAPH_ECHO("----> [MyTraceAspect] [%s] deinit begin ...", this->getName().c_str());
+        return STATUS_OK;
     }
 
     void finishDeinit(CSTATUS status) override {

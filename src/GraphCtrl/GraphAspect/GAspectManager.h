@@ -40,22 +40,27 @@ public:
     /**
      * 执行切面逻辑
      */
-    void reflect(const GAspectType type, CSTATUS status = STATUS_OK) {
+    CSTATUS reflect(const GAspectType type, CSTATUS curStatus = STATUS_OK) {
+        CGRAPH_FUNCTION_BEGIN
         if (aspect_arr_.empty()) {
-            return;
+            /** 如果为空，则不执行即可。属于正常情况 */
+            CGRAPH_FUNCTION_END
         }
 
         for (GAspectPtr aspect : aspect_arr_) {
             switch (type) {
-                case GAspectType::BEGIN_INIT : aspect->beginInit(); break;
-                case GAspectType::FINISH_INIT : aspect->finishInit(status); break;
-                case GAspectType::BEGIN_RUN : aspect->beginRun(); break;
-                case GAspectType::FINISH_RUN : aspect->finishRun(status); break;
-                case GAspectType::BEGIN_DEINIT : aspect->beginDeinit(); break;
-                case GAspectType::FINISH_DEINIT : aspect->finishDeinit(status); break;
-                default: ;    // 无任务执行
+                // 仅针对Begin对应的内容，进行返回值判断
+                case GAspectType::BEGIN_INIT : status = aspect->beginInit(); break;
+                case GAspectType::FINISH_INIT : aspect->finishInit(curStatus); break;
+                case GAspectType::BEGIN_RUN : status = aspect->beginRun(); break;
+                case GAspectType::FINISH_RUN :  aspect->finishRun(curStatus); break;
+                case GAspectType::BEGIN_DEINIT : status = aspect->beginDeinit(); break;
+                case GAspectType::FINISH_DEINIT : aspect->finishDeinit(curStatus); break;
+                default: status = STATUS_ERR;    // 超出预期范围，理论不存在的情况
             }
         }
+
+        CGRAPH_FUNCTION_END
     }
 
     /**
@@ -72,10 +77,12 @@ public:
     }
 
 
-    void setName(const std::string& name) override {
+    GAspectManager* setName(const std::string& name) override {
         for (GAspectPtr aspect : aspect_arr_) {
             aspect->setName(name);
         }
+
+        return this;
     }
 
     /**

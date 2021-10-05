@@ -149,12 +149,14 @@ protected:
                            int loop = 1,
                            GParamManagerPtr paramManager = nullptr);
 
+
     /**
      * 执行切面逻辑
      * @param aspectType
-     * @param status
+     * @param curStatus
+     * @return
      */
-    void doAspect(GAspectType aspectType, CSTATUS status = STATUS_OK);
+    CSTATUS doAspect(GAspectType aspectType, CSTATUS curStatus = STATUS_OK);
 
 protected:
     bool done_ { false };                            // 判定被执行结束

@@ -14,12 +14,14 @@
 
 class MyConnAspect : public GAspect {
 public:
-    void beginInit() override {
+    CSTATUS beginInit() override {
         auto* param = this->getParam<MyConnParam>();
         if (param) {
             // 如果传入类型不匹配，则返回param值为空
             mockConnect(param->ip, param->port);
         }
+
+        return STATUS_OK;
     }
 
     void finishDeinit(CSTATUS status) override {
@@ -47,7 +49,7 @@ protected:
     }
 
 private:
-    bool conn_status_ { false };    // 表示连接状态
+    bool conn_status_ { false };                    // 表示连接状态
 };
 
 #include "../../src/CGraph.h"

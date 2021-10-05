@@ -18,7 +18,9 @@ public:
     /**
      * init()函数切面开始期间动作
      */
-    virtual void beginInit() {}
+    virtual CSTATUS beginInit() {
+        return STATUS_OK;
+    }
 
     /**
      * init()函数切面结束期间动作
@@ -28,7 +30,9 @@ public:
     /**
      * run()函数切面开始期间动作
      */
-    virtual void beginRun() {}
+    virtual CSTATUS beginRun() {
+        return STATUS_OK;
+    }
 
     /**
      * run()函数切面结束期间动作
@@ -38,10 +42,12 @@ public:
     /**
      * deinit()函数切面开始期间动作
      */
-    virtual void beginDeinit() {}
+    virtual CSTATUS beginDeinit() {
+        return STATUS_OK;
+    }
 
     /**
-     * init()函数切面结束期间动作
+     * deinit()函数切面结束期间动作
      */
     virtual void finishDeinit(CSTATUS status) {}
 };

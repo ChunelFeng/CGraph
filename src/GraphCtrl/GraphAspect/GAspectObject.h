@@ -45,13 +45,34 @@ public:
               std::enable_if_t<std::is_base_of_v<GAspectParam, T>, int> = 0>
     GAspectObject* setParam(T* param);
 
+    /**
+     * 获取pipeline中的参数信息
+     * @tparam T
+     * @param key
+     * @return
+     */
+    template <typename T,
+              std::enable_if_t<std::is_base_of_v<GParam, T>, int> = 0>
+    T* getPipelineParam(const std::string& key);
+
 protected:
     /**
      * 设置名称
      * @param name
      */
-    virtual void setName(const std::string& name) {
+    virtual GAspectObject* setName(const std::string& name) {
         this->name_ = name;
+        return this;
+    }
+
+    /**
+     * 设置pipeline中相关的参数信息
+     * @param manager
+     * @return
+     */
+    GAspectObject* setPipelineParamManager(GParamManagerPtr manager) {
+        pipeline_param_manager_ = manager;
+        return this;
     }
 
     /**
@@ -63,8 +84,9 @@ protected:
     }
 
 private:
-    std::string name_;                       // 切面类名称，跟element名称保持相同
-    GAspectParamPtr param_ { nullptr };            // 参数信息
+    std::string name_;                                        // 切面类名称，跟 element 名称保持相同
+    GAspectParamPtr param_ { nullptr };                       // 参数信息
+    GParamManagerPtr pipeline_param_manager_ { nullptr };     // 对应 pipeline 中参数管理器
 
     friend class GAspectManager;
     friend class GElement;

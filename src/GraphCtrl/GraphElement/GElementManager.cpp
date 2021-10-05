@@ -38,14 +38,15 @@ CSTATUS GElementManager::init() {
     status = analyse();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    // manager 中的所有element初始化
-    status = std::all_of(manager_elements_.begin(), manager_elements_.end(),
-                         [](GElementPtr element) {
-        element->doAspect(GAspectType::BEGIN_INIT);
-        CSTATUS result = element->init();
-        element->doAspect(GAspectType::FINISH_INIT, result);
-        return STATUS_OK == result;
-    }) ? STATUS_OK : STATUS_ERR;
+    for (GElementPtr element : manager_elements_) {
+        CGRAPH_ASSERT_NOT_NULL(element)
+
+        status = element->doAspect(GAspectType::BEGIN_INIT);
+        CGRAPH_FUNCTION_CHECK_STATUS
+        status = element->init();
+        element->doAspect(GAspectType::FINISH_INIT, status);
+        CGRAPH_FUNCTION_CHECK_STATUS
+    }
 
     CGRAPH_FUNCTION_END
 }
@@ -54,13 +55,15 @@ CSTATUS GElementManager::init() {
 CSTATUS GElementManager::deinit() {
     CGRAPH_FUNCTION_BEGIN
 
-    status = std::all_of(manager_elements_.begin(), manager_elements_.end(),
-                         [](GElementPtr element) {
-        element->doAspect(GAspectType::BEGIN_DEINIT);
-        CSTATUS result = element->deinit();
-        element->doAspect(GAspectType::FINISH_DEINIT, result);
-        return STATUS_OK == result;
-    }) ? STATUS_OK : STATUS_ERR;
+    for (GElementPtr element : manager_elements_) {
+        CGRAPH_ASSERT_NOT_NULL(element)
+
+        status = element->doAspect(GAspectType::BEGIN_DEINIT);
+        CGRAPH_FUNCTION_CHECK_STATUS
+        status = element->deinit();
+        element->doAspect(GAspectType::FINISH_DEINIT, status);
+        CGRAPH_FUNCTION_CHECK_STATUS
+    }
 
     CGRAPH_FUNCTION_END
 }

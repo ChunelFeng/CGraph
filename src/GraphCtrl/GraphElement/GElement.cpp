@@ -167,10 +167,14 @@ CSTATUS GElement::setElementInfo(const GElementPtrSet& dependElements,
 }
 
 
-void GElement::doAspect(GAspectType aspectType, CSTATUS status) {
+CSTATUS GElement::doAspect(GAspectType aspectType, CSTATUS curStatus) {
+    CGRAPH_FUNCTION_BEGIN
+
     // 如果切面管理类为空，或者未添加切面，直接返回
     if (this->aspect_manager_
         && 0 != this->aspect_manager_->getSize()) {
-        aspect_manager_->reflect(aspectType, status);
+        status = aspect_manager_->reflect(aspectType, curStatus);
     }
+
+    CGRAPH_FUNCTION_END
 }

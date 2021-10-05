@@ -37,4 +37,14 @@ T* GAspectObject::getParam() {
     return param;
 }
 
+
+template <typename T,
+          std::enable_if_t<std::is_base_of_v<GParam, T>, int>>
+T* GAspectObject::getPipelineParam(const std::string& key) {
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(pipeline_param_manager_)
+
+    T* ptr = dynamic_cast<T *>(this->pipeline_param_manager_->get(key));
+    return ptr;
+}
+
 #endif //CGRAPH_GASPECTOBJECT_INL

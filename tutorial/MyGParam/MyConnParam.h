@@ -17,6 +17,10 @@ struct MyConnParam : public GAspectParam {
      * @param param
      */
     void clone(GAspectParamPtr param) override {
+        if (nullptr == param) {
+            return;    // 异常判断，理论不可能出现此情况
+        }
+
         auto* ptr = dynamic_cast<MyConnParam *>(param);    // 将传入的参数进行强转，并且赋值到本地
         ip = ptr->ip;
         port = ptr->port;
