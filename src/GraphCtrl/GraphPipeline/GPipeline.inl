@@ -19,10 +19,6 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
 
-    if (element_manager_->hasElement(*elementRef)) {
-        element_manager_->deleteElement(*elementRef);    // 每次注册，都默认为是新的节点
-    }
-
     if constexpr (std::is_base_of_v<GGroup, T>) {
         /**
          * 如果是GGroup类型的信息，则：
@@ -71,10 +67,10 @@ GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
 
 
 template<typename T, std::enable_if_t<std::is_base_of_v<GGroup, T>, int>>
-GElementPtr GPipeline::createGGroup(const GElementPtrArr &elements,
-                                    const GElementPtrSet &dependElements,
-                                    const std::string &name,
-                                    int loop) {
+GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
+                                  const GElementPtrSet &dependElements,
+                                  const std::string &name,
+                                  int loop) {
     CGRAPH_FUNCTION_BEGIN
 
     // 如果不是所有的都非空，则创建失败
@@ -100,13 +96,13 @@ GElementPtr GPipeline::createGGroup(const GElementPtrArr &elements,
         group->addElement(element);
     }
 
-    if (std::is_same<GRegion, T>::value) {
+    if constexpr (std::is_same<GRegion, T>::value) {
         // 如果是GRegion类型，需要设置线程池信息。因为GRegion内部可能需要并行
         ((GRegion *)group)->setThreadPool(this->thread_pool_);
     }
 
     status = group->setElementInfo(dependElements, name, loop);    // 注册group信息的时候，不能注册paramManager信息
-    if (STATUS_OK != status) {
+    if (unlikely(STATUS_OK != status)) {
         CGRAPH_DELETE_PTR(group)
         return nullptr;
     }
@@ -114,5 +110,19 @@ GElementPtr GPipeline::createGGroup(const GElementPtrArr &elements,
     this->element_repository_.insert(group);
     return group;
 }
+
+
+template<typename T, std::enable_if_t<std::is_base_of_v<GParam, T>, int>>
+GPipelinePtr GPipeline::addGParam(const std::string& key) {
+    if (key.empty() || nullptr == param_manager_) {
+        return nullptr;
+    }
+
+    /** 如果创建成功，返回自身（用于链式调用）
+     * 如果失败，直接返回nullptr信息
+     * */
+    return (STATUS_OK == param_manager_->template create<T>(key)) ? this : nullptr;
+}
+
 
 #endif //CGRAPH_GPIPELINE_INL

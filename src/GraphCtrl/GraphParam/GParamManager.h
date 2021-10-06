@@ -24,7 +24,7 @@ public:
      * @param key
      * @return
      */
-    template<typename T>
+    template<typename T, std::enable_if_t<std::is_base_of_v<GParam, T>, int> = 0>
     CSTATUS create(const std::string& key);
 
     /**

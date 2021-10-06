@@ -23,7 +23,7 @@ public:
          * */
         auto* pipelineParam = this->getPipelineParam<MyParam>("param1");
         if (nullptr == pipelineParam) {
-            return STATUS_ERR;
+            return STATUS_RES;
         }
 
         /** 遇到并发情况，请考虑加锁保护（参考 T05-Param 中逻辑） */

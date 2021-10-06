@@ -64,7 +64,7 @@ public:
      * @return
      */
     template<typename T, std::enable_if_t<std::is_base_of_v<GGroup, T>, int> = 0>
-    GElementPtr createGGroup(const GElementPtrArr &elements,
+    GGroupPtr createGGroup(const GElementPtrArr &elements,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = "",
                              int loop = 1);
@@ -85,6 +85,15 @@ public:
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = "",
                              int loop = 1);
+
+    /**
+     * 添加参数，pipeline中所有节点共享此参数
+     * @tparam T
+     * @param key
+     * @return
+     */
+    template<typename T, std::enable_if_t<std::is_base_of_v<GParam, T>, int> = 0>
+    GPipeline* addGParam(const std::string& key);
 
 protected:
     explicit GPipeline();

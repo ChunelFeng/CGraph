@@ -25,7 +25,7 @@ public:
     /**
      * init()函数切面结束期间动作
      */
-    virtual void finishInit(CSTATUS status) {}
+    virtual void finishInit(CSTATUS curStatus) {}
 
     /**
      * run()函数切面开始期间动作
@@ -37,7 +37,7 @@ public:
     /**
      * run()函数切面结束期间动作
      */
-    virtual void finishRun(CSTATUS status) {}
+    virtual void finishRun(CSTATUS curStatus) {}
 
     /**
      * deinit()函数切面开始期间动作
@@ -49,7 +49,7 @@ public:
     /**
      * deinit()函数切面结束期间动作
      */
-    virtual void finishDeinit(CSTATUS status) {}
+    virtual void finishDeinit(CSTATUS curStatus) {}
 };
 
 using GAspectPtr = GAspect *;

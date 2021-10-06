@@ -97,17 +97,20 @@ CSTATUS GElement::afterRun() {
 }
 
 
-void GElement::setName(const std::string& name) {
+GElementPtr GElement::setName(const std::string& name) {
     if (!name.empty()) {
         this->name_ = name;
     } else {
         this->name_ = this->session_;
     }
+
+    return this;
 }
 
 
-void GElement::setLoop(int loop) {
+GElement* GElement::setLoop(int loop) {
     this->loop_ = (loop >= 0) ? loop : 0;
+    return this;
 }
 
 
@@ -156,8 +159,7 @@ CSTATUS GElement::setElementInfo(const GElementPtrSet& dependElements,
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
 
-    this->setName(name);
-    this->setLoop(loop);
+    this->setName(name)->setLoop(loop);
     param_manager_ = paramManager;
     if (aspect_manager_) {
         aspect_manager_->setName(name);

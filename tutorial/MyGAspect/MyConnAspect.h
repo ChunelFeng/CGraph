@@ -24,7 +24,7 @@ public:
         return STATUS_OK;
     }
 
-    void finishDeinit(CSTATUS status) override {
+    void finishDeinit(CSTATUS curStatus) override {
         auto* param = this->getParam<MyConnParam>();
         if (param) {
             mockDisconnect(param->ip, param->port);

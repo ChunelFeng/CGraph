@@ -38,7 +38,7 @@ void tutorial_aspect_param() {
     /** 在切面中，获取pipeline中的参数，并且进行对应处理 */
     c->addAspect<MyPipeLineParamAspect>();
 
-    pipeline->process();
+    pipeline->process(3);
     GPipelineFactory::clear();
 }
 

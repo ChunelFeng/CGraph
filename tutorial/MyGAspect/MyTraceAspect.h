@@ -21,8 +21,8 @@ public:
         return STATUS_OK;
     }
 
-    void finishInit(CSTATUS status) override {
-        CGRAPH_ECHO("----> [MyTraceAspect] [%s] init finished, error code is [%d] ...", this->getName().c_str(), status);
+    void finishInit(CSTATUS curStatus) override {
+        CGRAPH_ECHO("----> [MyTraceAspect] [%s] init finished, error code is [%d] ...", this->getName().c_str(), curStatus);
     }
 
     CSTATUS beginRun() override {
@@ -30,11 +30,11 @@ public:
         return STATUS_OK;
     }
 
-    void finishRun(CSTATUS status) override {
-        if (STATUS_OK == status) {
+    void finishRun(CSTATUS curStatus) override {
+        if (STATUS_OK == curStatus) {
             CGRAPH_ECHO("----> [MyTraceAspect] [%s] run finished, status is ok ...", this->getName().c_str());
         } else {
-            CGRAPH_ECHO("----> [MyTraceAspect] [%s] run finished, error code is [%d] ...", this->getName().c_str(), status);
+            CGRAPH_ECHO("----> [MyTraceAspect] [%s] run finished, error code is [%d] ...", this->getName().c_str(), curStatus);
         }
     }
 
@@ -43,8 +43,8 @@ public:
         return STATUS_OK;
     }
 
-    void finishDeinit(CSTATUS status) override {
-        CGRAPH_ECHO("----> [MyTraceAspect] [%s] deinit finished, error code is [%d] ...", this->getName().c_str(), status);
+    void finishDeinit(CSTATUS curStatus) override {
+        CGRAPH_ECHO("----> [MyTraceAspect] [%s] deinit finished, error code is [%d] ...", this->getName().c_str(), curStatus);
     }
 };
 

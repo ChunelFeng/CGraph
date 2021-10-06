@@ -2,7 +2,7 @@
 #ifndef CGRAPH_GPARAMMANAGER_INL
 #define CGRAPH_GPARAMMANAGER_INL
 
-template<typename T>
+template<typename T, std::enable_if_t<std::is_base_of_v<GParam, T>, int>>
 CSTATUS GParamManager::create(const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
     auto result = params_map_.find(key);

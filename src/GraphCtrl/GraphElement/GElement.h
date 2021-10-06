@@ -99,14 +99,16 @@ protected:
     /**
      * 设置name信息
      * @param name
+     * @return
      */
-    void setName(const std::string& name);
+    GElement* setName(const std::string& name);
 
     /**
      * 设置循环次数
      * @param loop
+     * @return
      */
-    void setLoop(int loop = 1);
+    GElement* setLoop(int loop = 1);
 
     /**
      * 判定element是否可以运行
