@@ -21,7 +21,7 @@
 <br>
 
 ## 二. 编译说明
-* 本工程目前支持MacOS、Linux和Windows系统，无任何第三方依赖。使用CLion作为IDE的开发者，直接打开CMakeLists.txt文件作为工程，即可编译。
+* 本工程支持MacOS、Linux和Windows系统，无任何第三方依赖。使用CLion作为IDE的开发者，直接打开CMakeLists.txt文件作为工程，即可编译。
 
 * Linux环境开发者，在命令行模式下，输入以下指令，即可编译通过
   ```shell
@@ -161,6 +161,7 @@ void tutorial_simple() {
 * [纯序员给你介绍图化框架的简单实现——循环逻辑](http://www.chunel.cn/archives/cgraph-loop-introduce)
 * [纯序员给你介绍图化框架的简单实现——参数传递](http://www.chunel.cn/archives/cgraph-param-introduce)
 * [纯序员给你介绍图化框架的简单实现——条件判断](http://www.chunel.cn/archives/cgraph-condition-introduce)
+* [纯序员给你介绍图化框架的简单实现——面向切面](http://www.chunel.cn/archives/cgraph-aspect-introduce)
 * [纯序员给你介绍图化框架的简单实现——线程池优化（一）](http://www.chunel.cn/archives/cgraph-threadpool-1-introduce)
 * [纯序员给你介绍图化框架的简单实现——线程池优化（二）](http://www.chunel.cn/archives/cgraph-threadpool-2-introduce)
 * [纯序员给你介绍图化框架的简单实现——线程池优化（三）](http://www.chunel.cn/archives/cgraph-threadpool-3-introduce)
