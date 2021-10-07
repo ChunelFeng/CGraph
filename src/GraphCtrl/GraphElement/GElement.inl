@@ -31,7 +31,7 @@ T* GElement::getGParam(const std::string& key) {
 template<typename TAspect, typename TParam,
         std::enable_if_t<std::is_base_of_v<GAspect, TAspect>, int>,
         std::enable_if_t<std::is_base_of_v<GAspectParam, TParam>, int>>
-GElementPtr GElement::addAspect(TParam* param) {
+GElementPtr GElement::addGAspect(TParam* param) {
     if (!aspect_manager_) {
         /** 采用懒加载的方式执行，这里不会有并发问题，故不需要采用单例模式了 */
         aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager);

@@ -14,7 +14,6 @@
 class MyNode1 : public GNode {
 
 public:
-
     CSTATUS run () override {
         CSTATUS status = STATUS_OK;
         CGRAPH_ECHO("[%s], enter MyNode1 run function. Sleep for 1 second ... ", this->getName().c_str());
@@ -23,4 +22,4 @@ public:
     }
 };
 
-#endif //CGRAPH_NODE1_H
+#endif //CGRAPH_MYNODE1_H

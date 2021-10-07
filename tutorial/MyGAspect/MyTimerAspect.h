@@ -10,12 +10,13 @@
 #define CGRAPH_MYTIMERASPECT_H
 
 #include <chrono>
+
 #include "../../src/CGraph.h"
 
 class MyTimerAspect : public GAspect {
 public:
     /**
-     * 实现计时切面逻辑，打印 run() 方法的执行时间
+     * 实现计时切面逻辑，记录 run() 方法的执行耗时信息
      */
     CSTATUS beginRun() override {
         start_ts_ = std::chrono::high_resolution_clock::now();
@@ -23,8 +24,8 @@ public:
     }
 
     void finishRun(CSTATUS curStatus) override {
-        std::chrono::duration<double, std::milli> time_span = std::chrono::high_resolution_clock::now() - start_ts_;
-        CGRAPH_ECHO("----> [MyTimerAspect] [%s] time cost is : [%0.2lf] ms", this->getName().c_str(), time_span.count());
+        std::chrono::duration<double, std::milli> span = std::chrono::high_resolution_clock::now() - start_ts_;
+        CGRAPH_ECHO("----> [MyTimerAspect] [%s] time cost is : [%0.2lf] ms", this->getName().c_str(), span.count());
     }
 
 private:

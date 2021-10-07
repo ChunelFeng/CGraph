@@ -13,6 +13,7 @@
 #include "../MyGParam/MyParam.h"
 
 class MyWriteParamNode : public GNode {
+
 public:
     CSTATUS init () override {
         CSTATUS status = STATUS_OK;

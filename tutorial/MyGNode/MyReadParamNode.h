@@ -13,6 +13,7 @@
 #include "../MyGParam/MyParam.h"
 
 class MyReadParamNode : public GNode {
+
 public:
     CSTATUS run () override {
         MyParam* myParam = this->getGParam<MyParam>("param1");    // 获取类型为MyParam且名为"param1"的参数

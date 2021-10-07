@@ -95,6 +95,19 @@ public:
     template<typename T, std::enable_if_t<std::is_base_of_v<GParam, T>, int> = 0>
     GPipeline* addGParam(const std::string& key);
 
+
+    /**
+     * 批量添加切面
+     * @tparam T
+     * @param elements
+     * @return
+     */
+    template<typename TAspect, typename TParam = GAspectDefaultParam,
+            std::enable_if_t<std::is_base_of_v<GAspect, TAspect>, int> = 0,
+            std::enable_if_t<std::is_base_of_v<GAspectParam, TParam>, int> = 0>
+    GPipeline* addGAspectBatch(const GElementPtrSet& elements = std::initializer_list<GElementPtr>(),
+                               TParam* param = nullptr);
+
 protected:
     explicit GPipeline();
 

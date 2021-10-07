@@ -10,12 +10,12 @@
 #define CGRAPH_MYCONNASPECT_H
 
 #include "../../src/CGraph.h"
-#include "../MyGParam/MyConnParam.h"
+#include "../MyGParam/MyConnAspectParam.h"
 
 class MyConnAspect : public GAspect {
 public:
     CSTATUS beginInit() override {
-        auto* param = this->getParam<MyConnParam>();
+        auto* param = this->getParam<MyConnAspectParam>();
         if (param) {
             // 如果传入类型不匹配，则返回param值为空
             mockConnect(param->ip, param->port);
@@ -25,7 +25,7 @@ public:
     }
 
     void finishDeinit(CSTATUS curStatus) override {
-        auto* param = this->getParam<MyConnParam>();
+        auto* param = this->getParam<MyConnAspectParam>();
         if (param) {
             mockDisconnect(param->ip, param->port);
         }

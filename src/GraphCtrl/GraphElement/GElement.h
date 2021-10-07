@@ -60,7 +60,7 @@ public:
     template<typename TAspect, typename TParam = GAspectDefaultParam,
             std::enable_if_t<std::is_base_of_v<GAspect, TAspect>, int> = 0,
             std::enable_if_t<std::is_base_of_v<GAspectParam, TParam>, int> = 0>
-    GElement* addAspect(TParam* param = nullptr);
+    GElement* addGAspect(TParam* param = nullptr);
 
 
 protected:
