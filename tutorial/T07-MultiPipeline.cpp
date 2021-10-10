@@ -9,6 +9,8 @@
 #include "MyGNode/MyNode1.h"
 #include "MyGNode/MyNode2.h"
 
+using namespace CGraph;
+
 void tutorial_pipeline_1(GPipelinePtr pipeline_1) {
     if (nullptr == pipeline_1) {
         return;

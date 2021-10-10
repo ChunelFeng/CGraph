@@ -17,6 +17,7 @@
 #include "GPipelineDefine.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
 
+CGRAPH_NAMESPACE_BEGIN
 
 class GPipeline : public GraphObject {
 public:
@@ -65,9 +66,9 @@ public:
      */
     template<typename T, std::enable_if_t<std::is_base_of_v<GGroup, T>, int> = 0>
     GGroupPtr createGGroup(const GElementPtrArr &elements,
-                             const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
-                             const std::string &name = "",
-                             int loop = 1);
+                           const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
+                           const std::string &name = "",
+                           int loop = 1);
 
     /**
      * 在图中注册一个Element信息
@@ -94,7 +95,6 @@ public:
      */
     template<typename T, std::enable_if_t<std::is_base_of_v<GParam, T>, int> = 0>
     GPipeline* addGParam(const std::string& key);
-
 
     /**
      * 批量添加切面
@@ -125,6 +125,8 @@ private:
 
 using GPipelinePtr = GPipeline *;
 using GPipelinePtrList = std::list<GPipelinePtr>;
+
+CGRAPH_NAMESPACE_END
 
 #include "GPipeline.inl"
 

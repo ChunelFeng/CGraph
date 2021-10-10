@@ -8,6 +8,8 @@
 
 #include "GNode.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 GNode::GNode() : GElement() {
     param_manager_ = nullptr;
 }
@@ -38,3 +40,5 @@ CSTATUS GNode::process(bool isMock) {
     status = this->afterRun();    // node层级的信息，执行后，直接执行afterRun逻辑
     CGRAPH_FUNCTION_END
 }
+
+CGRAPH_NAMESPACE_END

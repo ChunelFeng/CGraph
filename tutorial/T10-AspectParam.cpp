@@ -14,6 +14,8 @@
 #include "MyGAspect/MyTimerAspect.h"
 #include "MyGAspect/MyPipeLineParamAspect.h"
 
+using namespace CGraph;
+
 void tutorial_aspect_param() {
     GPipelinePtr pipeline = GPipelineFactory::create();
     MyConnAspectParam paramA;

@@ -17,6 +17,7 @@
 #include "../UThreadObject.h"
 #include "../TaskWrapper/UTaskWrapper.h"
 
+CGRAPH_NAMESPACE_BEGIN
 
 class UWorkStealingQueue : public UThreadObject {
 public:
@@ -129,5 +130,7 @@ private:
     std::deque<UTaskWrapper> queue_;
     std::mutex mutex_;
 };
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_UWORKSTEALINGQUEUE_H

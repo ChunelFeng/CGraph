@@ -21,6 +21,9 @@
  * 创建GCluster的时候，dependence为空
  * 创建GRegion的时候，dependence不为空
  */
+
+CGRAPH_NAMESPACE_BEGIN
+
 struct GNodeInfo {
     std::string name;
     int loop {1} ;
@@ -41,5 +44,7 @@ struct GNodeInfo {
         this->dependence = dependence;
     }
 };
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GPIPELINEDEFINE_H

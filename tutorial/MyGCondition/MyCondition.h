@@ -11,7 +11,7 @@
 
 #include "../../src/CGraph.h"
 
-class MyCondition : public GCondition {
+class MyCondition : public CGraph::GCondition {
 
 public:
     /**

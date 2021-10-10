@@ -12,7 +12,7 @@
 #include "../../src/CGraph.h"
 #include "../MyGParam/MyParam.h"
 
-class MyReadParamNode : public GNode {
+class MyReadParamNode : public CGraph::GNode {
 
 public:
     CSTATUS run () override {
@@ -24,10 +24,10 @@ public:
         int val = 0;
         {
             /* 对需要使用（读或写）参数的位置，加括号{}范围限定，以减少互斥等待时间 */
-            CGRAPH_PARAM_READ_CODE_BLOCK(myParam)
+            CGraph::CGRAPH_PARAM_READ_CODE_BLOCK(myParam)
             val = myParam->iValue;
         }
-        CGRAPH_ECHO("[%s], iValue is : [%d] ... ", this->getName().c_str(), val);
+        CGraph::CGRAPH_ECHO("[%s], iValue is : [%d] ... ", this->getName().c_str(), val);
 
         return STATUS_OK;
     }

@@ -13,6 +13,7 @@
 #include "GParamObject.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
 
+CGRAPH_NAMESPACE_BEGIN
 
 class GParam : public GParamObject {
 public:
@@ -29,5 +30,7 @@ private:
 };
 
 using GParamPtr = GParam *;
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GPARAM_H

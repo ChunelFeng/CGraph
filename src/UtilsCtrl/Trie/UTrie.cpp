@@ -8,6 +8,8 @@
 
 #include "UTrie.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 UTrie::UTrie() {
     head_ = CGRAPH_SAFE_MALLOC_COBJECT(UTrieNode);
 }
@@ -110,3 +112,5 @@ void UTrie::innerEraser(UTrieNodePtr node, const std::string& path, int index, b
         }
     }
 }
+
+CGRAPH_NAMESPACE_END

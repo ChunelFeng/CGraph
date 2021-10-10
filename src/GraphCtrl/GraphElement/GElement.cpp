@@ -8,6 +8,8 @@
 
 #include "GElement.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 /******** public ********/
 /* 获取name信息 */
 const std::string& GElement::getName() const {
@@ -180,3 +182,5 @@ CSTATUS GElement::doAspect(GAspectType aspectType, CSTATUS curStatus) {
 
     CGRAPH_FUNCTION_END
 }
+
+CGRAPH_NAMESPACE_END

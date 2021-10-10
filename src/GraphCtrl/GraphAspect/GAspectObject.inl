@@ -9,6 +9,7 @@
 #ifndef CGRAPH_GASPECTOBJECT_INL
 #define CGRAPH_GASPECTOBJECT_INL
 
+CGRAPH_NAMESPACE_BEGIN
 
 template <typename T,
           std::enable_if_t<std::is_base_of_v<GAspectParam, T>, int>>
@@ -46,5 +47,7 @@ T* GAspectObject::getPipelineParam(const std::string& key) {
     T* ptr = dynamic_cast<T *>(this->pipeline_param_manager_->get(key));
     return ptr;
 }
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GASPECTOBJECT_INL

@@ -8,6 +8,8 @@
 
 #include "GPipelineFactory.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 GPipelinePtrList GPipelineFactory::pipeline_list_;
 std::mutex GPipelineFactory::lock_;
 
@@ -63,3 +65,4 @@ CSTATUS GPipelineFactory::run() {
     CGRAPH_NO_SUPPORT
 }
 
+CGRAPH_NAMESPACE_END

@@ -15,6 +15,8 @@
 #include "../UtilsObject.h"
 #include "ULruNode.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 const static unsigned int DEFAULT_LRU_CACHE_CAPACITY = 10;
 
 template<typename K, typename V>
@@ -103,5 +105,7 @@ private:
     std::unordered_map<K, typename std::list<ULruNode<K, V>>::iterator> cache_;          // 缓存信息
     std::list<ULruNode<K, V>> nodes_;                                                    // 节点链表
 };
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_ULRU_H

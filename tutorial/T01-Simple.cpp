@@ -9,6 +9,8 @@
 #include "MyGNode/MyNode1.h"
 #include "MyGNode/MyNode2.h"
 
+using namespace CGraph;
+
 void tutorial_simple() {
     /* 创建图对应的pipeline */
     GPipelinePtr pipeline = GPipelineFactory::create();

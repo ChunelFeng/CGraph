@@ -15,6 +15,8 @@
 #include "../GraphObject.h"
 #include "../GraphParam/GParamInclude.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 class GAspectObject : public GraphObject {
 public:
     ~GAspectObject() override {
@@ -93,6 +95,8 @@ private:
 };
 
 using GAspectObjectPtr = GAspectObject *;
+
+CGRAPH_NAMESPACE_END
 
 #include "GAspectObject.inl"
 

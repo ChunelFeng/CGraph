@@ -13,6 +13,8 @@
 #include "MyGNode/MyReadParamNode.h"
 #include "MyGNode/MyWriteParamNode.h"
 
+using namespace CGraph;
+
 void tutorial_condition() {
     CSTATUS status = STATUS_OK;
     GPipelinePtr pipeline = GPipelineFactory::create();

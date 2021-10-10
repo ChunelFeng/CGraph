@@ -12,7 +12,7 @@
 #include "../../src/CGraph.h"
 #include "../MyGParam/MyParam.h"
 
-class MyParamCondition : public GCondition {
+class MyParamCondition : public CGraph::GCondition {
 
 public:
     /**
@@ -23,12 +23,12 @@ public:
     int choose () override {
         MyParam* myParam = this->getGParam<MyParam>("param1");
         if (nullptr == myParam) {
-            return GROUP_LAST_ELEMENT_INDEX;    // 如果没获取到，固定执行最后一个逻辑
+            return CGraph::GROUP_LAST_ELEMENT_INDEX;    // 如果没获取到，固定执行最后一个逻辑
         }
 
         int cnt = 0;
         {
-            CGRAPH_PARAM_READ_CODE_BLOCK(myParam)    // 如果当前算子，跟其他相关依赖算子不存在并行关系，则参数可以直接使用，不需要加锁
+            CGraph::CGRAPH_PARAM_READ_CODE_BLOCK(myParam)    // 如果当前算子，跟其他相关依赖算子不存在并行关系，则参数可以直接使用，不需要加锁
             cnt = myParam->iCount;
         }
         return (cnt % getRange());

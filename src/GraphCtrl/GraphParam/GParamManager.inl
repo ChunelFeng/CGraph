@@ -2,6 +2,8 @@
 #ifndef CGRAPH_GPARAMMANAGER_INL
 #define CGRAPH_GPARAMMANAGER_INL
 
+CGRAPH_NAMESPACE_BEGIN
+
 template<typename T, std::enable_if_t<std::is_base_of_v<GParam, T>, int>>
 CSTATUS GParamManager::create(const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
@@ -19,5 +21,6 @@ CSTATUS GParamManager::create(const std::string& key) {
     CGRAPH_FUNCTION_END
 }
 
+CGRAPH_NAMESPACE_END
 
 #endif // CGRAPH_GPARAMMANAGER_INL

@@ -8,6 +8,7 @@
 
 #include "../src/CGraph.h"
 
+using namespace CGraph;
 
 void tutorial_trie() {
     UTrie trie;

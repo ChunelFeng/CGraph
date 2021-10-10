@@ -12,7 +12,7 @@
 #include "../../src/CGraph.h"
 #include "../MyGParam/MyParam.h"
 
-class MyPipeLineParamAspect : public GAspect {
+class MyPipeLineParamAspect : public CGraph::GAspect {
 public:
     CSTATUS beginRun() override {
         CSTATUS status = STATUS_OK;
@@ -28,7 +28,7 @@ public:
 
         /** 遇到并发情况，请考虑加锁保护（参考 T05-Param 中逻辑） */
         int cnt = pipelineParam->iCount;
-        CGRAPH_ECHO("----> [MyPipeLineParamAspect] pipeline param iCount is [%d] before run.", cnt);
+        CGraph::CGRAPH_ECHO("----> [MyPipeLineParamAspect] pipeline param iCount is [%d] before run.", cnt);
 
         if (cnt < 0) {
             /** 模拟：在切面中，对pipeline中的参数，做一些异常值的处理逻辑

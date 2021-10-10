@@ -11,6 +11,7 @@
 #include "MyGAspect/MyTimerAspect.h"
 #include "MyGAspect/MyTraceAspect.h"
 
+using namespace CGraph;
 
 void tutorial_aspect() {
     GPipelinePtr pipeline = GPipelineFactory::create();

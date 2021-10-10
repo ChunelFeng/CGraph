@@ -8,6 +8,8 @@
 
 #include "GCluster.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 GCluster::GCluster() : GGroup() {
 
 }
@@ -154,3 +156,4 @@ bool GCluster::isElementsDone() {
     });
 }
 
+CGRAPH_NAMESPACE_END

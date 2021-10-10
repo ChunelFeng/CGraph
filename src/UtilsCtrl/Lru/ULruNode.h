@@ -11,6 +11,8 @@
 
 #include "../UtilsObject.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 template<typename K, typename V>
 struct ULruNode : public UtilsObject {
     K key_;
@@ -21,5 +23,7 @@ struct ULruNode : public UtilsObject {
         this->value_ = value;
     }
 };
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_ULRUNODE_H

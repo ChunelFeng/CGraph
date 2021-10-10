@@ -10,6 +10,8 @@
 
 #include "GRegion.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 GRegion::GRegion() : GGroup() {
     manager_ = new(std::nothrow) GElementManager();
     thread_pool_ = nullptr;
@@ -134,3 +136,5 @@ CSTATUS GRegion::setThreadPool(UThreadPoolPtr pool) {
     this->thread_pool_ = pool;
     CGRAPH_FUNCTION_END
 }
+
+CGRAPH_NAMESPACE_END

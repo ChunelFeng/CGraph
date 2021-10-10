@@ -8,6 +8,8 @@
 
 #include "GElementManager.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 GElementManager::GElementManager() : CObject() {
 
 }
@@ -216,3 +218,5 @@ bool GElementManager::hasElement(GElementPtr element) const {
 void GElementManager::deleteElement(GElementPtr element) {
     manager_elements_.erase(element);
 }
+
+CGRAPH_NAMESPACE_END

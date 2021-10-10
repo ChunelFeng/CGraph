@@ -12,6 +12,8 @@
 #include "../UtilsObject.h"
 #include "UTrieNode.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 class UTrie : public UtilsObject {
 public:
     UTrie();
@@ -50,5 +52,7 @@ protected:
 private:
     UTrieNodePtr head_ { nullptr };
 };
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_UTRIE_H

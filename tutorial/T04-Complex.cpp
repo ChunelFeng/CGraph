@@ -9,6 +9,8 @@
 #include "MyGNode/MyNode1.h"
 #include "MyGNode/MyNode2.h"
 
+using namespace CGraph;
+
 void tutorial_complex () {
     CSTATUS status = STATUS_OK;
     GPipelinePtr pipeline = GPipelineFactory::create();

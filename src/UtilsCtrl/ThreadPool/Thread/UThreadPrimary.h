@@ -11,6 +11,8 @@
 
 #include "UThreadBase.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 class UThreadPrimary : public UThreadBase {
 public:
     explicit UThreadPrimary() {
@@ -205,5 +207,7 @@ private:
 };
 
 using UThreadPrimaryPtr = UThreadPrimary *;
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_UTHREADPRIMARY_H

@@ -12,6 +12,7 @@
 #include "../GraphObject.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
 
+CGRAPH_NAMESPACE_BEGIN
 
 class GParamObject : public GraphObject {
 protected:
@@ -23,5 +24,7 @@ protected:
         CGRAPH_NO_SUPPORT
     }
 };
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GPARAMOBJECT_H

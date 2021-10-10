@@ -12,6 +12,8 @@
 #include "../GElement.h"
 #include "../../GraphParam/GParamInclude.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 class GNode : public GElement {
 protected:
     explicit GNode();
@@ -29,5 +31,6 @@ private:
 using GNodePtr = GNode *;
 using GNodePtrArr = std::vector<GNodePtr>;
 
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GNODE_H

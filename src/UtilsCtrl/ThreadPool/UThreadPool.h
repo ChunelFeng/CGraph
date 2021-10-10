@@ -22,6 +22,7 @@
 #include "Thread/UThreadPrimary.h"
 #include "Thread/UThreadSecondary.h"
 
+CGRAPH_NAMESPACE_BEGIN
 
 class UThreadPool : public UThreadObject {
 
@@ -189,5 +190,6 @@ private:
 
 using UThreadPoolPtr = UThreadPool *;
 
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_UTHREADPOOL_H

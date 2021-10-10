@@ -9,6 +9,7 @@
 #include "MyGNode/MyWriteParamNode.h"
 #include "MyGNode/MyReadParamNode.h"
 
+using namespace CGraph;
 
 void tutorial_param() {
     GPipelinePtr pipeline = GPipelineFactory::create();

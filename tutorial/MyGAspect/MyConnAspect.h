@@ -12,7 +12,7 @@
 #include "../../src/CGraph.h"
 #include "../MyGParam/MyConnAspectParam.h"
 
-class MyConnAspect : public GAspect {
+class MyConnAspect : public CGraph::GAspect {
 public:
     CSTATUS beginInit() override {
         auto* param = this->getParam<MyConnAspectParam>();
@@ -34,17 +34,17 @@ public:
 protected:
     /** 模拟连接功能 */
     void mockConnect(const std::string& ip, short port) {
-        CGRAPH_ECHO("----> [MyConnAspect] [%s : %d] has been connected ...", ip.c_str(), port);
+        CGraph::CGRAPH_ECHO("----> [MyConnAspect] [%s : %d] has been connected ...", ip.c_str(), port);
         conn_status_ = true;
     }
 
     /** 模拟断开连接功能 */
     void mockDisconnect(const std::string& ip, short port) {
         if (conn_status_) {
-            CGRAPH_ECHO("----> [MyConnAspect] [%s : %d] has been disconnected ...", ip.c_str(), port);
+            CGraph::CGRAPH_ECHO("----> [MyConnAspect] [%s : %d] has been disconnected ...", ip.c_str(), port);
             conn_status_ = false;
         } else {
-            CGRAPH_ECHO("----> [MyConnAspect] [%s : %d] is already been disconnected ...", ip.c_str(), port);
+            CGraph::CGRAPH_ECHO("----> [MyConnAspect] [%s : %d] is already been disconnected ...", ip.c_str(), port);
         }
     }
 

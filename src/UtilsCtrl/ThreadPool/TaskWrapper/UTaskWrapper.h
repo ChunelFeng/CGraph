@@ -14,6 +14,7 @@
 
 #include "../UThreadObject.h"
 
+CGRAPH_NAMESPACE_BEGIN
 
 class UTaskWrapper : public UThreadObject {
     struct taskBased {
@@ -60,5 +61,7 @@ public:
 using UTaskWrapperRef = UTaskWrapper &;
 using UTaskWrapperPtr = UTaskWrapper *;
 using UTaskWrapperArr = std::vector<UTaskWrapper>;
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_UTASKWRAPPER_H

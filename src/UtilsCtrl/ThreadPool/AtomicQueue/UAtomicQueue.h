@@ -17,6 +17,7 @@
 #include "../UThreadPoolDefine.h"
 #include "../UThreadObject.h"
 
+CGRAPH_NAMESPACE_BEGIN
 
 template<typename T>
 class UAtomicQueue : public UThreadObject {
@@ -114,8 +115,8 @@ private:
     std::mutex mutex_;
     std::queue<std::unique_ptr<T>> queue_;
     std::condition_variable cv_;
-
 };
 
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_UATOMICQUEUE_H

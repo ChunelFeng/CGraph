@@ -11,12 +11,12 @@
 
 #include "../../src/CGraph.h"
 
-class MyNode1 : public GNode {
+class MyNode1 : public CGraph::GNode {
 
 public:
     CSTATUS run () override {
         CSTATUS status = STATUS_OK;
-        CGRAPH_ECHO("[%s], enter MyNode1 run function. Sleep for 1 second ... ", this->getName().c_str());
+        CGraph::CGRAPH_ECHO("[%s], enter MyNode1 run function. Sleep for 1 second ... ", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(1)
         return status;
     }

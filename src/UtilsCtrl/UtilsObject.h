@@ -12,6 +12,8 @@
 #include "../CObject/CObject.h"
 #include "UtilsDefine.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 class UtilsObject : public CObject {
 
 protected:
@@ -20,5 +22,7 @@ protected:
         CGRAPH_NO_SUPPORT
     }
 };
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_UTILSOBJECT_H

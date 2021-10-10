@@ -9,6 +9,8 @@
 #ifndef CGRAPH_GELEMENT_INL
 #define CGRAPH_GELEMENT_INL
 
+CGRAPH_NAMESPACE_BEGIN
+
 template<typename T>
 CSTATUS GElement::createGParam(const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
@@ -44,5 +46,7 @@ GElementPtr GElement::addGAspect(TParam* param) {
     aspect_manager_->addAspect(aspect);
     return this;
 }
+
+CGRAPH_NAMESPACE_END
 
 #endif // CGRAPH_GELEMENT_INL

@@ -11,6 +11,8 @@
 
 #include "CObjectDefine.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 class CObject {
 public:
     /**
@@ -45,5 +47,6 @@ public:
     virtual ~CObject() = default;
 };
 
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_COBJECT_H

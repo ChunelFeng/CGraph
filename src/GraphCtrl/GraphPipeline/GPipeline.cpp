@@ -10,6 +10,7 @@
 
 #include "GPipeline.h"
 
+CGRAPH_NAMESPACE_BEGIN
 
 GPipeline::GPipeline() {
     thread_pool_ = UThreadPoolSingleton::get();
@@ -99,3 +100,5 @@ CSTATUS GPipeline::process(int runTimes) {
     status = deinit();
     CGRAPH_FUNCTION_END
 }
+
+CGRAPH_NAMESPACE_END

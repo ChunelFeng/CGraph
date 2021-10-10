@@ -13,6 +13,8 @@
 #include <shared_mutex>
 #include <memory>
 
+CGRAPH_NAMESPACE_BEGIN
+
 using CGRAPH_READ_LOCK = std::shared_lock<std::shared_mutex>;
 using CGRAPH_WRITE_LOCK = std::unique_lock<std::shared_mutex>;
 using CGRAPH_LOCK_GUARD = std::lock_guard<std::mutex>;
@@ -29,5 +31,7 @@ static const bool CGRAPH_FAIR_LOCK_ENABLE = false;           // 是否开启公�
 
 static const int CGRAPH_SECONDARY_THREAD_TTL = 10;           // 辅助线程TTL
 static const int CGRAPH_MONITOR_SPAN = 5;                    // 监控线程执行间隔
+
+CGRAPH_NAMESPACE_END
 
 #endif // CGRAPH_UTHREADPOOLDEFINE_H

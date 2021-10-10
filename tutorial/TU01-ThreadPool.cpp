@@ -9,6 +9,7 @@
 #include "../src/CGraph.h"
 #include "MyUFunction/MyFunction.h"
 
+using namespace CGraph;
 
 void tutorial_threadpool_1() {
     /**

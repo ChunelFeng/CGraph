@@ -11,6 +11,8 @@
 
 #include "../UtilsObject.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 template<typename T>
 class USingleton : public UtilsObject {
 public:
@@ -59,5 +61,6 @@ private:
     std::mutex lock_;
 };
 
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_SINGLETONPROC_H

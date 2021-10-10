@@ -20,6 +20,8 @@
 #include "../GraphParam/GParamInclude.h"
 #include "../GraphAspect/GAspectInclude.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 class GElement : public GraphObject {
 public:
     /**
@@ -185,6 +187,8 @@ protected:
 using GElementPtr = GElement *;
 using GElementPtrArr = std::vector<GElementPtr>;
 using GElementPtrSet = std::set<GElementPtr>;
+
+CGRAPH_NAMESPACE_END
 
 #include "GElement.inl"
 

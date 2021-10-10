@@ -11,12 +11,12 @@
 
 #include "../../src/CGraph.h"
 
-struct MyConnAspectParam : public GAspectParam {
+struct MyConnAspectParam : public CGraph::GAspectParam {
     /**
      * 必须实现 clone 函数，将外部参数，转入切面内部
      * @param param
      */
-    void clone(GAspectParamPtr param) override {
+    void clone(CGraph::GAspectParamPtr param) override {
         if (nullptr == param) {
             return;    // 异常判断，理论不可能出现此情况
         }

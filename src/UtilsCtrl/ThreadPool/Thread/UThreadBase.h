@@ -15,6 +15,8 @@
 #include "../WorkStealingQueue/UWorkStealingQueue.h"
 #include "../AtomicQueue/UAtomicQueue.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 constexpr bool REAL_BATCH_TASKS_RATIO = CGRAPH_BATCH_TASK_ENABLE && !CGRAPH_FAIR_LOCK_ENABLE;
 
 class UThreadBase : public UThreadObject {
@@ -85,5 +87,7 @@ protected:
     UAtomicQueue<UTaskWrapper>* pool_task_queue_{};           // 用于存放线程池中的普通任务
     std::thread thread_;                                      // 线程类
 };
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_UTHREADBASE_H

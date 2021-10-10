@@ -21,6 +21,8 @@
 #include "../CObject/CObject.h"
 #include "ThreadPool/UThreadPoolDefine.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 static std::mutex g_check_status_mtx;
 static std::mutex g_echo_mtx;
 static std::mutex g_session_mtx;
@@ -153,5 +155,7 @@ inline std::string CGRAPH_GENERATE_SESSION() {
 
 #define CGRAPH_PARAM_READ_CODE_BLOCK(param)                             \
     CGRAPH_READ_LOCK __paramRLock__((param)->_param_shared_lock_);      \
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_UTILSDEFINE_H

@@ -8,6 +8,8 @@
 
 #include "GParamManager.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 GParamManager::GParamManager() {
     init();
 }
@@ -55,3 +57,5 @@ void GParamManager::reset() {
         cur.second->reset();
     }
 }
+
+CGRAPH_NAMESPACE_END

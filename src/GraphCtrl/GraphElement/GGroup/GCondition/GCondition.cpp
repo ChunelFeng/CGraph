@@ -6,8 +6,9 @@
 @Desc: 
 ***************************/
 
-#include <algorithm>
 #include "GCondition.h"
+
+CGRAPH_NAMESPACE_BEGIN
 
 CSTATUS GCondition::init() {
     CGRAPH_FUNCTION_BEGIN
@@ -89,3 +90,5 @@ CSTATUS GCondition::run() {
 int GCondition::getRange() const {
     return (int)condition_elements_.size();
 }
+
+CGRAPH_NAMESPACE_END

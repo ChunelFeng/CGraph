@@ -13,6 +13,8 @@
 
 #include "../GGroup.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 class GCluster : public GGroup {
 public:
     /* 涉及到与线程池的联动，cluster类无法将构造函数申明成protected类型 */
@@ -51,5 +53,6 @@ using GClusterPtr = GCluster *;
 using GClusterArr = std::vector<GCluster>;
 using ParaWorkedClusterArrs = std::vector<GClusterArr>;
 
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GCLUSTER_H

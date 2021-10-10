@@ -16,6 +16,7 @@
 
 #include "../UThreadObject.h"
 
+CGRAPH_NAMESPACE_BEGIN
 
 class UBarrier : public UThreadObject {
 public:
@@ -74,5 +75,7 @@ private:
 };
 
 using UBarrierPtr = UBarrier *;
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_UBARRIER_H

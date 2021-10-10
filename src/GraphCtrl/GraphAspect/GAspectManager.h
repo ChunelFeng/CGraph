@@ -12,6 +12,8 @@
 #include "GAspectObject.h"
 #include "GAspect.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 class GAspectManager : public GAspectObject {
 public:
     explicit GAspectManager() = default;
@@ -76,7 +78,11 @@ public:
         CGRAPH_FUNCTION_END
     }
 
-
+    /**
+     * 设置name信息
+     * @param name
+     * @return
+     */
     GAspectManager* setName(const std::string& name) override {
         for (GAspectPtr aspect : aspect_arr_) {
             aspect->setName(name);
@@ -101,5 +107,7 @@ private:
 };
 
 using GAspectManagerPtr = GAspectManager *;
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GASPECTMANAGER_H

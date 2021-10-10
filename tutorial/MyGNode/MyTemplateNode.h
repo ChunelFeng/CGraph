@@ -12,18 +12,18 @@
 #include "../../src/CGraph.h"
 
 template <typename T>
-class MyTemplateNode : public GNode {
+class MyTemplateNode : public CGraph::GNode {
 
 public:
     CSTATUS run () override {
         if (std::string("c") == typeid(val_).name()) {
-            CGRAPH_ECHO("This node template type is [char].");    // 对应模板类型是 char 类型
+            CGraph::CGRAPH_ECHO("This node template type is [char].");    // 对应模板类型是 char 类型
         } else if (std::string("f") == typeid(val_).name()) {
-            CGRAPH_ECHO("This node template type is [float].");    // 对应模板类型是 float 类型
+            CGraph::CGRAPH_ECHO("This node template type is [float].");    // 对应模板类型是 float 类型
         } else if (std::string("i") == typeid(val_).name()) {
-            CGRAPH_ECHO("This node template type is [int].");    // 对应模板类型是 int 类型
+            CGraph::CGRAPH_ECHO("This node template type is [int].");    // 对应模板类型是 int 类型
         } else {
-            CGRAPH_ECHO("This node template type is others.");
+            CGraph::CGRAPH_ECHO("This node template type is others.");
         }
 
         /* 模板类型节点，还可以和GParam逻辑联动，实现更多功能 */

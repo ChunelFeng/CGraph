@@ -11,7 +11,7 @@
 
 #include "../../src/CGraph.h"
 
-class HelloWorldNode : public GNode {
+class HelloWorldNode : public CGraph::GNode {
 
 public:
     CSTATUS run () override {

@@ -11,6 +11,8 @@
 
 #include "../GGroup.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 class GCondition : public GGroup {
 protected:
     /**
@@ -46,5 +48,6 @@ private:
 
 using GConditionPtr = GCondition *;
 
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GCONDITION_H

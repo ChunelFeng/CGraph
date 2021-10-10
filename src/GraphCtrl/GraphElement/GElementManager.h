@@ -12,6 +12,7 @@
 #include "GElement.h"
 #include "GGroup/GCluster/GCluster.h"
 
+CGRAPH_NAMESPACE_BEGIN
 
 class GElementManager : public CObject {
 protected:
@@ -59,5 +60,6 @@ private:
 
 using GElementManagerPtr = GElementManager *;
 
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GELEMENTMANAGER_H

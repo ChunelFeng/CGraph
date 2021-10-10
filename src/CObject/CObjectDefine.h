@@ -16,4 +16,10 @@ using CSTATUS = int;
 #define STATUS_ERR        (-1)                // 流程异常
 #define STATUS_RES        (-2)                // 资源异常
 
+#define CGRAPH_NAMESPACE_BEGIN                                          \
+namespace CGraph {                                                      \
+
+#define CGRAPH_NAMESPACE_END                                            \
+} /* end of namespace CGraph */                                         \
+
 #endif //CGRAPH_COBJECTDEFINE_H

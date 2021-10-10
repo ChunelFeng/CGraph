@@ -11,6 +11,8 @@
 
 #include <algorithm>
 
+CGRAPH_NAMESPACE_BEGIN
+
 template<typename T, std::enable_if_t<std::is_base_of_v<GElement, T>, int>>
 CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
                                     const GElementPtrSet &dependElements,
@@ -144,5 +146,6 @@ GPipeline* GPipeline::addGAspectBatch(const GElementPtrSet& elements, TParam* pa
     return this;
 }
 
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GPIPELINE_INL

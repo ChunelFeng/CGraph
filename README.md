@@ -36,13 +36,13 @@
 
 #### MyNode1.h
 ```cpp
-#include "../../src/GraphCtrl/GraphInclude.h"
+#include "../../src/CGraph.h"
 
-class MyNode1 : public GNode {
+class MyNode1 : public CGraph::GNode {
 public:
     CSTATUS run () override {
         CSTATUS status = STATUS_OK;
-        CGRAPH_ECHO("[%s], enter MyNode1 run function. Sleep for 1 second ... ", this->getName().c_str());
+        CGraph::CGRAPH_ECHO("[%s], enter MyNode1 run function. Sleep for 1 second ... ", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(1)
         return status;
     }
@@ -51,13 +51,13 @@ public:
 
 #### MyNode2.h
 ```cpp
-#include "../../src/GraphCtrl/GraphInclude.h"
+#include "../../src/CGraph.h"
 
-class MyNode2 : public GNode {
+class MyNode2 : public CGraph::GNode {
 public:
     CSTATUS run () override {
         CSTATUS status = STATUS_OK;
-        CGRAPH_ECHO("[%s], enter MyNode2 run function. Sleep for 2 second ... ", this->getName().c_str());
+        CGraph::CGRAPH_ECHO("[%s], enter MyNode2 run function. Sleep for 2 second ... ", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(2)
         return status;
     }
@@ -68,6 +68,8 @@ public:
 ```cpp
 #include "MyGNode/MyNode1.h"
 #include "MyGNode/MyNode2.h"
+
+using namespace CGraph;
 
 void tutorial_simple() {
     /* 创建图 */

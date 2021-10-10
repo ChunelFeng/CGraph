@@ -16,6 +16,8 @@
 #include "../../CObject/CObject.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 class GPipelineFactory : public CObject {
 
 public:
@@ -44,5 +46,7 @@ private:
     static GPipelinePtrList pipeline_list_;    // 记录所有的
     static std::mutex lock_;
 };
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GPIPELINEFACTORY_H

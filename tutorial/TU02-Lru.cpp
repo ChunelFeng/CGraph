@@ -8,6 +8,7 @@
 
 #include "../src/CGraph.h"
 
+using namespace CGraph;
 
 void tutorial_lru() {
     ULru<int, std::string> lru;

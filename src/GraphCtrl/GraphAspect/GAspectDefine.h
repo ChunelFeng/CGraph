@@ -9,6 +9,8 @@
 #ifndef CGRAPH_GASPECTDEFINE_H
 #define CGRAPH_GASPECTDEFINE_H
 
+CGRAPH_NAMESPACE_BEGIN
+
 enum class GAspectType {
     BEGIN_INIT = 0,
     FINISH_INIT = 1,
@@ -17,5 +19,7 @@ enum class GAspectType {
     BEGIN_DEINIT = 4,
     FINISH_DEINIT = 5
 };
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GASPECTDEFINE_H

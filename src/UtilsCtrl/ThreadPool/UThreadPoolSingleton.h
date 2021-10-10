@@ -12,6 +12,7 @@
 #include "UThreadPool.h"
 #include "../Singleton/USingleton.h"
 
+CGRAPH_NAMESPACE_BEGIN
 
 class UThreadPoolSingleton : public UThreadObject {
 public:
@@ -28,5 +29,6 @@ private:
     static USingleton<UThreadPool> pool_;
 };
 
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_UTHREADPOOLSINGLETON_H

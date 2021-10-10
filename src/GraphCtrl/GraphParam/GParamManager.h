@@ -16,6 +16,8 @@
 #include "../../UtilsCtrl/UtilsInclude.h"
 #include "GParam.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 class GParamManager : public GParamObject {
 public:
     /**
@@ -52,6 +54,8 @@ private:
 };
 
 using GParamManagerPtr = GParamManager *;
+
+CGRAPH_NAMESPACE_END
 
 #include "GParamManager.inl"
 

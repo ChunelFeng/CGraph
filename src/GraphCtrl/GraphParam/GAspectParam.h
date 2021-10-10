@@ -11,6 +11,8 @@
 
 #include "GParamObject.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 class GAspectParam : public GParamObject {
 public:
     /**
@@ -22,5 +24,7 @@ public:
 };
 
 using GAspectParamPtr = GAspectParam *;
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GASPECTPARAM_H

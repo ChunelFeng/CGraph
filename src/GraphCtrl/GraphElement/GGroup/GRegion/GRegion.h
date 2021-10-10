@@ -13,8 +13,9 @@
 #include "../GGroup.h"
 #include "../../GElementManager.h"
 
-/* region 中包含了 cluster 信息 */
+CGRAPH_NAMESPACE_BEGIN
 
+/* region 中包含了 cluster 信息 */
 class GRegion : public GGroup {
 protected:
     explicit GRegion();
@@ -40,5 +41,7 @@ private:
 };
 
 using GRegionPtr = GRegion *;
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GREGION_H

@@ -11,6 +11,8 @@
 
 #include "../UtilsObject.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 const static unsigned int MAX_TRIE_NODE_SIZE = 256;
 
 class UTrieNode : public UtilsObject {
@@ -39,5 +41,7 @@ private:
 
 using UTrieNodePtr = UTrieNode *;
 using UTrieNodeRef = UTrieNode &;
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_UTRIENODE_H

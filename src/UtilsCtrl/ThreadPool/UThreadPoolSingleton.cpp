@@ -8,6 +8,8 @@
 
 #include "UThreadPoolSingleton.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 USingleton<UThreadPool> UThreadPoolSingleton::pool_;
 
 UThreadPoolPtr UThreadPoolSingleton::get() {
@@ -15,3 +17,4 @@ UThreadPoolPtr UThreadPoolSingleton::get() {
     return ptr;
 }
 
+CGRAPH_NAMESPACE_END

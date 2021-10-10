@@ -13,6 +13,8 @@
 
 #include "GAspectObject.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 class GAspect : public GAspectObject {
 public:
     /**
@@ -55,5 +57,6 @@ public:
 using GAspectPtr = GAspect *;
 using GAspectPtrArr = std::vector<GAspectPtr>;
 
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GASPECT_H

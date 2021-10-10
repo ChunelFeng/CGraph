@@ -12,7 +12,7 @@
 #include "../../src/CGraph.h"
 #include "../MyGParam/MyParam.h"
 
-class MyWriteParamNode : public GNode {
+class MyWriteParamNode : public CGraph::GNode {
 
 public:
     CSTATUS init () override {
@@ -34,7 +34,7 @@ public:
         int val = 0;
         int cnt = 0;
         {
-            CGRAPH_PARAM_WRITE_CODE_BLOCK(myParam)
+            CGraph::CGRAPH_PARAM_WRITE_CODE_BLOCK(myParam)
             /**
              * 建议将需要的内容获取出来，然后在 CODE_BLOCK 外进行与param无关的参数加工（本例中为：打印信息）。
              * 这样做的好处，是可以尽可能减少 CODE_BLOCK 的范围
@@ -44,7 +44,7 @@ public:
         }
 
         /* 执行时，仅依赖val值，跟当前param1->iValue值无关，可以放到 CODE_BLOCK 外部 */
-        CGRAPH_ECHO("[%s], iValue value is : [%d], iCount value is [%d] ... ", this->getName().c_str(), val, cnt);
+        CGraph::CGRAPH_ECHO("[%s], iValue value is : [%d], iCount value is [%d] ... ", this->getName().c_str(), val, cnt);
 
         return STATUS_OK;
     }

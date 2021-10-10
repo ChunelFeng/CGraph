@@ -11,6 +11,8 @@
 
 #include "GAspectParam.h"
 
+CGRAPH_NAMESPACE_BEGIN
+
 class GAspectDefaultParam final : public GAspectParam {
 
 protected:
@@ -22,5 +24,7 @@ protected:
          */
     }
 };
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GASPECTDEFAULTPARAM_H

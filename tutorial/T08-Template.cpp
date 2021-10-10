@@ -8,6 +8,8 @@
 
 #include "MyGNode/MyTemplateNode.h"
 
+using namespace CGraph;
+
 void tutorial_template() {
     GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b, c, d = nullptr;
