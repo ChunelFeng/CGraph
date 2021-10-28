@@ -10,6 +10,7 @@
 #define CGRAPH_UTILSINCLUDE_H
 
 #include "UtilsDefine.h"
+#include "UAllocator.h"
 #include "ThreadPool/UThreadPoolInclude.h"
 #include "Singleton/USingleton.h"
 #include "Lru/ULru.h"

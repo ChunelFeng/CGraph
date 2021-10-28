@@ -56,6 +56,7 @@ private:
 
     friend class GPipeline;
     friend class GRegion;
+    friend class UAllocator;
 };
 
 using GElementManagerPtr = GElementManager *;

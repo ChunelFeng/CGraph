@@ -14,8 +14,8 @@ CGRAPH_NAMESPACE_BEGIN
 
 GPipeline::GPipeline() {
     thread_pool_ = UThreadPoolSingleton::get();
-    element_manager_ = new(std::nothrow) GElementManager();
-    param_manager_ = new(std::nothrow) GParamManager();
+    element_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
+    param_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GParamManager)
     is_init_ = false;
 }
 

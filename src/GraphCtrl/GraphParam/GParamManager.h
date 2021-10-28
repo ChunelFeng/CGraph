@@ -51,6 +51,7 @@ private:
     bool is_init_ { false };                                          // 标记是否初始化结束
 
     friend class GPipeline;
+    friend class UAllocator;
 };
 
 using GParamManagerPtr = GParamManager *;

@@ -54,7 +54,7 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
 template<typename T, std::enable_if_t<std::is_base_of_v<GNode, T>, int>>
 GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_FUNCTION_BEGIN
-    GNodePtr node = new(std::nothrow) T();
+    GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T);
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(node)
 
     status = node->setElementInfo(info.dependence, info.name, info.loop, this->param_manager_);
@@ -92,7 +92,7 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
 
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(this->thread_pool_)    // 所有的pipeline必须有线程池
 
-    GGroupPtr group = new(std::nothrow) T();
+    GGroupPtr group = CGRAPH_SAFE_MALLOC_COBJECT(T)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(group)
     for (GElementPtr element : elements) {
         group->addElement(element);

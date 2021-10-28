@@ -26,7 +26,7 @@ GPipelinePtr GPipelineFactory::create() {
 
     GPipelinePtr pipeline = nullptr;
     while (!pipeline) {
-        pipeline = new(std::nothrow) GPipeline();
+        pipeline = CGRAPH_SAFE_MALLOC_COBJECT(GPipeline);
     }
 
     pipeline_list_.emplace_back(pipeline);

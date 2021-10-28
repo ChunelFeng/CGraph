@@ -14,18 +14,13 @@
 #include <ctime>
 #include <cstdarg>
 
-#ifdef _GENERATE_SESSION_
-    #include <uuid/uuid.h>
-#endif
-
 #include "../CObject/CObject.h"
-#include "ThreadPool/UThreadPoolDefine.h"
+#include "UAllocator.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
 static std::mutex g_check_status_mtx;
 static std::mutex g_echo_mtx;
-static std::mutex g_session_mtx;
 
 /* CGRAPH 个性化输出 */
 inline void CGRAPH_ECHO(const char *cmd, ...) {
@@ -70,36 +65,6 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
     #define likely
     #define unlikely
 #endif
-
-
-template<typename T>
-inline T* SafeMallocCObject() {
-    T* ptr = nullptr;
-    while (!ptr && std::is_base_of_v<CObject, T>) {
-        ptr = new(std::nothrow) T();
-    }
-    return ptr;
-}
-
-
-inline std::string CGRAPH_GENERATE_SESSION() {
-#ifdef _GENERATE_SESSION_
-    CGRAPH_LOCK_GUARD lock{ g_session_mtx };
-    uuid_t uuid;
-    char session[36] = {0};    // 36是特定值
-    uuid_generate(uuid);
-    uuid_unparse(uuid, session);
-
-    return session;
-#else
-    return "";    // 非mac平台，暂时不支持自动生成session信息
-#endif
-}
-
-
-/* 创建CObject对象 */
-#define CGRAPH_SAFE_MALLOC_COBJECT(TYPE)             \
-    SafeMallocCObject<TYPE>();                       \
 
 /* 开启函数流程 */
 #define CGRAPH_FUNCTION_BEGIN                       \

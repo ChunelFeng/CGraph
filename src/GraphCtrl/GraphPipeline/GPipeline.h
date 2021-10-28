@@ -121,6 +121,7 @@ private:
     UThreadPoolPtr thread_pool_;                         // 线程池类
 
     friend class GPipelineFactory;
+    friend class UAllocator;
 };
 
 using GPipelinePtr = GPipeline *;

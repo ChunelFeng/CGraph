@@ -13,7 +13,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 GRegion::GRegion() : GGroup() {
-    manager_ = new(std::nothrow) GElementManager();
+    manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
     thread_pool_ = nullptr;
     is_init_ = false;
 }
@@ -29,7 +29,7 @@ GRegion::GRegion(const GRegion& region) : GGroup(region) {
         this->manager_->manager_elements_.insert(element);
     }
 
-    this->manager_ = new(std::nothrow) GElementManager();
+    this->manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager);
     for (auto element : region.manager_->manager_elements_) {
         this->manager_->manager_elements_.insert(element);
     }
@@ -43,7 +43,7 @@ GRegion& GRegion::operator=(const GRegion& region){
         return (*this);
     }
 
-    this->manager_ = new(std::nothrow) GElementManager();
+    this->manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
     for (auto element : region.manager_->manager_elements_) {
         this->manager_->manager_elements_.insert(element);
     }

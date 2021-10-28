@@ -17,13 +17,12 @@ template<typename T>
 class USingleton : public UtilsObject {
 public:
     explicit USingleton() {
-        create();
+        init();
     }
 
     ~USingleton() override {
-        destroy();
+        deinit();
     }
-
 
     /**
      * 获取singleton句柄信息
@@ -36,12 +35,12 @@ public:
     }
 
 protected:
-    CSTATUS create() {
+    CSTATUS init() final {
         CGRAPH_FUNCTION_BEGIN
         if (nullptr == handle_) {
             CGRAPH_LOCK_GUARD lock(lock_);
             if (nullptr == handle_) {
-                handle_ = new(std::nothrow) T();
+                handle_ = CGRAPH_SAFE_MALLOC_COBJECT(T);
                 CGRAPH_ASSERT_NOT_NULL(handle_)
             }
         }
@@ -49,7 +48,7 @@ protected:
         CGRAPH_FUNCTION_END
     }
 
-    CSTATUS destroy() {
+    CSTATUS deinit() final {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_LOCK_GUARD lock(lock_);
         CGRAPH_DELETE_PTR(handle_)
