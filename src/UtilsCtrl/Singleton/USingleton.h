@@ -10,14 +10,19 @@
 #define CGRAPH_USINGLETON_H
 
 #include "../UtilsObject.h"
+#include "USingletonDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T>
+template<typename T,
+        USingletonType type = USingletonType::HUNGRY>
 class USingleton : public UtilsObject {
 public:
     explicit USingleton() {
-        create();
+        if constexpr (USingletonType::HUNGRY == type) {
+            /* 如果是饥汉模式，则直接构造 */
+            create();
+        }
     }
 
     ~USingleton() override {
@@ -29,11 +34,15 @@ public:
      * @return
      */
     T* get() {
-        CGRAPH_LOCK_GUARD lock(lock_);
+        if constexpr (USingletonType::LAZY == type) {
+            create();
+        }
+
         T* handle = handle_;
         return handle;
     }
 
+protected:
     CSTATUS init() override {
         CGRAPH_FUNCTION_BEGIN
 
@@ -52,7 +61,6 @@ public:
         CGRAPH_FUNCTION_END
     }
 
-protected:
     void create() {
         if (nullptr == handle_) {
             CGRAPH_LOCK_GUARD lock(lock_);

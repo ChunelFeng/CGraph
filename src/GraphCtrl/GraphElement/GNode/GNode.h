@@ -10,7 +10,6 @@
 #define CGRAPH_GNODE_H
 
 #include "../GElement.h"
-#include "../../GraphParam/GParamInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

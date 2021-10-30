@@ -156,6 +156,10 @@ void tutorial_simple() {
 * 优化`aspect`(切面)实现逻辑，提供切面参数功能，提供批量添加切面功能
 * 更新`tutorial`内容
 
+[2021.10.07 - v1.8.0 - Chunel]
+* 提供`singleton node`（单例节点）功能
+* 优化`pipeline`执行逻辑
+
 ------------
 #### 附录-2. 推荐阅读
 
