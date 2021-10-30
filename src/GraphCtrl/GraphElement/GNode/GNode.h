@@ -16,14 +16,8 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GNode : public GElement {
 protected:
-    explicit GNode();
-    ~GNode() override;
-
-private:
-    GNode(const GNode& node);
-    GNode& operator=(const GNode& node);
-
-    CSTATUS process(bool isMock) override;
+    explicit GNode() = default;
+    ~GNode() override = default;
 
     friend class GPipeline;
 };

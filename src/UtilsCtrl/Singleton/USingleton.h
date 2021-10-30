@@ -17,11 +17,11 @@ template<typename T>
 class USingleton : public UtilsObject {
 public:
     explicit USingleton() {
-        init();
+        create();
     }
 
     ~USingleton() override {
-        deinit();
+        destroy();
     }
 
     /**
@@ -34,25 +34,37 @@ public:
         return handle;
     }
 
-protected:
-    CSTATUS init() final {
+    CSTATUS init() override {
         CGRAPH_FUNCTION_BEGIN
+
+        // 如果传入的是CObject类型的对象的话，则调用其init接口
+        if constexpr (std::is_base_of_v<CObject, T>) {
+            status = this->get()->init();
+        }
+        CGRAPH_FUNCTION_END
+    }
+
+    CSTATUS deinit() override {
+        CGRAPH_FUNCTION_BEGIN
+        if constexpr (std::is_base_of_v<CObject, T>) {
+            status = this->get()->deinit();
+        }
+        CGRAPH_FUNCTION_END
+    }
+
+protected:
+    void create() {
         if (nullptr == handle_) {
             CGRAPH_LOCK_GUARD lock(lock_);
             if (nullptr == handle_) {
                 handle_ = CGRAPH_SAFE_MALLOC_COBJECT(T);
-                CGRAPH_ASSERT_NOT_NULL(handle_)
             }
         }
-
-        CGRAPH_FUNCTION_END
     }
 
-    CSTATUS deinit() final {
-        CGRAPH_FUNCTION_BEGIN
+    void destroy() {
         CGRAPH_LOCK_GUARD lock(lock_);
         CGRAPH_DELETE_PTR(handle_)
-        CGRAPH_FUNCTION_END
     }
 
 private:

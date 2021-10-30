@@ -11,7 +11,7 @@
 using namespace CGraph;
 
 void tutorial_helloworld() {
-    GPipelinePtr pipeline = GPipelineFactory::create();
+    GPipelinePtr pipeline = GPipelineFactory::create();    // 创建一个pipeline，用于执行图框架信息
     GElementPtr hw = nullptr;
 
     pipeline->registerGElement<HelloWorldNode>(&hw);    // 注册一个helloworld节点

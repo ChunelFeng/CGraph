@@ -31,13 +31,8 @@ protected:
 
 private:
     CSTATUS init() override;
-
     CSTATUS deinit() override;
-
-    CSTATUS process(bool isMock) override;
-
     CSTATUS run() override;
-
     CSTATUS addElement(GElementPtr element) override;
 
 private:

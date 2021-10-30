@@ -27,10 +27,7 @@ protected:
     CSTATUS init() override;
     CSTATUS deinit() override;
     CSTATUS run() override;
-    CSTATUS process(bool isMock) override;
-
     CSTATUS addElement(GElementPtr element) override;
-
     CSTATUS setThreadPool(UThreadPoolPtr pool);
 
 private:

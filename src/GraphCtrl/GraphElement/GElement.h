@@ -40,7 +40,8 @@ public:
      * @param key
      * @return
      */
-    template<typename T>
+    template<typename T,
+            std::enable_if_t<std::is_base_of_v<GParam, T>, int> = 0>
     T* getGParam(const std::string& key);
 
     /**
@@ -49,7 +50,8 @@ public:
      * @param key
      * @return
      */
-    template<typename T>
+    template<typename T,
+            std::enable_if_t<std::is_base_of_v<GParam, T>, int> = 0>
     CSTATUS createGParam(const std::string& key);
 
     /**
@@ -66,6 +68,9 @@ public:
 
 
 protected:
+    /**
+     * 构造函数
+     */
     explicit GElement();
 
     /**
@@ -152,7 +157,6 @@ protected:
                            const std::string &name = "",
                            int loop = 1,
                            GParamManagerPtr paramManager = nullptr);
-
 
     /**
      * 执行切面逻辑

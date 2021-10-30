@@ -43,22 +43,6 @@ CSTATUS GCondition::addElement(GElementPtr element) {
 }
 
 
-CSTATUS GCondition::process(bool isMock) {
-    CGRAPH_FUNCTION_BEGIN
-
-    status = this->beforeRun();
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    if (likely(!isMock)) {
-        status = run();
-        CGRAPH_FUNCTION_CHECK_STATUS
-    }
-
-    status = this->afterRun();
-    CGRAPH_FUNCTION_END
-}
-
-
 CSTATUS GCondition::run() {
     CGRAPH_FUNCTION_BEGIN
 

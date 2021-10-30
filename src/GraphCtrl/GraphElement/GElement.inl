@@ -11,7 +11,8 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T>
+template<typename T,
+        std::enable_if_t<std::is_base_of_v<GParam, T>, int>>
 CSTATUS GElement::createGParam(const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(this->param_manager_)
@@ -21,7 +22,8 @@ CSTATUS GElement::createGParam(const std::string& key) {
 }
 
 
-template<typename T>
+template<typename T,
+        std::enable_if_t<std::is_base_of_v<GParam, T>, int>>
 T* GElement::getGParam(const std::string& key) {
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(this->param_manager_)
 
