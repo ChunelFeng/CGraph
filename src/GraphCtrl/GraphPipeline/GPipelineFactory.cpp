@@ -10,14 +10,14 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-GPipelinePtrList GPipelineFactory::pipeline_list_;
-std::mutex GPipelineFactory::lock_;
+GPipelinePtrList GPipelineFactory::s_pipeline_list_;
+std::mutex GPipelineFactory::s_lock_;
 
 GPipelinePtr GPipelineFactory::create() {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_LOCK_GUARD lock(lock_);
+    CGRAPH_LOCK_GUARD lock(s_lock_);
 
-    if (pipeline_list_.empty()) {
+    if (s_pipeline_list_.empty()) {
         status = UThreadPoolSingleton::get()->init();
         if (STATUS_OK != status) {
             return nullptr;
@@ -29,7 +29,7 @@ GPipelinePtr GPipelineFactory::create() {
         pipeline = CGRAPH_SAFE_MALLOC_COBJECT(GPipeline);
     }
 
-    pipeline_list_.emplace_back(pipeline);
+    s_pipeline_list_.emplace_back(pipeline);
     return pipeline;
 }
 
@@ -39,25 +39,25 @@ void GPipelineFactory::destroy(GPipelinePtr pipeline) {
         return;
     }
 
-    CGRAPH_LOCK_GUARD lock(lock_);
-    pipeline_list_.remove(pipeline);
+    CGRAPH_LOCK_GUARD lock(s_lock_);
+    s_pipeline_list_.remove(pipeline);
     CGRAPH_DELETE_PTR(pipeline)
 
-    if (pipeline_list_.empty()) {
+    if (s_pipeline_list_.empty()) {
         UThreadPoolSingleton::get()->deinit();
     }
 }
 
 
 void GPipelineFactory::clear() {
-    CGRAPH_LOCK_GUARD lock(lock_);
+    CGRAPH_LOCK_GUARD lock(s_lock_);
 
-    for (GPipelinePtr pipeline : GPipelineFactory::pipeline_list_) {
+    for (GPipelinePtr pipeline : GPipelineFactory::s_pipeline_list_) {
         CGRAPH_DELETE_PTR(pipeline)
     }
 
     UThreadPoolSingleton::get()->deinit();
-    pipeline_list_.clear();
+    s_pipeline_list_.clear();
 }
 
 

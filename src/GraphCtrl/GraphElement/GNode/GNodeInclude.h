@@ -10,6 +10,5 @@
 #define CGRAPH_GNODEINCLUDE_H
 
 #include "GNode.h"
-#include "GSingletonNode.h"
 
 #endif //CGRAPH_GNODEINCLUDE_H

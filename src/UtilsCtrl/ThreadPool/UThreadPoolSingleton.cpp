@@ -10,10 +10,10 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-USingleton<UThreadPool> UThreadPoolSingleton::pool_;
+USingleton<UThreadPool> UThreadPoolSingleton::s_pool_;
 
 UThreadPoolPtr UThreadPoolSingleton::get() {
-    UThreadPoolPtr ptr = UThreadPoolSingleton::pool_.get();
+    UThreadPoolPtr ptr = UThreadPoolSingleton::s_pool_.get();
     return ptr;
 }
 

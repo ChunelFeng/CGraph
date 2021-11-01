@@ -106,6 +106,10 @@ GElementPtr GElement::setName(const std::string& name) {
         this->name_ = this->session_;
     }
 
+    // 设置name信息的时候，顺便给 aspect_manager_ 一起设置了
+    if (aspect_manager_) {
+        aspect_manager_->setName(name);
+    }
     return this;
 }
 
@@ -163,9 +167,6 @@ CSTATUS GElement::setElementInfo(const GElementPtrSet& dependElements,
 
     this->setName(name)->setLoop(loop);
     param_manager_ = paramManager;
-    if (aspect_manager_) {
-        aspect_manager_->setName(name);
-    }
     status = this->addDependElements(dependElements);
     CGRAPH_FUNCTION_END
 }

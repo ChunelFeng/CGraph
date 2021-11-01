@@ -16,9 +16,9 @@
 #include <algorithm>
 
 #include "../GraphObject.h"
-#include "../../UtilsCtrl/UtilsInclude.h"
 #include "../GraphParam/GParamInclude.h"
 #include "../GraphAspect/GAspectInclude.h"
+#include "../../UtilsCtrl/UtilsInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -153,10 +153,10 @@ protected:
      * @param paramManager
      * @return
      */
-    CSTATUS setElementInfo(const std::set<GElement *> &dependElements = std::initializer_list<GElement *>(),
-                           const std::string &name = "",
-                           int loop = 1,
-                           GParamManagerPtr paramManager = nullptr);
+    virtual CSTATUS setElementInfo(const std::set<GElement *> &dependElements,
+                                   const std::string &name,
+                                   int loop,
+                                   GParamManagerPtr paramManager);
 
     /**
      * 执行切面逻辑
@@ -186,6 +186,8 @@ protected:
     friend class GElementManager;
     friend class GGroup;
     friend class GPipeline;
+    friend class GAdapter;
+    template<typename T> friend class GSingleton;
 };
 
 using GElementPtr = GElement *;

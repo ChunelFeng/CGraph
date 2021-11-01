@@ -33,6 +33,7 @@ set(TUTORIAL_LIST
         T08-Template
         T09-Aspect
         T10-AspectParam
+        T11-Singleton
         TU01-ThreadPool
         TU02-Lru
         TU03-Trie)

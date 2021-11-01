@@ -26,7 +26,7 @@ private:
     UThreadPoolSingleton() = default;
     ~UThreadPoolSingleton() override = default;
 
-    static USingleton<UThreadPool> pool_;
+    static USingleton<UThreadPool> s_pool_;
 };
 
 CGRAPH_NAMESPACE_END

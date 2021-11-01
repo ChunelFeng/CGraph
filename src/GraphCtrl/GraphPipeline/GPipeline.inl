@@ -38,6 +38,8 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
          * 则直接内部创建该信息
          */
         (*elementRef) = new(std::nothrow) T();
+    } else if constexpr (std::is_base_of_v<GAdapter, T>) {
+        (*elementRef) = new(std::nothrow) T();
     }
 
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
@@ -103,7 +105,7 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
         ((GRegion *)group)->setThreadPool(this->thread_pool_);
     }
 
-    status = group->setElementInfo(dependElements, name, loop);    // 注册group信息的时候，不能注册paramManager信息
+    status = group->setElementInfo(dependElements, name, loop, nullptr);    // 注册group信息的时候，不能注册paramManager信息
     if (unlikely(STATUS_OK != status)) {
         CGRAPH_DELETE_PTR(group)
         return nullptr;

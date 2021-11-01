@@ -43,8 +43,8 @@ protected:
     GPipelineFactory() = default;
 
 private:
-    static GPipelinePtrList pipeline_list_;    // 记录所有的
-    static std::mutex lock_;
+    static GPipelinePtrList s_pipeline_list_;    // 记录所有的
+    static std::mutex s_lock_;
 };
 
 CGRAPH_NAMESPACE_END

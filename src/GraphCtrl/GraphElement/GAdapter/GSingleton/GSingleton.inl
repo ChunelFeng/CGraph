@@ -1,0 +1,103 @@
+/***************************
+@Author: Chunel
+@Contact: chunel@foxmail.com
+@File: GSingleton.cpp
+@Time: 2021/10/30 10:24 下午
+@Desc: 
+***************************/
+
+#include "GSingleton.h"
+
+CGRAPH_NAMESPACE_BEGIN
+
+template <typename T>
+USingleton<T> GSingleton<T>::s_singleton_;
+
+template <typename T>
+std::atomic<bool> GSingleton<T>::s_is_init_ = false;
+
+
+template <typename T>
+CSTATUS GSingleton<T>::init() {
+    CGRAPH_FUNCTION_BEGIN
+    /* 确保仅 GSingletonNode 类型内容，init一次 */
+    if (s_is_init_) {
+        CGRAPH_FUNCTION_END
+    }
+
+    auto ptr = dynamic_cast<GElementPtr>(s_singleton_.get());
+    CGRAPH_ASSERT_NOT_NULL(ptr)
+
+    status = ptr->init();
+    if (status == STATUS_OK) {
+        s_is_init_ = true;
+    }
+
+    CGRAPH_FUNCTION_END
+}
+
+
+template <typename T>
+CSTATUS GSingleton<T>::run() {
+    CGRAPH_FUNCTION_BEGIN
+
+    auto ptr = dynamic_cast<GElementPtr>(s_singleton_.get());
+    CGRAPH_ASSERT_NOT_NULL(ptr)
+
+    status = ptr->run();
+    CGRAPH_FUNCTION_END
+}
+
+
+template <typename T>
+CSTATUS GSingleton<T>::deinit() {
+    CGRAPH_FUNCTION_BEGIN
+    if (!s_is_init_) {
+        CGRAPH_FUNCTION_END
+    }
+
+    auto ptr = dynamic_cast<GElementPtr>(s_singleton_.get());
+    CGRAPH_ASSERT_NOT_NULL(ptr)
+
+    status = ptr->deinit();
+    if (status == STATUS_OK) {
+        s_is_init_ = false;
+    }
+
+    CGRAPH_FUNCTION_END
+}
+
+
+template <typename T>
+CSTATUS GSingleton<T>::setElementInfo(const std::set<GElement *> &dependElements,
+                       const std::string &name,
+                       int loop,
+                       GParamManagerPtr paramManager) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(false)
+    CGRAPH_ASSERT_NOT_NULL(paramManager)
+
+    // 这里，内部和外部均需要设定name信息
+    this->setName(name)->setLoop(loop);
+    status = this->addDependElements(dependElements);
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    // 获取单例信息，然后将信息node中信息
+    auto ptr = dynamic_cast<GElementPtr>(s_singleton_.get());
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    if (ptr->param_manager_) {
+        // 设置一次即可，不支持多次设置
+        CGRAPH_FUNCTION_END
+    }
+
+    /**
+     * 内部不需要设置loop信息了，因为是根据adapter的loop次数循环的。
+     * 依赖关系也注册在adapter上
+     */
+    ptr->param_manager_ = paramManager;
+    ptr->name_ = name;
+    CGRAPH_FUNCTION_END
+}
+
+CGRAPH_NAMESPACE_END
