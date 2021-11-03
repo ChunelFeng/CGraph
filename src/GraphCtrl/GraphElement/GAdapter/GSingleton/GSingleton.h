@@ -28,13 +28,13 @@ protected:
      * @param paramManager
      * @return
      */
-    CSTATUS setElementInfo(const std::set<GElement *> &dependElements,
+    CSTATUS setElementInfo(const std::set<GElementPtr> &dependElements,
                            const std::string &name,
                            int loop,
                            GParamManagerPtr paramManager) override;
 
 private:
-    static USingleton<T> s_singleton_;
+    static USingleton<T, USingletonType::HUNGRY> s_singleton_;
     static std::atomic<bool> s_is_init_;
 
     friend class GPipeline;

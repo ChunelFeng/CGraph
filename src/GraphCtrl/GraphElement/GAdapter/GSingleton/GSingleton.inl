@@ -11,7 +11,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 template <typename T>
-USingleton<T> GSingleton<T>::s_singleton_;
+USingleton<T, USingletonType::HUNGRY> GSingleton<T>::s_singleton_;
 
 template <typename T>
 std::atomic<bool> GSingleton<T>::s_is_init_ = false;
@@ -25,10 +25,9 @@ CSTATUS GSingleton<T>::init() {
         CGRAPH_FUNCTION_END
     }
 
-    auto ptr = dynamic_cast<GElementPtr>(s_singleton_.get());
-    CGRAPH_ASSERT_NOT_NULL(ptr)
-
-    status = ptr->init();
+    /* 因为采取的是饥汉模式，不需要判断ptr是否为空了 */
+    auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
+    status = element->init();
     if (status == STATUS_OK) {
         s_is_init_ = true;
     }
@@ -41,10 +40,8 @@ template <typename T>
 CSTATUS GSingleton<T>::run() {
     CGRAPH_FUNCTION_BEGIN
 
-    auto ptr = dynamic_cast<GElementPtr>(s_singleton_.get());
-    CGRAPH_ASSERT_NOT_NULL(ptr)
-
-    status = ptr->run();
+    auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
+    status = element->run();
     CGRAPH_FUNCTION_END
 }
 
@@ -56,10 +53,8 @@ CSTATUS GSingleton<T>::deinit() {
         CGRAPH_FUNCTION_END
     }
 
-    auto ptr = dynamic_cast<GElementPtr>(s_singleton_.get());
-    CGRAPH_ASSERT_NOT_NULL(ptr)
-
-    status = ptr->deinit();
+    auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
+    status = element->deinit();
     if (status == STATUS_OK) {
         s_is_init_ = false;
     }
@@ -69,7 +64,7 @@ CSTATUS GSingleton<T>::deinit() {
 
 
 template <typename T>
-CSTATUS GSingleton<T>::setElementInfo(const std::set<GElement *> &dependElements,
+CSTATUS GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElements,
                        const std::string &name,
                        int loop,
                        GParamManagerPtr paramManager) {
@@ -83,10 +78,8 @@ CSTATUS GSingleton<T>::setElementInfo(const std::set<GElement *> &dependElements
     CGRAPH_FUNCTION_CHECK_STATUS
 
     // 获取单例信息，然后将信息node中信息
-    auto ptr = dynamic_cast<GElementPtr>(s_singleton_.get());
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    if (ptr->param_manager_) {
+    auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
+    if (element->param_manager_) {
         // 设置一次即可，不支持多次设置
         CGRAPH_FUNCTION_END
     }
@@ -95,8 +88,8 @@ CSTATUS GSingleton<T>::setElementInfo(const std::set<GElement *> &dependElements
      * 内部不需要设置loop信息了，因为是根据adapter的loop次数循环的。
      * 依赖关系也注册在adapter上
      */
-    ptr->param_manager_ = paramManager;
-    ptr->name_ = name;
+    element->param_manager_ = paramManager;
+    element->name_ = name;
     CGRAPH_FUNCTION_END
 }
 

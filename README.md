@@ -9,13 +9,13 @@
 
 ## 一. 简介
 
-本工程实现了一套跨平台图流程计算框架。通过框架图底层调度，实现了依赖元素依次顺序执行、非依赖元素并发执行的调度功能。
+本工程实现了一套跨平台图流程计算框架。通过`GPipeline`(流水线)底层调度，实现了依赖元素依次顺序执行、非依赖元素并发执行的调度功能。
 
-使用者只需继承`GNode`（节点）类，实现子类的run()方法，并设定依赖关系，即可实现任务的图化执行。
+使用者只需继承`GNode`（节点）类，实现子类的run()方法，并根据需要设定依赖关系，即可实现任务的图化执行。
 
 同时，使用者还可以通过设定各种包含多节点信息的`GGroup`（组），自行控制图的条件判断、循环和并发执行逻辑。
 
-此外，还可以对以上各种类型元素添加`GAspect`(切面)，实现功能的横向扩展。
+此外，还可以通过添加`GAspect`(切面)的方式，实现以上各种元素功能的横向扩展，或是通过引入`GAdapter`（适配器）对单个节点功能进行加强。
 
 ![CGraph Skeleton](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Skeleton.jpg)
 <br>
@@ -72,7 +72,7 @@ public:
 using namespace CGraph;
 
 void tutorial_simple() {
-    /* 创建图 */
+    /* 创建一个流水线，用于设定和执行流图信息 */
     GPipelinePtr pipeline = GPipelineFactory::create();
 
     CSTATUS status = STATUS_OK;
