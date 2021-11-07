@@ -44,5 +44,3 @@ set(TUTORIAL_LIST
 foreach(tut ${TUTORIAL_LIST})
     add_executable(${tut} tutorial/${tut}.cpp ${SRC_LIST})
 endforeach()
-
-
