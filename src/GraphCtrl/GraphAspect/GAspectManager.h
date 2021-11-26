@@ -44,18 +44,14 @@ public:
      */
     CSTATUS reflect(const GAspectType type, CSTATUS curStatus = STATUS_OK) {
         CGRAPH_FUNCTION_BEGIN
-        if (aspect_arr_.empty()) {
-            /** 如果为空，则不执行即可。属于正常情况 */
-            CGRAPH_FUNCTION_END
-        }
 
         for (GAspectPtr aspect : aspect_arr_) {
             switch (type) {
                 // 仅针对Begin对应的内容，进行返回值判断
-                case GAspectType::BEGIN_INIT : status = aspect->beginInit(); break;
-                case GAspectType::FINISH_INIT : aspect->finishInit(curStatus); break;
                 case GAspectType::BEGIN_RUN : status = aspect->beginRun(); break;
                 case GAspectType::FINISH_RUN :  aspect->finishRun(curStatus); break;
+                case GAspectType::BEGIN_INIT : status = aspect->beginInit(); break;
+                case GAspectType::FINISH_INIT : aspect->finishInit(curStatus); break;
                 case GAspectType::BEGIN_DEINIT : status = aspect->beginDeinit(); break;
                 case GAspectType::FINISH_DEINIT : aspect->finishDeinit(curStatus); break;
                 default: status = STATUS_ERR;    // 超出预期范围，理论不存在的情况
