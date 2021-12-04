@@ -11,29 +11,25 @@
 CGRAPH_NAMESPACE_BEGIN
 
 GParamManager::GParamManager() {
-    init();
+    clear();
 }
 
 
 GParamManager::~GParamManager() {
-    deinit();
+    clear();
 }
 
 
 CSTATUS GParamManager::init() {
     CGRAPH_FUNCTION_BEGIN
-    params_map_.clear();
+    clear();
     CGRAPH_FUNCTION_END
 }
 
 
 CSTATUS GParamManager::deinit() {
     CGRAPH_FUNCTION_BEGIN
-    for (auto& param : params_map_) {
-        CGRAPH_DELETE_PTR(param.second)
-    }
-
-    params_map_.clear();
+    clear();
     CGRAPH_FUNCTION_END
 }
 
@@ -44,7 +40,16 @@ GParamPtr GParamManager::get(const std::string& key) {
         return nullptr;
     }
 
-    return params_map_.find(key)->second;;
+    return params_map_.find(key)->second;
+}
+
+
+void GParamManager::clear() {
+    for (auto& param : params_map_) {
+        CGRAPH_DELETE_PTR(param.second)
+    }
+
+    params_map_.clear();
 }
 
 

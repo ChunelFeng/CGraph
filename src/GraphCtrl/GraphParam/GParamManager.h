@@ -40,8 +40,9 @@ public:
 protected:
     explicit GParamManager();
     ~GParamManager() override;
-    CSTATUS init() final;
-    CSTATUS deinit() final;
+    CSTATUS init() override;
+    CSTATUS deinit() override;
+    void clear();
     void reset();
 
 
