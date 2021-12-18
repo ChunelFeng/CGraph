@@ -14,8 +14,8 @@
 
 class MyPipeLineParamAspect : public CGraph::GAspect {
 public:
-    CSTATUS beginRun() override {
-        CSTATUS status = STATUS_OK;
+    CStatus beginRun() override {
+        CStatus status;
 
         /**
          * 在切面层，获取pipeline中的参数值信息，进行一些逻辑处理
@@ -23,7 +23,7 @@ public:
          * */
         auto* pipelineParam = this->getPipelineParam<MyParam>("param1");
         if (nullptr == pipelineParam) {
-            return STATUS_RES;
+            return CStatus("pipelineParam is null");
         }
 
         /** 遇到并发情况，请考虑加锁保护（参考 T05-Param 中逻辑） */
@@ -34,7 +34,7 @@ public:
             /** 模拟：在切面中，对pipeline中的参数，做一些异常值的处理逻辑
              * 在 beginRun() 切面中 返回非STATUS_OK值，则pipeline停止执行
              * */
-            status = STATUS_ERR;
+            return CStatus("aspect demo error");
         }
 
         return status;

@@ -14,8 +14,8 @@
 class MyNode2 : public CGraph::GNode {
 
 public:
-    CSTATUS run () override {
-        CSTATUS status = STATUS_OK;
+    CStatus run () override {
+        CStatus status;
         CGraph::CGRAPH_ECHO("[%s], enter MyNode2 run function. Sleep for 2 second ... ", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(2)
         return status;

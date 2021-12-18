@@ -20,7 +20,7 @@ protected:
      * 部分thread中的算子，可以不实现run方法
      * @return
      */
-    CSTATUS run() override {
+    CStatus run() override {
         CGRAPH_NO_SUPPORT
     }
 };

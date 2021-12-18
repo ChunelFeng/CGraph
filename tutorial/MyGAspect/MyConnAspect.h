@@ -14,17 +14,17 @@
 
 class MyConnAspect : public CGraph::GAspect {
 public:
-    CSTATUS beginInit() override {
+    CStatus beginInit() override {
         auto* param = this->getParam<MyConnAspectParam>();
         if (param) {
             // 如果传入类型不匹配，则返回param值为空
             mockConnect(param->ip, param->port);
         }
 
-        return STATUS_OK;
+        return CStatus();
     }
 
-    void finishDeinit(CSTATUS curStatus) override {
+    void finishDeinit(CStatus curStatus) override {
         auto* param = this->getParam<MyConnAspectParam>();
         if (param) {
             mockDisconnect(param->ip, param->port);

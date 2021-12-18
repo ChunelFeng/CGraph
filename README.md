@@ -40,8 +40,8 @@
 
 class MyNode1 : public CGraph::GNode {
 public:
-    CSTATUS run () override {
-        CSTATUS status = STATUS_OK;
+    CStatus run () override {
+        CStatus status;
         CGraph::CGRAPH_ECHO("[%s], enter MyNode1 run function. Sleep for 1 second ... ", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(1)
         return status;
@@ -55,8 +55,8 @@ public:
 
 class MyNode2 : public CGraph::GNode {
 public:
-    CSTATUS run () override {
-        CSTATUS status = STATUS_OK;
+    CStatus run () override {
+        CStatus status;
         CGraph::CGRAPH_ECHO("[%s], enter MyNode2 run function. Sleep for 2 second ... ", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(2)
         return status;
@@ -75,7 +75,7 @@ void tutorial_simple() {
     /* 创建一个流水线，用于设定和执行流图信息 */
     GPipelinePtr pipeline = GPipelineFactory::create();
 
-    CSTATUS status = STATUS_OK;
+    CStatus status;
     GElementPtr a, b, c, d = nullptr;
 
     /* 注册节点，其中MyNode1和MyNode2必须为GraphNode的子类，否则无法通过编译。
@@ -160,6 +160,9 @@ void tutorial_simple() {
 * 提供`adapter`（适配器）功能，提供`singleton`适配器
 * 优化`pipeline`执行逻辑
 * 更新`tutorial`内容
+
+[2021.12.18 - v1.8.1 - Chunel]
+* 优化了返回值`CStatus`信息
 
 ------------
 #### 附录-2. 推荐阅读

@@ -12,7 +12,7 @@
 using namespace CGraph;
 
 void tutorial_region () {
-    CSTATUS status = STATUS_OK;
+    CStatus status;
     GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b_region, c = nullptr;
 
@@ -28,14 +28,14 @@ void tutorial_region () {
     }
 
     status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA", 1);
-    if (STATUS_OK != status) {
+    if (!status.isEnable()) {
         return;
     }
     status = pipeline->registerGElement<GRegion>(&b_region, {a}, "regionB", 1);    // 将名为regionB，依赖a执行且自循环2次的cluster信息，注册入pipeline中
     status = pipeline->registerGElement<MyNode2>(&c, {b_region}, "nodeC", 1);
 
     status = pipeline->process();
-    CGRAPH_ECHO("pipeline process status is : [%d]", status);
+    CGRAPH_ECHO("pipeline process status is : [%d]", status.getCode());
 
     GPipelineFactory::destroy(pipeline);
 }

@@ -20,14 +20,14 @@ GParamManager::~GParamManager() {
 }
 
 
-CSTATUS GParamManager::init() {
+CStatus GParamManager::init() {
     CGRAPH_FUNCTION_BEGIN
     clear();
     CGRAPH_FUNCTION_END
 }
 
 
-CSTATUS GParamManager::deinit() {
+CStatus GParamManager::deinit() {
     CGRAPH_FUNCTION_BEGIN
     clear();
     CGRAPH_FUNCTION_END

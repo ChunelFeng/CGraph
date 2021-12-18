@@ -32,7 +32,7 @@ GElementManager& GElementManager::operator=(const GElementManager& manager) {
 }
 
 
-CSTATUS GElementManager::init() {
+CStatus GElementManager::init() {
     CGRAPH_FUNCTION_BEGIN
     status = preRunCheck();
     CGRAPH_FUNCTION_CHECK_STATUS
@@ -54,7 +54,7 @@ CSTATUS GElementManager::init() {
 }
 
 
-CSTATUS GElementManager::deinit() {
+CStatus GElementManager::deinit() {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr element : manager_elements_) {
@@ -75,12 +75,12 @@ CSTATUS GElementManager::deinit() {
  * 无法执行manager的run方法
  * @return
  */
-CSTATUS GElementManager::run() {
+CStatus GElementManager::run() {
     CGRAPH_NO_SUPPORT
 }
 
 
-CSTATUS GElementManager::preRunCheck() {
+CStatus GElementManager::preRunCheck() {
     CGRAPH_FUNCTION_BEGIN
 
     /**
@@ -101,7 +101,7 @@ CSTATUS GElementManager::preRunCheck() {
 }
 
 
-CSTATUS GElementManager::analyse() {
+CStatus GElementManager::analyse() {
     CGRAPH_FUNCTION_BEGIN
 
     int runElementSize = 0;
@@ -178,16 +178,16 @@ CSTATUS GElementManager::analyse() {
 }
 
 
-CSTATUS GElementManager::afterRunCheck(int runNodeSize) {
+CStatus GElementManager::afterRunCheck(int runNodeSize) {
     CGRAPH_FUNCTION_BEGIN
 
-    status = (runNodeSize == manager_elements_.size()) ? STATUS_OK : STATUS_ERR;
+    status = (runNodeSize == manager_elements_.size()) ? CStatus() : CStatus("pipeline run element size check failed...");
     CGRAPH_FUNCTION_CHECK_STATUS
 
     /* 需要验证每个cluster里的每个内容是否被执行过一次 */
     for (GClusterArr& clusterArr : para_cluster_arrs_) {
         for (GCluster& cluster : clusterArr) {
-            status = cluster.isElementsDone() ? STATUS_OK : STATUS_ERR;
+            status = cluster.isElementsDone() ? CStatus() : CStatus("pipeline done status check failed...");
             CGRAPH_FUNCTION_CHECK_STATUS
         }
     }
@@ -196,7 +196,7 @@ CSTATUS GElementManager::afterRunCheck(int runNodeSize) {
 }
 
 
-CSTATUS GElementManager::addElement(GElementPtr element) {
+CStatus GElementManager::addElement(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(element)
 

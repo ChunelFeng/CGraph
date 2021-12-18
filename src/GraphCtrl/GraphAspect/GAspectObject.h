@@ -81,7 +81,7 @@ protected:
      * GAspect 相关内容，不需要执行run方法
      * @return
      */
-    CSTATUS run() final {
+    CStatus run() final {
         CGRAPH_NO_SUPPORT;
     }
 

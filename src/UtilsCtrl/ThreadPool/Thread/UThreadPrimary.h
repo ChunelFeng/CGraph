@@ -20,7 +20,7 @@ public:
         pool_threads_ = nullptr;
     }
 
-    CSTATUS init() override {
+    CStatus init() override {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(false)
 
@@ -35,7 +35,7 @@ public:
      * @param poolTaskQueue
      * @param poolThreads
      */
-    CSTATUS setThreadPoolInfo(int index,
+    CStatus setThreadPoolInfo(int index,
                               UAtomicQueue<UTaskWrapper>* poolTaskQueue,
                               std::vector<UThreadPrimary *>* poolThreads) {
         CGRAPH_FUNCTION_BEGIN
@@ -54,7 +54,7 @@ public:
      * 线程执行函数
      * @return
      */
-    CSTATUS run() override {
+    CStatus run() override {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
         CGRAPH_ASSERT_NOT_NULL(pool_threads_)
@@ -68,7 +68,7 @@ public:
                         [](UThreadPrimary* thd) {
                             return nullptr == thd;
                         })) {
-            return STATUS_RES;
+            return CStatus(STATUS_ERR, "thread is null");
         }
 
         if (REAL_BATCH_TASKS_RATIO) {

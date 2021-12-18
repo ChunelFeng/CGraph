@@ -15,22 +15,22 @@
 class MyShowAddressNode : public CGraph::GNode {
 
 public:
-    CSTATUS init() override {
-        CSTATUS status = this->createGParam<MyParam>("param2");
+    CStatus init() override {
+        CStatus status = this->createGParam<MyParam>("param2");
         return status;
     }
 
-    CSTATUS run () override {
+    CStatus run () override {
         auto myParam = this->getGParam<MyParam>("param2");
         int cnt = 0;
         {
-            CGraph::CGRAPH_PARAM_WRITE_CODE_BLOCK(myParam)
+            CGRAPH_PARAM_WRITE_CODE_BLOCK(myParam)
             cnt = ++myParam->iCount;
         }
 
         CGraph::CGRAPH_ECHO("singleton node run, name is [%s], this address is [0x%x], cnt is [%d].",
                             this->getName().c_str(), this, cnt);
-        return STATUS_OK;
+        return CStatus();
     }
 };
 

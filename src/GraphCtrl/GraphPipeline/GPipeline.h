@@ -25,26 +25,26 @@ public:
      * 初始化pipeline信息
      * @return
      */
-    CSTATUS init() override;
+    CStatus init() override;
 
     /**
      * 执行pipeline信息
      * @return
      */
-    CSTATUS run() override;
+    CStatus run() override;
 
     /**
      * 逆初始化pipeline信息
      * @return
      */
-    CSTATUS deinit() override;
+    CStatus deinit() override;
 
     /**
      * 一次性执行完成初始化，执行runTimes次，和逆初始化的过程
      * @param runTimes
      * @return
      */
-    CSTATUS process(int runTimes = 1);
+    CStatus process(int runTimes = 1);
 
     /**
      * 根据传入的info信息，创建node节点
@@ -82,7 +82,7 @@ public:
      * @return
      */
     template<typename T, std::enable_if_t<std::is_base_of_v<GElement, T>, int> = 0>
-    CSTATUS registerGElement(GElementPtr *elementRef,
+    CStatus registerGElement(GElementPtr *elementRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = "",
                              int loop = 1);

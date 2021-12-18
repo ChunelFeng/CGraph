@@ -13,11 +13,11 @@ using namespace CGraph;
 
 void tutorial_param() {
     GPipelinePtr pipeline = GPipelineFactory::create();
-    CSTATUS status = STATUS_OK;
+    CStatus status;
     GElementPtr a, b, c, d, e, f = nullptr;
 
     status = pipeline->registerGElement<MyReadParamNode>(&a, {}, "readNodeA");     // 读取param中的信息，不做修改
-    if (STATUS_OK != status) {
+    if (!status.isEnable()) {
         return;    // 使用时，请对所有CGraph接口的返回值做判定。本例子中省略
     }
     status = pipeline->registerGElement<MyReadParamNode>(&b, {a}, "readNodeB");
@@ -30,7 +30,7 @@ void tutorial_param() {
 
     for (int i = 0; i < 3; i++) {
         status = pipeline->run();
-        std::cout << "[CGraph] tutorial_param, loop : " << i + 1 << ", and run status = " << status << std::endl;
+        std::cout << "[CGraph] tutorial_param, loop : " << i + 1 << ", and run status = " << status.getCode() << std::endl;
     }
 
     status = pipeline->deinit();

@@ -10,7 +10,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-CSTATUS GCondition::init() {
+CStatus GCondition::init() {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr element : this->condition_elements_) {
@@ -22,7 +22,7 @@ CSTATUS GCondition::init() {
 }
 
 
-CSTATUS GCondition::deinit() {
+CStatus GCondition::deinit() {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr element : this->condition_elements_) {
@@ -34,7 +34,7 @@ CSTATUS GCondition::deinit() {
 }
 
 
-CSTATUS GCondition::addElement(GElementPtr element) {
+CStatus GCondition::addElement(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(element)
 
@@ -43,7 +43,7 @@ CSTATUS GCondition::addElement(GElementPtr element) {
 }
 
 
-CSTATUS GCondition::run() {
+CStatus GCondition::run() {
     CGRAPH_FUNCTION_BEGIN
 
     int loop = 0;

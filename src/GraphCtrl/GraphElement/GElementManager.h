@@ -21,21 +21,21 @@ protected:
     GElementManager(const GElementManager& manager);
     GElementManager& operator=(const GElementManager& manager);
 
-    CSTATUS init() override;
-    CSTATUS run() override;
-    CSTATUS deinit() override;
+    CStatus init() override;
+    CStatus run() override;
+    CStatus deinit() override;
 
     /**
      * 判定哪些节点是可以分到一个cluster中的
      * @return
      */
-    CSTATUS preRunCheck();
+    CStatus preRunCheck();
 
     /**
      * 将所有的节点，分发到para_cluster_arrs_中，运行的时候使用。
      * @return
      */
-    CSTATUS analyse();
+    CStatus analyse();
 
     /**
      * 执行完毕后，确认运行是否正常
@@ -43,9 +43,9 @@ protected:
      * @param runNodeSize
      * @return
      */
-    CSTATUS afterRunCheck(int runNodeSize);
+    CStatus afterRunCheck(int runNodeSize);
 
-    CSTATUS addElement(GElementPtr element);
+    CStatus addElement(GElementPtr element);
     bool hasElement(GElementPtr element) const;
     void deleteElement(GElementPtr element);
 

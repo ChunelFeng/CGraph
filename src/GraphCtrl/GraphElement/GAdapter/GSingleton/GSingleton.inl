@@ -18,7 +18,7 @@ std::atomic<bool> GSingleton<T>::s_is_init_ = false;
 
 
 template <typename T>
-CSTATUS GSingleton<T>::init() {
+CStatus GSingleton<T>::init() {
     CGRAPH_FUNCTION_BEGIN
     /* 确保仅 GSingletonNode 类型内容，init一次 */
     if (s_is_init_) {
@@ -28,7 +28,7 @@ CSTATUS GSingleton<T>::init() {
     /* 因为采取的是饥汉模式，不需要判断ptr是否为空了 */
     auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
     status = element->init();
-    if (status == STATUS_OK) {
+    if (status.isEnable()) {
         s_is_init_ = true;
     }
 
@@ -37,7 +37,7 @@ CSTATUS GSingleton<T>::init() {
 
 
 template <typename T>
-CSTATUS GSingleton<T>::run() {
+CStatus GSingleton<T>::run() {
     CGRAPH_FUNCTION_BEGIN
 
     auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
@@ -47,7 +47,7 @@ CSTATUS GSingleton<T>::run() {
 
 
 template <typename T>
-CSTATUS GSingleton<T>::deinit() {
+CStatus GSingleton<T>::deinit() {
     CGRAPH_FUNCTION_BEGIN
     if (!s_is_init_) {
         CGRAPH_FUNCTION_END
@@ -55,7 +55,7 @@ CSTATUS GSingleton<T>::deinit() {
 
     auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
     status = element->deinit();
-    if (status == STATUS_OK) {
+    if (status.isEnable()) {
         s_is_init_ = false;
     }
 
@@ -64,10 +64,10 @@ CSTATUS GSingleton<T>::deinit() {
 
 
 template <typename T>
-CSTATUS GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElements,
-                       const std::string &name,
-                       int loop,
-                       GParamManagerPtr paramManager) {
+CStatus GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElements,
+                                      const std::string &name,
+                                      int loop,
+                                      GParamManagerPtr paramManager) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
     CGRAPH_ASSERT_NOT_NULL(paramManager)

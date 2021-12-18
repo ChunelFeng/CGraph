@@ -27,7 +27,7 @@ public:
      * @return
      */
     template<typename T, std::enable_if_t<std::is_base_of_v<GParam, T>, int> = 0>
-    CSTATUS create(const std::string& key);
+    CStatus create(const std::string& key);
 
     /**
      * 获取一个特定类型的参数
@@ -40,8 +40,8 @@ public:
 protected:
     explicit GParamManager();
     ~GParamManager() override;
-    CSTATUS init() override;
-    CSTATUS deinit() override;
+    CStatus init() override;
+    CStatus deinit() override;
     void clear();
     void reset();
 

@@ -14,9 +14,10 @@
 class HelloWorldNode : public CGraph::GNode {
 
 public:
-    CSTATUS run () override {
+    CStatus run () override {
+        CStatus status;
         std::cout << "hello, world." << std::endl;
-        return STATUS_OK;
+        return status;
     }
 };
 

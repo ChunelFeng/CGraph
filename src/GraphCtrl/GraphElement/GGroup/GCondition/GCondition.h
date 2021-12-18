@@ -30,10 +30,10 @@ protected:
     int getRange() const;
 
 private:
-    CSTATUS init() override;
-    CSTATUS deinit() override;
-    CSTATUS run() override;
-    CSTATUS addElement(GElementPtr element) override;
+    CStatus init() override;
+    CStatus deinit() override;
+    CStatus run() override;
+    CStatus addElement(GElementPtr element) override;
 
 private:
     GElementPtrArr condition_elements_;

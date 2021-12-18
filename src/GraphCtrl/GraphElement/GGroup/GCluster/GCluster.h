@@ -24,15 +24,15 @@ public:
     GCluster& operator=(const GCluster& cluster);
 
 protected:
-    CSTATUS init() override;
-    CSTATUS deinit() override;
-    CSTATUS run() override;
-    CSTATUS process(bool isMock) override;
+    CStatus init() override;
+    CStatus deinit() override;
+    CStatus run() override;
+    CStatus process(bool isMock) override;
 
-    CSTATUS beforeRun() override;
-    CSTATUS afterRun() override;
+    CStatus beforeRun() override;
+    CStatus afterRun() override;
 
-    CSTATUS addElement(GElementPtr element) override;
+    CStatus addElement(GElementPtr element) override;
     int getElementNum();
 
     /**

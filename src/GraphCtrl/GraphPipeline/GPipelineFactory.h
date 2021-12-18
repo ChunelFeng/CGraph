@@ -39,7 +39,7 @@ public:
     static void clear();
 
 protected:
-    CSTATUS run() override;
+    CStatus run() override;
     GPipelineFactory() = default;
 
 private:

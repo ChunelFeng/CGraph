@@ -40,7 +40,7 @@ protected:
      * 但是init函数不一样，因为线程构造函数不同
      * @return
      */
-    CSTATUS deinit() override {
+    CStatus deinit() override {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
 

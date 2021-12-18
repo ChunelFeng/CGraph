@@ -42,7 +42,7 @@ public:
     /**
      * 执行切面逻辑
      */
-    CSTATUS reflect(const GAspectType type, CSTATUS curStatus = STATUS_OK) {
+    CStatus reflect(const GAspectType type, CStatus curStatus = CStatus()) {
         CGRAPH_FUNCTION_BEGIN
 
         for (GAspectPtr aspect : aspect_arr_) {
@@ -54,7 +54,7 @@ public:
                 case GAspectType::FINISH_INIT : aspect->finishInit(curStatus); break;
                 case GAspectType::BEGIN_DEINIT : status = aspect->beginDeinit(); break;
                 case GAspectType::FINISH_DEINIT : aspect->finishDeinit(curStatus); break;
-                default: status = STATUS_ERR;    // 超出预期范围，理论不存在的情况
+                default: status = CStatus(STATUS_ERR, "no range") ;    // 超出预期范围，理论不存在的情况
             }
         }
 
@@ -66,7 +66,7 @@ public:
      * @param aspect
      * @return
      */
-    CSTATUS addAspect(GAspectPtr aspect) {
+    CStatus addAspect(GAspectPtr aspect) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_NOT_NULL(aspect)
 

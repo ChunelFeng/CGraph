@@ -28,7 +28,7 @@ public:
 
         int cnt = 0;
         {
-            CGraph::CGRAPH_PARAM_READ_CODE_BLOCK(myParam)    // 如果当前算子，跟其他相关依赖算子不存在并行关系，则参数可以直接使用，不需要加锁
+            CGRAPH_PARAM_READ_CODE_BLOCK(myParam)    // 如果当前算子，跟其他相关依赖算子不存在并行关系，则参数可以直接使用，不需要加锁
             cnt = myParam->iCount;
         }
         return (cnt % getRange());

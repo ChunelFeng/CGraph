@@ -15,7 +15,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GraphObject : public CObject {
 public:
-    CSTATUS run() override = 0;
+    CStatus run() override = 0;
 };
 
 CGRAPH_NAMESPACE_END

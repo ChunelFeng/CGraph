@@ -52,7 +52,7 @@ public:
      */
     template<typename T,
             std::enable_if_t<std::is_base_of_v<GParam, T>, int> = 0>
-    CSTATUS createGParam(const std::string& key);
+    CStatus createGParam(const std::string& key);
 
     /**
      * 实现添加切面的逻辑
@@ -95,13 +95,13 @@ protected:
      * run方法执行之前的执行函数
      * @return
      */
-    virtual CSTATUS beforeRun();
+    virtual CStatus beforeRun();
 
     /**
      * run方法执行之后的执行函数
      * @return
      */
-    virtual CSTATUS afterRun();
+    virtual CStatus afterRun();
 
     /**
      * 设置name信息
@@ -136,14 +136,14 @@ protected:
      * @param isMock 是否真实执行run方法。默认执行的
      * @return
      */
-    virtual CSTATUS process(bool isMock);
+    virtual CStatus process(bool isMock);
 
     /**
      * 添加依赖节点信息
      * @param dependElements
      * @return
      */
-    CSTATUS addDependElements(const std::set<GElement *> &dependElements);
+    CStatus addDependElements(const std::set<GElement *> &dependElements);
 
     /**
      * 设置element信息
@@ -153,7 +153,7 @@ protected:
      * @param paramManager
      * @return
      */
-    virtual CSTATUS setElementInfo(const std::set<GElement *> &dependElements,
+    virtual CStatus setElementInfo(const std::set<GElement *> &dependElements,
                                    const std::string &name,
                                    int loop,
                                    GParamManagerPtr paramManager);
@@ -164,7 +164,7 @@ protected:
      * @param curStatus
      * @return
      */
-    CSTATUS doAspect(GAspectType aspectType, CSTATUS curStatus = STATUS_OK);
+    CStatus doAspect(GAspectType aspectType, CStatus curStatus = CStatus());
 
 protected:
     bool done_ { false };                            // 判定被执行结束

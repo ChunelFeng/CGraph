@@ -20,7 +20,7 @@ public:
     }
 
 
-    CSTATUS init() override {
+    CStatus init() override {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(false)
 
@@ -36,7 +36,7 @@ public:
      * @param poolTaskQueue
      * @return
      */
-    CSTATUS setThreadPoolInfo(UAtomicQueue<UTaskWrapper>* poolTaskQueue) {
+    CStatus setThreadPoolInfo(UAtomicQueue<UTaskWrapper>* poolTaskQueue) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(false)    // 初始化之前，设置参数
         CGRAPH_ASSERT_NOT_NULL(poolTaskQueue)
@@ -46,7 +46,7 @@ public:
     }
 
 
-    CSTATUS run() override {
+    CStatus run() override {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
 

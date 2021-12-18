@@ -53,7 +53,7 @@ GRegion& GRegion::operator=(const GRegion& region){
 }
 
 
-CSTATUS GRegion::init() {
+CStatus GRegion::init() {
     CGRAPH_FUNCTION_BEGIN
     // 在这里将初始化所有的节点信息，并且实现分析，联通等功能
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
@@ -67,7 +67,7 @@ CSTATUS GRegion::init() {
 }
 
 
-CSTATUS GRegion::deinit() {
+CStatus GRegion::deinit() {
     CGRAPH_FUNCTION_BEGIN
     status = manager_->deinit();
 
@@ -75,14 +75,14 @@ CSTATUS GRegion::deinit() {
 }
 
 
-CSTATUS GRegion::run() {
+CStatus GRegion::run() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(true)
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
     CGRAPH_ASSERT_NOT_NULL(manager_)
 
     int runNodeSize = 0;
-    std::vector<std::future<CSTATUS>> futures;
+    std::vector<std::future<CStatus>> futures;
 
     for (GClusterArr& clusterArr : manager_->para_cluster_arrs_) {
         futures.clear();
@@ -103,7 +103,7 @@ CSTATUS GRegion::run() {
 }
 
 
-CSTATUS GRegion::addElement(GElementPtr element) {
+CStatus GRegion::addElement(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
 
     CGRAPH_ASSERT_NOT_NULL(element)
@@ -114,7 +114,7 @@ CSTATUS GRegion::addElement(GElementPtr element) {
 }
 
 
-CSTATUS GRegion::setThreadPool(UThreadPoolPtr pool) {
+CStatus GRegion::setThreadPool(UThreadPoolPtr pool) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(pool)
 

@@ -15,7 +15,8 @@ template <typename T>
 class MyTemplateNode : public CGraph::GNode {
 
 public:
-    CSTATUS run () override {
+    CStatus run () override {
+        CStatus status;
         if (std::string("c") == typeid(val_).name()) {
             CGraph::CGRAPH_ECHO("This node template type is [char].");    // 对应模板类型是 char 类型
         } else if (std::string("f") == typeid(val_).name()) {
@@ -27,7 +28,7 @@ public:
         }
 
         /* 模板类型节点，还可以和GParam逻辑联动，实现更多功能 */
-        return STATUS_OK;
+        return status;
     }
 
 private:

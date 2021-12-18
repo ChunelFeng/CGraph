@@ -43,7 +43,7 @@ public:
     }
 
 protected:
-    CSTATUS init() override {
+    CStatus init() override {
         CGRAPH_FUNCTION_BEGIN
 
         // 如果传入的是CObject类型的对象的话，则调用其init接口
@@ -53,7 +53,7 @@ protected:
         CGRAPH_FUNCTION_END
     }
 
-    CSTATUS deinit() override {
+    CStatus deinit() override {
         CGRAPH_FUNCTION_BEGIN
         if constexpr (std::is_base_of_v<CObject, T>) {
             status = this->get()->deinit();
@@ -82,4 +82,4 @@ private:
 
 CGRAPH_NAMESPACE_END
 
-#endif //CGRAPH_SINGLETONPROC_H
+#endif //CGRAPH_USINGLETON_H

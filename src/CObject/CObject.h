@@ -10,6 +10,7 @@
 #define CGRAPH_COBJECT_H
 
 #include "CObjectDefine.h"
+#include "CStatus.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -23,22 +24,22 @@ public:
     /**
      * 初始化函数
      */
-    virtual CSTATUS init() {
-        return STATUS_OK;
+    virtual CStatus init() {
+        return CStatus();
     }
 
     /**
      * 流程处理函数，必须实现
      * @return
      */
-    virtual CSTATUS run() = 0;
+    virtual CStatus run() = 0;
 
     /**
      * 逆初始化函数
      * @return
      */
-    virtual CSTATUS deinit() {
-        return STATUS_OK;
+    virtual CStatus deinit() {
+        return CStatus();
     }
 
     /**

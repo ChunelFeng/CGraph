@@ -16,7 +16,7 @@
 using namespace CGraph;
 
 void tutorial_condition() {
-    CSTATUS status = STATUS_OK;
+    CStatus status;
     GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b_condition, c, d_condition = nullptr;
 
@@ -45,7 +45,7 @@ void tutorial_condition() {
 
     for (int i = 0; i < 3; i++) {
         status = pipeline->run();
-        std::cout << "[CGraph] tutorial_condition, loop : " << i + 1 << ", and run status = " << status << std::endl;
+        std::cout << "[CGraph] tutorial_condition, loop : " << i + 1 << ", and run status = " << status.getCode() << std::endl;
     }
 
     status = pipeline->deinit();

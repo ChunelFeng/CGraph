@@ -24,11 +24,11 @@ protected:
     GRegion(const GRegion& region);
     GRegion& operator=(const GRegion& region);
 
-    CSTATUS init() override;
-    CSTATUS deinit() override;
-    CSTATUS run() override;
-    CSTATUS addElement(GElementPtr element) override;
-    CSTATUS setThreadPool(UThreadPoolPtr pool);
+    CStatus init() override;
+    CStatus deinit() override;
+    CStatus run() override;
+    CStatus addElement(GElementPtr element) override;
+    CStatus setThreadPool(UThreadPoolPtr pool);
 
 private:
     GElementManagerPtr manager_;

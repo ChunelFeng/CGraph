@@ -33,7 +33,7 @@ GCluster& GCluster::operator=(const GCluster& cluster) {
 }
 
 
-CSTATUS GCluster::init() {
+CStatus GCluster::init() {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr element : cluster_elements_) {
@@ -46,7 +46,7 @@ CSTATUS GCluster::init() {
 }
 
 
-CSTATUS GCluster::deinit() {
+CStatus GCluster::deinit() {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr element : cluster_elements_) {
@@ -59,7 +59,7 @@ CSTATUS GCluster::deinit() {
 }
 
 
-CSTATUS GCluster::run() {
+CStatus GCluster::run() {
     CGRAPH_FUNCTION_BEGIN
     for (GElementPtr element : this->cluster_elements_) {
         int elementLoop = element->loop_;
@@ -74,7 +74,7 @@ CSTATUS GCluster::run() {
 }
 
 
-CSTATUS GCluster::process(bool isMock) {
+CStatus GCluster::process(bool isMock) {
     CGRAPH_FUNCTION_BEGIN
 
     status = this->beforeRun();
@@ -101,7 +101,7 @@ CSTATUS GCluster::process(bool isMock) {
 }
 
 
-CSTATUS GCluster::beforeRun() {
+CStatus GCluster::beforeRun() {
     CGRAPH_FUNCTION_BEGIN
 
     this->done_ = false;
@@ -115,7 +115,7 @@ CSTATUS GCluster::beforeRun() {
 }
 
 
-CSTATUS GCluster::afterRun() {
+CStatus GCluster::afterRun() {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr element : this->cluster_elements_) {
@@ -132,7 +132,7 @@ CSTATUS GCluster::afterRun() {
 }
 
 
-CSTATUS GCluster::addElement(GElementPtr element) {
+CStatus GCluster::addElement(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(element)
     CGRAPH_ASSERT_INIT(false)

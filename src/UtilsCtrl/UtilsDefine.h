@@ -46,7 +46,7 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
     // windows系统，打印到秒
     time_t cur_time = time(nullptr);
         std::string ct = ctime(&cur_time);
-        std::cout << "[cgraph] ["
+        std::cout << "[CGraph] ["
                   << ct.assign(ct.begin(), ct.end()-1)    // 去掉时间的最后一位\n信息
                   << "] ";
 #endif
@@ -68,7 +68,7 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
 
 /* 开启函数流程 */
 #define CGRAPH_FUNCTION_BEGIN                       \
-    CSTATUS status = STATUS_OK;                     \
+    CStatus status;                                 \
 
 /* 结束函数流程 */
 #define CGRAPH_FUNCTION_END                         \
@@ -77,7 +77,7 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
 /* 判断传入的指针信息是否为空 */
 #define CGRAPH_ASSERT_NOT_NULL(ptr)                 \
     if (unlikely(nullptr == (ptr))) {               \
-        return STATUS_RES;                          \
+        return CStatus("ptr is nullptr");           \
     }                                               \
 
 #define CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)     \
@@ -87,39 +87,39 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
 
 
 /* 判断函数流程是否可以继续 */
-#define CGRAPH_FUNCTION_CHECK_STATUS                                                                       \
-    if (unlikely(STATUS_OK != status)) {                                                                   \
-        std::lock_guard<std::mutex> lock{ g_check_status_mtx };                                            \
-        CGRAPH_ECHO("%s | %s | line = [%d], status = [%d].", __FILE__, __FUNCTION__, __LINE__, status);    \
-        return status;                                                                                     \
-    }                                                                                                      \
+#define CGRAPH_FUNCTION_CHECK_STATUS                                                                                              \
+    if (unlikely(!status.isEnable())) {                                                                                           \
+        std::lock_guard<std::mutex> lock{ g_check_status_mtx };                                                                   \
+        CGRAPH_ECHO("%s | %s | line = [%d], errorCode = [%d], errorInfo = [%s].", __FILE__, __FUNCTION__, __LINE__, status.getCode(), status.getInfo().c_str());    \
+        return status;                                                                                                            \
+    }                                                                                                                             \
 
 /* 删除资源信息 */
-#define CGRAPH_DELETE_PTR(ptr)                      \
-    if (unlikely((ptr) != nullptr)) {               \
-        delete (ptr);                               \
-        (ptr) = nullptr;                            \
-    }                                               \
+#define CGRAPH_DELETE_PTR(ptr)                                \
+    if (unlikely((ptr) != nullptr)) {                         \
+        delete (ptr);                                         \
+        (ptr) = nullptr;                                      \
+    }                                                         \
 
-#define CGRAPH_ASSERT_INIT(isInit)                  \
-    if (unlikely((isInit) != is_init_)) {           \
-        return STATUS_ERR;                          \
-    }                                               \
+#define CGRAPH_ASSERT_INIT(isInit)                            \
+    if (unlikely((isInit) != is_init_)) {                     \
+        return CStatus("init status is not suitable");        \
+    }                                                         \
 
-#define CGRAPH_NO_SUPPORT                           \
-    return STATUS_ERR;                              \
+#define CGRAPH_NO_SUPPORT                                     \
+    return CStatus("function no support");                    \
 
-#define CGRAPH_SLEEP_MILLISECOND(ms)                                    \
-    std::this_thread::sleep_for(std::chrono::milliseconds(ms));         \
+#define CGRAPH_SLEEP_MILLISECOND(ms)                                            \
+    std::this_thread::sleep_for(std::chrono::milliseconds(ms));                 \
 
-#define CGRAPH_SLEEP_SECOND(s)                                          \
-    std::this_thread::sleep_for(std::chrono::seconds(s));               \
+#define CGRAPH_SLEEP_SECOND(s)                                                  \
+    std::this_thread::sleep_for(std::chrono::seconds(s));                       \
 
-#define CGRAPH_PARAM_WRITE_CODE_BLOCK(param)                            \
-    CGRAPH_WRITE_LOCK __paramWLock__((param)->_param_shared_lock_);     \
+#define CGRAPH_PARAM_WRITE_CODE_BLOCK(param)                                    \
+    CGraph::CGRAPH_WRITE_LOCK __paramWLock__((param)->_param_shared_lock_);     \
 
-#define CGRAPH_PARAM_READ_CODE_BLOCK(param)                             \
-    CGRAPH_READ_LOCK __paramRLock__((param)->_param_shared_lock_);      \
+#define CGRAPH_PARAM_READ_CODE_BLOCK(param)                                     \
+    CGraph::CGRAPH_READ_LOCK __paramRLock__((param)->_param_shared_lock_);      \
 
 CGRAPH_NAMESPACE_END
 

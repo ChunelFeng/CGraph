@@ -20,38 +20,38 @@ public:
     /**
      * init()函数切面开始期间动作
      */
-    virtual CSTATUS beginInit() {
-        return STATUS_OK;
+    virtual CStatus beginInit() {
+        return CStatus();
     }
 
     /**
      * init()函数切面结束期间动作
      */
-    virtual void finishInit(CSTATUS curStatus) {}
+    virtual void finishInit(CStatus curStatus) {}
 
     /**
      * run()函数切面开始期间动作
      */
-    virtual CSTATUS beginRun() {
-        return STATUS_OK;
+    virtual CStatus beginRun() {
+        return CStatus();
     }
 
     /**
      * run()函数切面结束期间动作
      */
-    virtual void finishRun(CSTATUS curStatus) {}
+    virtual void finishRun(CStatus curStatus) {}
 
     /**
      * deinit()函数切面开始期间动作
      */
-    virtual CSTATUS beginDeinit() {
-        return STATUS_OK;
+    virtual CStatus beginDeinit() {
+        return CStatus();
     }
 
     /**
      * deinit()函数切面结束期间动作
      */
-    virtual void finishDeinit(CSTATUS curStatus) {}
+    virtual void finishDeinit(CStatus curStatus) {}
 };
 
 using GAspectPtr = GAspect *;

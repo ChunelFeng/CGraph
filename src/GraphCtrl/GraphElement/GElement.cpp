@@ -78,7 +78,7 @@ GElement& GElement::operator=(const GElement& element) {
 }
 
 
-CSTATUS GElement::beforeRun() {
+CStatus GElement::beforeRun() {
     CGRAPH_FUNCTION_BEGIN
     this->done_ = false;
     this->left_depend_ = (int)dependence_.size();
@@ -87,7 +87,7 @@ CSTATUS GElement::beforeRun() {
 }
 
 
-CSTATUS GElement::afterRun() {
+CStatus GElement::afterRun() {
     CGRAPH_FUNCTION_BEGIN
 
     for (auto& element : this->run_before_) {
@@ -130,12 +130,12 @@ bool GElement::isLinkable() const {
 }
 
 
-CSTATUS GElement::process(bool isMock) {
+CStatus GElement::process(bool isMock) {
     CGRAPH_NO_SUPPORT
 }
 
 
-CSTATUS GElement::addDependElements(const GElementPtrSet& dependElements) {
+CStatus GElement::addDependElements(const GElementPtrSet& dependElements) {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr cur: dependElements) {
@@ -158,7 +158,7 @@ CSTATUS GElement::addDependElements(const GElementPtrSet& dependElements) {
 }
 
 
-CSTATUS GElement::setElementInfo(const GElementPtrSet& dependElements,
+CStatus GElement::setElementInfo(const GElementPtrSet& dependElements,
                                  const std::string& name,
                                  int loop,
                                  GParamManagerPtr paramManager) {
@@ -172,7 +172,7 @@ CSTATUS GElement::setElementInfo(const GElementPtrSet& dependElements,
 }
 
 
-CSTATUS GElement::doAspect(GAspectType aspectType, CSTATUS curStatus) {
+CStatus GElement::doAspect(GAspectType aspectType, CStatus curStatus) {
     CGRAPH_FUNCTION_BEGIN
 
     // 如果切面管理类为空，或者未添加切面，直接返回

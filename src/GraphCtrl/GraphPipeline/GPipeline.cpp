@@ -31,7 +31,7 @@ GPipeline::~GPipeline() {
 }
 
 
-CSTATUS GPipeline::init() {
+CStatus GPipeline::init() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
@@ -45,7 +45,7 @@ CSTATUS GPipeline::init() {
 }
 
 
-CSTATUS GPipeline::run() {
+CStatus GPipeline::run() {
     CGRAPH_FUNCTION_BEGIN
 
     CGRAPH_ASSERT_INIT(true)
@@ -54,7 +54,7 @@ CSTATUS GPipeline::run() {
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
 
     int runElementSize = 0;
-    std::vector<std::future<CSTATUS>> futures;
+    std::vector<std::future<CStatus>> futures;
 
     for (GClusterArr& clusterArr : element_manager_->para_cluster_arrs_) {
         futures.clear();
@@ -76,7 +76,7 @@ CSTATUS GPipeline::run() {
 }
 
 
-CSTATUS GPipeline::deinit() {
+CStatus GPipeline::deinit() {
     CGRAPH_FUNCTION_BEGIN
 
     status = element_manager_->deinit();
@@ -87,7 +87,7 @@ CSTATUS GPipeline::deinit() {
 }
 
 
-CSTATUS GPipeline::process(int runTimes) {
+CStatus GPipeline::process(int runTimes) {
     CGRAPH_FUNCTION_BEGIN
     status = init();
     CGRAPH_FUNCTION_CHECK_STATUS

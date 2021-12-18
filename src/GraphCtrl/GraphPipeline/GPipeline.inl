@@ -14,7 +14,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 template<typename T, std::enable_if_t<std::is_base_of_v<GElement, T>, int>>
-CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
+CStatus GPipeline::registerGElement(GElementPtr *elementRef,
                                     const GElementPtrSet &dependElements,
                                     const std::string &name,
                                     int loop) {
@@ -29,8 +29,7 @@ CSTATUS GPipeline::registerGElement(GElementPtr *elementRef,
          */
         if ((*elementRef) != nullptr
             && (*elementRef)->param_manager_ != nullptr) {
-            CGRAPH_ECHO("This group has already been registered to another pipeline.");
-            return STATUS_ERR;
+            return CStatus("This group has already been registered to another pipeline.");
         }
     } else if constexpr (std::is_base_of_v<GNode, T>) {
         /**
@@ -60,7 +59,7 @@ GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(node)
 
     status = node->setElementInfo(info.dependence, info.name, info.loop, this->param_manager_);
-    if (STATUS_OK != status) {
+    if (!status.isEnable()) {
         CGRAPH_DELETE_PTR(node);
         return nullptr;
     }
@@ -106,7 +105,7 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
     }
 
     status = group->setElementInfo(dependElements, name, loop, nullptr);    // 注册group信息的时候，不能注册paramManager信息
-    if (unlikely(STATUS_OK != status)) {
+    if (unlikely(!status.isEnable())) {
         CGRAPH_DELETE_PTR(group)
         return nullptr;
     }
@@ -125,7 +124,8 @@ GPipelinePtr GPipeline::addGParam(const std::string& key) {
     /** 如果创建成功，返回自身（用于链式调用）
      * 如果失败，直接返回nullptr信息
      * */
-    return (STATUS_OK == param_manager_->template create<T>(key)) ? this : nullptr;
+    CStatus status = param_manager_->template create<T>(key);
+    return (status.isEnable()) ? this : nullptr;
 }
 
 

@@ -21,7 +21,7 @@ CGRAPH_NAMESPACE_BEGIN
 /* 所有节点组合的基类，所有节点组合功能，均继承自此类 */
 class GGroup : public GElement {
 public:
-    virtual CSTATUS addElement(GElementPtr element) = 0;
+    virtual CStatus addElement(GElementPtr element) = 0;
 };
 
 using GGroupPtr = GGroup *;

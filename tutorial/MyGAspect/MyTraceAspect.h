@@ -16,35 +16,38 @@ public:
     /**
      * 实现几个切面函数逻辑，模拟在对应执行的位置，打印trace信息
      */
-    CSTATUS beginInit() override {
+    CStatus beginInit() override {
         CGraph::CGRAPH_ECHO("----> [MyTraceAspect] [%s] init begin ...", this->getName().c_str());
-        return STATUS_OK;
+        return CStatus();
     }
 
-    void finishInit(CSTATUS curStatus) override {
-        CGraph::CGRAPH_ECHO("----> [MyTraceAspect] [%s] init finished, error code is [%d] ...", this->getName().c_str(), curStatus);
+    void finishInit(CStatus curStatus) override {
+        CGraph::CGRAPH_ECHO("----> [MyTraceAspect] [%s] init finished, error code is [%d] ...", this->getName().c_str(),
+                            curStatus.getCode());
     }
 
-    CSTATUS beginRun() override {
+    CStatus beginRun() override {
         CGraph::CGRAPH_ECHO("----> [MyTraceAspect] [%s] run begin ...", this->getName().c_str());
-        return STATUS_OK;
+        return CStatus();
     }
 
-    void finishRun(CSTATUS curStatus) override {
-        if (STATUS_OK == curStatus) {
+    void finishRun(CStatus curStatus) override {
+        if (!curStatus.isEnable()) {
             CGraph::CGRAPH_ECHO("----> [MyTraceAspect] [%s] run finished, status is ok ...", this->getName().c_str());
         } else {
-            CGraph::CGRAPH_ECHO("----> [MyTraceAspect] [%s] run finished, error code is [%d] ...", this->getName().c_str(), curStatus);
+            CGraph::CGRAPH_ECHO("----> [MyTraceAspect] [%s] run finished, error code is [%d] ...", this->getName().c_str(),
+                                curStatus.getCode());
         }
     }
 
-    CSTATUS beginDeinit() override {
+    CStatus beginDeinit() override {
         CGraph::CGRAPH_ECHO("----> [MyTraceAspect] [%s] deinit begin ...", this->getName().c_str());
-        return STATUS_OK;
+        return CStatus();
     }
 
-    void finishDeinit(CSTATUS curStatus) override {
-        CGraph::CGRAPH_ECHO("----> [MyTraceAspect] [%s] deinit finished, error code is [%d] ...", this->getName().c_str(), curStatus);
+    void finishDeinit(CStatus curStatus) override {
+        CGraph::CGRAPH_ECHO("----> [MyTraceAspect] [%s] deinit finished, error code is [%d] ...", this->getName().c_str(),
+                            curStatus.getCode());
     }
 };
 

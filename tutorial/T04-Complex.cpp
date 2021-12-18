@@ -12,7 +12,7 @@
 using namespace CGraph;
 
 void tutorial_complex () {
-    CSTATUS status = STATUS_OK;
+    CStatus status;
     GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b_cluster, c, d_region, e = nullptr;
 
@@ -31,7 +31,7 @@ void tutorial_complex () {
     d_region = pipeline->createGGroup<GRegion>({d1, d23_cluster, d4});    // 创建名为d_region的region信息，并将{d1,d23_cluster,d4}放入其中
 
     status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA", 1);
-    if (STATUS_OK != status) {
+    if (!status.isEnable()) {
         return;
     }
     status = pipeline->registerGElement<GCluster>(&b_cluster, {}, "clusterB", 1);

@@ -16,7 +16,7 @@ void tutorial_pipeline_1(GPipelinePtr pipeline_1) {
         return;
     }
 
-    CSTATUS status = STATUS_OK;
+    CStatus status;
     GElementPtr node1A, node1B, node1C = nullptr;
 
     /**
@@ -36,7 +36,7 @@ void tutorial_pipeline_2(GPipelinePtr pipeline_2) {
         return;
     }
 
-    CSTATUS status = STATUS_OK;
+    CStatus status;
     GElementPtr node2A, node2B, node2C = nullptr;
 
     status = pipeline_2->registerGElement<MyNode2>(&node2A, {}, "node2A");
@@ -52,7 +52,7 @@ void tutorial_pipeline_3(GPipelinePtr pipeline_3) {
         return;
     }
 
-    CSTATUS status = STATUS_OK;
+    CStatus status;
     GElementPtr node3A, node3B, node3C, node3D = nullptr;
     GElementPtr region = nullptr;
 

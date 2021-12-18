@@ -83,7 +83,7 @@ public:
      * 开启所有的线程信息
      * @return
      */
-    CSTATUS init() final {
+    CStatus init() final {
         CGRAPH_FUNCTION_BEGIN
         if (is_init_) {
             CGRAPH_FUNCTION_END
@@ -109,7 +109,7 @@ public:
      * 释放所有的线程信息
      * @return
      */
-    CSTATUS deinit() final {
+    CStatus deinit() final {
         CGRAPH_FUNCTION_BEGIN
         if (!is_init_) {
             CGRAPH_FUNCTION_END
