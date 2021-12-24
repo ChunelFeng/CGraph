@@ -11,7 +11,7 @@
 
 using namespace CGraph;
 
-void tutorial_region () {
+void tutorial_region() {
     CStatus status;
     GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b_region, c = nullptr;

@@ -16,9 +16,8 @@ CGRAPH_NAMESPACE_BEGIN
 
 class UtilsObject : public CObject {
 
-protected:
+public:
     CStatus run() override {
-        // Utils类中的内容，默认均不支持 run() 方法
         CGRAPH_NO_SUPPORT
     }
 };

@@ -135,7 +135,6 @@ CStatus GCluster::afterRun() {
 CStatus GCluster::addElement(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(element)
-    CGRAPH_ASSERT_INIT(false)
 
     this->cluster_elements_.emplace_back(element);
 

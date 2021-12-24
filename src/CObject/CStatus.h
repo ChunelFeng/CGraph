@@ -54,7 +54,7 @@ public:
      * @return
      */
     [[nodiscard]] bool isEnable() const {
-        return error_code_ == STATUS_OK;
+        return STATUS_OK == error_code_;
     }
 
 private:

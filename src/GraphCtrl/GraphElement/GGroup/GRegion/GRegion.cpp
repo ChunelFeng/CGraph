@@ -70,7 +70,9 @@ CStatus GRegion::init() {
 CStatus GRegion::deinit() {
     CGRAPH_FUNCTION_BEGIN
     status = manager_->deinit();
+    CGRAPH_FUNCTION_CHECK_STATUS
 
+    is_init_ = false;
     CGRAPH_FUNCTION_END
 }
 
