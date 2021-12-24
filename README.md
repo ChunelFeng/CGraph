@@ -82,7 +82,7 @@ void tutorial_simple() {
      * MyNode1中run()执行内容为sleep(1s)
      * MyNode2中run()执行内容为sleep(2s) */
     status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");    // 将名为nodeA，无执行依赖的node信息，注册入pipeline中
-    if (STATUS_OK != status) {
+    if (!status.isEnable()) {
         return;    // 使用时，请对所有CGraph接口的返回值做判定。本例子中省略
     }
     status = pipeline->registerGElement<MyNode2>(&b, {a}, "nodeB");    // 将名为nodeB，依赖a执行的node信息，注册入pipeline中
