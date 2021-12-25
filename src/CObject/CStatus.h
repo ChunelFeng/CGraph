@@ -20,13 +20,18 @@ public:
     explicit CSTATUS() = default;
 
     explicit CSTATUS(const std::string &errorInfo) {
-        error_code_ = STATUS_ERR;    // 默认的error code信息
-        error_info_ = errorInfo;
+        this->error_code_ = STATUS_ERR;    // 默认的error code信息
+        this->error_info_ = errorInfo;
     }
 
     explicit CSTATUS(int errorCode, const std::string &errorInfo) {
-        error_code_ = errorCode;
-        error_info_ = errorInfo;
+        this->error_code_ = errorCode;
+        this->error_info_ = errorInfo;
+    }
+
+    CSTATUS(const CSTATUS &status) {
+        this->error_code_ = status.error_code_;
+        this->error_info_ = status.error_info_;
     }
 
     CSTATUS(const CSTATUS &&status) noexcept {
@@ -42,11 +47,6 @@ public:
 
     [[nodiscard]] const std::string& getInfo() const {
         return this->error_info_;
-    }
-
-    CSTATUS(const CSTATUS &status) {
-        this->error_code_ = status.error_code_;
-        this->error_info_ = status.error_info_;
     }
 
     /**

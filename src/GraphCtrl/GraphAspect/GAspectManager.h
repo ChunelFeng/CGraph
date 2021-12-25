@@ -42,19 +42,19 @@ public:
     /**
      * 执行切面逻辑
      */
-    CStatus reflect(const GAspectType type, CStatus curStatus = CStatus()) {
+    CStatus reflect(const GAspectType type, const CStatus& curStatus = CStatus()) {
         CGRAPH_FUNCTION_BEGIN
 
         for (GAspectPtr aspect : aspect_arr_) {
             switch (type) {
                 // 仅针对Begin对应的内容，进行返回值判断
                 case GAspectType::BEGIN_RUN : status = aspect->beginRun(); break;
-                case GAspectType::FINISH_RUN :  aspect->finishRun(curStatus); break;
+                case GAspectType::FINISH_RUN : aspect->finishRun(curStatus); break;
                 case GAspectType::BEGIN_INIT : status = aspect->beginInit(); break;
                 case GAspectType::FINISH_INIT : aspect->finishInit(curStatus); break;
                 case GAspectType::BEGIN_DEINIT : status = aspect->beginDeinit(); break;
                 case GAspectType::FINISH_DEINIT : aspect->finishDeinit(curStatus); break;
-                default: status = CStatus(STATUS_ERR, "no range") ;    // 超出预期范围，理论不存在的情况
+                default: status = CStatus("aspect out of range") ;    // 超出预期范围，理论不存在的情况
             }
         }
 
