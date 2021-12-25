@@ -88,7 +88,7 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
 
 /* 判断函数流程是否可以继续 */
 #define CGRAPH_FUNCTION_CHECK_STATUS                                                                                              \
-    if (unlikely(!status.isEnable())) {                                                                                           \
+    if (unlikely(!status.isOK())) {                                                                                               \
         std::lock_guard<std::mutex> lock{ g_check_status_mtx };                                                                   \
         CGRAPH_ECHO("%s | %s | line = [%d], errorCode = [%d], errorInfo = [%s].", __FILE__, __FUNCTION__, __LINE__, status.getCode(), status.getInfo().c_str());    \
         return status;                                                                                                            \
@@ -107,7 +107,7 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
     }                                                         \
 
 #define CGRAPH_NO_SUPPORT                                     \
-    return CStatus("function no support");                    \
+    return CStatus("function not support yet");               \
 
 #define CGRAPH_SLEEP_MILLISECOND(ms)                                            \
     std::this_thread::sleep_for(std::chrono::milliseconds(ms));                 \

@@ -17,7 +17,7 @@ void tutorial_param() {
     GElementPtr a, b, c, d, e, f = nullptr;
 
     status = pipeline->registerGElement<MyReadParamNode>(&a, {}, "readNodeA");     // 读取param中的信息，不做修改
-    if (!status.isEnable()) {
+    if (!status.isOK()) {
         return;    // 使用时，请对所有CGraph接口的返回值做判定。本例子中省略
     }
     status = pipeline->registerGElement<MyReadParamNode>(&b, {a}, "readNodeB");

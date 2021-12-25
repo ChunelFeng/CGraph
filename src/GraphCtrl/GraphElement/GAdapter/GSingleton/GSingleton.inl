@@ -28,7 +28,7 @@ CStatus GSingleton<T>::init() {
     /* 因为采取的是饥汉模式，不需要判断ptr是否为空了 */
     auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
     status = element->init();
-    if (status.isEnable()) {
+    if (status.isOK()) {
         s_is_init_ = true;
     }
 
@@ -55,7 +55,7 @@ CStatus GSingleton<T>::deinit() {
 
     auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
     status = element->deinit();
-    if (status.isEnable()) {
+    if (status.isOK()) {
         s_is_init_ = false;
     }
 

@@ -32,7 +32,7 @@ public:
     }
 
     void finishRun(CStatus curStatus) override {
-        if (!curStatus.isEnable()) {
+        if (!curStatus.isOK()) {
             CGraph::CGRAPH_ECHO("----> [MyTraceAspect] [%s] run finished, status is ok ...", this->getName().c_str());
         } else {
             CGraph::CGRAPH_ECHO("----> [MyTraceAspect] [%s] run finished, error code is [%d] ...", this->getName().c_str(),

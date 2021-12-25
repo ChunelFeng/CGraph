@@ -19,7 +19,7 @@ GPipelinePtr GPipelineFactory::create() {
 
     if (s_pipeline_list_.empty()) {
         status = UThreadPoolSingleton::get()->init();
-        if (!status.isEnable()) {
+        if (!status.isOK()) {
             return nullptr;
         }
     }

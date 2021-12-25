@@ -28,7 +28,7 @@ void tutorial_region() {
     }
 
     status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA", 1);
-    if (!status.isEnable()) {
+    if (!status.isOK()) {
         return;
     }
     status = pipeline->registerGElement<GRegion>(&b_region, {a}, "regionB", 1);    // 将名为regionB，依赖a执行且自循环2次的cluster信息，注册入pipeline中

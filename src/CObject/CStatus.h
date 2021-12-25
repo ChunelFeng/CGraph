@@ -53,7 +53,7 @@ public:
      * 判断当前状态是否可行
      * @return
      */
-    [[nodiscard]] bool isEnable() const {
+    [[nodiscard]] bool isOK() const {
         return STATUS_OK == error_code_;
     }
 
