@@ -57,14 +57,12 @@ CStatus GCondition::run() {
             CGRAPH_FUNCTION_CHECK_STATUS
         }
     } else if (0 <= index && index < condition_elements_.size()) {
-        // 如果返回的内容，在元素范围之内，则直接执行元素的内容
+        // 如果返回的内容，在元素范围之内，则直接执行元素的内容。不在的话，则不执行任何操作，直接返回正确状态
         loop = condition_elements_[index]->loop_;
         while (loop-- > 0) {
             status = condition_elements_[index]->run();
             CGRAPH_FUNCTION_CHECK_STATUS
         }
-    } else {
-        // 设定的index不在范围内，则不进行任何操作
     }
 
     CGRAPH_FUNCTION_END

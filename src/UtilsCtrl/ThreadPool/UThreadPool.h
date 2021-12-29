@@ -91,7 +91,7 @@ public:
 
         primary_threads_.reserve(CGRAPH_DEFAULT_THREAD_SIZE);
         for (int i = 0; i < CGRAPH_DEFAULT_THREAD_SIZE; ++i) {
-            auto ptr = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary);    // 创建核心线程数
+            auto ptr = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary)    // 创建核心线程数
 
             ptr->setThreadPoolInfo(i, &this->task_queue_, &this->primary_threads_);
             status = ptr->init();
@@ -144,7 +144,7 @@ protected:
         while (is_monitor_) {
             while (is_monitor_ && !is_init_) {
                 // 如果没有init，则一直处于空跑状态
-                CGRAPH_SLEEP_SECOND(1);
+                CGRAPH_SLEEP_SECOND(1)
             }
 
             int span = CGRAPH_MONITOR_SPAN;

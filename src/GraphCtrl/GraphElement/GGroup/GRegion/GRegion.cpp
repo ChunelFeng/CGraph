@@ -29,7 +29,7 @@ GRegion::GRegion(const GRegion& region) : GGroup(region) {
         this->manager_->manager_elements_.insert(element);
     }
 
-    this->manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager);
+    this->manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
     for (auto element : region.manager_->manager_elements_) {
         this->manager_->manager_elements_.insert(element);
     }

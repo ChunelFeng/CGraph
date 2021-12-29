@@ -20,7 +20,7 @@ public:
 
     ~GAspectManager() override {
         for (GAspectPtr aspect : aspect_arr_) {
-            CGRAPH_DELETE_PTR(aspect);
+            CGRAPH_DELETE_PTR(aspect)
         }
 
         aspect_arr_.clear();
@@ -28,7 +28,7 @@ public:
 
     GAspectManager& operator=(const GAspectManager& manager) {
         if (this == &manager) {
-            return *this;
+            return (*this);
         }
 
         this->aspect_arr_ = manager.aspect_arr_;
@@ -54,7 +54,7 @@ public:
                 case GAspectType::FINISH_INIT : aspect->finishInit(curStatus); break;
                 case GAspectType::BEGIN_DEINIT : status = aspect->beginDeinit(); break;
                 case GAspectType::FINISH_DEINIT : aspect->finishDeinit(curStatus); break;
-                default: status = CStatus("aspect out of range") ;    // 超出预期范围，理论不存在的情况
+                default: return CStatus("aspect type out of range");    // 超出预期范围，理论不存在的情况
             }
         }
 
