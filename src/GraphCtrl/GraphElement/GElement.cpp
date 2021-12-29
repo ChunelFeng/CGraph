@@ -46,7 +46,7 @@ GElement::GElement(const GElement& element) {
     this->name_ = element.name_;
 
     if (element.aspect_manager_) {
-        this->aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager);
+        this->aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager)
         this->aspect_manager_->aspect_arr_ = element.aspect_manager_->aspect_arr_;
         this->aspect_manager_->setName(element.aspect_manager_->getName());
     }
@@ -69,7 +69,7 @@ GElement& GElement::operator=(const GElement& element) {
     this->name_ = element.name_;
 
     if (element.aspect_manager_) {
-        this->aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager);
+        this->aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager)
         this->aspect_manager_->aspect_arr_ = element.aspect_manager_->aspect_arr_;
         this->aspect_manager_->setName(element.aspect_manager_->getName());
     }

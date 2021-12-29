@@ -11,7 +11,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 UTrie::UTrie() {
-    head_ = CGRAPH_SAFE_MALLOC_COBJECT(UTrieNode);
+    head_ = CGRAPH_SAFE_MALLOC_COBJECT(UTrieNode)
 }
 
 UTrie::~UTrie() {

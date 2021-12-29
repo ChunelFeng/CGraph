@@ -65,7 +65,7 @@ protected:
         if (nullptr == handle_) {
             CGRAPH_LOCK_GUARD lock(lock_);
             if (nullptr == handle_) {
-                handle_ = CGRAPH_SAFE_MALLOC_COBJECT(T);
+                handle_ = CGRAPH_SAFE_MALLOC_COBJECT(T)
             }
         }
     }

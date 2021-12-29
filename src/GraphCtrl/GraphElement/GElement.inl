@@ -38,10 +38,10 @@ template<typename TAspect, typename TParam,
 GElementPtr GElement::addGAspect(TParam* param) {
     if (!aspect_manager_) {
         /** 采用懒加载的方式执行，这里不会有并发问题，故不需要采用单例模式了 */
-        aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager);
+        aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager)
     }
 
-    GAspectPtr aspect = CGRAPH_SAFE_MALLOC_COBJECT(TAspect);
+    GAspectPtr aspect = CGRAPH_SAFE_MALLOC_COBJECT(TAspect)
     aspect->setName(this->getName())
         ->setParam<TParam>(param)
         ->setPipelineParamManager(this->param_manager_);

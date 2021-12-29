@@ -53,7 +53,7 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
 template<typename T, std::enable_if_t<std::is_base_of_v<GNode, T>, int>>
 GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_FUNCTION_BEGIN
-    GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T);
+    GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(node)
 
     status = node->setElementInfo(info.dependence, info.name, info.loop, this->param_manager_);

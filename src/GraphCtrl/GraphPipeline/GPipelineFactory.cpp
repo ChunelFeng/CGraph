@@ -24,7 +24,7 @@ GPipelinePtr GPipelineFactory::create() {
         }
     }
 
-    GPipelinePtr pipeline = CGRAPH_SAFE_MALLOC_COBJECT(GPipeline);
+    GPipelinePtr pipeline = CGRAPH_SAFE_MALLOC_COBJECT(GPipeline)
     s_pipeline_list_.emplace_back(pipeline);
     return pipeline;
 }

@@ -15,7 +15,7 @@ CStatus GParamManager::create(const std::string& key) {
     }
 
     CGRAPH_WRITE_LOCK wLock(this->lock_);
-    T* ptr = CGRAPH_SAFE_MALLOC_COBJECT(T);
+    T* ptr = CGRAPH_SAFE_MALLOC_COBJECT(T)
 
     params_map_.insert(std::pair<std::string, T*>(key, ptr));
     CGRAPH_FUNCTION_END

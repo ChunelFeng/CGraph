@@ -17,7 +17,7 @@ GAspectObjectPtr GAspectObject::setParam(T* param) {
     /** 传入的param可以为空 */
     if (param) {
         CGRAPH_DELETE_PTR(param_)
-        param_ = CGRAPH_SAFE_MALLOC_COBJECT(T);
+        param_ = CGRAPH_SAFE_MALLOC_COBJECT(T)
         param_->clone(static_cast<T *>(param));
     }
 
