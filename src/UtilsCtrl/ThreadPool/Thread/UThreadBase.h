@@ -64,8 +64,8 @@ protected:
      * @param tasks
      * @return
      */
-    virtual bool popPoolTasks(UTaskWrapperArr& tasks) {
-        return (pool_task_queue_ && pool_task_queue_->tryMultiPop(tasks));
+    virtual bool popPoolTask(UTaskWrapperArrRef tasks) {
+        return (pool_task_queue_ && pool_task_queue_->tryPop(tasks));
     }
 
 

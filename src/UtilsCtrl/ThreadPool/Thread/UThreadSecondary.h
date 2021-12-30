@@ -84,7 +84,7 @@ public:
      */
     void runTasks() {
         UTaskWrapperArr tasks;
-        if (popPoolTasks(tasks)) {
+        if (popPoolTask(tasks)) {
             is_running_ = true;
             for (auto& curTask : tasks) {
                 curTask();

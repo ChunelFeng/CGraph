@@ -61,6 +61,7 @@ public:
 using UTaskWrapperRef = UTaskWrapper &;
 using UTaskWrapperPtr = UTaskWrapper *;
 using UTaskWrapperArr = std::vector<UTaskWrapper>;
+using UTaskWrapperArrRef = std::vector<UTaskWrapper> &;
 
 CGRAPH_NAMESPACE_END
 

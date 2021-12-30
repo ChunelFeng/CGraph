@@ -57,7 +57,7 @@ public:
      * @param values
      * @return
      */
-    bool tryMultiPop(std::vector<T>& values) {
+    bool tryPop(std::vector<T>& values) {
         CGRAPH_LOCK_GUARD lk(mutex_);
         if (queue_.empty()) {
             return false;
@@ -106,7 +106,11 @@ public:
     }
 
 
-    [[nodiscard]] bool empty() const {
+    /**
+     * 判定队列是否为空
+     * @return
+     */
+    [[nodiscard]] bool empty() {
         CGRAPH_LOCK_GUARD lk(mutex_);
         return queue_.empty();
     }

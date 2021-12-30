@@ -106,7 +106,7 @@ public:
      */
     void runTasks() {
         UTaskWrapperArr tasks;
-        if (popTasks(tasks) || popPoolTasks(tasks) || stealTasks(tasks)) {
+        if (popTask(tasks) || popPoolTask(tasks) || stealTask(tasks)) {
             // 尝试从主线程中获取/盗取批量task，如果成功，则依次执行
             is_running_ = true;
             for (auto& curTask : tasks) {
@@ -134,8 +134,8 @@ public:
      * @param tasks
      * @return
      */
-    bool popTasks(UTaskWrapperArr& tasks) {
-        return work_stealing_queue_.tryMultiPop(tasks);
+    bool popTask(UTaskWrapperArrRef tasks) {
+        return work_stealing_queue_.tryPop(tasks);
     }
 
 
@@ -179,7 +179,7 @@ public:
      * @param tasks
      * @return
      */
-    bool stealTasks(UTaskWrapperArr& tasks) {
+    bool stealTask(UTaskWrapperArrRef tasks) {
         if (unlikely(pool_threads_->size() < CGRAPH_DEFAULT_THREAD_SIZE)) {
             return false;
         }
@@ -188,7 +188,7 @@ public:
         for (int i = 0; i < range; i++) {
             int curIndex = (index_ + i + 1) % CGRAPH_DEFAULT_THREAD_SIZE;
             if (nullptr != (*pool_threads_)[curIndex]
-                && ((*pool_threads_)[curIndex])->work_stealing_queue_.tryMultiSteal(tasks)) {
+                && ((*pool_threads_)[curIndex])->work_stealing_queue_.trySteal(tasks)) {
                 return true;
             }
         }
@@ -200,8 +200,7 @@ private:
     int index_ {-1};                                               // 线程index
     UWorkStealingQueue work_stealing_queue_;                       // 内部队列信息
 
-    /* 以下两个信息，用于同步本线程所属的线程池中的信息 */
-    std::vector<UThreadPrimary *>* pool_threads_{};                // 用于存放线程池中的线程信息
+    std::vector<UThreadPrimary *>* pool_threads_ { nullptr };      // 用于存放线程池中的线程信息
 
     friend class UThreadPool;
 };

@@ -7,12 +7,12 @@
 ***************************/
 
 
-#ifndef CGRAPH_CELEMENTINCLUDE_H
-#define CGRAPH_CELEMENTINCLUDE_H
+#ifndef CGRAPH_GELEMENTINCLUDE_H
+#define CGRAPH_GELEMENTINCLUDE_H
 
 #include "GElement.h"
 #include "GNode/GNodeInclude.h"
 #include "GGroup/GGroupInclude.h"
 #include "GAdapter/GAdapterInclude.h"
 
-#endif //CGRAPH_CELEMENTINCLUDE_H
+#endif //CGRAPH_GELEMENTINCLUDE_H

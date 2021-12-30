@@ -64,7 +64,7 @@ public:
      * @param taskArr
      * @return
      */
-    bool tryMultiPop(UTaskWrapperArr& taskArr) {
+    bool tryPop(UTaskWrapperArrRef taskArr) {
         bool result = false;
         if (mutex_.try_lock()) {
             int i = CGRAPH_MAX_LOCAL_BATCH_SIZE;    // 一次批量执行，最多执行这么多个
@@ -105,7 +105,7 @@ public:
      * @param taskArr
      * @return
      */
-    bool tryMultiSteal(UTaskWrapperArr& taskArr) {
+    bool trySteal(UTaskWrapperArrRef taskArr) {
         bool result = false;
         if (mutex_.try_lock()) {
             int i = CGRAPH_MAX_STEAL_BATCH_SIZE;
