@@ -36,7 +36,8 @@ set(TUTORIAL_LIST
         T11-Singleton
         TU01-ThreadPool
         TU02-Lru
-        TU03-Trie)
+        TU03-Trie
+        TU04-Timer)
 
 # 编译libCGraph动态库
 # add_library(CGraph SHARED ${SRC_LIST})

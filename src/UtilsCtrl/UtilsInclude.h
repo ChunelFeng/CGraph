@@ -15,5 +15,6 @@
 #include "Singleton/USingleton.h"
 #include "Lru/ULru.h"
 #include "Trie/UTrie.h"
+#include "Timer/UTimer.h"
 
 #endif //CGRAPH_UTILSINCLUDE_H

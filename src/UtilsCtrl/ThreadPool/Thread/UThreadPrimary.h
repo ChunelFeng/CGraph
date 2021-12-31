@@ -68,7 +68,7 @@ public:
                         [](UThreadPrimary* thd) {
                             return nullptr == thd;
                         })) {
-            return CStatus(STATUS_ERR, "thread is null");
+            return CStatus("primary thread is null");
         }
 
         if (REAL_BATCH_TASKS_RATIO) {
