@@ -23,12 +23,17 @@ static std::mutex g_session_mtx;
 class UAllocator : public CObject {
 public:
     template<typename T>
-    static T* SafeMallocCObject() {
+    static T* safeMallocCObject() {
         T* ptr = nullptr;
         while (!ptr && std::is_base_of_v<CObject, T>) {
             ptr = new(std::nothrow) T();
         }
         return ptr;
+    }
+
+    template<typename T>
+    static std::unique_ptr<T> makeUniqueCObject() {
+        return std::make_unique<T>();
     }
 
     static std::string generateSession() {
@@ -47,7 +52,10 @@ public:
 };
 
 #define CGRAPH_SAFE_MALLOC_COBJECT(TYPE)                         \
-    UAllocator::SafeMallocCObject<TYPE>();                       \
+    UAllocator::safeMallocCObject<TYPE>();                       \
+
+#define CGRAPH_MAKE_UNIQUE_COBJECT(TYPE)                         \
+    UAllocator::makeUniqueCObject<TYPE>();                       \
 
 #define CGRAPH_GENERATE_SESSION()                                \
     UAllocator::generateSession();                               \

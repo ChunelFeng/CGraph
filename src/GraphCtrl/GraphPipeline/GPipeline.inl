@@ -134,9 +134,7 @@ GPipelinePtr GPipeline::addGAspectBatch(const GElementPtrSet& elements, TParam* 
     const GElementPtrSet& curElements = elements.empty() ? element_repository_ : elements;
     for (auto element : curElements) {
         // 如果传入的为空，或者不是当前pipeline中的element，则不处理
-        if (nullptr == element
-            || (element_repository_.find(element) == element_repository_.end())) {
-            CGRAPH_ECHO("[warning] input element [%p] is not suitable.", element);
+        if (nullptr == element || (element_repository_.find(element) == element_repository_.end())) {
             continue;
         }
 

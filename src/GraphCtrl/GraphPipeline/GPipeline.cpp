@@ -56,10 +56,10 @@ CStatus GPipeline::run() {
     int runElementSize = 0;
     std::vector<std::future<CStatus>> futures;
 
-    for (GClusterArr& clusterArr : element_manager_->para_cluster_arrs_) {
+    for (GClusterArrRef clusterArr : element_manager_->para_cluster_arrs_) {
         futures.clear();
 
-        for (GCluster& cluster : clusterArr) {
+        for (GClusterRef cluster : clusterArr) {
             futures.emplace_back(thread_pool_->commit(std::bind(&GCluster::process, std::ref(cluster), false)));
             runElementSize += cluster.getElementNum();
         }

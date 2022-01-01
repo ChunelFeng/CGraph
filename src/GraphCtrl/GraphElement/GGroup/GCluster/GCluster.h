@@ -50,7 +50,9 @@ private:
 };
 
 using GClusterPtr = GCluster *;
+using GClusterRef = GCluster &;
 using GClusterArr = std::vector<GCluster>;
+using GClusterArrRef = GClusterArr &;
 using ParaWorkedClusterArrs = std::vector<GClusterArr>;
 
 CGRAPH_NAMESPACE_END

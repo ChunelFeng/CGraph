@@ -134,14 +134,14 @@ CStatus GElementManager::analyse() {
         runnableClusterArr = curClusterArr;
         curClusterArr.clear();
 
-        for (GCluster& cluster : runnableClusterArr) {
+        for (GClusterRef cluster : runnableClusterArr) {
             status = cluster.process(true);    // 不执行run方法的process
             CGRAPH_FUNCTION_CHECK_STATUS
         }
         runElementSize += (int)runnableClusterArr.size();
 
-        std::set<GElementPtr> duplications;
-        for (GCluster& cluster : runnableClusterArr) {
+        GElementPtrSet duplications;
+        for (GClusterRef cluster : runnableClusterArr) {
             for (GElementPtr element : cluster.cluster_elements_) {
                 for (GElementPtr cur : element->run_before_) {
                     /**
@@ -149,8 +149,7 @@ CStatus GElementManager::analyse() {
                      * 1，该元素是可以执行的
                      * 2，改元素本次循环是第一次被遍历
                      */
-                    if (cur->isRunnable()
-                        && duplications.find(cur) == duplications.end()) {
+                    if (cur->isRunnable() && duplications.end() == duplications.find(cur)) {
                         GCluster curCluster;
                         GElementPtr curElement = cur;
                         curCluster.addElement(curElement);
@@ -181,14 +180,17 @@ CStatus GElementManager::analyse() {
 CStatus GElementManager::afterRunCheck(int runNodeSize) {
     CGRAPH_FUNCTION_BEGIN
 
-    status = (runNodeSize == manager_elements_.size()) ? CStatus() : CStatus("pipeline run element size check failed...");
-    CGRAPH_FUNCTION_CHECK_STATUS
+    /* 验证是否所有的内容均被执行过 */
+    if (runNodeSize != manager_elements_.size()) {
+        return CStatus("pipeline run element size check failed...");
+    }
 
     /* 需要验证每个cluster里的每个内容是否被执行过一次 */
-    for (GClusterArr& clusterArr : para_cluster_arrs_) {
-        for (GCluster& cluster : clusterArr) {
-            status = cluster.isElementsDone() ? CStatus() : CStatus("pipeline done status check failed...");
-            CGRAPH_FUNCTION_CHECK_STATUS
+    for (GClusterArrRef clusterArr : para_cluster_arrs_) {
+        for (GClusterRef cluster : clusterArr) {
+            if (!cluster.isElementsDone()) {
+                return CStatus("pipeline done status check failed...");
+            }
         }
     }
 
@@ -211,7 +213,7 @@ bool GElementManager::hasElement(GElementPtr element) const {
         return false;
     }
 
-    return manager_elements_.find(element) != manager_elements_.end();
+    return manager_elements_.end() != manager_elements_.find(element);
 }
 
 

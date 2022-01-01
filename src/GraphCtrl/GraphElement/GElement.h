@@ -193,6 +193,7 @@ protected:
 using GElementPtr = GElement *;
 using GElementPtrArr = std::vector<GElementPtr>;
 using GElementPtrSet = std::set<GElementPtr>;
+using GElementPtrSetRef = GElementPtrSet &;
 
 CGRAPH_NAMESPACE_END
 
