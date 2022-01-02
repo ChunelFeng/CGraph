@@ -132,7 +132,7 @@ template<typename TAspect, typename TParam,
         std::enable_if_t<std::is_base_of_v<GAspectParam, TParam>, int>>
 GPipelinePtr GPipeline::addGAspectBatch(const GElementPtrSet& elements, TParam* param) {
     const GElementPtrSet& curElements = elements.empty() ? element_repository_ : elements;
-    for (auto element : curElements) {
+    for (GElementPtr element : curElements) {
         // 如果传入的为空，或者不是当前pipeline中的element，则不处理
         if (nullptr == element || (element_repository_.find(element) == element_repository_.end())) {
             continue;
