@@ -38,7 +38,7 @@ void tutorial_threadpool_1() {
 
 void tutorial_threadpool_2() {
     UThreadPoolPtr tp = UThreadPoolSingleton::get();
-    UTaskGroup taskGroup;
+    UTaskGroup taskGroup;    // 创建一个taskGroup，往其中插入n个任务
 
     /** 添加一个不耗时的任务 */
     int i = 1, j = 2, k = 3;
@@ -64,7 +64,12 @@ void tutorial_threadpool_2() {
           CGRAPH_SLEEP_MILLISECOND(3000)
      }); */
 
-    CStatus status = tp->commit(taskGroup, 2500);    // 设定超时时间=2500ms，因为
+    /**
+     * 设定超时时间=2500ms，确保以上任务能顺利执行完成
+     * 如果加入sleep(3000)的任务，则也会在2500ms的时候退出
+     * 并且在status中提示超时信息
+     * */
+    CStatus status = tp->commit(taskGroup, 2500);
     CGRAPH_ECHO("task group run status is [%d]", status.getCode());
 }
 
