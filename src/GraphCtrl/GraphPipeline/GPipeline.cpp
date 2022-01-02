@@ -54,18 +54,18 @@ CStatus GPipeline::run() {
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
 
     int runElementSize = 0;    // 用于记录执行的element的总数，用于后期校验
-    std::vector<int> curClusterSize;    // 用于记录分解后，每个cluster包含的element的个数，用于验证执行的超时情况。
+    std::vector<int> curClusterTtl;    // 用于记录分解后，每个cluster包含的element的个数，用于验证执行的超时情况。
     std::vector<std::future<CStatus>> futures;
 
     for (GClusterArrRef clusterArr : element_manager_->para_cluster_arrs_) {
         futures.clear();
-        curClusterSize.clear();
+        curClusterTtl.clear();
 
         /** 将分解后的pipeline信息，以cluster为维度，放入线程池依次执行 */
         for (GClusterRef cluster : clusterArr) {
             futures.emplace_back(thread_pool_->commit(std::bind(&GCluster::process, std::ref(cluster), false)));
             runElementSize += cluster.getElementNum();
-            curClusterSize.emplace_back(cluster.getElementNum());
+            curClusterTtl.emplace_back(cluster.getElementNum() * element_run_ttl_);
         }
 
         int index = 0;
@@ -73,7 +73,7 @@ CStatus GPipeline::run() {
             if (likely(DEFAULT_ELEMENT_RUN_TTL == element_run_ttl_)) {
                 status = fut.get();    // 不设定最大运行周期的情况（默认情况）
             } else {
-                const auto& futStatus = fut.wait_for(std::chrono::milliseconds(element_run_ttl_ * curClusterSize[index]));
+                const auto& futStatus = fut.wait_for(std::chrono::milliseconds(curClusterTtl[index]));
                 switch (futStatus) {
                     case std::future_status::ready: status = fut.get(); break;
                     case std::future_status::timeout: status = CStatus("thread status timeout"); break;

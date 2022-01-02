@@ -16,5 +16,6 @@
 #include "AtomicQueue/UAtomicQueue.h"
 #include "WorkStealingQueue/UWorkStealingQueue.h"
 #include "UThreadPoolSingleton.h"
+#include "TaskGroup/UTaskGroup.h"
 
 #endif //CGRAPH_UTHREADPOOLINCLUDE_H

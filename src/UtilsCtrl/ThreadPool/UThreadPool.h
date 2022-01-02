@@ -21,6 +21,7 @@
 #include "AtomicQueue/UAtomicQueue.h"
 #include "Thread/UThreadPrimary.h"
 #include "Thread/UThreadSecondary.h"
+#include "TaskGroup/UTaskGroup.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -48,6 +49,31 @@ public:
         deinit();
     }
 
+
+    /**
+     * 开启所有的线程信息
+     * @return
+     */
+    CStatus init() final {
+        CGRAPH_FUNCTION_BEGIN
+        if (is_init_) {
+            CGRAPH_FUNCTION_END
+        }
+
+        primary_threads_.reserve(CGRAPH_DEFAULT_THREAD_SIZE);
+        for (int i = 0; i < CGRAPH_DEFAULT_THREAD_SIZE; ++i) {
+            auto ptr = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary)    // 创建核心线程数
+
+            ptr->setThreadPoolInfo(i, &this->task_queue_, &this->primary_threads_);
+            status = ptr->init();
+            CGRAPH_FUNCTION_CHECK_STATUS
+
+            primary_threads_.emplace_back(ptr);
+        }
+
+        is_init_ = true;
+        CGRAPH_FUNCTION_END
+    }
 
     /**
      * 提交任务信息
@@ -80,27 +106,36 @@ public:
 
 
     /**
-     * 开启所有的线程信息
+     * 执行任务组信息
+     * 取taskGroup内部ttl和入参ttl的最小值，为计算ttl标准。默认均为INT_MAX值
+     * @param taskGroup
+     * @param ttlMs
      * @return
      */
-    CStatus init() final {
+    CStatus commit(const UTaskGroup& taskGroup,
+                   int ttlMs = CGRAPH_DEFAULT_GROUP_TTL_MS) {
         CGRAPH_FUNCTION_BEGIN
-        if (is_init_) {
-            CGRAPH_FUNCTION_END
+
+        std::vector<std::future<void>> futures;
+        for (const auto& task : taskGroup.task_arr_) {
+            futures.emplace_back(this->commit(task));
         }
 
-        primary_threads_.reserve(CGRAPH_DEFAULT_THREAD_SIZE);
-        for (int i = 0; i < CGRAPH_DEFAULT_THREAD_SIZE; ++i) {
-            auto ptr = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary)    // 创建核心线程数
+        // 计算最终运行时间信息
+        std::chrono::system_clock::time_point deadline
+                = std::chrono::system_clock::now() + std::chrono::milliseconds(std::min(taskGroup.getTtlMs(), ttlMs));
 
-            ptr->setThreadPoolInfo(i, &this->task_queue_, &this->primary_threads_);
-            status = ptr->init();
+        for (auto& fut : futures) {
+            const auto& futStatus = fut.wait_until(deadline);
+            switch (futStatus) {
+                case std::future_status::ready: break;    // 正常情况，直接返回了
+                case std::future_status::timeout: status = CStatus("thread status timeout"); break;
+                case std::future_status::deferred: status = CStatus("thread status deferred"); break;
+                default: status = CStatus("thread status unknown");
+            }
             CGRAPH_FUNCTION_CHECK_STATUS
-
-            primary_threads_.emplace_back(ptr);
         }
 
-        is_init_ = true;
         CGRAPH_FUNCTION_END
     }
 

@@ -157,7 +157,7 @@ void tutorial_simple() {
 * 更新`tutorial`内容
 
 [2021.11.01 - v1.8.0 - Chunel]
-* 提供`adapter`（适配器）功能，提供`singleton`适配器
+* 提供`adapter`(适配器)功能，提供`singleton`适配器
 * 优化`pipeline`执行逻辑
 * 更新`tutorial`内容
 
@@ -165,7 +165,7 @@ void tutorial_simple() {
 * 优化了返回值`CStatus`信息
 
 [2022.01.02 - v1.8.2 - Chunel]
-* 提供节点执行超时自动退出功能
+* 提供节点执行超时自动退出功能，提供`task group`(任务组)功能
 
 ------------
 #### 附录-2. 推荐阅读

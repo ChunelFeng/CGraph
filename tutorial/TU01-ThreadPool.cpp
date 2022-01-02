@@ -38,6 +38,39 @@ void tutorial_threadpool_1() {
 
 void tutorial_threadpool_2() {
     UThreadPoolPtr tp = UThreadPoolSingleton::get();
+    UTaskGroup taskGroup;
+
+    /** 添加一个不耗时的任务 */
+    int i = 1, j = 2, k = 3;
+    taskGroup.addTask([i] {
+        CGRAPH_ECHO("i = [%d]", i);
+    });
+
+    /** 添加一个耗时为1000ms的任务 */
+    taskGroup.addTask([i, j] {
+        int result = i + j;
+        CGRAPH_SLEEP_MILLISECOND(1000)
+        CGRAPH_ECHO("sleep for 1 second, [%d] + [%d] = [%d], run success", i, j, result);
+    });
+
+    taskGroup.addTask([i, j, k] {
+        int result = i - j + k;
+        CGRAPH_SLEEP_MILLISECOND(2000)
+        CGRAPH_ECHO("sleep for 2 second, [%d] - [%d] + [%d] = [%d], run success", i, j, k, result);
+    });
+
+    /** 如果添加耗时3000ms的任务，则整体执行失败 */
+    /* taskGroup.addTask([] {
+          CGRAPH_SLEEP_MILLISECOND(3000)
+     }); */
+
+    CStatus status = tp->commit(taskGroup, 2500);    // 设定超时时间=2500ms，因为
+    CGRAPH_ECHO("task group run status is [%d]", status.getCode());
+}
+
+
+void tutorial_threadpool_3() {
+    UThreadPoolPtr tp = UThreadPoolSingleton::get();
     // 并发打印0~100之间的数字
     for (int i = 0; i < 100; i++) {
         tp->commit([i] {
@@ -53,5 +86,8 @@ int main() {
 
     CGRAPH_ECHO("tutorial_threadpool_2 begin.");
     tutorial_threadpool_2();
+
+    CGRAPH_ECHO("tutorial_threadpool_3 begin.");
+    tutorial_threadpool_3();
     return 0;
 }
