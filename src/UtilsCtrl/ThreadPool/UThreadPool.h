@@ -115,6 +115,7 @@ public:
     CStatus commit(const UTaskGroup& taskGroup,
                    int ttlMs = CGRAPH_DEFAULT_GROUP_TTL_MS) {
         CGRAPH_FUNCTION_BEGIN
+        CGRAPH_ASSERT_INIT(true)
 
         std::vector<std::future<void>> futures;
         for (const auto& task : taskGroup.task_arr_) {

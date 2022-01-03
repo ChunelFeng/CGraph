@@ -28,7 +28,7 @@ public:
      * @param ttl
      */
     void setTtlMs(int ttl) {
-        this->ttl_ms_ = ttl;
+        this->ttl_ms_ = ttl >= 0 ? ttl : CGRAPH_DEFAULT_GROUP_TTL_MS;
     }
 
     /**

@@ -37,13 +37,16 @@ void tutorial_threadpool_1() {
 
 
 void tutorial_threadpool_2() {
+    /**
+     * 通过添加工作组(taskGroup)来执行任务
+     */
     UThreadPoolPtr tp = UThreadPoolSingleton::get();
-    UTaskGroup taskGroup;    // 创建一个taskGroup，往其中插入n个任务
+    UTaskGroup taskGroup;
 
     /** 添加一个不耗时的任务 */
     int i = 1, j = 2, k = 3;
-    taskGroup.addTask([i] {
-        CGRAPH_ECHO("i = [%d]", i);
+    taskGroup.addTask([] {
+        CGRAPH_ECHO("hello, world.");
     });
 
     /** 添加一个耗时为1000ms的任务 */
@@ -75,24 +78,26 @@ void tutorial_threadpool_2() {
 
 
 void tutorial_threadpool_3() {
+    /**
+     * 并发打印0~100之间的数字
+     */
     UThreadPoolPtr tp = UThreadPoolSingleton::get();
-    // 并发打印0~100之间的数字
     for (int i = 0; i < 100; i++) {
         tp->commit([i] {
-            std::cout << i << std::endl;
+            std::cout << i << " ";
         });
     }
 }
 
 
 int main() {
-    CGRAPH_ECHO("tutorial_threadpool_1 begin.");
+    CGRAPH_ECHO("======== tutorial_threadpool_1 begin. ========");
     tutorial_threadpool_1();
 
-    CGRAPH_ECHO("tutorial_threadpool_2 begin.");
+    CGRAPH_ECHO("======== tutorial_threadpool_2 begin. ========");
     tutorial_threadpool_2();
 
-    CGRAPH_ECHO("tutorial_threadpool_3 begin.");
+    CGRAPH_ECHO("======== tutorial_threadpool_3 begin. ========");
     tutorial_threadpool_3();
     return 0;
 }
