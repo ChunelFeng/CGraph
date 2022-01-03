@@ -14,11 +14,12 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class UThreadPrimary : public UThreadBase {
-public:
+protected:
     explicit UThreadPrimary() {
         index_ = -1;
         pool_threads_ = nullptr;
     }
+
 
     CStatus init() override {
         CGRAPH_FUNCTION_BEGIN
@@ -32,20 +33,25 @@ public:
 
     /**
      * 注册线程池相关内容，需要在init之前使用
+     * @param index
      * @param poolTaskQueue
      * @param poolThreads
+     * @param config
      */
     CStatus setThreadPoolInfo(int index,
                               UAtomicQueue<UTaskWrapper>* poolTaskQueue,
-                              std::vector<UThreadPrimary *>* poolThreads) {
+                              std::vector<UThreadPrimary *>* poolThreads,
+                              UThreadPoolConfigPtr config) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(false)    // 初始化之前，设置参数
         CGRAPH_ASSERT_NOT_NULL(poolTaskQueue)
         CGRAPH_ASSERT_NOT_NULL(poolThreads)
+        CGRAPH_ASSERT_NOT_NULL(config)
 
         this->index_ = index;
         this->pool_task_queue_ = poolTaskQueue;
         this->pool_threads_ = poolThreads;
+        this->config_ = config;
         CGRAPH_FUNCTION_END
     }
 
@@ -58,6 +64,7 @@ public:
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
         CGRAPH_ASSERT_NOT_NULL(pool_threads_)
+        CGRAPH_ASSERT_NOT_NULL(config_)
 
         /**
          * 线程池中任何一个primary线程为null都不可以执行
@@ -71,7 +78,7 @@ public:
             return CStatus("primary thread is null");
         }
 
-        if (REAL_BATCH_TASKS_RATIO) {
+        if (config_->calcBatchTaskRatio()) {
             while (done_) {
                 runTasks();    // 批量任务获取执行接口
             }
@@ -135,7 +142,7 @@ public:
      * @return
      */
     bool popTask(UTaskWrapperArrRef tasks) {
-        return work_stealing_queue_.tryPop(tasks);
+        return work_stealing_queue_.tryPop(tasks, config_->max_local_batch_size_);
     }
 
 
@@ -145,7 +152,7 @@ public:
      * @return
      */
     bool stealTask(UTaskWrapperRef task) {
-        if (unlikely(pool_threads_->size() < CGRAPH_DEFAULT_THREAD_SIZE)) {
+        if (unlikely(pool_threads_->size() < config_->default_thread_size_)) {
             /**
              * 线程池还未初始化完毕的时候，无法进行steal。
              * 确保程序安全运行。
@@ -157,13 +164,13 @@ public:
          * 窃取的时候，仅从相邻的primary线程中窃取
          * 待窃取相邻的数量，不能超过默认primary线程数
          */
-        int range = std::min(CGRAPH_MAX_TASK_STEAL_RANGE, CGRAPH_DEFAULT_THREAD_SIZE - 1);
+        int range = config_->calcStealRange();
         for (int i = 0; i < range; i++) {
             /**
             * 从线程中周围的thread中，窃取任务。
             * 如果成功，则返回true，并且执行任务。
             */
-            int curIndex = (index_ + i + 1) % CGRAPH_DEFAULT_THREAD_SIZE;
+            int curIndex = (index_ + i + 1) % config_->default_thread_size_;
             if (nullptr != (*pool_threads_)[curIndex]
                 && ((*pool_threads_)[curIndex])->work_stealing_queue_.trySteal(task)) {
                 return true;
@@ -180,15 +187,15 @@ public:
      * @return
      */
     bool stealTask(UTaskWrapperArrRef tasks) {
-        if (unlikely(pool_threads_->size() < CGRAPH_DEFAULT_THREAD_SIZE)) {
+        if (unlikely(pool_threads_->size() < config_->default_thread_size_)) {
             return false;
         }
 
-        int range = std::min(CGRAPH_MAX_TASK_STEAL_RANGE, CGRAPH_DEFAULT_THREAD_SIZE - 1);
+        int range = config_->calcStealRange();
         for (int i = 0; i < range; i++) {
-            int curIndex = (index_ + i + 1) % CGRAPH_DEFAULT_THREAD_SIZE;
+            int curIndex = (index_ + i + 1) % config_->default_thread_size_;
             if (nullptr != (*pool_threads_)[curIndex]
-                && ((*pool_threads_)[curIndex])->work_stealing_queue_.trySteal(tasks)) {
+                && ((*pool_threads_)[curIndex])->work_stealing_queue_.trySteal(tasks, config_->max_steal_batch_size_)) {
                 return true;
             }
         }
@@ -199,10 +206,10 @@ public:
 private:
     int index_ {-1};                                               // 线程index
     UWorkStealingQueue work_stealing_queue_;                       // 内部队列信息
-
-    std::vector<UThreadPrimary *>* pool_threads_ { nullptr };      // 用于存放线程池中的线程信息
+    std::vector<UThreadPrimary *>* pool_threads_;                  // 用于存放线程池中的线程信息
 
     friend class UThreadPool;
+    friend class UAllocator;
 };
 
 using UThreadPrimaryPtr = UThreadPrimary *;

@@ -17,8 +17,6 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-constexpr bool REAL_BATCH_TASKS_RATIO = CGRAPH_BATCH_TASK_ENABLE && !CGRAPH_FAIR_LOCK_ENABLE;
-
 class UThreadBase : public UThreadObject {
 
 protected:
@@ -27,6 +25,7 @@ protected:
         is_init_ = false;
         is_running_ = false;
         pool_task_queue_ = nullptr;
+        config_ = nullptr;
     }
 
 
@@ -65,7 +64,21 @@ protected:
      * @return
      */
     virtual bool popPoolTask(UTaskWrapperArrRef tasks) {
-        return (pool_task_queue_ && pool_task_queue_->tryPop(tasks));
+        return (pool_task_queue_ && pool_task_queue_->tryPop(tasks, config_->max_pool_batch_size_));
+    }
+
+
+    /**
+     * 外部传入具体配置信息
+     * @param config
+     * @return
+     */
+    CStatus setConfig(UThreadPoolConfigPtr config) {
+        CGRAPH_FUNCTION_BEGIN
+        CGRAPH_ASSERT_INIT(false)
+
+        this->config_ = config;
+        CGRAPH_FUNCTION_END
     }
 
 
@@ -84,7 +97,9 @@ protected:
     bool is_init_;                                            // 标记初始化状态
     bool is_running_;                                         // 是否正在执行
 
-    UAtomicQueue<UTaskWrapper>* pool_task_queue_{};           // 用于存放线程池中的普通任务
+    UAtomicQueue<UTaskWrapper>* pool_task_queue_;             // 用于存放线程池中的普通任务
+    UThreadPoolConfigPtr config_;                             // 配置参数信息
+
     std::thread thread_;                                      // 线程类
 };
 

@@ -16,15 +16,17 @@ CGRAPH_NAMESPACE_BEGIN
 class UThreadSecondary : public UThreadBase {
 public:
     explicit UThreadSecondary() {
-        ttl_ = 0;
+        cur_ttl_ = 0;
     }
 
 
+protected:
     CStatus init() override {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(false)
+        CGRAPH_ASSERT_NOT_NULL(config_)
 
-        ttl_ = CGRAPH_SECONDARY_THREAD_TTL;
+        cur_ttl_ = config_->secondary_thread_ttl_;
         thread_ = std::move(std::thread(&UThreadSecondary::run, this));
         is_init_ = true;
         CGRAPH_FUNCTION_END
@@ -34,14 +36,18 @@ public:
     /**
      * 设置pool的信息
      * @param poolTaskQueue
+     * @param config
      * @return
      */
-    CStatus setThreadPoolInfo(UAtomicQueue<UTaskWrapper>* poolTaskQueue) {
+    CStatus setThreadPoolInfo(UAtomicQueue<UTaskWrapper>* poolTaskQueue,
+                              UThreadPoolConfigPtr config) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(false)    // 初始化之前，设置参数
         CGRAPH_ASSERT_NOT_NULL(poolTaskQueue)
+        CGRAPH_ASSERT_NOT_NULL(config)
 
         this->pool_task_queue_ = poolTaskQueue;
+        this->config_ = config;
         CGRAPH_FUNCTION_END
     }
 
@@ -49,8 +55,9 @@ public:
     CStatus run() override {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
+        CGRAPH_ASSERT_NOT_NULL(config_)
 
-        if (REAL_BATCH_TASKS_RATIO) {
+        if (config_->calcBatchTaskRatio()) {
             while (done_) {
                 runTasks();    // 批量任务获取执行接口
             }
@@ -95,23 +102,24 @@ public:
         }
     }
 
+
     /**
      * 判断本线程是否需要被自动释放
      * @return
      */
     bool freeze() {
         if (likely(is_running_)) {
-            ttl_++;
-            ttl_ = std::min(ttl_, CGRAPH_SECONDARY_THREAD_TTL);
+            cur_ttl_++;
+            cur_ttl_ = std::min(cur_ttl_, config_->secondary_thread_ttl_);
         } else {
-            ttl_--;    // 如果当前线程没有在执行，则ttl-1
+            cur_ttl_--;    // 如果当前线程没有在执行，则ttl-1
         }
 
-        return ttl_ <= 0;
+        return cur_ttl_ <= 0;
     }
 
 private:
-    int ttl_;                                                             // 最大生存周期
+    int cur_ttl_;                                                             // 当前最大生存周期
 
     friend class UThreadPool;
 };

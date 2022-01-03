@@ -55,16 +55,16 @@ public:
     /**
      * 尝试弹出多个任务
      * @param values
+     * @param maxPoolBatchSize
      * @return
      */
-    bool tryPop(std::vector<T>& values) {
+    bool tryPop(std::vector<T>& values, int maxPoolBatchSize) {
         CGRAPH_LOCK_GUARD lk(mutex_);
         if (queue_.empty()) {
             return false;
         }
 
-        int i = CGRAPH_MAX_POOL_BATCH_SIZE;
-        while (!queue_.empty() && i--) {
+        while (!queue_.empty() && maxPoolBatchSize--) {
             values.emplace_back(std::move(*queue_.front()));
             queue_.pop();
         }

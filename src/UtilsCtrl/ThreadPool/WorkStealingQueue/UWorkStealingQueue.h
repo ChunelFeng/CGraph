@@ -62,13 +62,14 @@ public:
     /**
      * 从头部开始批量获取可执行任务信息
      * @param taskArr
+     * @param maxLocalBatchSize
      * @return
      */
-    bool tryPop(UTaskWrapperArrRef taskArr) {
+    bool tryPop(UTaskWrapperArrRef taskArr,
+                int maxLocalBatchSize) {
         bool result = false;
         if (mutex_.try_lock()) {
-            int i = CGRAPH_MAX_LOCAL_BATCH_SIZE;    // 一次批量执行，最多执行这么多个
-            while (!queue_.empty() && i--) {
+            while (!queue_.empty() && maxLocalBatchSize--) {
                 taskArr.emplace_back(std::move(queue_.front()));
                 queue_.pop_front();
                 result = true;
@@ -105,11 +106,10 @@ public:
      * @param taskArr
      * @return
      */
-    bool trySteal(UTaskWrapperArrRef taskArr) {
+    bool trySteal(UTaskWrapperArrRef taskArr, int maxStealBatchSize) {
         bool result = false;
         if (mutex_.try_lock()) {
-            int i = CGRAPH_MAX_STEAL_BATCH_SIZE;
-            while (!queue_.empty() && i--) {
+            while (!queue_.empty() && maxStealBatchSize--) {
                 taskArr.emplace_back(std::move(queue_.back()));
                 queue_.pop_back();
                 result = true;

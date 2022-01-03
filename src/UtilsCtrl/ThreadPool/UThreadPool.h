@@ -18,6 +18,7 @@
 #include <functional>
 
 #include "UThreadObject.h"
+#include "UThreadPoolConfig.h"
 #include "AtomicQueue/UAtomicQueue.h"
 #include "Thread/UThreadPrimary.h"
 #include "Thread/UThreadSecondary.h"
@@ -38,6 +39,20 @@ public:
         init();
     }
 
+    /**
+     * 通过默认设置参数，来创建线程池
+     * @param config
+     */
+    explicit UThreadPool(const UThreadPoolConfig& config) {
+        this->setConfig(config_);
+        cur_index_ = 0;
+        is_init_ = false;
+        /* 开启监控线程 */
+        is_monitor_ = true;
+        monitor_thread_ = std::move(std::thread(&UThreadPool::monitor, this));
+        init();
+    }
+
 
     ~UThreadPool() override {
         // 在析构的时候，才释放监控线程
@@ -51,6 +66,21 @@ public:
 
 
     /**
+     * 设置线程池相关配置信息，需要在init()函数调用前，完成设置
+     * @param config
+     * @return
+     * @notice 通过单例类(UThreadPoolSingleton)开启线程池，则线程池默认init。需要deinit后才可以设置参数
+     */
+    CStatus setConfig(const UThreadPoolConfig &config) {
+        CGRAPH_FUNCTION_BEGIN
+        CGRAPH_ASSERT_INIT(false)    // 初始化后，无法设置参数信息
+
+        this->config_ = config;
+        CGRAPH_FUNCTION_END
+    }
+
+
+    /**
      * 开启所有的线程信息
      * @return
      */
@@ -60,11 +90,11 @@ public:
             CGRAPH_FUNCTION_END
         }
 
-        primary_threads_.reserve(CGRAPH_DEFAULT_THREAD_SIZE);
-        for (int i = 0; i < CGRAPH_DEFAULT_THREAD_SIZE; ++i) {
+        primary_threads_.reserve(config_.default_thread_size_);
+        for (int i = 0; i < config_.default_thread_size_; ++i) {
             auto ptr = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary)    // 创建核心线程数
 
-            ptr->setThreadPoolInfo(i, &this->task_queue_, &this->primary_threads_);
+            ptr->setThreadPoolInfo(i, &this->task_queue_, &this->primary_threads_, &config_);
             status = ptr->init();
             CGRAPH_FUNCTION_CHECK_STATUS
 
@@ -88,7 +118,9 @@ public:
         std::packaged_task<resultType()> task(func);
         std::future<resultType> result(task.get_future());
 
-        if (!CGRAPH_FAIR_LOCK_ENABLE && cur_index_ >= 0 && cur_index_ < CGRAPH_DEFAULT_THREAD_SIZE) {
+        if (!config_.fair_lock_enable_
+            && cur_index_ >= 0
+            && cur_index_ < config_.default_thread_size_) {
             // 部分任务直接放到线程的队列中执行
             primary_threads_[cur_index_]->work_stealing_queue_.push(std::move(task));
         } else {
@@ -97,7 +129,7 @@ public:
         }
 
         cur_index_++;
-        if (cur_index_ >= CGRAPH_MAX_THREAD_SIZE || cur_index_ < 0) {
+        if (cur_index_ >= config_.max_thread_size_ || cur_index_ < 0) {
             cur_index_ = 0;
         }
 
@@ -113,7 +145,7 @@ public:
      * @return
      */
     CStatus submit(const UTaskGroup& taskGroup,
-                   int ttlMs = CGRAPH_DEFAULT_GROUP_TTL_MS) {
+                   int ttlMs = INT_MAX) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
 
@@ -147,7 +179,7 @@ public:
      * @return
      */
     CStatus submit(const CGRAPH_DEFAULT_FUNCTION &task,
-                   int ttlMs = CGRAPH_DEFAULT_GROUP_TTL_MS) {
+                   int ttlMs = INT_MAX) {
         UTaskGroup taskGroup(task, ttlMs);
         return submit(taskGroup, ttlMs);
     }
@@ -194,7 +226,7 @@ protected:
                 CGRAPH_SLEEP_SECOND(1)
             }
 
-            int span = CGRAPH_MONITOR_SPAN;
+            int span = config_.monitor_span_;
             while (is_monitor_ && is_init_ && span--) {
                 CGRAPH_SLEEP_SECOND(1)    // 保证可以快速退出
             }
@@ -206,9 +238,9 @@ protected:
                                     });
 
             // 如果忙碌，则需要添加 secondary线程
-            if (busy && secondary_threads_.size() + CGRAPH_DEFAULT_THREAD_SIZE < CGRAPH_MAX_THREAD_SIZE) {
+            if (busy && secondary_threads_.size() + config_.default_thread_size_ < config_.max_thread_size_) {
                 auto ptr = std::make_unique<UThreadSecondary>();
-                ptr->setThreadPoolInfo(&task_queue_);
+                ptr->setThreadPoolInfo(&task_queue_, &config_);
                 ptr->init();
                 secondary_threads_.emplace_back(std::move(ptr));
             }
@@ -233,6 +265,7 @@ private:
     std::vector<UThreadPrimaryPtr> primary_threads_;                                // 记录所有的核心线程
     std::list<std::unique_ptr<UThreadSecondary>> secondary_threads_;                // 用于记录所有的非核心线程数
     std::thread monitor_thread_;                                                    // 监控线程
+    UThreadPoolConfig config_;                                                      // 线程池设置值
 };
 
 using UThreadPoolPtr = UThreadPool *;

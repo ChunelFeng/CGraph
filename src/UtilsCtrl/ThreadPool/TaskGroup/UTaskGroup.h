@@ -9,6 +9,8 @@
 #ifndef CGRAPH_UTASKGROUP_H
 #define CGRAPH_UTASKGROUP_H
 
+#include <climits>
+
 #include "../UThreadObject.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -23,8 +25,8 @@ public:
      * @param ttl
      */
     explicit UTaskGroup(const CGRAPH_DEFAULT_FUNCTION& task,
-                        int ttl = CGRAPH_DEFAULT_GROUP_TTL_MS) noexcept {
-        this->addTask(task)->setTtlMs(ttl);
+                        int ttlMs = INT_MAX) noexcept {
+        this->addTask(task)->setTtlMs(ttlMs);
     }
 
     /**
@@ -40,8 +42,8 @@ public:
      * 设置任务最大超时时间
      * @param ttl
      */
-    UTaskGroup* setTtlMs(int ttl) {
-        this->ttl_ms_ = ttl >= 0 ? ttl : CGRAPH_DEFAULT_GROUP_TTL_MS;
+    UTaskGroup* setTtlMs(int ttlMs) {
+        this->ttl_ms_ = ttlMs >= 0 ? ttlMs : INT_MAX;
         return this;
     }
 
@@ -71,8 +73,8 @@ public:
     }
 
 private:
-    std::vector<CGRAPH_DEFAULT_FUNCTION> task_arr_;
-    int ttl_ms_ = CGRAPH_DEFAULT_GROUP_TTL_MS;                          // 任务组最大执行耗时
+    std::vector<CGRAPH_DEFAULT_FUNCTION> task_arr_;         // 任务消息
+    int ttl_ms_ = INT_MAX;                                  // 任务组最大执行耗时
 
     friend class UThreadPool;
 };

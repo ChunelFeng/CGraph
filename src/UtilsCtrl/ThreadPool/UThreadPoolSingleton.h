@@ -10,6 +10,7 @@
 #define CGRAPH_UTHREADPOOLSINGLETON_H
 
 #include "UThreadPool.h"
+#include "UThreadPoolConfig.h"
 #include "../Singleton/USingleton.h"
 
 CGRAPH_NAMESPACE_BEGIN
