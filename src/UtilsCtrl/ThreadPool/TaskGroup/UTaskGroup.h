@@ -15,20 +15,34 @@ CGRAPH_NAMESPACE_BEGIN
 
 class UTaskGroup : public UThreadObject {
 public:
+    explicit UTaskGroup() = default;
+
+    /**
+     * 直接通过函数来申明taskGroup的
+     * @param task
+     * @param ttl
+     */
+    explicit UTaskGroup(const CGRAPH_DEFAULT_FUNCTION& task,
+                        int ttl = CGRAPH_DEFAULT_GROUP_TTL_MS) noexcept {
+        this->addTask(task)->setTtlMs(ttl);
+    }
+
     /**
      * 添加一个任务
      * @param task
      */
-    void addTask(const CGRAPH_DEFAULT_FUNCTION &task) {
+    UTaskGroup* addTask(const CGRAPH_DEFAULT_FUNCTION &task) {
         task_arr_.emplace_back(task);
+        return this;
     }
 
     /**
      * 设置任务最大超时时间
      * @param ttl
      */
-    void setTtlMs(int ttl) {
+    UTaskGroup* setTtlMs(int ttl) {
         this->ttl_ms_ = ttl >= 0 ? ttl : CGRAPH_DEFAULT_GROUP_TTL_MS;
+        return this;
     }
 
     /**
@@ -42,8 +56,9 @@ public:
     /**
      * 清空任务组
      */
-    void clear() {
+    UTaskGroup* clear() {
         task_arr_.clear();
+        return this;
     }
 
     /**
@@ -61,6 +76,8 @@ private:
 
     friend class UThreadPool;
 };
+
+using UTaskGroupPtr = UTaskGroup *;
 
 CGRAPH_NAMESPACE_END
 

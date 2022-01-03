@@ -112,7 +112,7 @@ public:
      * @param ttlMs
      * @return
      */
-    CStatus commit(const UTaskGroup& taskGroup,
+    CStatus submit(const UTaskGroup& taskGroup,
                    int ttlMs = CGRAPH_DEFAULT_GROUP_TTL_MS) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
@@ -140,6 +140,17 @@ public:
         CGRAPH_FUNCTION_END
     }
 
+    /**
+     * 针对单个任务的情况，复用任务组信息，实现单个任务直接执行
+     * @param task
+     * @param ttlMs
+     * @return
+     */
+    CStatus submit(const CGRAPH_DEFAULT_FUNCTION &task,
+                   int ttlMs = CGRAPH_DEFAULT_GROUP_TTL_MS) {
+        UTaskGroup taskGroup(task, ttlMs);
+        return submit(taskGroup, ttlMs);
+    }
 
     /**
      * 释放所有的线程信息

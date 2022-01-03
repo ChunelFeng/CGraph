@@ -45,9 +45,8 @@ void tutorial_threadpool_2() {
 
     /** 添加一个不耗时的任务 */
     int i = 1, j = 2, k = 3;
-    taskGroup.addTask([] {
-        CGRAPH_ECHO("hello, world.");
-    });
+    auto hw = [] { CGRAPH_ECHO("hello, world."); };
+    taskGroup.addTask(hw);
 
     /** 添加一个耗时为1000ms的任务 */
     taskGroup.addTask([i, j] {
@@ -60,6 +59,7 @@ void tutorial_threadpool_2() {
         int result = i - j + k;
         CGRAPH_SLEEP_MILLISECOND(2000)
         CGRAPH_ECHO("sleep for 2 second, [%d] - [%d] + [%d] = [%d], run success", i, j, k, result);
+        return result;    // submit接口，不会对线程函数返回值进行判断。如果需要判断，考虑commit方式
     });
 
     /** 如果添加耗时3000ms的任务，则整体执行失败 */
@@ -72,7 +72,7 @@ void tutorial_threadpool_2() {
      * 如果加入sleep(3000)的任务，则也会在2500ms的时候退出
      * 并且在status中提示超时信息
      * */
-    CStatus status = tp->commit(taskGroup, 2500);
+    CStatus status = tp->submit(taskGroup, 2500);
     CGRAPH_ECHO("task group run status is [%d]", status.getCode());
 }
 
@@ -80,12 +80,25 @@ void tutorial_threadpool_2() {
 void tutorial_threadpool_3() {
     /**
      * 并发打印0~100之间的数字
+     * 使用commit和submit函数的区别，主要在于：
+     * 1，commit()属于非阻塞执行，是将线程函数执行的结果以future的类型返回，交由上层处理
+     * 2，submit()属于阻塞顺序执行，是在内部处理好超时等信息并作为结果返回，抛弃线程函数自身返回值
+     * 3，不需要线程函数返回值，并且不需要判断超时信息的场景，两者无区别（如下例）
      */
     UThreadPoolPtr tp = UThreadPoolSingleton::get();
+    CGRAPH_ECHO("submit version : ");
     for (int i = 0; i < 100; i++) {
-        tp->commit([i] {
-            std::cout << i << " ";
-        });
+        auto lbd = [i] { std::cout << i << " "; };
+        tp->submit(lbd);    // 可以看到，submit版本是有序执行的。如果需要想要无需执行，可以通过创建taskGroup的方式进行，或者使用commit方法
+    }
+
+    CGRAPH_SLEEP_SECOND(1)    // 等待上面函数执行完毕，以便于观察结果。无实际意义
+    std::cout << "\r\n";
+
+    CGRAPH_ECHO("commit version : ");
+    for (int i = 0; i < 100; i++) {
+        auto lbd = [i] { std::cout << i << " "; };
+        tp->commit(lbd);    // commit版本，是无需执行的
     }
 }
 
