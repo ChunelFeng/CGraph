@@ -12,6 +12,7 @@
 #include <thread>
 #include <shared_mutex>
 #include <memory>
+#include <functional>
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -33,7 +34,7 @@ static const bool CGRAPH_FAIR_LOCK_ENABLE = false;           // 是否开启公�
 
 static const int CGRAPH_SECONDARY_THREAD_TTL = 10;           // 辅助线程ttl，单位为s
 static const int CGRAPH_MONITOR_SPAN = 5;                    // 监控线程执行间隔，单位为s
-static const int CGRAPH_DEFAULT_GROUP_TTL_MS = INT_MAX;      // 任务组默认ttl，单位为ms
+static const int CGRAPH_DEFAULT_GROUP_TTL_MS = 2147483647;   // 任务组默认ttl，单位为ms（避免出现跨平台问题，直接写整数最大值）
 
 CGRAPH_NAMESPACE_END
 

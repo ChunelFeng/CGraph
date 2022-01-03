@@ -100,6 +100,7 @@ void tutorial_threadpool_3() {
         auto lbd = [i] { std::cout << i << " "; };
         tp->commit(lbd);    // commit版本，是无需执行的
     }
+    std::cout << "\r\n";
 }
 
 
