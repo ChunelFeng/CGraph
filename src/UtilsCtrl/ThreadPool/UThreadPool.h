@@ -44,7 +44,7 @@ public:
      * @param config
      */
     explicit UThreadPool(const UThreadPoolConfig& config) {
-        this->setConfig(config_);
+        this->setConfig(config);
         cur_index_ = 0;
         is_init_ = false;
         /* 开启监控线程 */
