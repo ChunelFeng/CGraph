@@ -29,21 +29,11 @@ CGRAPH_NAMESPACE_BEGIN
 class UThreadPool : public UThreadObject {
 
 public:
-    explicit UThreadPool() {
-        cur_index_ = 0;
-        is_init_ = false;
-
-        /* 开启监控线程 */
-        is_monitor_ = true;
-        monitor_thread_ = std::move(std::thread(&UThreadPool::monitor, this));
-        init();
-    }
-
     /**
      * 通过默认设置参数，来创建线程池
      * @param config
      */
-    explicit UThreadPool(const UThreadPoolConfig& config) {
+    explicit UThreadPool(const UThreadPoolConfig& config = UThreadPoolConfig()) {
         this->setConfig(config);
         cur_index_ = 0;
         is_init_ = false;
@@ -238,7 +228,7 @@ protected:
                                     });
 
             // 如果忙碌，则需要添加 secondary线程
-            if (busy && secondary_threads_.size() + config_.default_thread_size_ < config_.max_thread_size_) {
+            if (busy && (secondary_threads_.size() + config_.default_thread_size_) < config_.max_thread_size_) {
                 auto ptr = std::make_unique<UThreadSecondary>();
                 ptr->setThreadPoolInfo(&task_queue_, &config_);
                 ptr->init();
