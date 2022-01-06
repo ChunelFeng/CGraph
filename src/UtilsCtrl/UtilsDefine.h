@@ -85,7 +85,6 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
         return nullptr;                             \
     }                                               \
 
-
 /* 判断函数流程是否可以继续 */
 #define CGRAPH_FUNCTION_CHECK_STATUS                                                                                              \
     if (unlikely(!status.isOK())) {                                                                                               \

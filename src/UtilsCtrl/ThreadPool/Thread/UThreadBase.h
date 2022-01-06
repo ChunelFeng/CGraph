@@ -12,8 +12,8 @@
 #include <thread>
 
 #include "../UThreadObject.h"
-#include "../WorkStealingQueue/UWorkStealingQueue.h"
-#include "../AtomicQueue/UAtomicQueue.h"
+#include "../Queue/UWorkStealingQueue.h"
+#include "../Queue/UAtomicQueue.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -26,11 +26,12 @@ protected:
         is_running_ = false;
         pool_task_queue_ = nullptr;
         config_ = nullptr;
+        total_task_num_ = 0;
     }
 
 
     ~UThreadBase() override {
-        stop();
+        reset();
     }
 
 
@@ -43,7 +44,7 @@ protected:
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
 
-        stop();
+        reset();
         CGRAPH_FUNCTION_END
     }
 
@@ -69,33 +70,49 @@ protected:
 
 
     /**
-     * 外部传入具体配置信息
-     * @param config
-     * @return
+     * 执行单个任务
+     * @param task
      */
-    CStatus setConfig(UThreadPoolConfigPtr config) {
-        CGRAPH_FUNCTION_BEGIN
-        CGRAPH_ASSERT_INIT(false)
-
-        this->config_ = config;
-        CGRAPH_FUNCTION_END
+    void runTask(UTaskWrapper& task) {
+        is_running_ = true;
+        task();
+        total_task_num_++;
+        is_running_ = false;
     }
 
 
-protected:
-    void stop() {
+    /**
+     * 批量执行任务
+     * @param tasks
+     */
+    void runTasks(UTaskWrapperArr& tasks) {
+        is_running_ = true;
+        for (auto& task : tasks) {
+            task();
+        }
+        total_task_num_ += tasks.size();
+        is_running_ = false;
+    }
+
+
+    /**
+     * 清空所有任荣
+     */
+    void reset() {
         done_ = false;
         if (thread_.joinable()) {
             thread_.join();    // 等待线程结束
         }
         is_init_ = false;
         is_running_ = false;
+        total_task_num_ = 0;
     }
 
 protected:
     bool done_;                                               // 线程状态标记
     bool is_init_;                                            // 标记初始化状态
     bool is_running_;                                         // 是否正在执行
+    unsigned long long total_task_num_;                       // 处理的任务的数字
 
     UAtomicQueue<UTaskWrapper>* pool_task_queue_;             // 用于存放线程池中的普通任务
     UThreadPoolConfigPtr config_;                             // 配置参数信息

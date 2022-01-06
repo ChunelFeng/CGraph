@@ -59,11 +59,11 @@ protected:
 
         if (config_->calcBatchTaskRatio()) {
             while (done_) {
-                runTasks();    // 批量任务获取执行接口
+                processTasks();    // 批量任务获取执行接口
             }
         } else {
             while (done_) {
-                runTask();    // 单个任务获取执行接口
+                processTask();    // 单个任务获取执行接口
             }
         }
 
@@ -74,12 +74,10 @@ protected:
     /**
      * 任务执行函数，从线程池的任务队列中获取信息
      */
-    void runTask() {
+    void processTask() {
         UTaskWrapper task;
         if (popPoolTask(task)) {
-            is_running_ = true;
-            task();
-            is_running_ = false;
+            runTask(task);
         } else {
             std::this_thread::yield();
         }
@@ -89,14 +87,10 @@ protected:
     /**
      * 批量执行n个任务
      */
-    void runTasks() {
+    void processTasks() {
         UTaskWrapperArr tasks;
         if (popPoolTask(tasks)) {
-            is_running_ = true;
-            for (auto& curTask : tasks) {
-                curTask();
-            }
-            is_running_ = false;
+            runTasks(tasks);
         } else {
             std::this_thread::yield();
         }

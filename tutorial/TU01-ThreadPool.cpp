@@ -86,20 +86,28 @@ void tutorial_threadpool_3() {
      * 3，不需要线程函数返回值，并且不需要判断超时信息的场景，两者无区别（如下例）
      */
     UThreadPoolPtr tp = UThreadPoolSingleton::get();
-    CGRAPH_ECHO("thread pool submit version : ");
-    for (int i = 0; i < 100; i++) {
-        auto lbd = [i] { std::cout << i << " "; };
-        tp->submit(lbd);    // 可以看到，submit版本是有序执行的。如果需要想要无需执行，可以通过创建taskGroup的方式进行，或者使用commit方法
+    const int size = 100;
+    CGRAPH_ECHO("thread pool task submit version : ");
+    for (int i = 0; i < size; i++) {
+        tp->submit([i] { std::cout << i << " "; });    // 可以看到，submit版本是有序执行的。如果需要想要无需执行，可以通过创建taskGroup的方式进行，或者使用commit方法
     }
-
     CGRAPH_SLEEP_SECOND(1)    // 等待上面函数执行完毕，以便于观察结果。无实际意义
     std::cout << "\r\n";
 
-    CGRAPH_ECHO("thread pool commit version : ");
-    for (int i = 0; i < 100; i++) {
-        auto lbd = [i] { std::cout << i << " "; };
-        tp->commit(lbd);    // commit版本，是无需执行的
+    CGRAPH_ECHO("thread pool task group submit version : ");
+    UTaskGroup taskGroup;
+    for (int i = 0; i < size; i++) {
+        taskGroup.addTask([i] { std::cout << i << " "; });    // 将任务放到一个taskGroup中，并发执行。执行的结果是无序的
     }
+    tp->submit(taskGroup);
+    CGRAPH_SLEEP_SECOND(1)
+    std::cout << "\r\n";
+
+    CGRAPH_ECHO("thread pool task commit version : ");
+    for (int i = 0; i < size; i++) {
+        tp->commit([i] { std::cout << i << " "; }) ;    // commit版本，是无需执行的
+    }
+    CGRAPH_SLEEP_SECOND(1)
     std::cout << "\r\n";
 }
 

@@ -19,10 +19,10 @@
 
 #include "UThreadObject.h"
 #include "UThreadPoolConfig.h"
-#include "AtomicQueue/UAtomicQueue.h"
+#include "Queue/UAtomicQueue.h"
 #include "Thread/UThreadPrimary.h"
 #include "Thread/UThreadSecondary.h"
-#include "TaskGroup/UTaskGroup.h"
+#include "Task/UTaskGroup.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -84,7 +84,7 @@ public:
         for (int i = 0; i < config_.default_thread_size_; ++i) {
             auto ptr = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary)    // 创建核心线程数
 
-            ptr->setThreadPoolInfo(i, &this->task_queue_, &this->primary_threads_, &config_);
+            ptr->setThreadPoolInfo(i, &task_queue_, &primary_threads_, &config_);
             status = ptr->init();
             CGRAPH_FUNCTION_CHECK_STATUS
 
@@ -204,7 +204,7 @@ public:
     }
 
 
-protected:
+private:
     /**
      * 监控线程执行函数，主要是判断是否需要增加线程，或销毁线程
      * 增/删 操作，仅针对secondary类型线程生效
@@ -229,7 +229,7 @@ protected:
 
             // 如果忙碌，则需要添加 secondary线程
             if (busy && (secondary_threads_.size() + config_.default_thread_size_) < config_.max_thread_size_) {
-                auto ptr = std::make_unique<UThreadSecondary>();
+                auto ptr = CGRAPH_MAKE_UNIQUE_COBJECT(UThreadSecondary)
                 ptr->setThreadPoolInfo(&task_queue_, &config_);
                 ptr->init();
                 secondary_threads_.emplace_back(std::move(ptr));
@@ -237,7 +237,7 @@ protected:
 
             // 判断 secondary 线程是否需要退出
             for (auto iter = secondary_threads_.begin(); iter != secondary_threads_.end(); ) {
-                if (unlikely((*iter)->freeze())) {
+                if ((*iter)->freeze()) {
                     secondary_threads_.erase(iter++);
                 } else {
                     iter++;
@@ -247,15 +247,15 @@ protected:
     }
 
 
-private:
+protected:
     bool is_init_ { false };                                                        // 是否初始化
     bool is_monitor_ { true };                                                      // 是否需要监控
     int cur_index_;                                                                 // 记录放入的线程数
     UAtomicQueue<UTaskWrapper> task_queue_;                                         // 用于存放普通任务
     std::vector<UThreadPrimaryPtr> primary_threads_;                                // 记录所有的核心线程
     std::list<std::unique_ptr<UThreadSecondary>> secondary_threads_;                // 用于记录所有的非核心线程数
-    std::thread monitor_thread_;                                                    // 监控线程
     UThreadPoolConfig config_;                                                      // 线程池设置值
+    std::thread monitor_thread_;                                                    // 监控线程
 };
 
 using UThreadPoolPtr = UThreadPool *;

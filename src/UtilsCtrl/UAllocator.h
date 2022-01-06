@@ -33,7 +33,10 @@ public:
 
     template<typename T>
     static std::unique_ptr<T> makeUniqueCObject() {
-        return std::make_unique<T>();
+        if constexpr (std::is_base_of_v<CObject, T>) {
+            return std::make_unique<T>();
+        }
+        return nullptr;    // 如果是非CObject类，直接返回nullptr信息
     }
 
     static std::string generateSession() {

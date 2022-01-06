@@ -88,9 +88,9 @@ public:
             return std::unique_ptr<T>();
         }
 
-        std::unique_ptr<T> res = std::move(queue_.front());
+        std::unique_ptr<T> ptr = std::move(queue_.front());
         queue_.pop();
-        return res;
+        return ptr;
     }
 
 

@@ -80,11 +80,11 @@ protected:
 
         if (config_->calcBatchTaskRatio()) {
             while (done_) {
-                runTasks();    // 批量任务获取执行接口
+                processTasks();    // 批量任务获取执行接口
             }
         } else {
             while (done_) {
-                runTask();    // 单个任务获取执行接口
+                processTask();    // 单个任务获取执行接口
             }
         }
 
@@ -93,15 +93,13 @@ protected:
 
 
     /**
-     * 执行任务
+     * 获取并执行任务
      * @return
      */
-    void runTask() {
+    void processTask() {
         UTaskWrapper task;
         if (popTask(task) || popPoolTask(task) || stealTask(task)) {
-            is_running_ = true;
-            task();
-            is_running_ = false;
+            runTask(task);
         } else {
             std::this_thread::yield();
         }
@@ -109,17 +107,13 @@ protected:
 
 
     /**
-     * 批量执行task信息
+     * 获取批量执行task信息
      */
-    void runTasks() {
+    void processTasks() {
         UTaskWrapperArr tasks;
         if (popTask(tasks) || popPoolTask(tasks) || stealTask(tasks)) {
             // 尝试从主线程中获取/盗取批量task，如果成功，则依次执行
-            is_running_ = true;
-            for (auto& curTask : tasks) {
-                curTask();
-            }
-            is_running_ = false;
+            runTasks(tasks);
         } else {
             std::this_thread::yield();
         }

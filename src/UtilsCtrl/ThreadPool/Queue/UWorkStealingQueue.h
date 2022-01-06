@@ -15,7 +15,7 @@
 #include <deque>
 
 #include "../UThreadObject.h"
-#include "../TaskWrapper/UTaskWrapper.h"
+#include "../Task/UTaskWrapper.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

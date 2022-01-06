@@ -12,11 +12,11 @@
 #include "UThreadObject.h"
 #include "UThreadPool.h"
 #include "UThreadPoolDefine.h"
-#include "TaskWrapper/UTaskWrapper.h"
-#include "AtomicQueue/UAtomicQueue.h"
-#include "WorkStealingQueue/UWorkStealingQueue.h"
 #include "UThreadPoolSingleton.h"
-#include "TaskGroup/UTaskGroup.h"
 #include "UThreadPoolConfig.h"
+#include "Queue/UAtomicQueue.h"
+#include "Queue/UWorkStealingQueue.h"
+#include "Task/UTaskGroup.h"
+#include "Task/UTaskWrapper.h"
 
 #endif //CGRAPH_UTHREADPOOLINCLUDE_H
