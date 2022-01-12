@@ -152,11 +152,14 @@ public:
             const auto& futStatus = fut.wait_until(deadline);
             switch (futStatus) {
                 case std::future_status::ready: break;    // 正常情况，直接返回了
-                case std::future_status::timeout: status = CStatus("thread status timeout"); break;
-                case std::future_status::deferred: status = CStatus("thread status deferred"); break;
-                default: status = CStatus("thread status unknown");
+                case std::future_status::timeout: status += CStatus("thread status timeout"); break;
+                case std::future_status::deferred: status += CStatus("thread status deferred"); break;
+                default: status += CStatus("thread status unknown");
             }
-            CGRAPH_FUNCTION_CHECK_STATUS
+        }
+
+        if (taskGroup.on_finished_) {
+            taskGroup.on_finished_(status);
         }
 
         CGRAPH_FUNCTION_END

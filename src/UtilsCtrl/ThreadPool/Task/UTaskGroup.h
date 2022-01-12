@@ -10,6 +10,7 @@
 #define CGRAPH_UTASKGROUP_H
 
 #include <climits>
+#include <utility>
 
 #include "../UThreadObject.h"
 
@@ -25,8 +26,11 @@ public:
      * @param ttl
      */
     explicit UTaskGroup(const CGRAPH_DEFAULT_FUNCTION& task,
-                        int ttlMs = INT_MAX) noexcept {
-        this->addTask(task)->setTtlMs(ttlMs);
+                        int ttlMs = INT_MAX,
+                        const CGRAPH_TASKGROUP_CALLBACK& onFinished = nullptr) noexcept {
+        this->addTask(task)
+            ->setTtlMs(ttlMs)
+            ->setOnFinished(onFinished);
     }
 
 
@@ -46,6 +50,16 @@ public:
      */
     UTaskGroup* setTtlMs(int ttlMs) {
         this->ttl_ms_ = ttlMs >= 0 ? ttlMs : INT_MAX;
+        return this;
+    }
+
+    /**
+     * 设置执行完成后的回调函数
+     * @param onFinished
+     * @return
+     */
+    UTaskGroup* setOnFinished(const CGRAPH_TASKGROUP_CALLBACK& onFinished) {
+        this->on_finished_ = onFinished;
         return this;
     }
 
@@ -77,6 +91,7 @@ public:
 private:
     std::vector<CGRAPH_DEFAULT_FUNCTION> task_arr_;         // 任务消息
     int ttl_ms_ = INT_MAX;                                  // 任务组最大执行耗时
+    CGRAPH_TASKGROUP_CALLBACK on_finished_ = nullptr;         // 执行函数任务结束
 
     friend class UThreadPool;
 };

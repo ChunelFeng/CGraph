@@ -58,7 +58,7 @@ void tutorial_threadpool_2() {
     taskGroup.addTask([i, j, k] {
         int result = i - j + k;
         CGRAPH_SLEEP_MILLISECOND(2000)
-        CGRAPH_ECHO("sleep for 2 second, [%d] - [%d] + [%d] = [%d], run success", i, j, k, result);
+        CGRAPH_ECHO("sleep for 2 second, [%d] - [%d] + [%d] = [%d], run success.", i, j, k, result);
         return result;    // submit接口，不会对线程函数返回值进行判断。如果需要判断，考虑commit方式
     });
 
@@ -66,6 +66,18 @@ void tutorial_threadpool_2() {
     /* taskGroup.addTask([] {
           CGRAPH_SLEEP_MILLISECOND(3000)
      }); */
+
+    /**
+     * 可以添加执行task group结束后的回调信息
+     * 其中sts是task group整体执行结果的返回值信息
+     * */
+    taskGroup.setOnFinished([] (const CStatus& sts) {
+        if(sts.isOK()) {
+            CGRAPH_ECHO("task group run success.");
+        } else {
+            CGRAPH_ECHO("task group run failed, error info is [%s].", sts.getInfo().c_str());
+        }
+    });
 
     /**
      * 设定超时时间=2500ms，确保以上任务能顺利执行完成

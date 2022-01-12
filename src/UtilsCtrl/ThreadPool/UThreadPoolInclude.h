@@ -14,9 +14,8 @@
 #include "UThreadPoolDefine.h"
 #include "UThreadPoolSingleton.h"
 #include "UThreadPoolConfig.h"
-#include "Queue/UAtomicQueue.h"
-#include "Queue/UWorkStealingQueue.h"
-#include "Task/UTaskGroup.h"
-#include "Task/UTaskWrapper.h"
+#include "Queue/UQueueInclude.h"
+#include "Task/UTaskInclude.h"
+#include "Thread/UThreadInclude.h"
 
 #endif //CGRAPH_UTHREADPOOLINCLUDE_H

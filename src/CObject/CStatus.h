@@ -15,6 +15,8 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
+static const char* STATUS_ERROR_INFO_CONNECTOR = " && ";
+
 class CSTATUS {
 public:
     explicit CSTATUS() = default;
@@ -40,6 +42,19 @@ public:
     }
 
     CSTATUS& operator=(const CSTATUS& status) = default;
+
+    void operator+=(const CSTATUS& cur) {
+        if (this->isOK() && cur.isOK()) {
+            return;
+        }
+
+        error_info_ = this->isOK()
+                ? cur.error_info_
+                : (cur.isOK()
+                    ? error_info_
+                    : (error_info_ + STATUS_ERROR_INFO_CONNECTOR + cur.error_info_));
+        error_code_ = STATUS_ERR;
+    }
 
     [[nodiscard]] int getCode() const {
         return this->error_code_;
