@@ -27,8 +27,8 @@ protected:
         CGRAPH_ASSERT_NOT_NULL(config_)
 
         cur_ttl_ = config_->secondary_thread_ttl_;
-        thread_ = std::move(std::thread(&UThreadSecondary::run, this));
         is_init_ = true;
+        thread_ = std::move(std::thread(&UThreadSecondary::run, this));
         CGRAPH_FUNCTION_END
     }
 

@@ -25,8 +25,8 @@ protected:
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(false)
 
-        thread_ = std::move(std::thread(&UThreadPrimary::run, this));
         is_init_ = true;
+        thread_ = std::move(std::thread(&UThreadPrimary::run, this));
         CGRAPH_FUNCTION_END
     }
 

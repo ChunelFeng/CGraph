@@ -12,8 +12,8 @@
 #include <thread>
 
 #include "../UThreadObject.h"
-#include "../Queue/UWorkStealingQueue.h"
-#include "../Queue/UAtomicQueue.h"
+#include "../Queue/UQueueInclude.h"
+
 
 CGRAPH_NAMESPACE_BEGIN
 
