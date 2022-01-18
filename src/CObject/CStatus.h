@@ -38,7 +38,7 @@ public:
 
     CSTATUS(const CSTATUS &&status) noexcept {
         this->error_code_ = status.error_code_;
-        this->error_info_ = status.error_info_;
+        this->error_info_ = status.error_info_ ;
     }
 
     CSTATUS& operator=(const CSTATUS& status) = default;
@@ -80,5 +80,6 @@ private:
 CGRAPH_NAMESPACE_END
 
 using CStatus = CGraph::CSTATUS;                     // 方便外部直接使用
+using CStatusRef = CStatus &;
 
 #endif //CGRAPH_CSTATUS_H

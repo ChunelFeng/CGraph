@@ -164,7 +164,7 @@ protected:
      * @param curStatus
      * @return
      */
-    CStatus doAspect(const GAspectType& aspectType, CStatus curStatus = CStatus());
+    CStatus doAspect(const GAspectType& aspectType, const CStatus& curStatus = CStatus());
 
 protected:
     bool done_ { false };                            // 判定被执行结束
