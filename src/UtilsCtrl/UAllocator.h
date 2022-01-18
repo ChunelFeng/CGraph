@@ -25,7 +25,7 @@ public:
     template<typename T>
     static T* safeMallocCObject() {
         T* ptr = nullptr;
-        while (!ptr && std::is_base_of_v<CObject, T>) {
+        while (!ptr && std::is_base_of<CObject, T>::value) {
             ptr = new(std::nothrow) T();
         }
         return ptr;
@@ -33,7 +33,7 @@ public:
 
     template<typename T>
     static std::unique_ptr<T> makeUniqueCObject() {
-        if constexpr (std::is_base_of_v<CObject, T>) {
+        if constexpr (std::is_base_of<CObject, T>::value) {
             return std::make_unique<T>();
         }
         return nullptr;    // 如果是非CObject类，直接返回nullptr信息

@@ -41,7 +41,7 @@ public:
      * @return
      */
     template<typename T,
-            std::enable_if_t<std::is_base_of_v<GParam, T>, int> = 0>
+            std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
     T* getGParam(const std::string& key);
 
     /**
@@ -51,7 +51,7 @@ public:
      * @return
      */
     template<typename T,
-            std::enable_if_t<std::is_base_of_v<GParam, T>, int> = 0>
+            std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
     CStatus createGParam(const std::string& key);
 
     /**
@@ -62,8 +62,8 @@ public:
      * @return
      */
     template<typename TAspect, typename TParam = GAspectDefaultParam,
-            std::enable_if_t<std::is_base_of_v<GAspect, TAspect>, int> = 0,
-            std::enable_if_t<std::is_base_of_v<GAspectParam, TParam>, int> = 0>
+            std::enable_if_t<std::is_base_of<GAspect, TAspect>::value, int> = 0,
+            std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int> = 0>
     GElement* addGAspect(TParam* param = nullptr);
 
 
@@ -164,7 +164,7 @@ protected:
      * @param curStatus
      * @return
      */
-    CStatus doAspect(GAspectType aspectType, CStatus curStatus = CStatus());
+    CStatus doAspect(const GAspectType& aspectType, CStatus curStatus = CStatus());
 
 protected:
     bool done_ { false };                            // 判定被执行结束

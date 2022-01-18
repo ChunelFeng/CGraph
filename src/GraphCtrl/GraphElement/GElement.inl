@@ -12,7 +12,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 template<typename T,
-        std::enable_if_t<std::is_base_of_v<GParam, T>, int>>
+        std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
 CStatus GElement::createGParam(const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(this->param_manager_)
@@ -23,7 +23,7 @@ CStatus GElement::createGParam(const std::string& key) {
 
 
 template<typename T,
-        std::enable_if_t<std::is_base_of_v<GParam, T>, int>>
+        std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
 T* GElement::getGParam(const std::string& key) {
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(this->param_manager_)
 
@@ -33,8 +33,8 @@ T* GElement::getGParam(const std::string& key) {
 
 
 template<typename TAspect, typename TParam,
-        std::enable_if_t<std::is_base_of_v<GAspect, TAspect>, int>,
-        std::enable_if_t<std::is_base_of_v<GAspectParam, TParam>, int>>
+        std::enable_if_t<std::is_base_of<GAspect, TAspect>::value, int>,
+        std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int>>
 GElementPtr GElement::addGAspect(TParam* param) {
     if (!aspect_manager_) {
         /** 采用懒加载的方式执行，这里不会有并发问题，故不需要采用单例模式了 */

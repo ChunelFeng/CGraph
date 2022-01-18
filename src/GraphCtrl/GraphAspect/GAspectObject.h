@@ -36,7 +36,7 @@ public:
      * @return
      */
     template <typename T = GAspectParam,
-              std::enable_if_t<std::is_base_of_v<GAspectParam, T>, int> = 0>
+              std::enable_if_t<std::is_base_of<GAspectParam, T>::value, int> = 0>
     T* getParam();
 
     /**
@@ -44,7 +44,7 @@ public:
      * @param param
      */
     template <typename T,
-              std::enable_if_t<std::is_base_of_v<GAspectParam, T>, int> = 0>
+              std::enable_if_t<std::is_base_of<GAspectParam, T>::value, int> = 0>
     GAspectObject* setParam(T* param);
 
     /**
@@ -54,7 +54,7 @@ public:
      * @return
      */
     template <typename T,
-              std::enable_if_t<std::is_base_of_v<GParam, T>, int> = 0>
+              std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
     T* getPipelineParam(const std::string& key);
 
 protected:

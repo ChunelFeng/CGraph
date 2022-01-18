@@ -4,7 +4,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T, std::enable_if_t<std::is_base_of_v<GParam, T>, int>>
+template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
 CStatus GParamManager::create(const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
     auto result = params_map_.find(key);

@@ -13,7 +13,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T, std::enable_if_t<std::is_base_of_v<GElement, T>, int>>
+template<typename T, std::enable_if_t<std::is_base_of<GElement, T>::value, int>>
 CStatus GPipeline::registerGElement(GElementPtr *elementRef,
                                     const GElementPtrSet &dependElements,
                                     const std::string &name,
@@ -21,7 +21,7 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
 
-    if constexpr (std::is_base_of_v<GGroup, T>) {
+    if constexpr (std::is_base_of<GGroup, T>::value) {
         /**
          * 如果是GGroup类型的信息，则：
          * 1，必须外部创建
@@ -31,7 +31,7 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
             && (*elementRef)->param_manager_ != nullptr) {
             return CStatus("group register duplicate");
         }
-    } else if constexpr (std::is_base_of_v<GNode, T> || std::is_base_of_v<GAdapter, T>) {
+    } else if constexpr (std::is_base_of<GNode, T>::value || std::is_base_of<GAdapter, T>::value) {
         /**
          * 如果不是group信息的话，且属于element（包含node和adapter）
          * 则直接内部创建该信息
@@ -50,7 +50,7 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
 }
 
 
-template<typename T, std::enable_if_t<std::is_base_of_v<GNode, T>, int>>
+template<typename T, std::enable_if_t<std::is_base_of<GNode, T>::value, int>>
 GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_FUNCTION_BEGIN
     GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T)
@@ -67,7 +67,7 @@ GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
 }
 
 
-template<typename T, std::enable_if_t<std::is_base_of_v<GGroup, T>, int>>
+template<typename T, std::enable_if_t<std::is_base_of<GGroup, T>::value, int>>
 GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
                                   const GElementPtrSet &dependElements,
                                   const std::string &name,
@@ -113,7 +113,7 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
 }
 
 
-template<typename T, std::enable_if_t<std::is_base_of_v<GParam, T>, int>>
+template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
 GPipelinePtr GPipeline::addGParam(const std::string& key) {
     if (key.empty() || nullptr == param_manager_) {
         return nullptr;
@@ -128,8 +128,8 @@ GPipelinePtr GPipeline::addGParam(const std::string& key) {
 
 
 template<typename TAspect, typename TParam,
-        std::enable_if_t<std::is_base_of_v<GAspect, TAspect>, int>,
-        std::enable_if_t<std::is_base_of_v<GAspectParam, TParam>, int>>
+        std::enable_if_t<std::is_base_of<GAspect, TAspect>::value, int>,
+        std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int>>
 GPipelinePtr GPipeline::addGAspectBatch(const GElementPtrSet& elements, TParam* param) {
     const GElementPtrSet& curElements = elements.empty() ? element_repository_ : elements;
     for (GElementPtr element : curElements) {

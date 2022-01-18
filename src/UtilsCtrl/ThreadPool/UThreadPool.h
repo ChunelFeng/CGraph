@@ -141,7 +141,7 @@ public:
 
         std::vector<std::future<void>> futures;
         for (const auto& task : taskGroup.task_arr_) {
-            futures.emplace_back(this->commit(task));
+            futures.emplace_back(commit(task));
         }
 
         // 计算最终运行时间信息

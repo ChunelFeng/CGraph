@@ -172,7 +172,7 @@ CStatus GElement::setElementInfo(const GElementPtrSet& dependElements,
 }
 
 
-CStatus GElement::doAspect(GAspectType aspectType, CStatus curStatus) {
+CStatus GElement::doAspect(const GAspectType& aspectType, CStatus curStatus) {
     CGRAPH_FUNCTION_BEGIN
 
     // 如果切面管理类为空，或者未添加切面，直接返回

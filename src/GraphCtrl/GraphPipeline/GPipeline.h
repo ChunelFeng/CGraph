@@ -51,7 +51,7 @@ public:
      * @param info
      * @return
      */
-    template<typename T, std::enable_if_t<std::is_base_of_v<GNode, T>, int> = 0>
+    template<typename T, std::enable_if_t<std::is_base_of<GNode, T>::value, int> = 0>
     GNodePtr createGNode(const GNodeInfo &info);
 
     /**
@@ -63,7 +63,7 @@ public:
      * @param loop
      * @return
      */
-    template<typename T, std::enable_if_t<std::is_base_of_v<GGroup, T>, int> = 0>
+    template<typename T, std::enable_if_t<std::is_base_of<GGroup, T>::value, int> = 0>
     GGroupPtr createGGroup(const GElementPtrArr &elements,
                            const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                            const std::string &name = "",
@@ -80,7 +80,7 @@ public:
      * @param loop
      * @return
      */
-    template<typename T, std::enable_if_t<std::is_base_of_v<GElement, T>, int> = 0>
+    template<typename T, std::enable_if_t<std::is_base_of<GElement, T>::value, int> = 0>
     CStatus registerGElement(GElementPtr *elementRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = "",
@@ -92,7 +92,7 @@ public:
      * @param key
      * @return
      */
-    template<typename T, std::enable_if_t<std::is_base_of_v<GParam, T>, int> = 0>
+    template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
     GPipeline* addGParam(const std::string& key);
 
     /**
@@ -102,8 +102,8 @@ public:
      * @return
      */
     template<typename TAspect, typename TParam = GAspectDefaultParam,
-            std::enable_if_t<std::is_base_of_v<GAspect, TAspect>, int> = 0,
-            std::enable_if_t<std::is_base_of_v<GAspectParam, TParam>, int> = 0>
+            std::enable_if_t<std::is_base_of<GAspect, TAspect>::value, int> = 0,
+            std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int> = 0>
     GPipeline* addGAspectBatch(const GElementPtrSet& elements = std::initializer_list<GElementPtr>(),
                                TParam* param = nullptr);
 

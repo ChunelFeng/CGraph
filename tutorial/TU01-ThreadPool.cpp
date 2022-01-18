@@ -117,7 +117,7 @@ void tutorial_threadpool_3() {
 
     CGRAPH_ECHO("thread pool task commit version : ");
     for (int i = 0; i < size; i++) {
-        tp->commit([i] { std::cout << i << " "; }) ;    // commit版本，是无需执行的
+        tp->commit([i] { std::cout << i << " "; });    // commit版本，是无需执行的
     }
     CGRAPH_SLEEP_SECOND(1)
     std::cout << "\r\n";

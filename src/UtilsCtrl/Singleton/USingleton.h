@@ -47,7 +47,7 @@ protected:
         CGRAPH_FUNCTION_BEGIN
 
         // 如果传入的是CObject类型的对象的话，则调用其init接口
-        if constexpr (std::is_base_of_v<CObject, T>) {
+        if constexpr (std::is_base_of<CObject, T>::value) {
             status = this->get()->init();
         }
         CGRAPH_FUNCTION_END
@@ -55,7 +55,7 @@ protected:
 
     CStatus deinit() override {
         CGRAPH_FUNCTION_BEGIN
-        if constexpr (std::is_base_of_v<CObject, T>) {
+        if constexpr (std::is_base_of<CObject, T>::value) {
             status = this->get()->deinit();
         }
         CGRAPH_FUNCTION_END

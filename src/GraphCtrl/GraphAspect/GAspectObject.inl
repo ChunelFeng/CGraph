@@ -12,7 +12,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 template <typename T,
-          std::enable_if_t<std::is_base_of_v<GAspectParam, T>, int>>
+          std::enable_if_t<std::is_base_of<GAspectParam, T>::value, int>>
 GAspectObjectPtr GAspectObject::setParam(T* param) {
     /** 传入的param可以为空 */
     if (param) {
@@ -26,7 +26,7 @@ GAspectObjectPtr GAspectObject::setParam(T* param) {
 
 
 template <typename T,
-          std::enable_if_t<std::is_base_of_v<GAspectParam, T>, int>>
+          std::enable_if_t<std::is_base_of<GAspectParam, T>::value, int>>
 T* GAspectObject::getParam() {
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_)
 
@@ -40,7 +40,7 @@ T* GAspectObject::getParam() {
 
 
 template <typename T,
-          std::enable_if_t<std::is_base_of_v<GParam, T>, int>>
+          std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
 T* GAspectObject::getPipelineParam(const std::string& key) {
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(pipeline_param_manager_)
 
