@@ -49,9 +49,10 @@ public:
      * @param ttl
      */
     UTaskGroup* setTtlMs(int ttlMs) {
-        this->ttl_ms_ = ttlMs >= 0 ? ttlMs : INT_MAX;
+        this->ttl_ms_ = ttlMs > 0 ? ttlMs : INT_MAX;
         return this;
     }
+
 
     /**
      * 设置执行完成后的回调函数
@@ -63,6 +64,7 @@ public:
         return this;
     }
 
+
     /**
      * 获取最大超时时间信息
      * @return
@@ -70,6 +72,7 @@ public:
     [[nodiscard]] int getTtlMs() const {
         return this->ttl_ms_;
     }
+
 
     /**
      * 清空任务组
@@ -79,11 +82,12 @@ public:
         return this;
     }
 
+
     /**
      * 获取任务组大小
      * @return
      */
-    int getSize() {
+    [[nodiscard]] int getSize() const {
         int size = (int) task_arr_.size();
         return size;
     }

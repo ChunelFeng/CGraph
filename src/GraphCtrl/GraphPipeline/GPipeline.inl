@@ -56,7 +56,7 @@ GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(node)
 
-    status = node->setElementInfo(info.dependence, info.name, info.loop, this->param_manager_);
+    status = node->setElementInfo(info.dependence_, info.name_, info.loop_, this->param_manager_);
     if (!status.isOK()) {
         CGRAPH_DELETE_PTR(node);
         return nullptr;
@@ -130,7 +130,7 @@ GPipelinePtr GPipeline::addGParam(const std::string& key) {
 template<typename TAspect, typename TParam,
         std::enable_if_t<std::is_base_of<GAspect, TAspect>::value, int>,
         std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int>>
-GPipelinePtr GPipeline::addGAspectBatch(const GElementPtrSet& elements, TParam* param) {
+GPipelinePtr GPipeline::addGAspect(const GElementPtrSet& elements, TParam* param) {
     const GElementPtrSet& curElements = elements.empty() ? element_repository_ : elements;
     for (GElementPtr element : curElements) {
         // 如果传入的为空，或者不是当前pipeline中的element，则不处理

@@ -70,7 +70,7 @@ CStatus GPipeline::run() {
 
         int index = 0;
         for (auto& fut : futures) {
-            if (likely(DEFAULT_ELEMENT_RUN_TTL == element_run_ttl_)) {
+            if (likely(CGRAPH_DEFAULT_ELEMENT_RUN_TTL == element_run_ttl_)) {
                 status += fut.get();    // 不设定最大运行周期的情况（默认情况）
             } else {
                 const auto& futStatus = fut.wait_for(std::chrono::milliseconds(curClusterTtl[index]));
@@ -82,8 +82,8 @@ CStatus GPipeline::run() {
                 }
                 index++;
             }
+            CGRAPH_FUNCTION_CHECK_STATUS
         }
-        CGRAPH_FUNCTION_CHECK_STATUS
     }
 
     param_manager_->reset();
@@ -123,7 +123,7 @@ GPipelinePtr GPipeline::setElementRunTtl(int ttl) {
         return nullptr;    // 初始化前才可设置
     }
 
-    this->element_run_ttl_ = ttl > 0 ? ttl : DEFAULT_ELEMENT_RUN_TTL;
+    this->element_run_ttl_ = ttl > 0 ? ttl : CGRAPH_DEFAULT_ELEMENT_RUN_TTL;
     return this;
 }
 

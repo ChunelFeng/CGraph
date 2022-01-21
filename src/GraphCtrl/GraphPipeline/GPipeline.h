@@ -43,7 +43,7 @@ public:
      * @param runTimes
      * @return
      */
-    CStatus process(int runTimes = DEFAULT_LOOP_TIMES);
+    CStatus process(int runTimes = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
      * 根据传入的info信息，创建node节点
@@ -67,7 +67,7 @@ public:
     GGroupPtr createGGroup(const GElementPtrArr &elements,
                            const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                            const std::string &name = "",
-                           int loop = DEFAULT_LOOP_TIMES);
+                           int loop = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
      * 在图中注册一个Element信息
@@ -84,7 +84,7 @@ public:
     CStatus registerGElement(GElementPtr *elementRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = "",
-                             int loop = DEFAULT_LOOP_TIMES);
+                             int loop = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
      * 添加参数，pipeline中所有节点共享此参数
@@ -104,8 +104,8 @@ public:
     template<typename TAspect, typename TParam = GAspectDefaultParam,
             std::enable_if_t<std::is_base_of<GAspect, TAspect>::value, int> = 0,
             std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int> = 0>
-    GPipeline* addGAspectBatch(const GElementPtrSet& elements = std::initializer_list<GElementPtr>(),
-                               TParam* param = nullptr);
+    GPipeline* addGAspect(const GElementPtrSet& elements = std::initializer_list<GElementPtr>(),
+                          TParam* param = nullptr);
 
     /**
      * 设置执行的最大时间周期，单位为毫秒
@@ -119,12 +119,12 @@ protected:
     ~GPipeline() override;
 
 private:
-    bool is_init_ = false;                               // 初始化标志位
-    int element_run_ttl_ = DEFAULT_ELEMENT_RUN_TTL;      // 单个节点最大运行周期
-    GElementManagerPtr element_manager_;                 // 节点管理类（管理所有注册过的element信息）
-    GElementPtrSet element_repository_;                  // 标记创建的所有节点，最终释放使用
-    GParamManagerPtr param_manager_;                     // 参数管理类
-    UThreadPoolPtr thread_pool_;                         // 线程池类
+    bool is_init_ = false;                                      // 初始化标志位
+    int element_run_ttl_ = CGRAPH_DEFAULT_ELEMENT_RUN_TTL;      // 单个节点最大运行周期
+    GElementManagerPtr element_manager_;                        // 节点管理类（管理所有注册过的element信息）
+    GElementPtrSet element_repository_;                         // 标记创建的所有节点，最终释放使用
+    GParamManagerPtr param_manager_;                            // 参数管理类
+    UThreadPoolPtr thread_pool_;                                // 线程池类
 
     friend class GPipelineFactory;
     friend class UAllocator;

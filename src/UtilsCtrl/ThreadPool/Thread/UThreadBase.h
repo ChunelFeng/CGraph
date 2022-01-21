@@ -108,10 +108,68 @@ protected:
         total_task_num_ = 0;
     }
 
+
+    /**
+    * 设置线程优先级，仅针对非windows平台使用
+    */
+    CStatus setSchedParam() {
+        CGRAPH_FUNCTION_BEGIN
+#ifndef _WIN32
+        int priority = CGRAPH_THREAD_SCHED_OTHER;
+        int policy = CGRAPH_THREAD_MIN_PRIORITY;
+        if (type_ == CGRAPH_THREAD_TYPE_PRIMARY) {
+            priority = config_->primary_thread_priority_;
+            policy = config_->primary_thread_policy_;
+        } else if (type_ == CGRAPH_THREAD_TYPE_SECONDARY) {
+            priority = config_->secondary_thread_priority_;
+            policy = config_->secondary_thread_policy_;
+        }
+
+        auto handle = thread_.native_handle();
+        sched_param param = { calcPriority(priority) };
+        int ret = pthread_setschedparam(handle, calcPolicy(policy), &param);
+        if (0 != ret) {
+            return CStatus("set thread param failed, error code is " + std::to_string(ret));
+        }
+#endif
+
+        CGRAPH_FUNCTION_END
+    }
+
+
+private:
+    /**
+     * 设定计算线程调度策略信息，
+     * 非OTHER/RR/FIFO对应数值，统一返回OTHER类型
+     * @param policy
+     * @return
+     */
+    [[nodiscard]] static int calcPolicy(int policy) {
+        return (CGRAPH_THREAD_SCHED_OTHER == policy
+                || CGRAPH_THREAD_SCHED_RR == policy
+                || CGRAPH_THREAD_SCHED_FIFO == policy)
+               ? policy : CGRAPH_THREAD_SCHED_OTHER;
+    }
+
+
+    /**
+     * 设定线程优先级信息
+     * 超过[min,max]范围，统一设置为min值
+     * @param priority
+     * @return
+     */
+    [[nodiscard]] static int calcPriority(int priority) {
+        return (priority >= CGRAPH_THREAD_MIN_PRIORITY
+                && priority <= CGRAPH_THREAD_MAX_PRIORITY)
+               ? priority : CGRAPH_THREAD_MIN_PRIORITY;
+    }
+
+
 protected:
     bool done_;                                               // 线程状态标记
     bool is_init_;                                            // 标记初始化状态
     bool is_running_;                                         // 是否正在执行
+    int type_ = 0;                                            // 用于区分线程类型（主线程、辅助线程）
     unsigned long long total_task_num_;                       // 处理的任务的数字
 
     UAtomicQueue<UTaskWrapper>* pool_task_queue_;             // 用于存放线程池中的普通任务

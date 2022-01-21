@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: UThreadPoolConfig.h
 @Time: 2022/1/3 9:31 下午
-@Desc: 具体值含义，参考UThreadPoolDefine.h文件
+@Desc: 线程池配置信息
 ***************************/
 
 #ifndef CGRAPH_UTHREADPOOLCONFIG_H
@@ -15,6 +15,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 struct UThreadPoolConfig : public UThreadObject {
+    /** 具体值含义，参考UThreadPoolDefine.h文件 */
     int default_thread_size_ = CGRAPH_DEFAULT_THREAD_SIZE;
     int max_thread_size_ = CGRAPH_MAX_THREAD_SIZE;
     int max_task_steal_range_ = CGRAPH_MAX_TASK_STEAL_RANGE;
@@ -23,6 +24,10 @@ struct UThreadPoolConfig : public UThreadObject {
     int max_steal_batch_size_ = CGRAPH_MAX_STEAL_BATCH_SIZE;
     int secondary_thread_ttl_ = CGRAPH_SECONDARY_THREAD_TTL;
     int monitor_span_ = CGRAPH_MONITOR_SPAN;
+    int primary_thread_policy_ = CGRAPH_PRIMARY_THREAD_POLICY;
+    int secondary_thread_policy_ = CGRAPH_SECONDARY_THREAD_POLICY;
+    int primary_thread_priority_ = CGRAPH_PRIMARY_THREAD_PRIORITY;
+    int secondary_thread_priority_ = CGRAPH_SECONDARY_THREAD_PRIORITY;
     bool batch_task_enable_ = CGRAPH_BATCH_TASK_ENABLE;
     bool fair_lock_enable_ = CGRAPH_FAIR_LOCK_ENABLE;
 
@@ -31,16 +36,7 @@ struct UThreadPoolConfig : public UThreadObject {
      * 设置默认信息
      */
     void reset() {
-        default_thread_size_ = CGRAPH_DEFAULT_THREAD_SIZE;
-        max_thread_size_ = CGRAPH_MAX_THREAD_SIZE;
-        max_task_steal_range_ = CGRAPH_MAX_TASK_STEAL_RANGE;
-        max_local_batch_size_ = CGRAPH_MAX_LOCAL_BATCH_SIZE;
-        max_pool_batch_size_ = CGRAPH_MAX_POOL_BATCH_SIZE;
-        max_steal_batch_size_ = CGRAPH_MAX_STEAL_BATCH_SIZE;
-        secondary_thread_ttl_ = CGRAPH_SECONDARY_THREAD_TTL;
-        monitor_span_ = CGRAPH_MONITOR_SPAN;
-        batch_task_enable_ = CGRAPH_BATCH_TASK_ENABLE;
-        fair_lock_enable_ = CGRAPH_FAIR_LOCK_ENABLE;
+        (*this) = UThreadPoolConfig();
     }
 
 

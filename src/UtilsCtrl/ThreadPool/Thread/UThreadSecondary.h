@@ -17,6 +17,7 @@ class UThreadSecondary : public UThreadBase {
 public:
     explicit UThreadSecondary() {
         cur_ttl_ = 0;
+        type_ = CGRAPH_THREAD_TYPE_SECONDARY;
     }
 
 
@@ -29,6 +30,7 @@ protected:
         cur_ttl_ = config_->secondary_thread_ttl_;
         is_init_ = true;
         thread_ = std::move(std::thread(&UThreadSecondary::run, this));
+        status = setSchedParam();
         CGRAPH_FUNCTION_END
     }
 

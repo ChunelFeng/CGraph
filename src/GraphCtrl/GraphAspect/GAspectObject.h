@@ -35,7 +35,7 @@ public:
      * 获取切面参数内容
      * @return
      */
-    template <typename T = GAspectParam,
+    template <typename T,
               std::enable_if_t<std::is_base_of<GAspectParam, T>::value, int> = 0>
     T* getParam();
 

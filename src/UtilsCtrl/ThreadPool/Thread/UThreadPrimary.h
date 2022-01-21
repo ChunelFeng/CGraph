@@ -18,6 +18,7 @@ protected:
     explicit UThreadPrimary() {
         index_ = -1;
         pool_threads_ = nullptr;
+        type_ = CGRAPH_THREAD_TYPE_PRIMARY;
     }
 
 
@@ -27,6 +28,7 @@ protected:
 
         is_init_ = true;
         thread_ = std::move(std::thread(&UThreadPrimary::run, this));
+        status = setSchedParam();
         CGRAPH_FUNCTION_END
     }
 

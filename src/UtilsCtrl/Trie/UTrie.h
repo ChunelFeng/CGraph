@@ -16,7 +16,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 class UTrie : public UtilsObject {
 public:
-    UTrie();
+    explicit UTrie();
     ~UTrie() override;
 
     /**

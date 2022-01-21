@@ -24,28 +24,28 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-const static int DEFAULT_LOOP_TIMES = 1;                            // 默认循环次数信息
-const static int DEFAULT_ELEMENT_RUN_TTL = 0;                       // 线程超时时间设定，0为不设定超时信息，单位毫秒
+const static int CGRAPH_DEFAULT_LOOP_TIMES = 1;           // 默认循环次数信息
+const static int CGRAPH_DEFAULT_ELEMENT_RUN_TTL = 0;      // 线程超时时间设定，0为不设定超时信息，单位毫秒
 
 struct GNodeInfo {
-    std::string name;
-    int loop { DEFAULT_LOOP_TIMES } ;
-    GElementPtrSet dependence;
+    std::string name_;
+    int loop_ { CGRAPH_DEFAULT_LOOP_TIMES } ;
+    GElementPtrSet dependence_;
 
     // 无依赖版本，适用于cluster创建
-    GNodeInfo(const std::string& name = "",
-              int loop = DEFAULT_LOOP_TIMES) {
-        this->name = name;
-        this->loop = loop;
+    explicit GNodeInfo(const std::string& name = "",
+              int loop = CGRAPH_DEFAULT_LOOP_TIMES) {
+        this->name_ = name;
+        this->loop_ = loop;
     }
 
     // 有依赖版本，适用于region创建
-    GNodeInfo(const GElementPtrSet& dependence = std::initializer_list<GElementPtr>(),
+    explicit GNodeInfo(const GElementPtrSet& dependence = std::initializer_list<GElementPtr>(),
               const std::string& name = "",
-              int loop = DEFAULT_LOOP_TIMES) {
-        this->name = name;
-        this->loop = loop;
-        this->dependence = dependence;
+              int loop = CGRAPH_DEFAULT_LOOP_TIMES) {
+        this->name_ = name;
+        this->loop_ = loop;
+        this->dependence_ = dependence;
     }
 };
 

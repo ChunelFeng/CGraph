@@ -12,7 +12,7 @@
 #include "MyGAspect/MyConnAspect.h"
 #include "MyGParam/MyConnAspectParam.h"
 #include "MyGAspect/MyTimerAspect.h"
-#include "MyGAspect/MyPipeLineParamAspect.h"
+#include "MyGAspect/MyPipelineParamAspect.h"
 
 using namespace CGraph;
 
@@ -39,7 +39,7 @@ void tutorial_aspect_param() {
     b->addGAspect<MyConnAspect, MyConnAspectParam>(&paramB)->addGAspect<MyTimerAspect>();
 
     /** 在切面中，获取pipeline中的参数，并且进行对应处理 */
-    c->addGAspect<MyPipeLineParamAspect>();
+    c->addGAspect<MyPipelineParamAspect>();
 
     pipeline->process();
     GPipelineFactory::clear();

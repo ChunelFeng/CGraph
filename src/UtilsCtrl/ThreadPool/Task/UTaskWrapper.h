@@ -37,7 +37,7 @@ public:
     }
 
     void operator()() {
-        if (unlikely(impl_ != nullptr)) {
+        if (likely(impl_)) {
             impl_->call();
         }
     }

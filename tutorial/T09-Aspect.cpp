@@ -39,7 +39,7 @@ void tutorial_aspect() {
      * 给特定的element，统一添加 MyTraceAspect 类型的切面
      * 不传参数，表示对pipeline内部所有的节点，添加该切面
      * */
-    pipeline->addGAspectBatch<MyTraceAspect>({b_region, c});
+    pipeline->addGAspect<MyTraceAspect>({b_region, c});
 
     pipeline->process();    // 运行pipeline
     GPipelineFactory::destroy(pipeline);
