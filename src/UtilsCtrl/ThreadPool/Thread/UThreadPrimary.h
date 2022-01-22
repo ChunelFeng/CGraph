@@ -28,7 +28,8 @@ protected:
 
         is_init_ = true;
         thread_ = std::move(std::thread(&UThreadPrimary::run, this));
-        status = setSchedParam();
+        setSchedParam();
+        setAffinity(index_);
         CGRAPH_FUNCTION_END
     }
 

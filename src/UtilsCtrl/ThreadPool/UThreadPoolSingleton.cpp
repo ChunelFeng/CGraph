@@ -12,8 +12,9 @@ CGRAPH_NAMESPACE_BEGIN
 
 USingleton<UThreadPool> UThreadPoolSingleton::s_pool_;
 
-UThreadPoolPtr UThreadPoolSingleton::get() {
+UThreadPoolPtr UThreadPoolSingleton::get(bool autoInit) {
     UThreadPoolPtr ptr = UThreadPoolSingleton::s_pool_.get();
+    autoInit ? ptr->init() : CStatus();
     return ptr;
 }
 

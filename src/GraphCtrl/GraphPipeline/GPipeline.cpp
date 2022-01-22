@@ -123,7 +123,7 @@ GPipelinePtr GPipeline::setElementRunTtl(int ttl) {
         return nullptr;    // 初始化前才可设置
     }
 
-    this->element_run_ttl_ = ttl > 0 ? ttl : CGRAPH_DEFAULT_ELEMENT_RUN_TTL;
+    this->element_run_ttl_ = (ttl > 0) ? ttl : CGRAPH_DEFAULT_ELEMENT_RUN_TTL;
     return this;
 }
 

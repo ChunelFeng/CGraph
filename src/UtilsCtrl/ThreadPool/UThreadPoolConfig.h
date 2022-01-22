@@ -28,6 +28,7 @@ struct UThreadPoolConfig : public UThreadObject {
     int secondary_thread_policy_ = CGRAPH_SECONDARY_THREAD_POLICY;
     int primary_thread_priority_ = CGRAPH_PRIMARY_THREAD_PRIORITY;
     int secondary_thread_priority_ = CGRAPH_SECONDARY_THREAD_PRIORITY;
+    bool bind_cpu_enable_ = CGRAPH_BIND_CPU_ENABLE;
     bool batch_task_enable_ = CGRAPH_BATCH_TASK_ENABLE;
     bool fair_lock_enable_ = CGRAPH_FAIR_LOCK_ENABLE;
 

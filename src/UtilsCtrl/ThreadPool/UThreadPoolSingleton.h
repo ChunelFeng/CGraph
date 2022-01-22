@@ -19,9 +19,10 @@ class UThreadPoolSingleton : public UThreadObject {
 public:
     /**
      * 获取线程池指针内容
+     * @param autoInit 自动初始化单例线程池信息
      * @return
      */
-    static UThreadPoolPtr get();
+    static UThreadPoolPtr get(bool autoInit = true);
 
 private:
     UThreadPoolSingleton() = default;

@@ -18,13 +18,10 @@ GPipelinePtr GPipelineFactory::create() {
     CGRAPH_LOCK_GUARD lock(s_lock_);
 
     if (s_pipeline_list_.empty()) {
-        status = UThreadPoolSingleton::get()->init();
-        if (!status.isOK()) {
-            return nullptr;
-        }
+        UThreadPoolSingleton::get();    // 默认直接开启线程池了
     }
 
-    GPipelinePtr pipeline = CGRAPH_SAFE_MALLOC_COBJECT(GPipeline)
+    auto pipeline = CGRAPH_SAFE_MALLOC_COBJECT(GPipeline)
     s_pipeline_list_.emplace_back(pipeline);
     return pipeline;
 }
@@ -40,7 +37,7 @@ void GPipelineFactory::destroy(GPipelinePtr pipeline) {
     CGRAPH_DELETE_PTR(pipeline)
 
     if (s_pipeline_list_.empty()) {
-        UThreadPoolSingleton::get()->deinit();
+        UThreadPoolSingleton::get(false)->deinit();
     }
 }
 
@@ -52,7 +49,7 @@ void GPipelineFactory::clear() {
         CGRAPH_DELETE_PTR(pipeline)
     }
 
-    UThreadPoolSingleton::get()->deinit();
+    UThreadPoolSingleton::get(false)->deinit();
     s_pipeline_list_.clear();
 }
 

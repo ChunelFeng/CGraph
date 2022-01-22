@@ -21,9 +21,10 @@ public:
     explicit UTaskGroup() = default;
 
     /**
-     * 直接通过函数来申明taskGroup的
+     * 直接通过函数来申明taskGroup
      * @param task
-     * @param ttl
+     * @param ttlMs
+     * @param onFinished
      */
     explicit UTaskGroup(const CGRAPH_DEFAULT_FUNCTION& task,
                         int ttlMs = INT_MAX,
@@ -77,9 +78,8 @@ public:
     /**
      * 清空任务组
      */
-    UTaskGroup* clear() {
+    void clear() {
         task_arr_.clear();
-        return this;
     }
 
 

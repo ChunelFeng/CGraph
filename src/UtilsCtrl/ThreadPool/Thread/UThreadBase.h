@@ -112,8 +112,7 @@ protected:
     /**
     * 设置线程优先级，仅针对非windows平台使用
     */
-    CStatus setSchedParam() {
-        CGRAPH_FUNCTION_BEGIN
+    void setSchedParam() {
 #ifndef _WIN32
         int priority = CGRAPH_THREAD_SCHED_OTHER;
         int policy = CGRAPH_THREAD_MIN_PRIORITY;
@@ -129,11 +128,30 @@ protected:
         sched_param param = { calcPriority(priority) };
         int ret = pthread_setschedparam(handle, calcPolicy(policy), &param);
         if (0 != ret) {
-            return CStatus("set thread param failed, error code is " + std::to_string(ret));
+            CGRAPH_ECHO("warning : set thread sched param failed, error code is [%d]", ret);
         }
 #endif
+    }
 
-        CGRAPH_FUNCTION_END
+    /**
+     * 设置线程亲和性，仅针对linux系统
+     */
+    void setAffinity(int index) {
+#ifdef __linux__
+        if (!config_->bind_cpu_enable_ || CGRAPH_CPU_NUM == 0 || index < 0) {
+            return;
+        }
+
+        cpu_set_t mask;
+        CPU_ZERO(&mask);
+        CPU_SET(index % CGRAPH_CPU_NUM, &mask);
+
+        auto handle = thread_.native_handle();
+        int ret = pthread_setaffinity_np(handle, sizeof(cpu_set_t), &mask);
+        if (0 != ret) {
+            CGRAPH_ECHO("warning : set thread affinity failed, error code is [%d]", ret);
+        }
+#endif
     }
 
 

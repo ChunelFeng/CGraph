@@ -19,9 +19,8 @@
 
 #include "UThreadObject.h"
 #include "UThreadPoolConfig.h"
-#include "Queue/UAtomicQueue.h"
-#include "Thread/UThreadPrimary.h"
-#include "Thread/UThreadSecondary.h"
+#include "Queue/UQueueInclude.h"
+#include "Thread/UThreadInclude.h"
 #include "Task/UTaskGroup.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -31,16 +30,18 @@ class UThreadPool : public UThreadObject {
 public:
     /**
      * 通过默认设置参数，来创建线程池
+     * @param autoInit 是否自动开启线程池功能
      * @param config
      */
-    explicit UThreadPool(const UThreadPoolConfig& config = UThreadPoolConfig()) {
-        this->setConfig(config);
+    explicit UThreadPool(bool autoInit = true,
+                         const UThreadPoolConfig& config = UThreadPoolConfig()) noexcept {
         cur_index_ = 0;
         is_init_ = false;
+        this->setConfig(config);
         /* 开启监控线程 */
         is_monitor_ = true;
         monitor_thread_ = std::move(std::thread(&UThreadPool::monitor, this));
-        init();
+        autoInit ? this->init() : CStatus();
     }
 
 
@@ -172,9 +173,10 @@ public:
      * @return
      */
     CStatus submit(const CGRAPH_DEFAULT_FUNCTION &task,
-                   int ttlMs = INT_MAX) {
-        UTaskGroup taskGroup(task, ttlMs);
-        return submit(taskGroup, ttlMs);
+                   int ttlMs = INT_MAX,
+                   const CGRAPH_TASKGROUP_CALLBACK& onFinished = nullptr) {
+        UTaskGroup taskGroup(task, ttlMs, onFinished);
+        return submit(taskGroup);
     }
 
     /**
@@ -189,16 +191,16 @@ public:
 
         is_init_ = false;
         // primary 线程是普通指针，需要delete
-        for (auto& thread : primary_threads_) {
-            status = thread->deinit();
+        for (auto& pt : primary_threads_) {
+            status = pt->deinit();
             CGRAPH_FUNCTION_CHECK_STATUS
-            CGRAPH_DELETE_PTR(thread)
+            CGRAPH_DELETE_PTR(pt)
         }
         primary_threads_.clear();
 
         // secondary 线程是智能指针，不需要delete
-        for (auto& thread : secondary_threads_) {
-            thread->deinit();
+        for (auto& st : secondary_threads_) {
+            st->deinit();
             CGRAPH_FUNCTION_CHECK_STATUS
         }
         secondary_threads_.clear();
@@ -226,9 +228,7 @@ private:
 
             // 如果 primary线程都在执行，则表示忙碌
             bool busy = std::all_of(primary_threads_.begin(), primary_threads_.end(),
-                                    [](UThreadPrimaryPtr ptr) {
-                                        return ptr->is_running_;
-                                    });
+                                    [] (UThreadPrimaryPtr ptr) { return ptr->is_running_; });
 
             // 如果忙碌，则需要添加 secondary线程
             if (busy && (secondary_threads_.size() + config_.default_thread_size_) < config_.max_thread_size_) {
