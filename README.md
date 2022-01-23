@@ -157,7 +157,7 @@ void tutorial_simple() {
 * 更新`tutorial`内容
 
 [2021.11.01 - v1.8.0 - Chunel]
-* 提供`adapter`(适配器)功能，提供`singleton`适配器
+* 提供`adapter`(适配器)功能，提供`singleton`适配器功能
 * 优化`pipeline`执行逻辑
 * 更新`tutorial`内容
 
@@ -180,6 +180,7 @@ void tutorial_simple() {
 * [纯序员给你介绍图化框架的简单实现——参数传递](http://www.chunel.cn/archives/cgraph-param-introduce)
 * [纯序员给你介绍图化框架的简单实现——条件判断](http://www.chunel.cn/archives/cgraph-condition-introduce)
 * [纯序员给你介绍图化框架的简单实现——面向切面](http://www.chunel.cn/archives/cgraph-aspect-introduce)
+* [纯序员给你介绍图化框架的简单实现——函数注入](http://www.chunel.cn/archives/cgraph-function-introduce)
 * [纯序员给你介绍图化框架的简单实现——线程池优化（一）](http://www.chunel.cn/archives/cgraph-threadpool-1-introduce)
 * [纯序员给你介绍图化框架的简单实现——线程池优化（二）](http://www.chunel.cn/archives/cgraph-threadpool-2-introduce)
 * [纯序员给你介绍图化框架的简单实现——线程池优化（三）](http://www.chunel.cn/archives/cgraph-threadpool-3-introduce)
