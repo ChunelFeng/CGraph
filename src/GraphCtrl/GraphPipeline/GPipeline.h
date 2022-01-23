@@ -93,7 +93,16 @@ public:
      * @return
      */
     template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
-    GPipeline* addGParam(const std::string& key);
+    CStatus createGParam(const std::string& key);
+
+    /**
+     * 获取pipeline中的参数信息
+     * @tparam T
+     * @param key
+     * @return
+     */
+    template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
+    T* getGParam(const std::string& key);
 
     /**
      * 批量添加切面

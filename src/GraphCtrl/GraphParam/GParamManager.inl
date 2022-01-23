@@ -14,7 +14,7 @@ CStatus GParamManager::create(const std::string& key) {
         return (typeid(*param).name() == typeid(T).name()) ? CStatus() : CStatus("create param duplicate");
     }
 
-    CGRAPH_WRITE_LOCK wLock(this->lock_);
+    CGRAPH_LOCK_GUARD wLock(this->lock_);
     T* ptr = CGRAPH_SAFE_MALLOC_COBJECT(T)
 
     params_map_.insert(std::pair<std::string, T*>(key, ptr));

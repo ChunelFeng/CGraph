@@ -10,6 +10,7 @@
 #define CGRAPH_CSTATUS_H
 
 #include <string>
+#include <functional>
 
 #include "CObjectDefine.h"
 
@@ -43,9 +44,9 @@ public:
 
     CSTATUS& operator=(const CSTATUS& status) = default;
 
-    void operator+=(const CSTATUS& cur) {
+    CSTATUS& operator+=(const CSTATUS& cur) {
         if (this->isOK() && cur.isOK()) {
-            return;
+            return (*this);
         }
 
         error_info_ = this->isOK()
@@ -54,6 +55,8 @@ public:
                     ? error_info_
                     : (error_info_ + STATUS_ERROR_INFO_CONNECTOR + cur.error_info_));
         error_code_ = STATUS_ERR;
+
+        return (*this);
     }
 
     [[nodiscard]] int getCode() const {
@@ -80,6 +83,8 @@ private:
 CGRAPH_NAMESPACE_END
 
 using CStatus = CGraph::CSTATUS;                     // 方便外部直接使用
-using CStatusRef = CStatus &;
+using CGRAPH_DEFAULT_FUNCTION = std::function<void()>;
+using CGRAPH_CSTATUS_FUNCTION = std::function<CStatus()>;
+using CGRAPH_CALLBACK_FUNCTION = std::function<void(CStatus)>;
 
 #endif //CGRAPH_CSTATUS_H

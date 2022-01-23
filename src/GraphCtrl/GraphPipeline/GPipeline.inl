@@ -114,16 +114,21 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
 
 
 template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
-GPipelinePtr GPipeline::addGParam(const std::string& key) {
-    if (key.empty() || nullptr == param_manager_) {
-        return nullptr;
-    }
+CStatus GPipeline::createGParam(const std::string& key) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(false)
+    CGRAPH_ASSERT_NOT_NULL(param_manager_)
 
-    /** 如果创建成功，返回自身（用于链式调用）
-     * 如果失败，直接返回nullptr信息
-     * */
-    CStatus status = param_manager_->template create<T>(key);
-    return (status.isOK()) ? this : nullptr;
+    status = param_manager_->template create<T>(key);
+    CGRAPH_FUNCTION_END
+}
+
+
+template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
+T* GPipeline::getGParam(const std::string& key) {
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)
+
+    return dynamic_cast<T *>(param_manager_->get(key));
 }
 
 

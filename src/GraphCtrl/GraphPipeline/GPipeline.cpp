@@ -6,8 +6,6 @@
 @Desc: 
 ***************************/
 
-#include <functional>
-
 #include "GPipeline.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -80,8 +78,8 @@ CStatus GPipeline::run() {
                     case std::future_status::deferred: status += CStatus("thread status deferred"); break;
                     default: status += CStatus("thread status unknown");
                 }
-                index++;
             }
+            index++;
             CGRAPH_FUNCTION_CHECK_STATUS
         }
     }
@@ -119,9 +117,7 @@ CStatus GPipeline::process(int runTimes) {
 
 
 GPipelinePtr GPipeline::setElementRunTtl(int ttl) {
-    if (is_init_) {
-        return nullptr;    // 初始化前才可设置
-    }
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
 
     this->element_run_ttl_ = (ttl > 0) ? ttl : CGRAPH_DEFAULT_ELEMENT_RUN_TTL;
     return this;

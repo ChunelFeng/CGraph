@@ -12,7 +12,6 @@
 #include <thread>
 #include <shared_mutex>
 #include <memory>
-#include <functional>
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -36,9 +35,6 @@ using CGRAPH_READ_LOCK = std::shared_lock<std::shared_mutex>;
 using CGRAPH_WRITE_LOCK = std::unique_lock<std::shared_mutex>;
 using CGRAPH_LOCK_GUARD = std::lock_guard<std::mutex>;
 using CGRAPH_UNIQUE_LOCK = std::unique_lock<std::mutex>;
-
-using CGRAPH_DEFAULT_FUNCTION = std::function<void()>;                                      // 默认无参函数类型
-using CGRAPH_TASKGROUP_CALLBACK = std::function<void(CStatus)>;                             // 任务组执行回调函数
 
 static const int CGRAPH_DEFAULT_THREAD_SIZE = (CGRAPH_CPU_NUM > 0) ? CGRAPH_CPU_NUM : 8;    // 默认主线程个数
 static const int CGRAPH_MAX_THREAD_SIZE = (CGRAPH_DEFAULT_THREAD_SIZE * 2);                 // 最大线程个数

@@ -42,13 +42,20 @@ protected:
     ~GParamManager() override;
     CStatus init() override;
     CStatus deinit() override;
-    void clear();
-    void reset();
 
+    /**
+     * 清空内部所有参数信息
+     */
+    void clear();
+
+    /**
+     * 重置内部所有参数信息
+     */
+    void reset();
 
 private:
     std::unordered_map<std::string, GParamPtr> params_map_;           // 记录param信息的hash表
-    std::shared_mutex lock_;                                          // 读写锁
+    std::mutex lock_;                                                 // 读写锁
     bool is_init_ { false };                                          // 标记是否初始化结束
 
     friend class GPipeline;

@@ -34,6 +34,7 @@ set(TUTORIAL_LIST
         T09-Aspect
         T10-AspectParam
         T11-Singleton
+        T12-Function
         TU01-ThreadPool
         TU02-Lru
         TU03-Trie

@@ -11,5 +11,6 @@
 
 #include "GAdapter.h"
 #include "GSingleton/GSingleton.h"
+#include "GFunction/GFunction.h"
 
 #endif //CGRAPH_GADAPTERINCLUDE_H

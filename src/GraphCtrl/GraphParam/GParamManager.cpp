@@ -40,7 +40,7 @@ GParamPtr GParamManager::get(const std::string& key) {
         return nullptr;
     }
 
-    return params_map_.find(key)->second;
+    return result->second;
 }
 
 

@@ -174,7 +174,7 @@ public:
      */
     CStatus submit(const CGRAPH_DEFAULT_FUNCTION &task,
                    int ttlMs = INT_MAX,
-                   const CGRAPH_TASKGROUP_CALLBACK& onFinished = nullptr) {
+                   const CGRAPH_CALLBACK_FUNCTION& onFinished = nullptr) {
         UTaskGroup taskGroup(task, ttlMs, onFinished);
         return submit(taskGroup);
     }

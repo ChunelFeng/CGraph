@@ -105,6 +105,11 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
         return CStatus("init status is not suitable");        \
     }                                                         \
 
+#define CGRAPH_ASSERT_INIT_RETURN_NULL(isInit)                \
+    if (unlikely((isInit) != is_init_)) {                     \
+        return nullptr;                                       \
+    }                                                         \
+
 #define CGRAPH_NO_SUPPORT                                     \
     return CStatus("function not support yet");               \
 

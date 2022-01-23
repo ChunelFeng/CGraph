@@ -28,7 +28,7 @@ public:
      */
     explicit UTaskGroup(const CGRAPH_DEFAULT_FUNCTION& task,
                         int ttlMs = INT_MAX,
-                        const CGRAPH_TASKGROUP_CALLBACK& onFinished = nullptr) noexcept {
+                        const CGRAPH_CALLBACK_FUNCTION& onFinished = nullptr) noexcept {
         this->addTask(task)
             ->setTtlMs(ttlMs)
             ->setOnFinished(onFinished);
@@ -60,7 +60,7 @@ public:
      * @param onFinished
      * @return
      */
-    UTaskGroup* setOnFinished(const CGRAPH_TASKGROUP_CALLBACK& onFinished) {
+    UTaskGroup* setOnFinished(const CGRAPH_CALLBACK_FUNCTION& onFinished) {
         this->on_finished_ = onFinished;
         return this;
     }
@@ -95,7 +95,7 @@ public:
 private:
     std::vector<CGRAPH_DEFAULT_FUNCTION> task_arr_;         // 任务消息
     int ttl_ms_ = INT_MAX;                                  // 任务组最大执行耗时
-    CGRAPH_TASKGROUP_CALLBACK on_finished_ = nullptr;         // 执行函数任务结束
+    CGRAPH_CALLBACK_FUNCTION on_finished_ = nullptr;        // 执行函数任务结束
 
     friend class UThreadPool;
 };
