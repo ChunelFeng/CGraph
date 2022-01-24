@@ -10,15 +10,18 @@
 #define CGRAPH_GNODE_H
 
 #include "../GElement.h"
+#include "GNodeDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
 class GNode : public GElement {
 protected:
-    explicit GNode() = default;
-    ~GNode() override = default;
+    explicit GNode() {
+        node_type_ = GNodeType::DEFAULT;
+    }
 
-    friend class GPipeline;
+protected:
+    GNodeType node_type_;                    // 节点类型
 };
 
 using GNodePtr = GNode *;
