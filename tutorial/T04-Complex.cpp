@@ -30,14 +30,14 @@ void tutorial_complex () {
     d4 = pipeline->createGNode<MyNode2>(GNodeInfo({d1}, "nodeD4", 1));
     d_region = pipeline->createGGroup<GRegion>({d1, d23_cluster, d4});    // 创建名为d_region的region信息，并将{d1,d23_cluster,d4}放入其中
 
-    status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA", 1);
+    status += pipeline->registerGElement<MyNode1>(&a, {}, "nodeA", 1);
+    status += pipeline->registerGElement<GCluster>(&b_cluster, {}, "clusterB", 1);
+    status += pipeline->registerGElement<MyNode1>(&c, {a, b_cluster}, "nodeC", 1);
+    status += pipeline->registerGElement<GRegion>(&d_region, {a, b_cluster}, "regionD", 2);    // 将名为regionD，依赖{a,b_cluster}执行且自循环2次的region信息，注册入pipeline中
+    status += pipeline->registerGElement<MyNode1>(&e, {c, d_region}, "nodeE", 1);
     if (!status.isOK()) {
         return;
     }
-    status = pipeline->registerGElement<GCluster>(&b_cluster, {}, "clusterB", 1);
-    status = pipeline->registerGElement<MyNode1>(&c, {a, b_cluster}, "nodeC", 1);
-    status = pipeline->registerGElement<GRegion>(&d_region, {a, b_cluster}, "regionD", 2);    // 将名为regionD，依赖{a,b_cluster}执行且自循环2次的region信息，注册入pipeline中
-    status = pipeline->registerGElement<MyNode1>(&e, {c, d_region}, "nodeE", 1);
 
     status = pipeline->process();
     GPipelineFactory::destroy(pipeline);

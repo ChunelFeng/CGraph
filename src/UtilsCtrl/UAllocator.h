@@ -73,11 +73,11 @@ public:
 };
 
 
-#define CGRAPH_SAFE_MALLOC_COBJECT(TYPE)                         \
-    UAllocator::safeMallocCObject<TYPE>();                       \
+#define CGRAPH_SAFE_MALLOC_COBJECT(Type)                         \
+    UAllocator::safeMallocCObject<Type>();                       \
 
-#define CGRAPH_MAKE_UNIQUE_COBJECT(TYPE)                         \
-    UAllocator::makeUniqueCObject<TYPE>();                       \
+#define CGRAPH_MAKE_UNIQUE_COBJECT(Type)                         \
+    UAllocator::makeUniqueCObject<Type>();                       \
 
 #define CGRAPH_GENERATE_SESSION()                                \
     UAllocator::generateSession();                               \

@@ -16,15 +16,15 @@ void tutorial_param() {
     CStatus status;
     GElementPtr a, b, c, d, e, f = nullptr;
 
-    status = pipeline->registerGElement<MyReadParamNode>(&a, {}, "readNodeA");     // 读取param中的信息，不做修改
+    status += pipeline->registerGElement<MyReadParamNode>(&a, {}, "readNodeA");     // 读取param中的信息，不做修改
+    status += pipeline->registerGElement<MyReadParamNode>(&b, {a}, "readNodeB");
+    status += pipeline->registerGElement<MyWriteParamNode>(&c, {a}, "writeNodeC");
+    status += pipeline->registerGElement<MyWriteParamNode>(&d, {a}, "writeNodeD", 2);    // 对param中的iValue值+1，循环执行2次
+    status += pipeline->registerGElement<MyReadParamNode>(&e, {a}, "readNodeE");
+    status += pipeline->registerGElement<MyWriteParamNode>(&f, {b, c, d, e}, "writeNodeF");
     if (!status.isOK()) {
         return;    // 使用时，请对所有CGraph接口的返回值做判定。本例子中省略
     }
-    status = pipeline->registerGElement<MyReadParamNode>(&b, {a}, "readNodeB");
-    status = pipeline->registerGElement<MyWriteParamNode>(&c, {a}, "writeNodeC");
-    status = pipeline->registerGElement<MyWriteParamNode>(&d, {a}, "writeNodeD", 2);    // 对param中的iValue值+1，循环执行2次
-    status = pipeline->registerGElement<MyReadParamNode>(&e, {a}, "readNodeE");
-    status = pipeline->registerGElement<MyWriteParamNode>(&f, {b, c, d, e}, "writeNodeF");
 
     status = pipeline->init();
 

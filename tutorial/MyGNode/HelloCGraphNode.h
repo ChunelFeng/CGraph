@@ -1,24 +1,24 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: HelloWorldNode.h
+@File: HelloCGraphNode.h
 @Time: 2021/6/24 1:06 上午
 @Desc: 
 ***************************/
 
-#ifndef CGRAPH_HELLOWORLDNODE_H
-#define CGRAPH_HELLOWORLDNODE_H
+#ifndef CGRAPH_HELLOCGRAPHNODE_H
+#define CGRAPH_HELLOCGRAPHNODE_H
 
 #include "../../src/CGraph.h"
 
-class HelloWorldNode : public CGraph::GNode {
+class HelloCGraphNode : public CGraph::GNode {
 
 public:
     CStatus run () override {
         CStatus status;
-        std::cout << "hello, world." << std::endl;
+        std::cout << "Hello, CGraph." << std::endl;
         return status;
     }
 };
 
-#endif //CGRAPH_HELLOWORLDNODE_H
+#endif //CGRAPH_HELLOCGRAPHNODE_H

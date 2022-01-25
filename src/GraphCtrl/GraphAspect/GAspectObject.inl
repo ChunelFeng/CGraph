@@ -13,11 +13,11 @@ CGRAPH_NAMESPACE_BEGIN
 
 template <typename T,
           std::enable_if_t<std::is_base_of<GAspectParam, T>::value, int>>
-GAspectObjectPtr GAspectObject::setParam(T* param) {
+GAspectObjectPtr GAspectObject::setAParam(T* param) {
     /** 传入的param可以为空 */
     if (param) {
         CGRAPH_DELETE_PTR(param_)
-        param_ = CGRAPH_SAFE_MALLOC_COBJECT(T)
+        param_ = CGRAPH_SAFE_MALLOC_COBJECT(T)    // 确保param是最新的
         param_->clone(static_cast<T *>(param));
     }
 
@@ -27,7 +27,7 @@ GAspectObjectPtr GAspectObject::setParam(T* param) {
 
 template <typename T,
           std::enable_if_t<std::is_base_of<GAspectParam, T>::value, int>>
-T* GAspectObject::getParam() {
+T* GAspectObject::getAParam() {
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_)
 
     T* param = nullptr;
@@ -41,10 +41,10 @@ T* GAspectObject::getParam() {
 
 template <typename T,
           std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
-T* GAspectObject::getPipelineParam(const std::string& key) {
+T* GAspectObject::getGParam(const std::string& key) {
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(pipeline_param_manager_)
 
-    T* ptr = dynamic_cast<T *>(this->pipeline_param_manager_->get(key));
+    T* ptr = this->pipeline_param_manager_->get<T>(key);
     return ptr;
 }
 

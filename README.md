@@ -21,7 +21,7 @@
 <br>
 
 ## 二. 编译说明
-* 本工程支持MacOS、Linux和Windows系统，无任何第三方依赖。使用CLion作为IDE的开发者，打开CMakeLists.txt文件作为工程，即可编译通过。
+* 本工程支持MacOS、Linux和Windows系统，无任何第三方依赖。使用CLion作为IDE的开发者，打开CMakeLists.txt文件作为工程，即可编译通过
 
 * Linux环境开发者，在命令行模式下，输入以下指令，即可编译通过
   ```shell

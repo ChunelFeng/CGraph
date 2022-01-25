@@ -127,8 +127,7 @@ CStatus GPipeline::createGParam(const std::string& key) {
 template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
 T* GPipeline::getGParam(const std::string& key) {
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)
-
-    return dynamic_cast<T *>(param_manager_->get(key));
+    return param_manager_->get<T>(key);
 }
 
 

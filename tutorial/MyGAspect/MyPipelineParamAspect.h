@@ -21,7 +21,7 @@ public:
          * 在切面层，获取pipeline中的参数值信息，进行一些逻辑处理
          * 可以用于异常判断、限流等逻辑
          * */
-        auto* pipelineParam = this->getPipelineParam<MyParam>("param1");
+        auto* pipelineParam = CGRAPH_GET_GPARAM(MyParam, "param1")
         if (nullptr == pipelineParam) {
             return CStatus("pipelineParam is null");
         }

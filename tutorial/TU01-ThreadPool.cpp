@@ -45,14 +45,14 @@ void tutorial_threadpool_2() {
 
     /** 添加一个不耗时的任务 */
     int i = 1, j = 2, k = 3;
-    auto hw = [] { CGRAPH_ECHO("hello, world."); };
-    taskGroup.addTask(hw);
+    auto hcg = [] { CGRAPH_ECHO("hello, CGraph."); };
+    taskGroup.addTask(hcg);
 
     /** 添加一个耗时为1000ms的任务 */
     taskGroup.addTask([i, j] {
         int result = i + j;
         CGRAPH_SLEEP_MILLISECOND(1000)
-        CGRAPH_ECHO("sleep for 1 second, [%d] + [%d] = [%d], run success", i, j, result);
+        CGRAPH_ECHO("sleep for 1 second, [%d] + [%d] = [%d], run success.", i, j, result);
     });
 
     taskGroup.addTask([i, j, k] {
@@ -85,7 +85,7 @@ void tutorial_threadpool_2() {
      * 并且在status中提示超时信息
      * */
     CStatus status = tp->submit(taskGroup, 2500);
-    CGRAPH_ECHO("task group run status is [%d]", status.getCode());
+    CGRAPH_ECHO("task group run status is [%d].", status.getCode());
 }
 
 

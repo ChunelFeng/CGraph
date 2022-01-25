@@ -4,7 +4,8 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
+template<typename T,
+        std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
 CStatus GParamManager::create(const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
     auto result = params_map_.find(key);
@@ -14,11 +15,24 @@ CStatus GParamManager::create(const std::string& key) {
         return (typeid(*param).name() == typeid(T).name()) ? CStatus() : CStatus("create param duplicate");
     }
 
-    CGRAPH_LOCK_GUARD wLock(this->lock_);
     T* ptr = CGRAPH_SAFE_MALLOC_COBJECT(T)
+    {
+        CGRAPH_LOCK_GUARD lock(this->lock_);
+        params_map_.insert(std::pair<std::string, T*>(key, ptr));
+    }
 
-    params_map_.insert(std::pair<std::string, T*>(key, ptr));
     CGRAPH_FUNCTION_END
+}
+
+template<typename T,
+        std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
+T* GParamManager::get(const std::string& key) {
+    auto result = params_map_.find(key);
+    if (result == params_map_.end()) {
+        return nullptr;
+    }
+
+    return dynamic_cast<T *>(result->second);
 }
 
 CGRAPH_NAMESPACE_END

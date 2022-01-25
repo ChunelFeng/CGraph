@@ -16,12 +16,12 @@ class MyShowAddressNode : public CGraph::GNode {
 
 public:
     CStatus init() override {
-        CStatus status = this->createGParam<MyParam>("param2");
+        CStatus status = CGRAPH_CREATE_GPARAM(MyParam, "param2")
         return status;
     }
 
     CStatus run () override {
-        auto myParam = this->getGParam<MyParam>("param2");
+        auto myParam = CGRAPH_GET_GPARAM(MyParam, "param2")
         int cnt = 0;
         {
             CGRAPH_PARAM_WRITE_CODE_BLOCK(myParam)

@@ -21,12 +21,12 @@ public:
          * 推荐在init()中，将可能用到的参数创建好。也支持在run的时候创建
          * 支持在任意节点创建，任意节点读取同类型（MyParam）同名（"param1"）参数
          */
-        status = this->createGParam<MyParam>("param1");
+        status = CGRAPH_CREATE_GPARAM(MyParam, "param1")
         return status;
     }
 
     CStatus run () override {
-        MyParam* myParam = this->getGParam<MyParam>("param1");
+        MyParam* myParam = CGRAPH_GET_GPARAM(MyParam, "param1")
         if (nullptr == myParam) {
             return CStatus("get param error");    // 如果获取myParam1失败，则返回错误码信息
         }

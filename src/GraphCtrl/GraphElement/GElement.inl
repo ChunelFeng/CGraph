@@ -27,7 +27,7 @@ template<typename T,
 T* GElement::getGParam(const std::string& key) {
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(this->param_manager_)
 
-    T* ptr = dynamic_cast<T *>(this->param_manager_->get(key));
+    T* ptr = this->param_manager_->get<T>(key);
     return ptr;
 }
 
@@ -43,7 +43,7 @@ GElementPtr GElement::addGAspect(TParam* param) {
 
     GAspectPtr aspect = CGRAPH_SAFE_MALLOC_COBJECT(TAspect)
     aspect->setName(this->getName())
-        ->setParam<TParam>(param)
+        ->setAParam<TParam>(param)
         ->setPipelineParamManager(this->param_manager_);
     aspect_manager_->addAspect(aspect);
     return this;

@@ -27,12 +27,12 @@ void tutorial_region() {
         return;
     }
 
-    status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA", 1);
+    status += pipeline->registerGElement<MyNode1>(&a, {}, "nodeA", 1);
+    status += pipeline->registerGElement<GRegion>(&b_region, {a}, "regionB", 1);    // 将名为regionB，依赖a执行且自循环2次的cluster信息，注册入pipeline中
+    status += pipeline->registerGElement<MyNode2>(&c, {b_region}, "nodeC", 1);
     if (!status.isOK()) {
         return;
     }
-    status = pipeline->registerGElement<GRegion>(&b_region, {a}, "regionB", 1);    // 将名为regionB，依赖a执行且自循环2次的cluster信息，注册入pipeline中
-    status = pipeline->registerGElement<MyNode2>(&c, {b_region}, "nodeC", 1);
 
     status = pipeline->process();
     CGRAPH_ECHO("pipeline process status is : [%d]", status.getCode());

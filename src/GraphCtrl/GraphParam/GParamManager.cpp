@@ -33,17 +33,6 @@ CStatus GParamManager::deinit() {
     CGRAPH_FUNCTION_END
 }
 
-
-GParamPtr GParamManager::get(const std::string& key) {
-    auto result = params_map_.find(key);
-    if (result == params_map_.end()) {
-        return nullptr;
-    }
-
-    return result->second;
-}
-
-
 void GParamManager::clear() {
     for (auto& param : params_map_) {
         CGRAPH_DELETE_PTR(param.second)

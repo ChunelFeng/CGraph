@@ -31,10 +31,12 @@ public:
 
     /**
      * 获取一个特定类型的参数
+     * @tparam T
      * @param key
      * @return
      */
-    GParamPtr get(const std::string& key);
+    template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
+    T* get(const std::string& key);
 
 
 protected:
@@ -55,7 +57,7 @@ protected:
 
 private:
     std::unordered_map<std::string, GParamPtr> params_map_;           // 记录param信息的hash表
-    std::mutex lock_;                                                 // 读写锁
+    std::mutex lock_;                                                 // 创建param的时候上锁
     bool is_init_ { false };                                          // 标记是否初始化结束
 
     friend class GPipeline;

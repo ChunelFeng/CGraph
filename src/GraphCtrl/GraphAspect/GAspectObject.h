@@ -19,9 +19,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GAspectObject : public GraphObject {
 public:
-    ~GAspectObject() override {
-        CGRAPH_DELETE_PTR(param_)
-    }
+    ~GAspectObject() override = default;
 
     /**
      * 获取name信息
@@ -37,7 +35,7 @@ public:
      */
     template <typename T,
               std::enable_if_t<std::is_base_of<GAspectParam, T>::value, int> = 0>
-    T* getParam();
+    T* getAParam();
 
     /**
      * 设置切面参数内容
@@ -45,7 +43,7 @@ public:
      */
     template <typename T,
               std::enable_if_t<std::is_base_of<GAspectParam, T>::value, int> = 0>
-    GAspectObject* setParam(T* param);
+    GAspectObject* setAParam(T* param);
 
     /**
      * 获取pipeline中的参数信息
@@ -55,7 +53,7 @@ public:
      */
     template <typename T,
               std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
-    T* getPipelineParam(const std::string& key);
+    T* getGParam(const std::string& key);
 
 protected:
     /**
@@ -82,7 +80,7 @@ protected:
      * @return
      */
     CStatus run() final {
-        CGRAPH_NO_SUPPORT;
+        CGRAPH_NO_SUPPORT
     }
 
 private:

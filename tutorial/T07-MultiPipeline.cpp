@@ -16,16 +16,11 @@ void tutorial_pipeline_1(GPipelinePtr pipeline_1) {
         return;
     }
 
-    CStatus status;
     GElementPtr node1A, node1B, node1C = nullptr;
 
-    /**
-     * 构造 pipeline_1 需要的信息，并执行
-     * 使用时，请注意对返回值做判定
-     */
-    status = pipeline_1->registerGElement<MyNode1>(&node1A, {}, "node1A");
-    status = pipeline_1->registerGElement<MyNode1>(&node1B, {node1A}, "node1B");
-    status = pipeline_1->registerGElement<MyNode1>(&node1C, {node1B}, "node1C");
+    pipeline_1->registerGElement<MyNode1>(&node1A, {}, "node1A");
+    pipeline_1->registerGElement<MyNode1>(&node1B, {node1A}, "node1B");
+    pipeline_1->registerGElement<MyNode1>(&node1C, {node1B}, "node1C");
 
     pipeline_1->process(5);    // 执行n次，本例中 n=5
 }
@@ -36,12 +31,11 @@ void tutorial_pipeline_2(GPipelinePtr pipeline_2) {
         return;
     }
 
-    CStatus status;
     GElementPtr node2A, node2B, node2C = nullptr;
 
-    status = pipeline_2->registerGElement<MyNode2>(&node2A, {}, "node2A");
-    status = pipeline_2->registerGElement<MyNode2>(&node2B, {}, "node2B");
-    status = pipeline_2->registerGElement<MyNode2>(&node2C, {}, "node2C");
+    pipeline_2->registerGElement<MyNode2>(&node2A, {}, "node2A");
+    pipeline_2->registerGElement<MyNode2>(&node2B, {}, "node2B");
+    pipeline_2->registerGElement<MyNode2>(&node2C, {}, "node2C");
 
     pipeline_2->process(3);
 }
@@ -63,7 +57,7 @@ void tutorial_pipeline_3(GPipelinePtr pipeline_3) {
 
     region = pipeline_3->createGGroup<GRegion>({node3A, node3B, node3C, node3D});
 
-    status = pipeline_3->registerGElement<GRegion>(&region);
+    pipeline_3->registerGElement<GRegion>(&region);
     pipeline_3->process(2);
 }
 

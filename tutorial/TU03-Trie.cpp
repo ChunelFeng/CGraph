@@ -14,7 +14,7 @@ void tutorial_trie() {
     UTrie trie;
     trie.insert("hello");
     trie.insert("help");
-    trie.insert("world");    // 插入几个单词
+    trie.insert("cgraph");    // 插入几个单词
 
     CGRAPH_ECHO("find [hello] result is : [%i]", trie.find("hello"));
     CGRAPH_ECHO("find [cgraph] result is : [%i]", trie.find("cgraph"));

@@ -21,7 +21,7 @@ public:
      * @return
      */
     int choose () override {
-        MyParam* myParam = this->getGParam<MyParam>("param1");
+        MyParam* myParam = CGRAPH_GET_GPARAM(MyParam, "param1")
         if (nullptr == myParam) {
             return CGraph::GROUP_LAST_ELEMENT_INDEX;    // 如果没获取到，固定执行最后一个逻辑
         }

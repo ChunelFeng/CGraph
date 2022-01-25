@@ -119,12 +119,6 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
 #define CGRAPH_SLEEP_SECOND(s)                                                  \
     std::this_thread::sleep_for(std::chrono::seconds(s));                       \
 
-#define CGRAPH_PARAM_WRITE_CODE_BLOCK(param)                                    \
-    CGraph::CGRAPH_WRITE_LOCK __paramWLock__((param)->_param_shared_lock_);     \
-
-#define CGRAPH_PARAM_READ_CODE_BLOCK(param)                                     \
-    CGraph::CGRAPH_READ_LOCK __paramRLock__((param)->_param_shared_lock_);      \
-
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_UTILSDEFINE_H

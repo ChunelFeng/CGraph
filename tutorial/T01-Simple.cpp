@@ -24,9 +24,12 @@ void tutorial_simple() {
      */
     GElementPtr a, b, c, d = nullptr;
 
-    /* 注册节点，其中MyNode1和MyNode2必须为GraphNode的子类，否则无法通过编译。
+    /**
+     * 注册节点，其中MyNode1和MyNode2必须为GraphNode的子类，否则无法通过编译。
      * MyNode1中run()执行内容为sleep(1s)
-     * MyNode2中run()执行内容为sleep(2s) */
+     * MyNode2中run()执行内容为sleep(2s)
+     * status+= 操作，可以用于记录链路异常问题
+     * */
     CStatus status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");    // 将名为nodeA，无执行依赖的node信息，注册入pipeline中
     status += pipeline->registerGElement<MyNode2>(&b, {a}, "nodeB");    // 将名为nodeB，依赖a执行的node信息，注册入pipeline中
     status += pipeline->registerGElement<MyNode1>(&c, {a}, "nodeC");
