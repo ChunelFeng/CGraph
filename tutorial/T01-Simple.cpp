@@ -50,7 +50,7 @@ void tutorial_simple() {
     }
 
     /* 图信息逆初始化，准备结束计算 */
-    status = pipeline->deinit();
+    status = pipeline->destroy();
     GPipelineFactory::destroy(pipeline);
 }
 

@@ -63,9 +63,9 @@ CStatus GRegion::init() {
 }
 
 
-CStatus GRegion::deinit() {
+CStatus GRegion::destroy() {
     CGRAPH_FUNCTION_BEGIN
-    status = manager_->deinit();
+    status = manager_->destroy();
     CGRAPH_FUNCTION_CHECK_STATUS
 
     is_init_ = false;

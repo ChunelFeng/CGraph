@@ -25,7 +25,7 @@ public:
 
 protected:
     CStatus init() override;
-    CStatus deinit() override;
+    CStatus destroy() override;
     CStatus run() override;
     CStatus process(bool isMock) override;
 

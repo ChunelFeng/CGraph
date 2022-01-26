@@ -40,13 +40,13 @@ public:
         }
     }
 
-    CStatus beginDeinit() override {
-        CGraph::CGRAPH_ECHO("----> [MyTraceAspect] [%s] deinit begin ...", this->getName().c_str());
+    CStatus beginDestroy() override {
+        CGraph::CGRAPH_ECHO("----> [MyTraceAspect] [%s] destroy begin ...", this->getName().c_str());
         return CStatus();
     }
 
-    void finishDeinit(CStatus curStatus) override {
-        CGraph::CGRAPH_ECHO("----> [MyTraceAspect] [%s] deinit finished, error code is [%d] ...", this->getName().c_str(),
+    void finishDestroy(CStatus curStatus) override {
+        CGraph::CGRAPH_ECHO("----> [MyTraceAspect] [%s] destroy finished, error code is [%d] ...", this->getName().c_str(),
                             curStatus.getCode());
     }
 };

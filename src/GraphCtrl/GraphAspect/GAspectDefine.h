@@ -16,8 +16,8 @@ enum class GAspectType {
     FINISH_INIT = 1,
     BEGIN_RUN = 2,
     FINISH_RUN = 3,
-    BEGIN_DEINIT = 4,
-    FINISH_DEINIT = 5
+    BEGIN_DESTROY = 4,
+    FINISH_DESTROY = 5
 };
 
 CGRAPH_NAMESPACE_END

@@ -18,7 +18,7 @@ class GSingleton : public GAdapter {
 protected:
     CStatus init() override;
     CStatus run() override;
-    CStatus deinit() override;
+    CStatus destroy() override;
 
     /**
      * 适配singleton信息

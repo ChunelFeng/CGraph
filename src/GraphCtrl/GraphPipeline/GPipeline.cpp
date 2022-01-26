@@ -90,13 +90,13 @@ CStatus GPipeline::run() {
 }
 
 
-CStatus GPipeline::deinit() {
+CStatus GPipeline::destroy() {
     CGRAPH_FUNCTION_BEGIN
 
-    status = element_manager_->deinit();
+    status = element_manager_->destroy();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    status = param_manager_->deinit();
+    status = param_manager_->destroy();
     CGRAPH_FUNCTION_END
 }
 
@@ -111,7 +111,7 @@ CStatus GPipeline::process(int runTimes) {
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 
-    status = deinit();
+    status = destroy();
     CGRAPH_FUNCTION_END
 }
 

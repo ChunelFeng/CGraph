@@ -43,7 +43,7 @@ protected:
     explicit GParamManager();
     ~GParamManager() override;
     CStatus init() override;
-    CStatus deinit() override;
+    CStatus destroy() override;
 
     /**
      * 清空内部所有参数信息

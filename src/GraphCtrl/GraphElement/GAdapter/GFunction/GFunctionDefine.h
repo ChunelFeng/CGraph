@@ -14,7 +14,7 @@ CGRAPH_NAMESPACE_BEGIN
 enum class GFunctionType {
     INIT = 1,              /** 初始化函数 */
     RUN = 2,               /** 执行函数 */
-    DEINIT = 3             /** 逆初始化函数 */
+    DESTROY = 3            /** 释放函数 */
 };
 
 CGRAPH_NAMESPACE_END

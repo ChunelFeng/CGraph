@@ -6,7 +6,6 @@
 @Desc:
 ***************************/
 
-
 #ifndef CGRAPH_COBJECTDEFINE_H
 #define CGRAPH_COBJECTDEFINE_H
 

@@ -22,11 +22,11 @@ CStatus GCondition::init() {
 }
 
 
-CStatus GCondition::deinit() {
+CStatus GCondition::destroy() {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr element : this->condition_elements_) {
-        status = element->deinit();
+        status = element->destroy();
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 

@@ -51,7 +51,7 @@ void tutorial_condition() {
         std::cout << "[CGraph] tutorial_condition, loop : " << i + 1 << ", and run status = " << status.getCode() << std::endl;
     }
 
-    status = pipeline->deinit();
+    status = pipeline->destroy();
 
     GPipelineFactory::destroy(pipeline);
 }

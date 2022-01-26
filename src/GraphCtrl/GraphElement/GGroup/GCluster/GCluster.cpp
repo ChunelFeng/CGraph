@@ -46,11 +46,11 @@ CStatus GCluster::init() {
 }
 
 
-CStatus GCluster::deinit() {
+CStatus GCluster::destroy() {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr element : cluster_elements_) {
-        status = element->deinit();
+        status = element->destroy();
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 

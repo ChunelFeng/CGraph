@@ -37,7 +37,7 @@ void GPipelineFactory::destroy(GPipelinePtr pipeline) {
     CGRAPH_DELETE_PTR(pipeline)
 
     if (s_pipeline_list_.empty()) {
-        UThreadPoolSingleton::get(false)->deinit();
+        UThreadPoolSingleton::get(false)->destroy();
     }
 }
 
@@ -49,7 +49,7 @@ void GPipelineFactory::clear() {
         CGRAPH_DELETE_PTR(pipeline)
     }
 
-    UThreadPoolSingleton::get(false)->deinit();
+    UThreadPoolSingleton::get(false)->destroy();
     s_pipeline_list_.clear();
 }
 

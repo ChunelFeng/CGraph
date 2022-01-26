@@ -29,16 +29,14 @@ public:
     }
 
     /**
-     * 流程处理函数，必须实现
-     * @return
+     * 流程处理函数
      */
     virtual CStatus run() = 0;
 
     /**
-     * 逆初始化函数
-     * @return
+     * 释放函数（对应原先deinit函数）
      */
-    virtual CStatus deinit() {
+    virtual CStatus destroy() {
         return CStatus();
     }
 

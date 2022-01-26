@@ -23,7 +23,7 @@ protected:
 
     CStatus init() override;
     CStatus run() override;
-    CStatus deinit() override;
+    CStatus destroy() override;
 
     /**
      * 判定哪些节点是可以分到一个cluster中的

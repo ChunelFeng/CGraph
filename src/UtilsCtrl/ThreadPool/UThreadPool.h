@@ -52,7 +52,7 @@ public:
             monitor_thread_.join();
         }
 
-        deinit();
+        destroy();
     }
 
 
@@ -60,7 +60,7 @@ public:
      * 设置线程池相关配置信息，需要在init()函数调用前，完成设置
      * @param config
      * @return
-     * @notice 通过单例类(UThreadPoolSingleton)开启线程池，则线程池默认init。需要deinit后才可以设置参数
+     * @notice 通过单例类(UThreadPoolSingleton)开启线程池，则线程池默认init。需要 destroy 后才可以设置参数
      */
     CStatus setConfig(const UThreadPoolConfig &config) {
         CGRAPH_FUNCTION_BEGIN
@@ -183,7 +183,7 @@ public:
      * 释放所有的线程信息
      * @return
      */
-    CStatus deinit() final {
+    CStatus destroy() final {
         CGRAPH_FUNCTION_BEGIN
         if (!is_init_) {
             CGRAPH_FUNCTION_END
@@ -192,7 +192,7 @@ public:
         is_init_ = false;
         // primary 线程是普通指针，需要delete
         for (auto& pt : primary_threads_) {
-            status = pt->deinit();
+            status = pt->destroy();
             CGRAPH_FUNCTION_CHECK_STATUS
             CGRAPH_DELETE_PTR(pt)
         }
@@ -200,7 +200,7 @@ public:
 
         // secondary 线程是智能指针，不需要delete
         for (auto& st : secondary_threads_) {
-            st->deinit();
+            st->destroy();
             CGRAPH_FUNCTION_CHECK_STATUS
         }
         secondary_threads_.clear();

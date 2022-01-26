@@ -28,7 +28,7 @@ public:
         switch (type) {
             case GFunctionType::RUN: run_function_ = func; break;
             case GFunctionType::INIT: init_function_ = func; break;
-            case GFunctionType::DEINIT: deinit_function_ = func; break;
+            case GFunctionType::DESTROY: destroy_function_ = func; break;
             default: return nullptr;     // 不可能出现的情况
         }
 
@@ -54,10 +54,10 @@ protected:
         CGRAPH_FUNCTION_END
     }
 
-    CStatus deinit() final {
+    CStatus destroy() final {
         CGRAPH_FUNCTION_BEGIN
-        if (deinit_function_) {
-            status = deinit_function_();
+        if (destroy_function_) {
+            status = destroy_function_();
         }
 
         CGRAPH_FUNCTION_END
@@ -66,7 +66,7 @@ protected:
 private:
     CGRAPH_CSTATUS_FUNCTION init_function_ = nullptr;
     CGRAPH_CSTATUS_FUNCTION run_function_ = nullptr;
-    CGRAPH_CSTATUS_FUNCTION deinit_function_ = nullptr;
+    CGRAPH_CSTATUS_FUNCTION destroy_function_ = nullptr;
 
     friend class GPipeline;
 };

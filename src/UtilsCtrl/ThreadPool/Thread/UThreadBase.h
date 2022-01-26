@@ -36,11 +36,11 @@ protected:
 
 
     /**
-     * 所有线程类的deinit函数应该是一样的
+     * 所有线程类的 destroy 函数应该是一样的
      * 但是init函数不一样，因为线程构造函数不同
      * @return
      */
-    CStatus deinit() override {
+    CStatus destroy() override {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
 

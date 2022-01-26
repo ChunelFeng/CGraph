@@ -11,11 +11,11 @@
 
 本工程实现了一套跨平台图流程计算框架。通过`GPipeline`(流水线)底层调度，实现了依赖元素依次顺序执行、非依赖元素并发执行的调度功能。
 
-使用者只需继承`GNode`（节点）类，实现子类的run()方法，并根据需要设定依赖关系，即可实现任务的图化执行。
+使用者只需继承`GNode`(节点)类，实现子类的run()方法，并根据需要设定依赖关系，即可实现任务的图化执行。
 
-同时，使用者还可以通过设定各种包含多节点信息的`GGroup`（组），自行控制图的条件判断、循环和并发执行逻辑。
+同时，使用者还可以通过设定各种包含多节点信息的`GGroup`(组)，自行控制图的条件判断、循环和并发执行逻辑。
 
-此外，还可以通过添加`GAspect`(切面)的方式，实现以上各种元素功能的横向扩展，或是通过引入`GAdapter`（适配器）对单个节点功能进行加强。
+此外，还可以通过添加`GAspect`(切面)的方式，实现以上各种元素功能的横向扩展，或是通过引入各种`GAdapter`(适配器)对单个节点功能进行加强。
 
 ![CGraph Skeleton](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Skeleton.jpg)
 <br>
@@ -76,7 +76,7 @@ void tutorial_simple() {
     GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b, c, d = nullptr;
 
-    /* 注册节点，其中MyNode1和MyNode2必须为GraphNode的子类，否则无法通过编译。
+    /* 注册节点，其中MyNode1和MyNode2必须为GNode的子类，否则无法通过编译。
      * MyNode1中run()执行内容为sleep(1s)
      * MyNode2中run()执行内容为sleep(2s) */
     CStatus status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");    // 将名为nodeA，无执行依赖的node信息，注册入pipeline中
@@ -84,7 +84,7 @@ void tutorial_simple() {
     status += pipeline->registerGElement<MyNode1>(&c, {a}, "nodeC");
     status += pipeline->registerGElement<MyNode2>(&d, {b, c}, "nodeD");    // 将名为nodeD，依赖{b,c}执行的node信息，注册入pipeline中
     if (!status.isOK()) {
-        return;    // 使用时，请对所有CGraph接口的返回值做判定。今后所有例子中，省略此操作
+        return;    // 使用时，请对所有CGraph接口的返回值做判定
     }
 
     /* 执行流图框架 */

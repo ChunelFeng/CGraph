@@ -31,7 +31,7 @@ protected:
 
 private:
     CStatus init() override;
-    CStatus deinit() override;
+    CStatus destroy() override;
     CStatus run() override;
     CStatus addElement(GElementPtr element) override;
 

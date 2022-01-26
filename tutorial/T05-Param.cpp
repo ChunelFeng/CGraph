@@ -33,7 +33,7 @@ void tutorial_param() {
         std::cout << "[CGraph] tutorial_param, loop : " << i + 1 << ", and run status = " << status.getCode() << std::endl;
     }
 
-    status = pipeline->deinit();
+    status = pipeline->destroy();
     GPipelineFactory::destroy(pipeline);
 }
 

@@ -42,16 +42,16 @@ public:
     virtual void finishRun(CStatus curStatus) {}
 
     /**
-     * deinit()函数切面开始期间动作
+     * destroy()函数切面开始期间动作
      */
-    virtual CStatus beginDeinit() {
+    virtual CStatus beginDestroy() {
         return CStatus();
     }
 
     /**
-     * deinit()函数切面结束期间动作
+     * destroy()函数切面结束期间动作
      */
-    virtual void finishDeinit(CStatus curStatus) {}
+    virtual void finishDestroy(CStatus curStatus) {}
 };
 
 using GAspectPtr = GAspect *;

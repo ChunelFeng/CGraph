@@ -47,14 +47,14 @@ CStatus GSingleton<T>::run() {
 
 
 template <typename T>
-CStatus GSingleton<T>::deinit() {
+CStatus GSingleton<T>::destroy() {
     CGRAPH_FUNCTION_BEGIN
     if (!s_is_init_) {
         CGRAPH_FUNCTION_END
     }
 
     auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
-    status = element->deinit();
+    status = element->destroy();
     if (status.isOK()) {
         s_is_init_ = false;
     }

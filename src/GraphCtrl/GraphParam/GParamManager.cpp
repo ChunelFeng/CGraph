@@ -27,7 +27,7 @@ CStatus GParamManager::init() {
 }
 
 
-CStatus GParamManager::deinit() {
+CStatus GParamManager::destroy() {
     CGRAPH_FUNCTION_BEGIN
     clear();
     CGRAPH_FUNCTION_END

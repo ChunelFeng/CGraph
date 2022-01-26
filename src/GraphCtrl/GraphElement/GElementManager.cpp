@@ -54,16 +54,16 @@ CStatus GElementManager::init() {
 }
 
 
-CStatus GElementManager::deinit() {
+CStatus GElementManager::destroy() {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr element : manager_elements_) {
         CGRAPH_ASSERT_NOT_NULL(element)
 
-        status = element->doAspect(GAspectType::BEGIN_DEINIT);
+        status = element->doAspect(GAspectType::BEGIN_DESTROY);
         CGRAPH_FUNCTION_CHECK_STATUS
-        status = element->deinit();
-        element->doAspect(GAspectType::FINISH_DEINIT, status);
+        status = element->destroy();
+        element->doAspect(GAspectType::FINISH_DESTROY, status);
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 

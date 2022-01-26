@@ -26,7 +26,7 @@ public:
     }
 
     ~USingleton() override {
-        destroy();
+        clear();
     }
 
     /**
@@ -53,10 +53,10 @@ protected:
         CGRAPH_FUNCTION_END
     }
 
-    CStatus deinit() override {
+    CStatus destroy() override {
         CGRAPH_FUNCTION_BEGIN
         if constexpr (std::is_base_of<CObject, T>::value) {
-            status = this->get()->deinit();
+            status = this->get()->destroy();
         }
         CGRAPH_FUNCTION_END
     }
@@ -70,7 +70,7 @@ protected:
         }
     }
 
-    void destroy() {
+    void clear() {
         CGRAPH_LOCK_GUARD lock(lock_);
         CGRAPH_DELETE_PTR(handle_)
     }

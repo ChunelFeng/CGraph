@@ -25,7 +25,7 @@ protected:
     GRegion& operator=(const GRegion& region);
 
     CStatus init() override;
-    CStatus deinit() override;
+    CStatus destroy() override;
     CStatus run() override;
     CStatus addElement(GElementPtr element) override;
     CStatus setThreadPool(UThreadPoolPtr pool);

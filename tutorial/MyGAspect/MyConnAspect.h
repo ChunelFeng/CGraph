@@ -24,7 +24,7 @@ public:
         return CStatus();
     }
 
-    void finishDeinit(CStatus curStatus) override {
+    void finishDestroy(CStatus curStatus) override {
         auto* param = this->getAParam<MyConnAspectParam>();
         if (param) {
             mockDisconnect(param->ip, param->port);
