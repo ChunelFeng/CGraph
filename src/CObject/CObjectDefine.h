@@ -9,9 +9,6 @@
 #ifndef CGRAPH_COBJECTDEFINE_H
 #define CGRAPH_COBJECTDEFINE_H
 
-#define STATUS_OK         (0)
-#define STATUS_ERR        (-1)                // 流程异常
-
 #define CGRAPH_NAMESPACE_BEGIN                                          \
 namespace CGraph {                                                      \
 
