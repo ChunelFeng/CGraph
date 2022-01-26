@@ -13,8 +13,7 @@
     #include <uuid/uuid.h>
 #endif
 
-#include "../CObject/CObject.h"
-#include "ThreadPool/UThreadPoolDefine.h"
+#include <mutex>
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -59,7 +58,7 @@ public:
      */
     static std::string generateSession() {
         #ifdef _GENERATE_SESSION_
-                CGRAPH_LOCK_GUARD lock{ g_session_mtx };
+                std::lock_guard<std::mutex> lock{ g_session_mtx };
                 uuid_t uuid;
                 char session[36] = {0};    // 36是特定值
                 uuid_generate(uuid);

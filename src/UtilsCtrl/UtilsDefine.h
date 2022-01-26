@@ -11,52 +11,12 @@
 
 #include <iostream>
 #include <string>
-#include <ctime>
-#include <cstdarg>
 
 #include "../CObject/CObject.h"
 #include "UAllocator.h"
+#include "UtilsFunction.h"
 
 CGRAPH_NAMESPACE_BEGIN
-
-static std::mutex g_check_status_mtx;
-static std::mutex g_echo_mtx;
-
-/* CGRAPH 个性化输出 */
-inline void CGRAPH_ECHO(const char *cmd, ...) {
-#ifdef _CGRAPH_SILENCE_
-    return;
-#endif
-
-    CGRAPH_LOCK_GUARD lock{ g_echo_mtx };
-#ifndef _WIN32
-    // 非windows系统，打印到毫秒
-    auto now = std::chrono::system_clock::now();
-    //通过不同精度获取相差的毫秒数
-    uint64_t disMs = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count()
-                      - std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count() * 1000;
-    time_t tt = std::chrono::system_clock::to_time_t(now);
-    auto time_tm = localtime(&tt);
-    char strTime[32] = { 0 };
-    sprintf(strTime, " [%d-%02d-%02d %02d:%02d:%02d.%03d]", time_tm->tm_year + 1900,
-            time_tm->tm_mon + 1, time_tm->tm_mday, time_tm->tm_hour,
-            time_tm->tm_min, time_tm->tm_sec, (int)disMs);
-    std::cout << "[CGraph]" << strTime << " ";
-#else
-    // windows系统，打印到秒
-    time_t cur_time = time(nullptr);
-        std::string ct = ctime(&cur_time);
-        std::cout << "[CGraph] ["
-                  << ct.assign(ct.begin(), ct.end()-1)    // 去掉时间的最后一位\n信息
-                  << "] ";
-#endif
-
-    va_list args;
-    va_start(args, cmd);
-    vprintf(cmd, args);
-    va_end(args);
-    std::cout << "\n";
-}
 
 #ifdef _ENABLE_LIKELY_
     #define likely(x)   __builtin_expect(!!(x), 1)
@@ -86,12 +46,14 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
     }                                               \
 
 /* 判断函数流程是否可以继续 */
-#define CGRAPH_FUNCTION_CHECK_STATUS                                                                                              \
-    if (unlikely(!status.isOK())) {                                                                                               \
-        std::lock_guard<std::mutex> lock{ g_check_status_mtx };                                                                   \
-        CGRAPH_ECHO("%s | %s | line = [%d], errorCode = [%d], errorInfo = [%s].", __FILE__, __FUNCTION__, __LINE__, status.getCode(), status.getInfo().c_str());    \
-        return status;                                                                                                            \
-    }                                                                                                                             \
+static std::mutex g_check_status_mtx;
+#define CGRAPH_FUNCTION_CHECK_STATUS                                                     \
+    if (unlikely(!status.isOK())) {                                                      \
+        std::lock_guard<std::mutex> lock{ g_check_status_mtx };                          \
+        CGRAPH_ECHO("%s | %s | line = [%d], errorCode = [%d], errorInfo = [%s].",        \
+            __FILE__, __FUNCTION__, status.getCode(), status.getInfo().c_str());         \
+        return status;                                                                   \
+    }                                                                                    \
 
 /* 删除资源信息 */
 #define CGRAPH_DELETE_PTR(ptr)                                \
@@ -111,7 +73,7 @@ inline void CGRAPH_ECHO(const char *cmd, ...) {
     }                                                         \
 
 #define CGRAPH_NO_SUPPORT                                     \
-    return CStatus("function not support yet");               \
+    return CStatus("function not support");                   \
 
 #define CGRAPH_SLEEP_MILLISECOND(ms)                                            \
     std::this_thread::sleep_for(std::chrono::milliseconds(ms));                 \
