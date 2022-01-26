@@ -14,6 +14,7 @@
 #endif
 
 #include <mutex>
+#include <memory>
 
 CGRAPH_NAMESPACE_BEGIN
 
