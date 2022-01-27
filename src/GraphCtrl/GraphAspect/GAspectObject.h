@@ -19,7 +19,9 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GAspectObject : public GraphObject {
 public:
-    ~GAspectObject() override = default;
+    ~GAspectObject() override {
+        CGRAPH_DELETE_PTR(param_)
+    }
 
     /**
      * 获取name信息
