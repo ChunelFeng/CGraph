@@ -45,7 +45,7 @@ void tutorial_threadpool_2() {
 
     /** 添加一个不耗时的任务 */
     int i = 1, j = 2, k = 3;
-    auto hcg = [] { CGRAPH_ECHO("hello, CGraph."); };
+    auto hcg = [] { CGRAPH_ECHO("Hello, CGraph."); };
     taskGroup.addTask(hcg);
 
     /** 添加一个耗时为1000ms的任务 */

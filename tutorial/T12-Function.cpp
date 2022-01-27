@@ -26,7 +26,7 @@ void tutorial_function() {
     }
 
     int num = 10;
-    const std::string& info = "hello, CGraph";
+    const std::string& info = "Hello, CGraph";
     ((GFunctionPtr)c_function)->setFunction(GFunctionType::RUN, [num, info] {
         CGRAPH_ECHO("input num i = [%d], info = [%s]", num, info.c_str());    // 传递pipeline外部参数，并在pipeline内部节点执行时使用
         return CStatus();

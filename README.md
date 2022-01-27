@@ -9,7 +9,7 @@
   CGraph 说明文档
 </h1>
 
-> A cross-platform DAG(Directed Acyclic Graph) pipeline based on C++17 is provided by this repository. </br></br>You can build your own operators simply, and then describe any running schedules for them as you wish, such as dependence, parallelling, loop, condition or aggregation. Some useful plugins and common tools are also given to enhance your project. </br></br>Tutorials and contact information are shown as follows. Please contact us for free if you need more about CGraph.
+>A cross-platform `DAG`(Directed Acyclic Graph) framework based on C++17 is provided by this repository. </br></br>You can build your own operators simply, and then describe any running schedules for them as you need, such as dependence, parallelling, loop, condition and aggregation. Some useful tools and plugins are also given to enhance your project. </br></br>Tutorials and contact information are shown as follows. Please get in touch with us for free if you need more about CGraph.
 
 ## 一. 简介
 
@@ -30,10 +30,16 @@
 * Linux环境开发者，在命令行模式下，输入以下指令，即可编译通过
   ```shell
   $ git clone https://github.com/ChunelFeng/CGraph.git
-  $ cd CGraph/
+  $ cd CGraph
   $ cmake . -Bbuild
-  $ cd build/
+  $ cd build
   $ make
+  ```
+
+* 提供基于`Ubuntu 20.04.3 LTS`的Docker镜像。输入以下指令，即可获取并进入
+  ```shell
+  $ docker pull chunelfeng/cenv                         # 获取docker镜像
+  $ docker run -it --name CGraphEnv chunelfeng/cenv     # 进入docker镜像
   ```
 
 ## 三. 使用Demo

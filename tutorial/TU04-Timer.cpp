@@ -13,7 +13,7 @@ using namespace CGraph;
 void tutorial_timer() {
     UTimer timer;
     timer.start(1000, [] {
-        CGRAPH_ECHO("hello, CGraph");
+        CGRAPH_ECHO("Hello, CGraph");
     });
 
     CGRAPH_SLEEP_MILLISECOND(5500)
