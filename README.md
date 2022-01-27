@@ -9,7 +9,7 @@
   CGraph 说明文档
 </h1>
 
-> A tested and reliable cross-platform DAG(Directed Acyclic Graph) pipeline based on C++17 is provided in this repository. </br></br>You can build your own operators simply, and then describe any running schedules for them as you wish, such as dependence, parallelling, loop or aggregation. Some useful plugins and common tools are also given to enhance your project. </br></br>Tutorials and contact information are shown as follows. Please contact us for free if you need more about CGraph.
+> A tested, reliable and cross-platform DAG(Directed Acyclic Graph) pipeline based on C++17 is provided in this repository. </br></br>You can build your own operators simply, and then describe any running schedules for them as you wish, such as dependence, parallelling, loop or aggregation. Some useful plugins and common tools are also given to enhance your project. </br></br>Tutorials and contact information are shown as follows. Please contact us for free if you need more about CGraph.
 
 ## 一. 简介
 
