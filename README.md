@@ -1,11 +1,15 @@
 <p align="left">
   <a href="https://github.com/ChunelFeng/CGraph"><img src="https://badgen.net/badge/langs/C++/cyan?list=1" alt="languages"></a>
   <a href="https://github.com/ChunelFeng/CGraph"><img src="https://badgen.net/badge/os/MacOS,Linux,Windows/cyan?list=1" alt="os"></a>
+  <a href="https://github.com/ChunelFeng/CGraph/stargazers"><img src="https://badgen.net/github/stars/ChunelFeng/CGraph?color=cyan" alt="stars"></a>
+  <a href="https://github.com/ChunelFeng/CGraph/network/members"><img src="https://badgen.net/github/forks/ChunelFeng/CGraph?color=cyan" alt="forks"></a>
 </p>
 
 <h1 align="center">
   CGraph 说明文档
 </h1>
+
+> A tested and reliable cross-platform DAG(Directed Acyclic Graph) pipeline based on C++17 is provided in this repository. </br></br>You can build your own operators simply, and then describe any running schedules for them as you wish, such as dependence, parallelling, loop or aggregation. Some useful plugins and common tools are also given to enhance your project. </br></br>Tutorials and contact information are shown as follows. Please contact us for free if you need more about CGraph.
 
 ## 一. 简介
 
