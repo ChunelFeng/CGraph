@@ -9,7 +9,7 @@
   CGraph 说明文档
 </h1>
 
->A cross-platform `DAG`(Directed Acyclic Graph) framework based on C++17 is provided by this repository. </br></br>You can build your own operators simply, and then describe any running schedules for them as you need, such as dependence, parallelling, loop, condition and aggregation. Some useful tools and plugins are also given to enhance your project. </br></br>Tutorials and contact information are shown as follows. Please get in touch with us for free if you need more about CGraph.
+>CGraph is a cross-platform `DAG`(Directed Acyclic Graph) framework based on C++17 only.</br></br>You, with it, can build your own operators simply, and then describe any running schedules for them as you need, such as dependence, parallelling, loop, condition and aggregation. Some useful tools and plugins are also provided to improve your project.</br></br>Tutorials and contact information are shown as follows. Please get in touch with us for free if you need more about this repository.
 
 ## 一. 简介
 
