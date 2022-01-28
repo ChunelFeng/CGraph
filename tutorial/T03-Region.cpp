@@ -37,7 +37,7 @@ void tutorial_region() {
     status = pipeline->process();
     CGRAPH_ECHO("pipeline process status is : [%d]", status.getCode());
 
-    GPipelineFactory::destroy(pipeline);
+    GPipelineFactory::remove(pipeline);
 }
 
 int main () {

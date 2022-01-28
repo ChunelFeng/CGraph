@@ -27,30 +27,33 @@ GPipelinePtr GPipelineFactory::create() {
 }
 
 
-void GPipelineFactory::destroy(GPipelinePtr pipeline) {
-    if (nullptr == pipeline) {
-        return;
-    }
+CStatus GPipelineFactory::remove(GPipelinePtr pipeline) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(pipeline)
 
     CGRAPH_LOCK_GUARD lock(s_lock_);
     s_pipeline_list_.remove(pipeline);
     CGRAPH_DELETE_PTR(pipeline)
 
     if (s_pipeline_list_.empty()) {
-        UThreadPoolSingleton::get(false)->destroy();
+        status = UThreadPoolSingleton::get(false)->destroy();
     }
+
+    CGRAPH_FUNCTION_END
 }
 
 
-void GPipelineFactory::clear() {
+CStatus GPipelineFactory::clear() {
+    CGRAPH_FUNCTION_BEGIN
     CGRAPH_LOCK_GUARD lock(s_lock_);
 
     for (GPipelinePtr pipeline : GPipelineFactory::s_pipeline_list_) {
         CGRAPH_DELETE_PTR(pipeline)
     }
 
-    UThreadPoolSingleton::get(false)->destroy();
     s_pipeline_list_.clear();
+    status = UThreadPoolSingleton::get(false)->destroy();
+    CGRAPH_FUNCTION_END
 }
 
 

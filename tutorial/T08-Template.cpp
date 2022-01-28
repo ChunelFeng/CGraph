@@ -24,7 +24,7 @@ void tutorial_template() {
     pipeline->registerGElement<MyTemplateNode<std::string>>(&d, {c});
 
     pipeline->process();    // 运行pipeline
-    GPipelineFactory::destroy(pipeline);
+    GPipelineFactory::remove(pipeline);
 }
 
 

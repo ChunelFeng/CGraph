@@ -25,7 +25,7 @@ void tutorial_singleton() {
     pipeline->registerGElement<GSingleton<MyShowAddressNode>>(&e, {c});    // e的地址和a也是相同的
 
     pipeline->process();
-    GPipelineFactory::destroy(pipeline);
+    GPipelineFactory::remove(pipeline);
 }
 
 int main() {

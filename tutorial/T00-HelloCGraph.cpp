@@ -16,7 +16,7 @@ void tutorial_hello_cgraph() {
 
     pipeline->registerGElement<HelloCGraphNode>(&hcg);    // 注册一个HelloCGraphNode节点，功能就是打印 "Hello, CGraph." 信息
     pipeline->process();    // 运行pipeline
-    GPipelineFactory::destroy(pipeline);
+    GPipelineFactory::remove(pipeline);
 }
 
 

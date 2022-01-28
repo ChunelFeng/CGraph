@@ -99,7 +99,7 @@ void tutorial_simple() {
 
     /* 执行流图框架 */
     status = pipeline->process();
-    GPipelineFactory::destroy(pipeline);
+    GPipelineFactory::remove(pipeline);
 }
 ```
 

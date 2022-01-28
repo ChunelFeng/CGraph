@@ -34,7 +34,7 @@ void tutorial_param() {
     }
 
     status = pipeline->destroy();
-    GPipelineFactory::destroy(pipeline);
+    GPipelineFactory::remove(pipeline);
 }
 
 int main() {

@@ -42,7 +42,7 @@ void tutorial_aspect() {
     pipeline->addGAspect<MyTraceAspect>({b_region, c});
 
     pipeline->process();    // 运行pipeline
-    GPipelineFactory::destroy(pipeline);
+    GPipelineFactory::remove(pipeline);
 }
 
 

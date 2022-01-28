@@ -53,7 +53,7 @@ void tutorial_condition() {
 
     status = pipeline->destroy();
 
-    GPipelineFactory::destroy(pipeline);
+    GPipelineFactory::remove(pipeline);
 }
 
 

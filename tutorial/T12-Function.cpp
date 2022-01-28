@@ -45,7 +45,7 @@ void tutorial_function() {
     });
 
     pipeline->process();
-    GPipelineFactory::destroy(pipeline);
+    GPipelineFactory::remove(pipeline);
 }
 
 

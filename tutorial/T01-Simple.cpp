@@ -51,7 +51,7 @@ void tutorial_simple() {
 
     /* 图信息逆初始化，准备结束计算 */
     status = pipeline->destroy();
-    GPipelineFactory::destroy(pipeline);
+    GPipelineFactory::remove(pipeline);
 }
 
 int main () {

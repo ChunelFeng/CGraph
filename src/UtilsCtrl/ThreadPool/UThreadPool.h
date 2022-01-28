@@ -44,7 +44,6 @@ public:
         autoInit ? this->init() : CStatus();
     }
 
-
     ~UThreadPool() override {
         // 在析构的时候，才释放监控线程
         is_monitor_ = false;
@@ -54,7 +53,6 @@ public:
 
         destroy();
     }
-
 
     /**
      * 设置线程池相关配置信息，需要在init()函数调用前，完成设置
@@ -69,7 +67,6 @@ public:
         this->config_ = config;
         CGRAPH_FUNCTION_END
     }
-
 
     /**
      * 开启所有的线程信息
@@ -126,7 +123,6 @@ public:
 
         return result;
     }
-
 
     /**
      * 执行任务组信息

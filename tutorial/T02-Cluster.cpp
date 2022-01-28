@@ -38,7 +38,7 @@ void tutorial_cluster () {
     status = pipeline->process();
     CGRAPH_ECHO("pipeline process status is : [%d]", status.getCode());
 
-    GPipelineFactory::destroy(pipeline);
+    GPipelineFactory::clear();    // clear表示清空所有的pipeline信息
 }
 
 int main () {

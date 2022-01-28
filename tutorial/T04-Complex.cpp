@@ -40,7 +40,7 @@ void tutorial_complex () {
     }
 
     status = pipeline->process();
-    GPipelineFactory::destroy(pipeline);
+    GPipelineFactory::remove(pipeline);
 }
 
 int main () {

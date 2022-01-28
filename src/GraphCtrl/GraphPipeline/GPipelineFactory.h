@@ -31,12 +31,12 @@ public:
      * 销毁一个pipeline信息
      * @return
      */
-    static void destroy(GPipelinePtr pipeline);
+    static CStatus remove(GPipelinePtr pipeline);
 
     /**
      * 清空所有的pipeline信息
      */
-    static void clear();
+    static CStatus clear();
 
 protected:
     CStatus run() override;
