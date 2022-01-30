@@ -94,7 +94,10 @@ CGRAPH_NAMESPACE_END
 
 using CStatus = CGraph::CSTATUS;                     // 方便外部直接使用
 using CGRAPH_DEFAULT_FUNCTION = std::function<void()>;
+using CGRAPH_DEFAULT_CONST_FUNCTION_REF = const std::function<void()>&;
 using CGRAPH_CSTATUS_FUNCTION = std::function<CStatus()>;
+using CGRAPH_CSTATUS_CONST_FUNCTION_REF = const std::function<CStatus()>&;
 using CGRAPH_CALLBACK_FUNCTION = std::function<void(CStatus)>;
+using CGRAPH_CALLBACK_CONST_FUNCTION_REF = const std::function<void(CStatus)>&;
 
 #endif //CGRAPH_CSTATUS_H

@@ -13,6 +13,7 @@
 #include <chrono>
 #include <ctime>
 #include <cstdarg>
+#include <algorithm>
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -88,6 +89,40 @@ typename T::value_type CGRAPH_CONTAINER_MULTIPLY(const T& container) {
         result *= val;
     }
     return result;
+}
+
+
+/**
+ * 获取max值
+ * @tparam T
+ * @param value
+ * @return
+ */
+template <typename T>
+T CGRAPH_MAX(T val) {
+    return val;
+}
+
+template <typename T, typename... Args>
+T CGRAPH_MAX(T val, Args... args) {
+    return std::max(val, CGRAPH_MAX(args...));
+}
+
+
+/**
+ * 累加
+ * @tparam T
+ * @param t
+ * @return
+ */
+template<typename T>
+T CGRAPH_SUM(T t) {
+    return t;
+}
+
+template<typename T, typename... Args>
+T CGRAPH_SUM(T val, Args... args) {
+    return val + CGRAPH_SUM(args...);
 }
 
 CGRAPH_NAMESPACE_END

@@ -9,7 +9,6 @@
 #ifndef CGRAPH_UTASKGROUP_H
 #define CGRAPH_UTASKGROUP_H
 
-#include <climits>
 #include <utility>
 
 #include "../UThreadObject.h"
@@ -26,20 +25,19 @@ public:
      * @param ttlMs
      * @param onFinished
      */
-    explicit UTaskGroup(const CGRAPH_DEFAULT_FUNCTION& task,
-                        int ttlMs = INT_MAX,
-                        const CGRAPH_CALLBACK_FUNCTION& onFinished = nullptr) noexcept {
+    explicit UTaskGroup(CGRAPH_DEFAULT_CONST_FUNCTION_REF task,
+                        int ttlMs = CGRAPH_MAX_BLOCK_TTL_MS,
+                        CGRAPH_CALLBACK_CONST_FUNCTION_REF onFinished = nullptr) noexcept {
         this->addTask(task)
             ->setTtlMs(ttlMs)
             ->setOnFinished(onFinished);
     }
 
-
     /**
      * 添加一个任务
      * @param task
      */
-    UTaskGroup* addTask(const CGRAPH_DEFAULT_FUNCTION &task) {
+    UTaskGroup* addTask(CGRAPH_DEFAULT_CONST_FUNCTION_REF task) {
         task_arr_.emplace_back(task);
         return this;
     }
@@ -50,7 +48,7 @@ public:
      * @param ttl
      */
     UTaskGroup* setTtlMs(int ttlMs) {
-        this->ttl_ms_ = ttlMs > 0 ? ttlMs : INT_MAX;
+        this->ttl_ms_ = (ttlMs >= 0) ? ttlMs : CGRAPH_MAX_BLOCK_TTL_MS;
         return this;
     }
 
@@ -60,7 +58,7 @@ public:
      * @param onFinished
      * @return
      */
-    UTaskGroup* setOnFinished(const CGRAPH_CALLBACK_FUNCTION& onFinished) {
+    UTaskGroup* setOnFinished(CGRAPH_CALLBACK_CONST_FUNCTION_REF onFinished) {
         this->on_finished_ = onFinished;
         return this;
     }
@@ -94,7 +92,7 @@ public:
 
 private:
     std::vector<CGRAPH_DEFAULT_FUNCTION> task_arr_;         // 任务消息
-    int ttl_ms_ = INT_MAX;                                  // 任务组最大执行耗时
+    int ttl_ms_ = CGRAPH_MAX_BLOCK_TTL_MS;                  // 任务组最大执行耗时(如果是0的话，则表示不阻塞)
     CGRAPH_CALLBACK_FUNCTION on_finished_ = nullptr;        // 执行函数任务结束
 
     friend class UThreadPool;

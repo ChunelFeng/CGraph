@@ -15,6 +15,11 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
+using CGRAPH_READ_LOCK = std::shared_lock<std::shared_mutex>;
+using CGRAPH_WRITE_LOCK = std::unique_lock<std::shared_mutex>;
+using CGRAPH_LOCK_GUARD = std::lock_guard<std::mutex>;
+using CGRAPH_UNIQUE_LOCK = std::unique_lock<std::mutex>;
+
 static const int CGRAPH_CPU_NUM = (int)std::thread::hardware_concurrency();
 static const int CGRAPH_THREAD_TYPE_PRIMARY = 1;
 static const int CGRAPH_THREAD_TYPE_SECONDARY = 2;
@@ -28,14 +33,13 @@ static const int CGRAPH_THREAD_SCHED_OTHER = 0;
 static const int CGRAPH_THREAD_SCHED_RR = 0;
 static const int CGRAPH_THREAD_SCHED_FIFO = 0;
     #endif
-static const int CGRAPH_THREAD_MIN_PRIORITY = 0;
-static const int CGRAPH_THREAD_MAX_PRIORITY = 99;
+static const int CGRAPH_THREAD_MIN_PRIORITY = 0;                                            // 线程最低优先级
+static const int CGRAPH_THREAD_MAX_PRIORITY = 99;                                           // 线程最高优先级
+static const int CGRAPH_MAX_BLOCK_TTL_MS = 10000000;                                        // 最大阻塞时间
 
-using CGRAPH_READ_LOCK = std::shared_lock<std::shared_mutex>;
-using CGRAPH_WRITE_LOCK = std::unique_lock<std::shared_mutex>;
-using CGRAPH_LOCK_GUARD = std::lock_guard<std::mutex>;
-using CGRAPH_UNIQUE_LOCK = std::unique_lock<std::mutex>;
-
+/**
+ * 以下为线程池配置信息
+ */
 static const int CGRAPH_DEFAULT_THREAD_SIZE = (CGRAPH_CPU_NUM > 0) ? CGRAPH_CPU_NUM : 8;    // 默认主线程个数
 static const int CGRAPH_MAX_THREAD_SIZE = (CGRAPH_DEFAULT_THREAD_SIZE * 2);                 // 最大线程个数
 static const int CGRAPH_MAX_TASK_STEAL_RANGE = 2;                                           // 盗取机制相邻范围

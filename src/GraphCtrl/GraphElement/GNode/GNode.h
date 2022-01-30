@@ -20,6 +20,27 @@ protected:
         node_type_ = GNodeType::DEFAULT;
     }
 
+
+    /**
+     * 异步执行信息，适用于传入静态类函数或者lambda表达式信息
+     * @tparam Func
+     * @tparam Args
+     * @param func
+     * @param args
+     */
+    template<typename Func, typename... Args>
+    CStatus detach(const Func&& func, Args&&... args) {
+        CGRAPH_FUNCTION_BEGIN
+        CGRAPH_ASSERT_INIT(true)
+
+        UThreadPoolPtr pool = UThreadPoolSingleton::get(false);
+        CGRAPH_ASSERT_NOT_NULL(pool)
+
+        pool->commit(std::bind(func, std::forward<Args>(args)...));
+        CGRAPH_FUNCTION_END
+    }
+
+
 protected:
     GNodeType node_type_;                    // 节点类型
 };

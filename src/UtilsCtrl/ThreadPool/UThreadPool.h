@@ -126,13 +126,13 @@ public:
 
     /**
      * 执行任务组信息
-     * 取taskGroup内部ttl和入参ttl的最小值，为计算ttl标准。默认均为INT_MAX值
+     * 取taskGroup内部ttl和入参ttl的最小值，为计算ttl标准
      * @param taskGroup
      * @param ttlMs
      * @return
      */
     CStatus submit(const UTaskGroup& taskGroup,
-                   int ttlMs = INT_MAX) {
+                   int ttlMs = CGRAPH_MAX_BLOCK_TTL_MS) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
 
@@ -168,10 +168,10 @@ public:
      * @param ttlMs
      * @return
      */
-    CStatus submit(const CGRAPH_DEFAULT_FUNCTION &task,
-                   int ttlMs = INT_MAX,
-                   const CGRAPH_CALLBACK_FUNCTION& onFinished = nullptr) {
-        UTaskGroup taskGroup(task, ttlMs, onFinished);
+    CStatus submit(CGRAPH_DEFAULT_CONST_FUNCTION_REF func,
+                   int ttlMs = CGRAPH_MAX_BLOCK_TTL_MS,
+                   CGRAPH_CALLBACK_CONST_FUNCTION_REF onFinished = nullptr) {
+        UTaskGroup taskGroup(func, ttlMs, onFinished);
         return submit(taskGroup);
     }
 
@@ -224,7 +224,7 @@ private:
 
             // 如果 primary线程都在执行，则表示忙碌
             bool busy = std::all_of(primary_threads_.begin(), primary_threads_.end(),
-                                    [] (UThreadPrimaryPtr ptr) { return ptr->is_running_; });
+                                    [](UThreadPrimaryPtr ptr) { return nullptr != ptr && ptr->is_running_; });
 
             // 如果忙碌，则需要添加 secondary线程
             if (busy && (secondary_threads_.size() + config_.default_thread_size_) < config_.max_thread_size_) {

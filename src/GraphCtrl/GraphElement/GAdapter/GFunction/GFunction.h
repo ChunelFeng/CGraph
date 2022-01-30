@@ -21,7 +21,8 @@ public:
      * @param func
      * @return
      */
-    GFunction* setFunction(const GFunctionType& type, const CGRAPH_CSTATUS_FUNCTION& func) {
+    GFunction* setFunction(const GFunctionType& type,
+                           CGRAPH_CSTATUS_CONST_FUNCTION_REF func) {
         CGRAPH_ASSERT_INIT_RETURN_NULL(false)
         CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(func)
 
