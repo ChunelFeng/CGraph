@@ -35,7 +35,8 @@ static const int CGRAPH_THREAD_SCHED_FIFO = 0;
     #endif
 static const int CGRAPH_THREAD_MIN_PRIORITY = 0;                                            // 线程最低优先级
 static const int CGRAPH_THREAD_MAX_PRIORITY = 99;                                           // 线程最高优先级
-static const int CGRAPH_MAX_BLOCK_TTL_MS = 10000000;                                        // 最大阻塞时间
+static const int CGRAPH_MAX_BLOCK_TTL_MS = 10000000;                                        // 最大阻塞时间，单位为ms
+static const int CGRAPH_DEFAULT_TASK_STRATEGY = -1;                                         // 默认线程调度策略
 
 /**
  * 以下为线程池配置信息

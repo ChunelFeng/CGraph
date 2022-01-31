@@ -97,30 +97,22 @@ public:
      * 提交任务信息
      * @tparam FunctionType
      * @param func
+     * @param index
      * @return
      */
     template<typename FunctionType>
-    std::future<typename std::result_of<FunctionType()>::type> commit(const FunctionType& func) {
+    std::future<typename std::result_of<FunctionType()>::type> commit(const FunctionType& func,
+                                                                      int index = CGRAPH_DEFAULT_TASK_STRATEGY) {
         typedef typename std::result_of<FunctionType()>::type resultType;
 
         std::packaged_task<resultType()> task(func);
         std::future<resultType> result(task.get_future());
 
-        if (!config_.fair_lock_enable_
-            && cur_index_ >= 0
-            && cur_index_ < config_.default_thread_size_) {
-            // 部分任务直接放到线程的队列中执行
-            primary_threads_[cur_index_]->work_stealing_queue_.push(std::move(task));
-        } else {
-            // 部分数据被分流到线程池（总体）的任务队列中
-            task_queue_.push(std::move(task));
-        }
-
-        cur_index_++;
-        if (cur_index_ >= config_.max_thread_size_ || cur_index_ < 0) {
-            cur_index_ = 0;
-        }
-
+        /**
+         * 将任务分配到对应的线程上去执行
+         * 如果传入的是CGRAPH_DEFAULT_TASK_STRATEGY，则均分任务
+         */
+        dispatchTask(std::move(task), index);
         return result;
     }
 
@@ -205,7 +197,38 @@ public:
     }
 
 
-private:
+protected:
+    /**
+     * 将任务分配到对应的线程中执行
+     * @param task
+     * @param index
+     */
+    void dispatchTask(UTaskWrapper&& task, int index) {
+        if (CGRAPH_DEFAULT_TASK_STRATEGY == index) {
+            /** 默认调度策略信息 */
+            if (!config_.fair_lock_enable_
+                && cur_index_ >= 0
+                && cur_index_ < config_.default_thread_size_) {
+                /** 部分任务直接放到线程的队列中执行 */
+                primary_threads_[cur_index_]->work_stealing_queue_.push(std::move(task));
+            } else {
+                /** 部分数据被分流到线程池（总体）的任务队列中 */
+                task_queue_.push(std::move(task));
+            }
+
+            cur_index_++;
+            if (cur_index_ >= config_.max_thread_size_ || cur_index_ < 0) {
+                cur_index_ = 0;
+            }
+        } else if (index >= 0 && index < config_.default_thread_size_ && !config_.fair_lock_enable_) {
+            /** 如果指定的是主线程，则直接放到主线程执行 */
+            primary_threads_[index]->work_stealing_queue_.push(std::move(task));
+        } else {
+            /** 如果是其他情况，则放到通用线程中等待执行 */
+            task_queue_.push(std::move(task));
+        }
+    }
+
     /**
      * 监控线程执行函数，主要是判断是否需要增加线程，或销毁线程
      * 增/删 操作，仅针对secondary类型线程生效
