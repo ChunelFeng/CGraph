@@ -24,6 +24,7 @@ CStatus GParamManager::create(const std::string& key) {
     CGRAPH_FUNCTION_END
 }
 
+
 template<typename T,
         std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
 T* GParamManager::get(const std::string& key) {

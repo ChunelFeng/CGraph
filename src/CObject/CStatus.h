@@ -81,7 +81,7 @@ public:
      * 判断当前状态是否可行
      * @return
      */
-    [[nodiscard]] bool isWrong() const {
+    [[nodiscard]] bool isErr() const {
         return error_code_ < STATUS_OK;    // 约定异常信息，均为负值
     }
 

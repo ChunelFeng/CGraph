@@ -10,12 +10,9 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-GElementManager::GElementManager() : CObject() {
-
-}
+GElementManager::GElementManager() = default;
 
 GElementManager::~GElementManager() = default;
-
 
 GElementManager::GElementManager(const GElementManager& manager) {
     this->manager_elements_ = manager.manager_elements_;
@@ -198,7 +195,7 @@ CStatus GElementManager::afterRunCheck(int runNodeSize) {
 }
 
 
-CStatus GElementManager::addElement(GElementPtr element) {
+CStatus GElementManager::add(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(element)
 
@@ -208,7 +205,7 @@ CStatus GElementManager::addElement(GElementPtr element) {
 }
 
 
-bool GElementManager::hasElement(GElementPtr element) const {
+bool GElementManager::find(GElementPtr element) const {
     if (nullptr == element) {
         return false;
     }
@@ -217,8 +214,12 @@ bool GElementManager::hasElement(GElementPtr element) const {
 }
 
 
-void GElementManager::deleteElement(GElementPtr element) {
+CStatus GElementManager::remove(GElementPtr element) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(element)
+
     manager_elements_.erase(element);
+    CGRAPH_FUNCTION_END
 }
 
 CGRAPH_NAMESPACE_END

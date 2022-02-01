@@ -9,7 +9,7 @@
 #ifndef CGRAPH_GRAPHOBJECT_H
 #define CGRAPH_GRAPHOBJECT_H
 
-#include "../CObject/CObject.h"
+#include "../CObject/CObjectInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

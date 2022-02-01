@@ -25,7 +25,7 @@ public:
      * 初始化函数
      */
     virtual CStatus init() {
-        return CStatus();
+        CGRAPH_COMMON_FUNCTION
     }
 
     /**
@@ -37,7 +37,7 @@ public:
      * 释放函数（对应原先deinit函数）
      */
     virtual CStatus destroy() {
-        return CStatus();
+        CGRAPH_COMMON_FUNCTION
     }
 
     /**

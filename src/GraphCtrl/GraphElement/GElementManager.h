@@ -14,7 +14,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GElementManager : public CObject {
+class GElementManager : public GraphObject, public GraphManager<GElement> {
 protected:
     explicit GElementManager();
     ~GElementManager() override;    // 注意，manager中的节点，在析构的时候不需要释放。所有的节点信息在GPipeLine类中统一申请和释放
@@ -45,10 +45,25 @@ protected:
      */
     CStatus afterRunCheck(int runNodeSize);
 
-    CStatus addElement(GElementPtr element);
-    bool hasElement(GElementPtr element) const;
-    void deleteElement(GElementPtr element);
+    /**
+     * 添加一个元素信息
+     * @param element
+     * @return
+     */
+    CStatus add(GElementPtr element) override;
 
+    /**
+     * 删除传入元素
+     * @param element
+     */
+    CStatus remove(GElementPtr element) override;
+
+    /**
+     * 查找传入object
+     * @param element
+     * @return
+     */
+    bool find(GElementPtr element) const override;
 
 private:
     GElementPtrSet manager_elements_;                    // 保存节点信息的内容

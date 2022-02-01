@@ -21,7 +21,7 @@ public:
      * init()函数切面开始期间动作
      */
     virtual CStatus beginInit() {
-        return CStatus();
+        CGRAPH_COMMON_FUNCTION
     }
 
     /**
@@ -33,7 +33,7 @@ public:
      * run()函数切面开始期间动作
      */
     virtual CStatus beginRun() {
-        return CStatus();
+        CGRAPH_COMMON_FUNCTION
     }
 
     /**
@@ -45,7 +45,7 @@ public:
      * destroy()函数切面开始期间动作
      */
     virtual CStatus beginDestroy() {
-        return CStatus();
+        CGRAPH_COMMON_FUNCTION
     }
 
     /**

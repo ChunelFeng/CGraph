@@ -12,13 +12,14 @@
 #include <unordered_map>
 #include <string>
 
-#include "../../CObject/CObject.h"
+#include "../GraphObject.h"
+#include "../GraphManager.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
 #include "GParam.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GParamManager : public GParamObject {
+class GParamManager : public GParamObject, public GraphManager<GParam> {
 public:
     /**
      * 创建一个特定类型的参数
@@ -48,12 +49,12 @@ protected:
     /**
      * 清空内部所有参数信息
      */
-    void clear();
+    void clear() final;
 
     /**
      * 重置内部所有参数信息
      */
-    void reset();
+    void reset() override;
 
 private:
     std::unordered_map<std::string, GParamPtr> params_map_;           // 记录param信息的hash表

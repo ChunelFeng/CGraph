@@ -48,6 +48,9 @@ public:
         });
     }
 
+    /**
+     * 关闭定时器
+     */
     void stop() {
         if (is_stop_) {
             return;

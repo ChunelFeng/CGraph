@@ -33,6 +33,7 @@ CStatus GParamManager::destroy() {
     CGRAPH_FUNCTION_END
 }
 
+
 void GParamManager::clear() {
     for (auto& param : params_map_) {
         CGRAPH_DELETE_PTR(param.second)

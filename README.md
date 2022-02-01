@@ -9,7 +9,9 @@
   CGraph 说明文档
 </h1>
 
->CGraph is a cross-platform `DAG`(Directed Acyclic Graph) framework based on C++17 only.</br></br>You, with it, can build your own operators simply, and then describe any running schedules for them as you need, such as dependence, parallelling, loop, condition and aggregation. Some useful tools and plugins are also provided to improve your project.</br></br>Tutorials and contact information are shown as follows. Please get in touch with us for free if you need more about this repository.
+>CGraph is a cross-platform `DAG`(Directed Acyclic Graph) framework based on C++17 without any 3rd-party.</br></br>
+>You, with it, can build your own operators simply, and then describe any running schedules for them as you need, such as dependence, parallelling, loop, condition and aggregation. Some useful tools and plugins are also provided to improve your project.</br></br>
+>Tutorials and contact information are shown as follows. Please get in touch with us for free if you need more about this repository.
 
 ## 一. 简介
 
@@ -39,7 +41,7 @@
 * 提供基于`Ubuntu 20.04.3 LTS`的Docker镜像。输入以下指令，即可获取并进入
   ```shell
   $ docker pull chunelfeng/cenv                         # 获取docker镜像
-  $ docker run -it --name CGraphEnv chunelfeng/cenv     # 进入docker镜像
+  $ docker run -it --name CGraphEnv chunelfeng/cenv     # 开启docker容器，并进入
   ```
 
 ## 三. 使用Demo
@@ -106,6 +108,9 @@ void tutorial_simple() {
 ![CGraph Demo](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Demo.jpg)
 <br>
 如上图所示，图结构执行的时候，首先执行`a`节点。`a`节点执行完毕后，并行执行`b`和`c`节点。`b`和`c`节点全部执行完毕后，再执行`d`节点。
+
+## 四. 感谢
+* 感谢《HelloGithub》期刊介绍和推荐：[HelloGithub 第70期](https://github.com/521xueweihan/HelloGitHub/blob/master/content/70/HelloGitHub70.md)
 
 ------------
 #### 附录-1. 版本信息

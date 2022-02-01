@@ -41,12 +41,16 @@ public:
         /* 开启监控线程 */
         is_monitor_ = true;
         monitor_thread_ = std::move(std::thread(&UThreadPool::monitor, this));
-        autoInit ? this->init() : CStatus();
+        if (autoInit) {
+            this->init();
+        }
     }
 
+    /**
+     * 析构函数
+     */
     ~UThreadPool() override {
-        // 在析构的时候，才释放监控线程
-        is_monitor_ = false;
+        is_monitor_ = false;    // 在析构的时候，才释放监控线程
         if (monitor_thread_.joinable()) {
             monitor_thread_.join();
         }
@@ -101,8 +105,9 @@ public:
      * @return
      */
     template<typename FunctionType>
-    std::future<typename std::result_of<FunctionType()>::type> commit(const FunctionType& func,
-                                                                      int index = CGRAPH_DEFAULT_TASK_STRATEGY) {
+    auto commit(const FunctionType& func,
+                int index = CGRAPH_DEFAULT_TASK_STRATEGY)
+    -> std::future<typename std::result_of<FunctionType()>::type> {
         typedef typename std::result_of<FunctionType()>::type resultType;
 
         std::packaged_task<resultType()> task(func);
@@ -158,6 +163,7 @@ public:
      * 针对单个任务的情况，复用任务组信息，实现单个任务直接执行
      * @param task
      * @param ttlMs
+     * @param onFinished
      * @return
      */
     CStatus submit(CGRAPH_DEFAULT_CONST_FUNCTION_REF func,
@@ -204,7 +210,7 @@ protected:
      * @param index
      */
     void dispatchTask(UTaskWrapper&& task, int index) {
-        if (CGRAPH_DEFAULT_TASK_STRATEGY == index) {
+        if (likely(CGRAPH_DEFAULT_TASK_STRATEGY == index)) {
             /** 默认调度策略信息 */
             if (!config_.fair_lock_enable_
                 && cur_index_ >= 0

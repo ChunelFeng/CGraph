@@ -43,7 +43,7 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
     status = (*elementRef)->setElementInfo(dependElements, name, loop, this->param_manager_);
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    status = element_manager_->addElement(dynamic_cast<GElementPtr>(*elementRef));
+    status = element_manager_->add(dynamic_cast<GElementPtr>(*elementRef));
     CGRAPH_FUNCTION_CHECK_STATUS
     element_repository_.insert(*elementRef);
     CGRAPH_FUNCTION_END

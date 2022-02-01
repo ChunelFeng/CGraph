@@ -12,7 +12,7 @@
 #include <iostream>
 #include <string>
 
-#include "../CObject/CObject.h"
+#include "../CObject/CObjectInclude.h"
 #include "UAllocator.h"
 #include "UtilsFunction.h"
 
@@ -25,14 +25,6 @@ CGRAPH_NAMESPACE_BEGIN
     #define likely
     #define unlikely
 #endif
-
-/* 开启函数流程 */
-#define CGRAPH_FUNCTION_BEGIN                       \
-    CStatus status;                                 \
-
-/* 结束函数流程 */
-#define CGRAPH_FUNCTION_END                         \
-    return status;                                  \
 
 /* 判断传入的指针信息是否为空 */
 #define CGRAPH_ASSERT_NOT_NULL(ptr)                 \
@@ -71,9 +63,6 @@ static std::mutex g_check_status_mtx;
     if (unlikely((isInit) != is_init_)) {                     \
         return nullptr;                                       \
     }                                                         \
-
-#define CGRAPH_NO_SUPPORT                                     \
-    return CStatus("function not support");                   \
 
 #define CGRAPH_SLEEP_MILLISECOND(ms)                                            \
     std::this_thread::sleep_for(std::chrono::milliseconds(ms));                 \

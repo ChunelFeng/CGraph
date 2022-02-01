@@ -9,12 +9,13 @@
 #ifndef CGRAPH_GASPECTMANAGER_H
 #define CGRAPH_GASPECTMANAGER_H
 
+#include "../GraphManager.h"
 #include "GAspectObject.h"
 #include "GAspect.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GAspectManager : public GAspectObject {
+class GAspectManager : public GAspectObject, public GraphManager<GAspect> {
 public:
     explicit GAspectManager() = default;
 
@@ -68,7 +69,7 @@ public:
      * @param aspect
      * @return
      */
-    CStatus addAspect(GAspectPtr aspect) {
+    CStatus add(GAspectPtr aspect) override {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_NOT_NULL(aspect)
 

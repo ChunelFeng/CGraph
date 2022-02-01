@@ -45,7 +45,7 @@ GElementPtr GElement::addGAspect(TParam* param) {
     aspect->setName(this->getName())
         ->setAParam<TParam>(param)
         ->setPipelineParamManager(this->param_manager_);
-    aspect_manager_->addAspect(aspect);
+    aspect_manager_->add(aspect);
     return this;
 }
 
