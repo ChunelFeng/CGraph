@@ -151,12 +151,14 @@ protected:
      * @param name
      * @param loop
      * @param paramManager
+     * @param threadPool
      * @return
      */
     virtual CStatus setElementInfo(const std::set<GElement *> &dependElements,
                                    const std::string &name,
                                    int loop,
-                                   GParamManagerPtr paramManager);
+                                   GParamManagerPtr paramManager,
+                                   UThreadPoolPtr threadPool);
 
     /**
      * 执行切面逻辑
@@ -178,6 +180,7 @@ protected:
     std::atomic<int> left_depend_ { 0 };          // 当 left_depend_ 值为0的时候，即可以执行该node信息
     GParamManagerPtr param_manager_ { nullptr };     // 整体流程的参数管理类，所有pipeline中的所有节点共享
     GAspectManagerPtr aspect_manager_ { nullptr };   // 整体流程的切面管理类
+    UThreadPoolPtr thread_pool_ { nullptr };         // 用于执行的线程池信息
 
     friend class GNode;
     friend class GCluster;

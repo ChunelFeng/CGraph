@@ -39,7 +39,7 @@ public:
     CStatus destroy() override;
 
     /**
-     * 一次性执行完成初始化，执行runTimes次，和逆初始化的过程
+     * 一次性执行完成初始化，执行runTimes次，和销毁的过程
      * @param runTimes
      * @return
      */

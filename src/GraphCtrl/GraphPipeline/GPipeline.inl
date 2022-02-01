@@ -40,7 +40,9 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
     }
 
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
-    status = (*elementRef)->setElementInfo(dependElements, name, loop, this->param_manager_);
+    status = (*elementRef)->setElementInfo(dependElements, name, loop,
+                                           this->param_manager_,
+                                           this->thread_pool_);
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status = element_manager_->add(dynamic_cast<GElementPtr>(*elementRef));
@@ -56,7 +58,9 @@ GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(node)
 
-    status = node->setElementInfo(info.dependence_, info.name_, info.loop_, this->param_manager_);
+    status = node->setElementInfo(info.dependence_, info.name_, info.loop_,
+                                  this->param_manager_,
+                                  this->thread_pool_);
     if (!status.isOK()) {
         CGRAPH_DELETE_PTR(node);
         return nullptr;
@@ -97,12 +101,9 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
         group->addElement(element);
     }
 
-    if constexpr (std::is_same<GRegion, T>::value) {
-        // 如果是GRegion类型，需要设置线程池信息。因为GRegion内部可能需要并行
-        ((GRegion *)group)->setThreadPool(this->thread_pool_);
-    }
-
-    status = group->setElementInfo(dependElements, name, loop, nullptr);    // 注册group信息的时候，不能注册paramManager信息
+    status = group->setElementInfo(dependElements, name, loop,
+                                   nullptr,
+                                   this->thread_pool_);    // 注册group信息的时候，不能注册paramManager信息
     if (unlikely(!status.isOK())) {
         CGRAPH_DELETE_PTR(group)
         return nullptr;
@@ -119,7 +120,7 @@ CStatus GPipeline::createGParam(const std::string& key) {
     CGRAPH_ASSERT_INIT(false)
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
 
-    status = param_manager_->template create<T>(key);
+    status = param_manager_->create<T>(key);
     CGRAPH_FUNCTION_END
 }
 
@@ -142,7 +143,7 @@ GPipelinePtr GPipeline::addGAspect(const GElementPtrSet& elements, TParam* param
             continue;
         }
 
-        element->template addGAspect<TAspect, TParam>(param);
+        element->addGAspect<TAspect, TParam>(param);
     }
 
     return this;

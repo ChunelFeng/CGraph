@@ -14,7 +14,6 @@ CGRAPH_NAMESPACE_BEGIN
 
 GRegion::GRegion() : GGroup() {
     manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
-    thread_pool_ = nullptr;
     is_init_ = false;
 }
 
@@ -29,8 +28,6 @@ GRegion::GRegion(const GRegion& region) : GGroup(region) {
     for (auto element : region.manager_->manager_elements_) {
         this->manager_->manager_elements_.insert(element);
     }
-
-    this->thread_pool_ = region.thread_pool_;
 }
 
 
@@ -43,7 +40,6 @@ GRegion& GRegion::operator=(const GRegion& region){
     for (auto element : region.manager_->manager_elements_) {
         this->manager_->manager_elements_.insert(element);
     }
-    this->thread_pool_ = region.thread_pool_;
 
     return (*this);
 }
@@ -111,13 +107,5 @@ CStatus GRegion::addElement(GElementPtr element) {
     CGRAPH_FUNCTION_END
 }
 
-
-CStatus GRegion::setThreadPool(UThreadPoolPtr pool) {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(pool)
-
-    this->thread_pool_ = pool;
-    CGRAPH_FUNCTION_END
-}
 
 CGRAPH_NAMESPACE_END

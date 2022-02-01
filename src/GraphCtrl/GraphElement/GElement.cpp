@@ -44,6 +44,7 @@ GElement::GElement(const GElement& element) {
     this->session_ = element.session_;
     this->loop_ = element.loop_;
     this->name_ = element.name_;
+    this->thread_pool_ = element.thread_pool_;
 
     if (element.aspect_manager_) {
         this->aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager)
@@ -67,6 +68,7 @@ GElement& GElement::operator=(const GElement& element) {
     this->session_ = element.session_;
     this->loop_ = element.loop_;
     this->name_ = element.name_;
+    this->thread_pool_ = element.thread_pool_;
 
     if (element.aspect_manager_) {
         this->aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager)
@@ -161,12 +163,15 @@ CStatus GElement::addDependElements(const GElementPtrSet& dependElements) {
 CStatus GElement::setElementInfo(const GElementPtrSet& dependElements,
                                  const std::string& name,
                                  int loop,
-                                 GParamManagerPtr paramManager) {
+                                 GParamManagerPtr paramManager,
+                                 UThreadPoolPtr threadPool) {
     CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(threadPool)
     CGRAPH_ASSERT_INIT(false)
 
     this->setName(name)->setLoop(loop);
     param_manager_ = paramManager;
+    thread_pool_ = threadPool;
     status = this->addDependElements(dependElements);
     CGRAPH_FUNCTION_END
 }

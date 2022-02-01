@@ -32,11 +32,9 @@ protected:
     CStatus detach(const Func&& func, Args&&... args) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
+        CGRAPH_ASSERT_NOT_NULL(this->thread_pool_)
 
-        UThreadPoolPtr pool = UThreadPoolSingleton::get(false);
-        CGRAPH_ASSERT_NOT_NULL(pool)
-
-        pool->commit(std::bind(func, std::forward<Args>(args)...));
+        thread_pool_->commit(std::bind(func, std::forward<Args>(args)...));
         CGRAPH_FUNCTION_END
     }
 

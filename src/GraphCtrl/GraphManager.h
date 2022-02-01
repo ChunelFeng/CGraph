@@ -17,7 +17,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 template<typename T,
-        std::enable_if_t<std::is_base_of<CObject, T>::value, int> = 0>
+        std::enable_if_t<std::is_base_of<GraphObject, T>::value, int> = 0>
 class GraphManager : public CObject {
 protected:
     /**

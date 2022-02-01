@@ -28,11 +28,9 @@ protected:
     CStatus destroy() override;
     CStatus run() override;
     CStatus addElement(GElementPtr element) override;
-    CStatus setThreadPool(UThreadPoolPtr pool);
 
 private:
     GElementManagerPtr manager_;
-    UThreadPoolPtr thread_pool_;    // 这里需要使用GPipeline类的线程池
 
     friend class GPipeline;
     friend class UAllocator;
