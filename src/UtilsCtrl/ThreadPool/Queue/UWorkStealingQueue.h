@@ -21,6 +21,8 @@ CGRAPH_NAMESPACE_BEGIN
 
 class UWorkStealingQueue : public UThreadObject {
 public:
+    UWorkStealingQueue() = default;
+
     /**
      * 向队列中写入信息
      * @param task
@@ -120,9 +122,7 @@ public:
         return result;    // 如果非空，表示盗取成功
     }
 
-
-    /* 禁止直接创建 */
-    UWorkStealingQueue() = default;
+    /** 直接禁止copy和赋值 */
     UWorkStealingQueue(const UWorkStealingQueue& task) = delete;
     UWorkStealingQueue &operator=(const UWorkStealingQueue& task) = delete;
 

@@ -29,7 +29,7 @@ public:
      * @param value
      */
     void waitPop(T& value) {
-        CGRAPH_LOCK_GUARD lk(mutex_);
+        CGRAPH_UNIQUE_LOCK lk(mutex_);
         cv_.wait(lk, [this] { return !queue_.empty(); });
         value = std::move(*queue_.front());
         queue_.pop();
@@ -60,7 +60,7 @@ public:
      */
     bool tryPop(std::vector<T>& values, int maxPoolBatchSize) {
         CGRAPH_LOCK_GUARD lk(mutex_);
-        if (queue_.empty()) {
+        if (queue_.empty() || maxPoolBatchSize <= 0) {
             return false;
         }
 
@@ -73,8 +73,12 @@ public:
     }
 
 
+    /**
+     * 阻塞式等待弹出
+     * @return
+     */
     std::unique_ptr<T> waitPop() {
-        CGRAPH_LOCK_GUARD lk(mutex_);
+        CGRAPH_UNIQUE_LOCK lk(mutex_);
         cv_.wait(lk, [this] { return !queue_.empty(); });
         std::unique_ptr<T> result = queue_.front();
         queue_.pop();
@@ -82,6 +86,10 @@ public:
     }
 
 
+    /**
+     * 非阻塞式等待弹出
+     * @return
+     */
     std::unique_ptr<T> tryPop() {
         CGRAPH_LOCK_GUARD lk(mutex_);
         if (queue_.empty()) {
@@ -114,6 +122,10 @@ public:
         CGRAPH_LOCK_GUARD lk(mutex_);
         return queue_.empty();
     }
+
+    /** 直接禁止copy和赋值 */
+    UAtomicQueue(const UAtomicQueue& task) = delete;
+    UAtomicQueue &operator=(const UAtomicQueue& task) = delete;
 
 private:
     std::mutex mutex_;

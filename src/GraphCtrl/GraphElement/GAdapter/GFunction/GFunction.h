@@ -27,8 +27,8 @@ public:
         CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(func)
 
         switch (type) {
-            case GFunctionType::RUN: run_function_ = func; break;
             case GFunctionType::INIT: init_function_ = func; break;
+            case GFunctionType::RUN: run_function_ = func; break;
             case GFunctionType::DESTROY: destroy_function_ = func; break;
             default: return nullptr;     // 不可能出现的情况
         }
@@ -37,7 +37,7 @@ public:
     }
 
 protected:
-    CStatus init() final {
+    CStatus init() override {
         CGRAPH_FUNCTION_BEGIN
         if (init_function_) {
             status = init_function_();
@@ -46,7 +46,7 @@ protected:
         CGRAPH_FUNCTION_END
     }
 
-    CStatus run() final {
+    CStatus run() override {
         CGRAPH_FUNCTION_BEGIN
         if (run_function_) {
             status = run_function_();
@@ -55,7 +55,7 @@ protected:
         CGRAPH_FUNCTION_END
     }
 
-    CStatus destroy() final {
+    CStatus destroy() override {
         CGRAPH_FUNCTION_BEGIN
         if (destroy_function_) {
             status = destroy_function_();
