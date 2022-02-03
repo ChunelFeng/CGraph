@@ -20,9 +20,9 @@ GPipeline::GPipeline() {
 
 
 GPipeline::~GPipeline() {
+    CGRAPH_DELETE_PTR(daemon_manager_)
     CGRAPH_DELETE_PTR(element_manager_)
     CGRAPH_DELETE_PTR(param_manager_)
-    CGRAPH_DELETE_PTR(daemon_manager_)
 
     // 结束的时候，清空所有创建的节点信息。所有节点信息，仅在这一处释放
     for (GElementPtr element : element_repository_) {
@@ -41,7 +41,7 @@ CStatus GPipeline::init() {
     status = element_manager_->init();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    status = daemon_manager_->init();
+    status = daemon_manager_->init();    // daemon的初始化，需要晚于所有element的初始化
     CGRAPH_FUNCTION_CHECK_STATUS
 
     is_init_ = true;

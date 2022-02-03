@@ -131,6 +131,8 @@ template<typename TAspect, typename TParam,
         std::enable_if_t<std::is_base_of<GAspect, TAspect>::value, int>,
         std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int>>
 GPipelinePtr GPipeline::addGAspect(const GElementPtrSet& elements, TParam* param) {
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+
     const GElementPtrSet& curElements = elements.empty() ? element_repository_ : elements;
     for (GElementPtr element : curElements) {
         // 如果传入的为空，或者不是当前pipeline中的element，则不处理
@@ -144,12 +146,21 @@ GPipelinePtr GPipeline::addGAspect(const GElementPtrSet& elements, TParam* param
     return this;
 }
 
+
 template<typename T, std::enable_if_t<std::is_base_of<GDaemon, T>::value, int>>
-GPipelinePtr GPipeline::addGDaemon() {
+GPipelinePtr GPipeline::addGDaemon(CSec s, CMSec ms) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(daemon_manager_)
+
+    CMSec interval = s * 1000 + ms;    // 统一换算成ms，然后计算
+    if (0 == interval) {
+        return this;    // 就相当于是不执行了
+    }
+
     GDaemonPtr daemon = CGRAPH_SAFE_MALLOC_COBJECT(T)
+    daemon->setInterval(interval)->setPipelineParamManager(param_manager_);
     status = daemon_manager_->add(daemon);
 
     return status.isOK() ? this : nullptr;

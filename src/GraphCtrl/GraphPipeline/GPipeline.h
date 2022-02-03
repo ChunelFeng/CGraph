@@ -119,16 +119,18 @@ public:
     /**
      * 添加守护信息
      * @tparam T
+     * @param s 设置定时间隔信息，单位是s
+     * @param ms 设置定时间隔信息，单位是ms
      * @return
      */
     template<typename T, std::enable_if_t<std::is_base_of<GDaemon, T>::value, int> = 0>
-    GPipeline* addGDaemon();
+    GPipeline* addGDaemon(CSec s, CMSec ms = 0);
 
     /**
      * 设置执行的最大时间周期，单位为毫秒
      * @param ttl
      * @return
-     * @notice beta版本
+     * @notice beta接口
      */
     GPipeline* setElementRunTtl(int ttl);
 

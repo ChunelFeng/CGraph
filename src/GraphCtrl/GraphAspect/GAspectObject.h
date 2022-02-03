@@ -69,11 +69,11 @@ protected:
 
     /**
      * 设置pipeline中相关的参数信息
-     * @param manager
+     * @param pm
      * @return
      */
-    GAspectObject* setPipelineParamManager(GParamManagerPtr manager) {
-        pipeline_param_manager_ = manager;
+    virtual GAspectObject* setPipelineParamManager(GParamManagerPtr pm) {
+        pipeline_param_manager_ = pm;
         return this;
     }
 

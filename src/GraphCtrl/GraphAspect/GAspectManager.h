@@ -44,7 +44,10 @@ public:
 
         for (GAspectPtr aspect : aspect_arr_) {
             switch (type) {
-                // 仅针对Begin对应的内容，进行返回值判断
+                /**
+                 * 仅针对Begin对应的内容，进行返回值判断
+                 * run()方法切面更容易被执行，故放在最前方判断
+                 */
                 case GAspectType::BEGIN_RUN : status = aspect->beginRun(); break;
                 case GAspectType::FINISH_RUN : aspect->finishRun(curStatus); break;
                 case GAspectType::BEGIN_INIT : status = aspect->beginInit(); break;
@@ -92,10 +95,14 @@ public:
      * @return
      */
     [[nodiscard]] CSize getSize() const override {
-        CSize size = (int)aspect_arr_.size();
+        auto size = (CSize)aspect_arr_.size();
         return size;
     }
 
+    /**
+     * 清空切面信息
+     * @return
+     */
     CStatus clear() final {
         CGRAPH_FUNCTION_BEGIN
         for (GAspectPtr aspect : aspect_arr_) {

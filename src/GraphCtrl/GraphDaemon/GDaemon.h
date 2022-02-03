@@ -20,26 +20,25 @@ class GDaemon : public GDaemonObject {
 
 protected:
     /**
-     * 获取休眠时间信息，单位ms
-     * @return
-     */
-    virtual CMSec getInterval() = 0;
-
-    /**
      * 后台执行函数，间隔interval时间后，执行一次
      */
-    virtual CVoid daemonRun() = 0;
+    virtual CVoid daemonTask() = 0;
 
+    /**
+     * 获取设置的延时信息
+     * @return
+     */
+    [[nodiscard]] CMSec getInterval() const;
+
+private:
     CStatus init() final;
-
     CStatus destroy() final;
 
     friend class GDaemonManager;
     friend class GPipeline;
 
 private:
-    GParamManagerPtr param_manager_ = nullptr;        // 获取参数管理类
-    UTimer timer_;
+    UTimer timer_;                // 计时器
 };
 
 using GDaemonPtr = GDaemon *;

@@ -189,7 +189,7 @@ void tutorial_simple() {
 [2022.01.31 - v1.8.4 - Chunel]
 * 提供`node`(节点)异步执行的功能
 
-[2022.01.31 - v1.8.5 - Chunel]
+[2022.02.03 - v1.8.5 - Chunel]
 * 提供`daemon`(守护)功能，用于定时执行非流图中任务
 * 更新`tutorial`内容
 

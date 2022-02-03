@@ -12,10 +12,11 @@
 #include "CStatus.h"
 
 using CUint = CGraph::CUINT;
-using CSec = CGraph::CUINT;    // 表示秒信息
-using CMSec = CGraph::CUINT;    // 表示毫秒信息
-using CSize = CGraph::CSIZE;
+using CSec = CGraph::CUINT;    // 表示秒信息, for second
+using CMSec = CGraph::CUINT;    // 表示毫秒信息, for millisecond
+using CSize = CGraph::CUINT;
 using CVoid = CGraph::CVOID;
+using CVoidPtr = CGraph::CVOID *;
 using CInt = CGraph::CINT;
 using CLong = CGraph::CLONG;
 using CULong = CGraph::CULONG;

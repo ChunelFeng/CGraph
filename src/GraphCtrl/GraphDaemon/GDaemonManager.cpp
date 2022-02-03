@@ -14,6 +14,7 @@ GDaemonManager::~GDaemonManager() {
     clear();
 }
 
+
 CStatus GDaemonManager::init() {
     CGRAPH_FUNCTION_BEGIN
     for (auto daemon: daemons_) {
@@ -23,6 +24,7 @@ CStatus GDaemonManager::init() {
 
     CGRAPH_FUNCTION_END
 }
+
 
 CStatus GDaemonManager::destroy() {
     CGRAPH_FUNCTION_BEGIN
@@ -34,6 +36,7 @@ CStatus GDaemonManager::destroy() {
     CGRAPH_FUNCTION_END
 }
 
+
 CStatus GDaemonManager::add(GDaemonPtr daemon) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(daemon)
@@ -42,6 +45,7 @@ CStatus GDaemonManager::add(GDaemonPtr daemon) {
     CGRAPH_FUNCTION_END
 }
 
+
 CStatus GDaemonManager::remove(GDaemonPtr daemon) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(daemon)
@@ -49,6 +53,7 @@ CStatus GDaemonManager::remove(GDaemonPtr daemon) {
     daemons_.erase(daemon);
     CGRAPH_FUNCTION_END
 }
+
 
 CStatus GDaemonManager::clear() {
     CGRAPH_FUNCTION_BEGIN
@@ -59,9 +64,36 @@ CStatus GDaemonManager::clear() {
     CGRAPH_FUNCTION_END
 }
 
+
 CSize GDaemonManager::getSize() const {
     CSize size = daemons_.size();
     return size;
+}
+
+
+GDaemonManagerPtr GDaemonManager::setPipelineParamManager(GParamManagerPtr pm) {
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(pm)
+
+    for (auto daemon : daemons_) {
+        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(daemon)
+        daemon->pipeline_param_manager_ = pm;
+    }
+
+    return this;
+}
+
+
+GDaemonManagerPtr GDaemonManager::setInterval(CMSec interval) {
+    if (0 == interval) {
+        return this;
+    }
+
+    for (auto daemon : daemons_) {
+        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(daemon)
+        daemon->setInterval(interval);
+    }
+
+    return this;
 }
 
 CGRAPH_NAMESPACE_END

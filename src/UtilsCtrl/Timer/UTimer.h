@@ -36,6 +36,7 @@ public:
         /**
          * std::launch::async：在调用async就开始创建线程。
          * std::launch::deferred：延迟加载方式创建线程。调用async时不创建线程，直到调用了future的get或者wait时才创建线程。
+         * 后期会考虑将这个功能融合到线程池中去
          */
         future_ = std::async(std::launch::async, [this, interval, task]() {
              while (!is_stop_) {
@@ -62,7 +63,7 @@ public:
     }
 
 private:
-    std::atomic<bool> is_stop_ { true };
+    std::atomic<CBool> is_stop_ { true };
     std::mutex mutex_;
     std::condition_variable cv_;
     std::future<CVoid> future_;

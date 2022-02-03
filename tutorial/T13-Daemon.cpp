@@ -6,23 +6,26 @@
 @Desc: 本例子主要展示，添加Daemon节点完成对pipeline的实时
 ***************************/
 
-#include "MyGDaemon/MyDaemon.h"
+#include "MyGDaemon/MyMonitorDaemon.h"
+#include "MyGDaemon/MyParamDaemon.h"
 #include "MyGNode/MyNode1.h"
+#include "MyGNode/MyWriteParamNode.h"
 
 using namespace CGraph;
 
 void tutorial_daemon() {
     GPipelinePtr pipeline = GPipelineFactory::create();    // 创建一个pipeline，用于执行图框架信息
-    GElementPtr a, b, c, d = nullptr;
-    CStatus status;
+    GElementPtr a, b = nullptr;
 
-    status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA", 10);
-    status = pipeline->registerGElement<MyNode1>(&b, {}, "nodeB", 10);
-    status = pipeline->registerGElement<MyNode1>(&c, {}, "nodeC", 10);
-    status = pipeline->registerGElement<MyNode1>(&d, {}, "nodeD", 10);
-    pipeline->addGDaemon<MyDaemon>();
+    pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");
+    pipeline->registerGElement<MyWriteParamNode>(&b, {}, "writeParamB");
 
-    pipeline->process();
+    /** 添加两个daemon信息，随pipeline执行 */
+    pipeline->addGDaemon<MyMonitorDaemon>(4)    // 间隔4s执行
+            ->addGDaemon<MyParamDaemon>(1, 500);    // 间隔1500ms执行
+
+    /** 长时间执行，观察守护器执行状态 */
+    pipeline->process(15);
     GPipelineFactory::remove(pipeline);
 }
 

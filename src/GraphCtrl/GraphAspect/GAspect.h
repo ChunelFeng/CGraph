@@ -26,8 +26,9 @@ public:
 
     /**
      * init()函数切面结束期间动作
+     * @param curStatus
      */
-    virtual CVoid finishInit(CStatus curStatus) {}
+    virtual CVoid finishInit(const CStatus& curStatus) {}
 
     /**
      * run()函数切面开始期间动作
@@ -38,8 +39,9 @@ public:
 
     /**
      * run()函数切面结束期间动作
+     * @param curStatus
      */
-    virtual CVoid finishRun(CStatus curStatus) {}
+    virtual CVoid finishRun(const CStatus& curStatus) {}
 
     /**
      * destroy()函数切面开始期间动作
@@ -50,8 +52,9 @@ public:
 
     /**
      * destroy()函数切面结束期间动作
+     * @param curStatus
      */
-    virtual CVoid finishDestroy(CStatus curStatus) {}
+    virtual CVoid finishDestroy(const CStatus& curStatus) {}
 };
 
 using GAspectPtr = GAspect *;

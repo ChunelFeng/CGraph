@@ -15,10 +15,14 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class GDaemonManager : public GDaemonObject, public GraphManager<GDaemon> {
-public:
+protected:
     explicit GDaemonManager() = default;
 
     ~GDaemonManager() override;
+
+    GDaemonManager* setPipelineParamManager(GParamManagerPtr pm) override;
+
+    GDaemonManager* setInterval(CMSec interval) override;
 
     CStatus init() override;
 
@@ -31,6 +35,9 @@ public:
     CStatus clear() final;
 
     [[nodiscard]] CSize getSize() const override;
+
+    friend class GPipeline;
+    friend class UAllocator;
 
 private:
     GDaemonSet daemons_;                    // daemon信息集合

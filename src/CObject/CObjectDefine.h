@@ -34,7 +34,6 @@ CGRAPH_NAMESPACE_BEGIN
     return CStatus("function not support");                             \
 
 using CUINT = unsigned int;
-using CSIZE = unsigned int;
 using CVOID = void;
 using CINT = int;
 using CLONG = long;
