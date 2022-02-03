@@ -99,7 +99,7 @@ protected:
      * 获取并执行任务
      * @return
      */
-    void processTask() {
+    CVoid processTask() {
         UTaskWrapper task;
         if (popTask(task) || popPoolTask(task) || stealTask(task)) {
             runTask(task);
@@ -112,7 +112,7 @@ protected:
     /**
      * 获取批量执行task信息
      */
-    void processTasks() {
+    CVoid processTasks() {
         UTaskWrapperArr tasks;
         if (popTask(tasks) || popPoolTask(tasks) || stealTask(tasks)) {
             // 尝试从主线程中获取/盗取批量task，如果成功，则依次执行

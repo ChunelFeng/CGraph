@@ -13,5 +13,6 @@
 #include "GraphPipeline/GPipelineInclude.h"
 #include "GraphParam/GParamInclude.h"
 #include "GraphAspect/GAspectInclude.h"
+#include "GraphDaemon/GDaemonInclude.h"
 
 #endif //CGRAPH_GRAPHINCLUDE_H

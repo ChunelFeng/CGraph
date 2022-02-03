@@ -27,7 +27,7 @@ public:
      * @param task
      */
     template<typename FunctionType>
-    void start(int interval, const FunctionType& task) {
+    CVoid start(CMSec interval, const FunctionType& task) {
         if (!is_stop_) {
             return;    // 如果正在执行中，则无法继续执行
         }
@@ -51,7 +51,7 @@ public:
     /**
      * 关闭定时器
      */
-    void stop() {
+    CVoid stop() {
         if (is_stop_) {
             return;
         }
@@ -65,7 +65,7 @@ private:
     std::atomic<bool> is_stop_ { true };
     std::mutex mutex_;
     std::condition_variable cv_;
-    std::future<void> future_;
+    std::future<CVoid> future_;
 };
 
 CGRAPH_NAMESPACE_END

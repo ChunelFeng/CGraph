@@ -37,7 +37,7 @@ public:
      * @param key
      * @param value
      */
-    void put(const K& key, const V& value) {
+    CVoid put(const K& key, const V& value) {
         auto cur = cache_.find(key);
         if (cur != cache_.end()) {
             /* 如果在cache中找到，则删除（稍后更新至最前） */
@@ -77,7 +77,7 @@ public:
      * 设置capacity信息
      * @param capacity
      */
-    void setCapacity(unsigned int capacity) {
+    CVoid setCapacity(unsigned int capacity) {
         this->capacity_ = capacity;
     }
 
@@ -92,7 +92,7 @@ public:
     /**
      * 清空Lru中的信息
      */
-    void clear() {
+    CVoid clear() {
         nodes_.clear();
         cache_.clear();
         cur_size_ = 0;

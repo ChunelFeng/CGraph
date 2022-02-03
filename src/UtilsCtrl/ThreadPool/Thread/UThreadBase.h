@@ -73,7 +73,7 @@ protected:
      * 执行单个任务
      * @param task
      */
-    void runTask(UTaskWrapper& task) {
+    CVoid runTask(UTaskWrapper& task) {
         is_running_ = true;
         task();
         total_task_num_++;
@@ -85,7 +85,7 @@ protected:
      * 批量执行任务
      * @param tasks
      */
-    void runTasks(UTaskWrapperArr& tasks) {
+    CVoid runTasks(UTaskWrapperArr& tasks) {
         is_running_ = true;
         for (auto& task : tasks) {
             task();
@@ -98,7 +98,7 @@ protected:
     /**
      * 清空所有任荣
      */
-    void reset() {
+    CVoid reset() {
         done_ = false;
         if (thread_.joinable()) {
             thread_.join();    // 等待线程结束
@@ -112,7 +112,7 @@ protected:
     /**
     * 设置线程优先级，仅针对非windows平台使用
     */
-    void setSchedParam() {
+    CVoid setSchedParam() {
 #ifndef _WIN32
         int priority = CGRAPH_THREAD_SCHED_OTHER;
         int policy = CGRAPH_THREAD_MIN_PRIORITY;
@@ -136,7 +136,7 @@ protected:
     /**
      * 设置线程亲和性，仅针对linux系统
      */
-    void setAffinity(int index) {
+    CVoid setAffinity(int index) {
 #ifdef __linux__
         if (!config_->bind_cpu_enable_ || CGRAPH_CPU_NUM == 0 || index < 0) {
             return;

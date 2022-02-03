@@ -13,8 +13,8 @@
 #include <memory>
 #include <list>
 
-#include "../GraphObject.h"
 #include "GPipelineDefine.h"
+#include "../GraphDaemon/GDaemonInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -117,9 +117,18 @@ public:
                           TParam* param = nullptr);
 
     /**
+     * 添加守护信息
+     * @tparam T
+     * @return
+     */
+    template<typename T, std::enable_if_t<std::is_base_of<GDaemon, T>::value, int> = 0>
+    GPipeline* addGDaemon();
+
+    /**
      * 设置执行的最大时间周期，单位为毫秒
      * @param ttl
      * @return
+     * @notice beta版本
      */
     GPipeline* setElementRunTtl(int ttl);
 
@@ -134,6 +143,7 @@ private:
     GElementPtrSet element_repository_;                         // 标记创建的所有节点，最终释放使用
     GParamManagerPtr param_manager_;                            // 参数管理类
     UThreadPoolPtr thread_pool_;                                // 线程池类
+    GDaemonManagerPtr daemon_manager_;                          // 守护管理类
 
     friend class GPipelineFactory;
     friend class UAllocator;

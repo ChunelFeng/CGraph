@@ -17,9 +17,8 @@ CGRAPH_NAMESPACE_BEGIN
 class GNode : public GElement {
 protected:
     explicit GNode() {
-        node_type_ = GNodeType::DEFAULT;
+        node_type_ = GNodeType::BASIC;
     }
-
 
     /**
      * 异步执行信息，适用于传入静态类函数或者lambda表达式信息
@@ -36,6 +35,15 @@ protected:
 
         thread_pool_->commit(std::bind(func, std::forward<Args>(args)...));
         CGRAPH_FUNCTION_END
+    }
+
+    /**
+    * 获取当前执行的线程id信息
+    * @return
+    */
+    static size_t getThreadId() {
+        const size_t& tid = std::hash<std::thread::id>{}(std::this_thread::get_id());
+        return tid;
     }
 
 

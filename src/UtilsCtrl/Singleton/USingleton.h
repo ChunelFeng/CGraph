@@ -61,7 +61,7 @@ protected:
         CGRAPH_FUNCTION_END
     }
 
-    void create() {
+    CVoid create() {
         if (nullptr == handle_) {
             CGRAPH_LOCK_GUARD lock(lock_);
             if (nullptr == handle_) {
@@ -70,7 +70,7 @@ protected:
         }
     }
 
-    void clear() {
+    CVoid clear() {
         CGRAPH_LOCK_GUARD lock(lock_);
         CGRAPH_DELETE_PTR(handle_)
     }

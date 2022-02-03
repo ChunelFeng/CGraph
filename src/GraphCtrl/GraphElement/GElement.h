@@ -146,6 +146,14 @@ protected:
     CStatus addDependElements(const std::set<GElement *> &dependElements);
 
     /**
+     * 执行切面逻辑
+     * @param aspectType
+     * @param curStatus
+     * @return
+     */
+    CStatus doAspect(const GAspectType& aspectType, const CStatus& curStatus = CStatus());
+
+    /**
      * 设置element信息
      * @param dependElements
      * @param name
@@ -160,13 +168,6 @@ protected:
                                    GParamManagerPtr paramManager,
                                    UThreadPoolPtr threadPool);
 
-    /**
-     * 执行切面逻辑
-     * @param aspectType
-     * @param curStatus
-     * @return
-     */
-    CStatus doAspect(const GAspectType& aspectType, const CStatus& curStatus = CStatus());
 
 protected:
     bool done_ { false };                            // 判定被执行结束

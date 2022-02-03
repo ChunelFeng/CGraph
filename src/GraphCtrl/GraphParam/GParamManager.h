@@ -49,12 +49,12 @@ protected:
     /**
      * 清空内部所有参数信息
      */
-    void clear() final;
+    CStatus clear() final;
 
     /**
      * 重置内部所有参数信息
      */
-    void reset() override;
+    CStatus reset() override;
 
 private:
     std::unordered_map<std::string, GParamPtr> params_map_;           // 记录param信息的hash表

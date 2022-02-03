@@ -65,6 +65,12 @@ protected:
      */
     bool find(GElementPtr element) const override;
 
+    /**
+     * 清空信息
+     * @return
+     */
+    CStatus clear() final;
+
 private:
     GElementPtrSet manager_elements_;                    // 保存节点信息的内容
     ParaWorkedClusterArrs para_cluster_arrs_;            // 可以并行的cluster数组

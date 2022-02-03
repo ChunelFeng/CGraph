@@ -20,11 +20,7 @@ public:
     explicit GAspectManager() = default;
 
     ~GAspectManager() override {
-        for (GAspectPtr aspect : aspect_arr_) {
-            CGRAPH_DELETE_PTR(aspect)
-        }
-
-        aspect_arr_.clear();
+        clear();
     }
 
     GAspectManager& operator=(const GAspectManager& manager) {
@@ -95,9 +91,19 @@ public:
      * 获取切面个数信息
      * @return
      */
-    int getSize() {
-        int size = (int)aspect_arr_.size();
+    [[nodiscard]] CSize getSize() const override {
+        CSize size = (int)aspect_arr_.size();
         return size;
+    }
+
+    CStatus clear() final {
+        CGRAPH_FUNCTION_BEGIN
+        for (GAspectPtr aspect : aspect_arr_) {
+            CGRAPH_DELETE_PTR(aspect)
+        }
+
+        aspect_arr_.clear();
+        CGRAPH_FUNCTION_END
     }
 
 private:

@@ -34,16 +34,19 @@ CStatus GParamManager::destroy() {
 }
 
 
-void GParamManager::clear() {
+CStatus GParamManager::clear() {
+    CGRAPH_FUNCTION_BEGIN
     for (auto& param : params_map_) {
         CGRAPH_DELETE_PTR(param.second)
     }
 
     params_map_.clear();
+    CGRAPH_FUNCTION_END;
 }
 
 
-void GParamManager::reset() {
+CStatus GParamManager::reset() {
+    CGRAPH_FUNCTION_BEGIN
     for (auto cur : params_map_) {
         if (unlikely(!cur.second)) {
             continue;
@@ -51,6 +54,7 @@ void GParamManager::reset() {
 
         cur.second->reset();
     }
+    CGRAPH_FUNCTION_END
 }
 
 CGRAPH_NAMESPACE_END

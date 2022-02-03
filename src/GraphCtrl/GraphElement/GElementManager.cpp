@@ -222,4 +222,15 @@ CStatus GElementManager::remove(GElementPtr element) {
     CGRAPH_FUNCTION_END
 }
 
+CStatus GElementManager::clear() {
+    CGRAPH_FUNCTION_BEGIN
+
+    for (auto element : manager_elements_) {
+        CGRAPH_DELETE_PTR(element)
+    }
+
+    manager_elements_.clear();
+    CGRAPH_FUNCTION_END
+}
+
 CGRAPH_NAMESPACE_END

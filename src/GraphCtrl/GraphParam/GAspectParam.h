@@ -20,7 +20,7 @@ public:
      * 将外部函数传到 aspect 中
      * @param param
      */
-    virtual void clone(GAspectParam* param) = 0;
+    virtual CVoid clone(GAspectParam* param) = 0;
 };
 
 using GAspectParamPtr = GAspectParam *;

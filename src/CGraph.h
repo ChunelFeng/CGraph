@@ -9,6 +9,7 @@
 #ifndef CGRAPH_CGRAPH_H
 #define CGRAPH_CGRAPH_H
 
+#include "CObject/CObjectInclude.h"
 #include "GraphCtrl/GraphInclude.h"
 #include "UtilsCtrl/UtilsInclude.h"
 

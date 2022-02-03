@@ -18,7 +18,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 class UTaskWrapper : public UThreadObject {
     struct taskBased {
-        virtual void call() = 0;
+        virtual CVoid call() = 0;
         virtual ~taskBased() = default;
     };
 
@@ -26,7 +26,7 @@ class UTaskWrapper : public UThreadObject {
     struct taskDerided : taskBased {
         F func_;
         explicit taskDerided(F&& func) : func_(std::move(func)) {}
-        void call() override { func_(); }
+        CVoid call() override { func_(); }
     };
 
     std::unique_ptr<taskBased> impl_ = nullptr;
@@ -36,7 +36,7 @@ public:
     UTaskWrapper(F&& f) : impl_(new taskDerided<F>(std::forward<F>(f))) {
     }
 
-    void operator()() {
+    CVoid operator()() {
         if (likely(impl_)) {
             impl_->call();
         }

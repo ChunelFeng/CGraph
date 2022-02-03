@@ -10,6 +10,8 @@
 #define CGRAPH_COBJECTINCLUDE_H
 
 #include "CObject.h"
-#include "CStatus.h"
+#include "CObjectDefine.h"
+#include "CValType.h"
+#include "CFuncType.h"
 
 #endif //CGRAPH_COBJECTINCLUDE_H

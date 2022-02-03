@@ -21,7 +21,7 @@ protected:
      * 目的是防止无法生成默认类型的 GAspectParam 参数
      * 无任何实意，不支持继承
      */
-    void clone(GAspectParamPtr param) final {
+    CVoid clone(GAspectParamPtr param) final {
     }
 };
 

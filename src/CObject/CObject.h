@@ -10,7 +10,7 @@
 #define CGRAPH_COBJECT_H
 
 #include "CObjectDefine.h"
-#include "CStatus.h"
+#include "CValType.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -25,7 +25,7 @@ public:
      * 初始化函数
      */
     virtual CStatus init() {
-        CGRAPH_COMMON_FUNCTION
+        CGRAPH_EMPTY_FUNCTION
     }
 
     /**
@@ -37,7 +37,7 @@ public:
      * 释放函数（对应原先deinit函数）
      */
     virtual CStatus destroy() {
-        CGRAPH_COMMON_FUNCTION
+        CGRAPH_EMPTY_FUNCTION
     }
 
     /**

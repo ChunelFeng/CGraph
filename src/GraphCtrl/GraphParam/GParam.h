@@ -24,7 +24,7 @@ private:
      * 每次pipeline执行结束，会调用一次reset
      * @return
      */
-    virtual void reset() = 0;
+    virtual CVoid reset() = 0;
 
     friend class GParamManager;
 };

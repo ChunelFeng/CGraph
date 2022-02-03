@@ -133,7 +133,7 @@ public:
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
 
-        std::vector<std::future<void>> futures;
+        std::vector<std::future<CVoid>> futures;
         for (const auto& task : taskGroup.task_arr_) {
             futures.emplace_back(commit(task));
         }
@@ -209,7 +209,7 @@ protected:
      * @param task
      * @param index
      */
-    void dispatchTask(UTaskWrapper&& task, int index) {
+    CVoid dispatchTask(UTaskWrapper&& task, int index) {
         if (likely(CGRAPH_DEFAULT_TASK_STRATEGY == index)) {
             /** 默认调度策略信息 */
             if (!config_.fair_lock_enable_
@@ -239,7 +239,7 @@ protected:
      * 监控线程执行函数，主要是判断是否需要增加线程，或销毁线程
      * 增/删 操作，仅针对secondary类型线程生效
      */
-    void monitor() {
+    CVoid monitor() {
         while (is_monitor_) {
             while (is_monitor_ && !is_init_) {
                 // 如果没有init，则一直处于空跑状态

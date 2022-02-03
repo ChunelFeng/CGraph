@@ -24,7 +24,7 @@ CGRAPH_NAMESPACE_BEGIN
  * 注：内部包含全局锁，不建议正式上线的时候使用
  */
 static std::mutex g_echo_mtx;
-inline void CGRAPH_ECHO(const char *cmd, ...) {
+inline CVoid CGRAPH_ECHO(const char *cmd, ...) {
 #ifdef _CGRAPH_SILENCE_
     return;
 #endif

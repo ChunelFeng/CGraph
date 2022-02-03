@@ -28,7 +28,7 @@ public:
      * 等待弹出
      * @param value
      */
-    void waitPop(T& value) {
+    CVoid waitPop(T& value) {
         CGRAPH_UNIQUE_LOCK lk(mutex_);
         cv_.wait(lk, [this] { return !queue_.empty(); });
         value = std::move(*queue_.front());
@@ -106,7 +106,7 @@ public:
      * 传入数据
      * @param value
      */
-    void push(T&& value) {
+    CVoid push(T&& value) {
         std::unique_ptr<T> task(std::make_unique<T>(std::move(value)));
         CGRAPH_LOCK_GUARD lk(mutex_);
         queue_.push(std::move(task));

@@ -21,37 +21,37 @@ public:
      * init()函数切面开始期间动作
      */
     virtual CStatus beginInit() {
-        CGRAPH_COMMON_FUNCTION
+        CGRAPH_EMPTY_FUNCTION
     }
 
     /**
      * init()函数切面结束期间动作
      */
-    virtual void finishInit(CStatus curStatus) {}
+    virtual CVoid finishInit(CStatus curStatus) {}
 
     /**
      * run()函数切面开始期间动作
      */
     virtual CStatus beginRun() {
-        CGRAPH_COMMON_FUNCTION
+        CGRAPH_EMPTY_FUNCTION
     }
 
     /**
      * run()函数切面结束期间动作
      */
-    virtual void finishRun(CStatus curStatus) {}
+    virtual CVoid finishRun(CStatus curStatus) {}
 
     /**
      * destroy()函数切面开始期间动作
      */
     virtual CStatus beginDestroy() {
-        CGRAPH_COMMON_FUNCTION
+        CGRAPH_EMPTY_FUNCTION
     }
 
     /**
      * destroy()函数切面结束期间动作
      */
-    virtual void finishDestroy(CStatus curStatus) {}
+    virtual CVoid finishDestroy(CStatus curStatus) {}
 };
 
 using GAspectPtr = GAspect *;

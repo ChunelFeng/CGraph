@@ -23,7 +23,7 @@ public:
         return CStatus();
     }
 
-    void finishRun(CStatus curStatus) override {
+    CVoid finishRun(CStatus curStatus) override {
         std::chrono::duration<double, std::milli> span = std::chrono::high_resolution_clock::now() - start_ts_;
         CGraph::CGRAPH_ECHO("----> [MyTimerAspect] [%s] time cost is : [%0.2lf] ms", this->getName().c_str(), span.count());
     }

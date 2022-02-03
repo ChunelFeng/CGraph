@@ -77,23 +77,18 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
                                   const std::string &name,
                                   int loop) {
     CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(this->thread_pool_)    // 所有的pipeline必须有线程池
 
     // 如果不是所有的都非空，则创建失败
     if (std::any_of(elements.begin(), elements.end(),
-                    [](GElementPtr element) {
-                        return (nullptr == element);
-                    })) {
+                    [](GElementPtr element) { return (nullptr == element); })) {
         return nullptr;
     }
 
     if (std::any_of(dependElements.begin(), dependElements.end(),
-                    [](GElementPtr element) {
-                        return (nullptr == element);
-                    })) {
+                    [](GElementPtr element) { return (nullptr == element); })) {
         return nullptr;
     }
-
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(this->thread_pool_)    // 所有的pipeline必须有线程池
 
     GGroupPtr group = CGRAPH_SAFE_MALLOC_COBJECT(T)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(group)
@@ -147,6 +142,17 @@ GPipelinePtr GPipeline::addGAspect(const GElementPtrSet& elements, TParam* param
     }
 
     return this;
+}
+
+template<typename T, std::enable_if_t<std::is_base_of<GDaemon, T>::value, int>>
+GPipelinePtr GPipeline::addGDaemon() {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(daemon_manager_)
+    GDaemonPtr daemon = CGRAPH_SAFE_MALLOC_COBJECT(T)
+    status = daemon_manager_->add(daemon);
+
+    return status.isOK() ? this : nullptr;
 }
 
 CGRAPH_NAMESPACE_END

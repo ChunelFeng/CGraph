@@ -27,7 +27,7 @@ public:
      * 向队列中写入信息
      * @param task
      */
-    void push(UTaskWrapper&& task) {
+    CVoid push(UTaskWrapper&& task) {
         while (true) {
             if (mutex_.try_lock()) {
                 queue_.emplace_front(std::move(task));

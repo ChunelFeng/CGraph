@@ -76,7 +76,7 @@ protected:
     /**
      * 任务执行函数，从线程池的任务队列中获取信息
      */
-    void processTask() {
+    CVoid processTask() {
         UTaskWrapper task;
         if (popPoolTask(task)) {
             runTask(task);
@@ -89,7 +89,7 @@ protected:
     /**
      * 批量执行n个任务
      */
-    void processTasks() {
+    CVoid processTasks() {
         UTaskWrapperArr tasks;
         if (popPoolTask(tasks)) {
             runTasks(tasks);

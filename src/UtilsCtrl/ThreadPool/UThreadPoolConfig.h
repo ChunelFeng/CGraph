@@ -36,7 +36,7 @@ struct UThreadPoolConfig : public UThreadObject {
     /**
      * 设置默认信息
      */
-    void reset() {
+    CVoid reset() {
         (*this) = UThreadPoolConfig();
     }
 

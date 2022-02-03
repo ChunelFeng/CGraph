@@ -10,7 +10,7 @@
 #define CGRAPH_GNODEDEFINE_H
 
 enum class GNodeType {
-    DEFAULT = 0,
+    BASIC = 0,
     IO = 1,
     CPU = 2,
 };

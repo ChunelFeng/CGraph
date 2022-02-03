@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.5.1)
 
-project(CGraph VERSION 1.8.4)
+project(CGraph VERSION 1.8.5)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 IF(APPLE)
     # 非mac平台，暂时不支持自动生成session信息
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64 -finline-functions")
     add_definitions(-D_GENERATE_SESSION_)
     add_definitions(-D_ENABLE_LIKELY_)
 ELSEIF(UNIX)
@@ -35,6 +35,7 @@ set(TUTORIAL_LIST
         T10-AspectParam
         T11-Singleton
         T12-Function
+        T13-Daemon
         TU01-ThreadPool
         TU02-Lru
         TU03-Trie

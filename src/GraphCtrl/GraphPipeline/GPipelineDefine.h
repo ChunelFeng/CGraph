@@ -19,7 +19,7 @@
 /**
  * 创建GCluster和GRegion的中的GNode的时候，使用到的信息
  * 创建GCluster的时候，dependence为空
- * 创建GRegion的时候，dependence不为空
+ * 创建GRegion的时候，dependence不为空。若为空，则表示可直接执行
  */
 
 CGRAPH_NAMESPACE_BEGIN

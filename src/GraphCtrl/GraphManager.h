@@ -66,18 +66,26 @@ protected:
     }
 
     /**
-     * 清空所有object
-     * @return
-     */
-    virtual void clear() {
-    }
-
-    /**
      * 重置所有object
      * @return
      */
-    virtual void reset() {
+    virtual CStatus reset() {
+        CGRAPH_NO_SUPPORT
     }
+
+    /**
+     * 获取大小信息
+     * @return
+     */
+    [[nodiscard]] virtual CSize getSize() const {
+        return 0;
+    }
+
+    /**
+     * 清空所有object，必须实现的内容
+     * @return
+     */
+    virtual CStatus clear() = 0;
 
     /**
      * 执行函数，默认为执行失败

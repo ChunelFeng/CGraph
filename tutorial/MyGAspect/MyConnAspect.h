@@ -24,7 +24,7 @@ public:
         return CStatus();
     }
 
-    void finishDestroy(CStatus curStatus) override {
+    CVoid finishDestroy(CStatus curStatus) override {
         auto* param = this->getAParam<MyConnAspectParam>();
         if (param) {
             mockDisconnect(param->ip, param->port);
@@ -33,13 +33,13 @@ public:
 
 protected:
     /** 模拟连接功能 */
-    void mockConnect(const std::string& ip, short port) {
+    CVoid mockConnect(const std::string& ip, short port) {
         CGraph::CGRAPH_ECHO("----> [MyConnAspect] [%s : %d] has been connected ...", ip.c_str(), port);
         conn_status_ = true;
     }
 
     /** 模拟断开连接功能 */
-    void mockDisconnect(const std::string& ip, short port) {
+    CVoid mockDisconnect(const std::string& ip, short port) {
         if (conn_status_) {
             CGraph::CGRAPH_ECHO("----> [MyConnAspect] [%s : %d] has been disconnected ...", ip.c_str(), port);
             conn_status_ = false;

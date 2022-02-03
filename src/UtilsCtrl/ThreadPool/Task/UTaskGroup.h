@@ -76,7 +76,7 @@ public:
     /**
      * 清空任务组
      */
-    void clear() {
+    CVoid clear() {
         task_arr_.clear();
     }
 
@@ -85,8 +85,8 @@ public:
      * 获取任务组大小
      * @return
      */
-    [[nodiscard]] int getSize() const {
-        int size = (int) task_arr_.size();
+    [[nodiscard]] CSize getSize() const {
+        auto size = (CSize) task_arr_.size();
         return size;
     }
 
