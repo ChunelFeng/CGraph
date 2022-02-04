@@ -30,7 +30,6 @@ protected:
     template<typename Func, typename... Args>
     CStatus detach(const Func&& func, Args&&... args) {
         CGRAPH_FUNCTION_BEGIN
-        CGRAPH_ASSERT_INIT(true)
         CGRAPH_ASSERT_NOT_NULL(this->thread_pool_)
 
         thread_pool_->commit(std::bind(func, std::forward<Args>(args)...));
