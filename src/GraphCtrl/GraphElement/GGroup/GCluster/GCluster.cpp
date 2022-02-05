@@ -37,7 +37,12 @@ CStatus GCluster::init() {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr element : cluster_elements_) {
+        CGRAPH_ASSERT_NOT_NULL(element)
+        status = element->doAspect(GAspectType::BEGIN_INIT);
+        CGRAPH_FUNCTION_CHECK_STATUS
+
         status = element->init();
+        element->doAspect(GAspectType::FINISH_INIT, status);
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 
@@ -50,7 +55,12 @@ CStatus GCluster::destroy() {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr element : cluster_elements_) {
+        CGRAPH_ASSERT_NOT_NULL(element)
+        status = element->doAspect(GAspectType::BEGIN_DESTROY);
+        CGRAPH_FUNCTION_CHECK_STATUS
+
         status = element->destroy();
+        element->doAspect(GAspectType::FINISH_DESTROY, status);
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 
@@ -65,7 +75,11 @@ CStatus GCluster::run() {
         CSize elementLoop = element->loop_;
         while (elementLoop--) {
             // element需要被执行loop次
+            status = element->doAspect(GAspectType::BEGIN_RUN);
+            CGRAPH_FUNCTION_CHECK_STATUS
+
             status = element->run();
+            element->doAspect(GAspectType::FINISH_RUN, status);
             CGRAPH_FUNCTION_CHECK_STATUS
         }
     }
