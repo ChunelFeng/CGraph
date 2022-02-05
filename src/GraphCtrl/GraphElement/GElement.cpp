@@ -25,12 +25,12 @@ const std::string& GElement::getSession() const {
 
 /******** protected ********/
 GElement::GElement() {
-    this->session_ = CGRAPH_GENERATE_SESSION();
+    this->session_ = CGRAPH_GENERATE_SESSION()
 }
 
 
 GElement::~GElement() {
-    CGRAPH_DELETE_PTR(aspect_manager_);
+    CGRAPH_DELETE_PTR(aspect_manager_)
 }
 
 
@@ -142,7 +142,7 @@ CStatus GElement::addDependElements(const GElementPtrSet& dependElements) {
 
     for (GElementPtr cur: dependElements) {
         // 如果传入的信息中，有nullptr，则所有的信息均不参与计算
-        CGRAPH_ASSERT_NOT_NULL(cur);
+        CGRAPH_ASSERT_NOT_NULL(cur)
     }
 
     for (GElementPtr cur: dependElements) {
@@ -188,5 +188,39 @@ CStatus GElement::doAspect(const GAspectType& aspectType, const CStatus& curStat
 
     CGRAPH_FUNCTION_END
 }
+
+
+CStatus GElement::fatInit() {
+    CGRAPH_FUNCTION_BEGIN
+    status = doAspect(GAspectType::BEGIN_INIT);
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    status = init();
+    doAspect(GAspectType::FINISH_INIT, status);
+    CGRAPH_FUNCTION_END
+}
+
+
+CStatus GElement::fatRun() {
+    CGRAPH_FUNCTION_BEGIN
+    status = doAspect(GAspectType::BEGIN_RUN);
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    status = run();
+    doAspect(GAspectType::FINISH_RUN, status);
+    CGRAPH_FUNCTION_END
+}
+
+
+CStatus GElement::fatDestroy() {
+    CGRAPH_FUNCTION_BEGIN
+    status = doAspect(GAspectType::BEGIN_DESTROY);
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    status = destroy();
+    doAspect(GAspectType::FINISH_DESTROY, status);
+    CGRAPH_FUNCTION_END
+}
+
 
 CGRAPH_NAMESPACE_END

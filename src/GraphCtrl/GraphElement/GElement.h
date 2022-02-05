@@ -168,6 +168,24 @@ protected:
                                    GParamManagerPtr paramManager,
                                    UThreadPoolPtr threadPool);
 
+    /**
+     * 包含相关功能的初始化
+     * @return
+     */
+    CStatus fatInit();
+
+    /**
+     * 包含相关功能的执行方式，比如添加切面
+     * @return
+     */
+    CStatus fatRun();
+
+    /**
+     * 包含相关功能的销毁函数
+     * @return
+     */
+    CStatus fatDestroy();
+
 
 protected:
     bool done_ { false };                            // 判定被执行结束

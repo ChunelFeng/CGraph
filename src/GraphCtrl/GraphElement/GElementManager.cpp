@@ -40,10 +40,7 @@ CStatus GElementManager::init() {
     for (GElementPtr element : manager_elements_) {
         CGRAPH_ASSERT_NOT_NULL(element)
 
-        status = element->doAspect(GAspectType::BEGIN_INIT);
-        CGRAPH_FUNCTION_CHECK_STATUS
-        status = element->init();
-        element->doAspect(GAspectType::FINISH_INIT, status);
+        status = element->fatInit();
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 
@@ -57,10 +54,7 @@ CStatus GElementManager::destroy() {
     for (GElementPtr element : manager_elements_) {
         CGRAPH_ASSERT_NOT_NULL(element)
 
-        status = element->doAspect(GAspectType::BEGIN_DESTROY);
-        CGRAPH_FUNCTION_CHECK_STATUS
-        status = element->destroy();
-        element->doAspect(GAspectType::FINISH_DESTROY, status);
+        status = element->fatDestroy();
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 

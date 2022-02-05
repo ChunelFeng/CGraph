@@ -15,11 +15,7 @@ CStatus GCondition::init() {
 
     for (GElementPtr element : this->condition_elements_) {
         /** init和destroy的时候，切面全部执行。run的时候，仅执行被执行的切面 */
-        status = element->doAspect(GAspectType::BEGIN_INIT);
-        CGRAPH_FUNCTION_CHECK_STATUS
-
-        status = element->init();
-        element->doAspect(GAspectType::FINISH_INIT, status);
+        status = element->fatInit();
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 
@@ -31,11 +27,7 @@ CStatus GCondition::destroy() {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr element : this->condition_elements_) {
-        status = element->doAspect(GAspectType::BEGIN_INIT);
-        CGRAPH_FUNCTION_CHECK_STATUS
-
-        status = element->destroy();
-        element->doAspect(GAspectType::FINISH_INIT, status);
+        status = element->fatDestroy();
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 
@@ -63,11 +55,7 @@ CStatus GCondition::run() {
         loop = condition_elements_.back()->loop_;
         while (loop-- > 0) {
             auto element = condition_elements_.back();
-            status = element->doAspect(GAspectType::BEGIN_RUN);
-            CGRAPH_FUNCTION_CHECK_STATUS
-
-            status = element->run();
-            element->doAspect(GAspectType::FINISH_RUN, status);
+            status = element->fatRun();
             CGRAPH_FUNCTION_CHECK_STATUS
         }
     } else if (0 <= index && index < condition_elements_.size()) {
@@ -75,11 +63,7 @@ CStatus GCondition::run() {
         loop = condition_elements_[index]->loop_;
         while (loop-- > 0) {
             auto element = condition_elements_[index];
-            status = element->doAspect(GAspectType::BEGIN_RUN);
-            CGRAPH_FUNCTION_CHECK_STATUS
-
-            status = element->run();
-            element->doAspect(GAspectType::FINISH_RUN, status);
+            status = element->fatRun();
             CGRAPH_FUNCTION_CHECK_STATUS
         }
     }

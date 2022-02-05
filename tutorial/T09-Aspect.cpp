@@ -32,9 +32,6 @@ void tutorial_aspect() {
     /** 针对group类型，添加 MyTimerAspect 切面逻辑 */
     b_region->addGAspect<MyTimerAspect>();
 
-    /** 可以对同一个节点，设置多个切面(可重复添加)。此时，切面会执行多次 */
-    c->addGAspect<MyTimerAspect>()->addGAspect<MyTimerAspect>()->addGAspect<MyTimerAspect>();
-
     /**
      * 给特定的element，统一添加 MyTraceAspect 类型的切面
      * 不传参数，表示对pipeline内部所有的节点，添加该切面
