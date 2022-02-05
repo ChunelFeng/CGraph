@@ -24,25 +24,26 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-const static int CGRAPH_DEFAULT_LOOP_TIMES = 1;           // 默认循环次数信息
+const static CSize CGRAPH_DEFAULT_LOOP_TIMES = 1;         // 默认循环次数信息
 const static int CGRAPH_DEFAULT_ELEMENT_RUN_TTL = 0;      // 线程超时时间设定，0为不设定超时信息，单位毫秒
+const static CSize MS_PER_SECOND = 1000;                  // 每秒对应的ms数
 
 struct GNodeInfo {
     std::string name_;
-    int loop_ { CGRAPH_DEFAULT_LOOP_TIMES } ;
+    CSize loop_ { CGRAPH_DEFAULT_LOOP_TIMES } ;
     GElementPtrSet dependence_;
 
     // 无依赖版本，适用于cluster创建
     explicit GNodeInfo(const std::string& name = "",
-              int loop = CGRAPH_DEFAULT_LOOP_TIMES) {
+                       CSize loop = CGRAPH_DEFAULT_LOOP_TIMES) {
         this->name_ = name;
         this->loop_ = loop;
     }
 
     // 有依赖版本，适用于region创建
     explicit GNodeInfo(const GElementPtrSet& dependence = std::initializer_list<GElementPtr>(),
-              const std::string& name = "",
-              int loop = CGRAPH_DEFAULT_LOOP_TIMES) {
+                       const std::string& name = "",
+                       CSize loop = CGRAPH_DEFAULT_LOOP_TIMES) {
         this->name_ = name;
         this->loop_ = loop;
         this->dependence_ = dependence;

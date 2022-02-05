@@ -9,7 +9,6 @@
 #ifndef CGRAPH_UTILSOBJECT_H
 #define CGRAPH_UTILSOBJECT_H
 
-#include "../CObject/CObject.h"
 #include "UtilsDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN

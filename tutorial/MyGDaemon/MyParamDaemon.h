@@ -23,7 +23,7 @@ public:
         }
 
         // 根据实际情况，选择不上锁，或者上读/写锁
-        CGraph::CGRAPH_ECHO("----> [MyParamDaemon] iCount is [%d], just suppose this value is show on dashboard every [%d] ms",
+        CGraph::CGRAPH_ECHO("----> [MyParamDaemon] iCount is [%d], just suppose this value is show on dashboard every [%u] ms",
                             param->iCount, this->getInterval());
     }
 };

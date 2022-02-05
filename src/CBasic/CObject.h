@@ -9,8 +9,9 @@
 #ifndef CGRAPH_COBJECT_H
 #define CGRAPH_COBJECT_H
 
-#include "CObjectDefine.h"
+#include "CBasicDefine.h"
 #include "CValType.h"
+#include "CFuncType.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

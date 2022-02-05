@@ -96,16 +96,7 @@ public:
     CStatus createGParam(const std::string& key);
 
     /**
-     * 获取pipeline中的参数信息
-     * @tparam T
-     * @param key
-     * @return
-     */
-    template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
-    T* getGParam(const std::string& key);
-
-    /**
-     * 批量添加切面
+     * 添加切面
      * @tparam T
      * @param elements
      * @return
@@ -117,7 +108,7 @@ public:
                           TParam* param = nullptr);
 
     /**
-     * 添加守护信息
+     * 添加守护
      * @tparam T
      * @param s 设置定时间隔信息，单位是s
      * @param ms 设置定时间隔信息，单位是ms
@@ -133,6 +124,9 @@ public:
      * @notice beta接口
      */
     GPipeline* setElementRunTtl(int ttl);
+
+    GPipeline(const GPipeline &pipeline) = delete;
+    GPipeline& operator=(const GPipeline& pipeline) = delete;
 
 protected:
     explicit GPipeline();
@@ -152,6 +146,7 @@ private:
 };
 
 using GPipelinePtr = GPipeline *;
+using GPipelineSPtr = std::unique_ptr<GPipeline>;
 using GPipelinePtrList = std::list<GPipelinePtr>;
 
 CGRAPH_NAMESPACE_END

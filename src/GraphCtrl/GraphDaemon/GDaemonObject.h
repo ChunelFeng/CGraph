@@ -18,16 +18,6 @@ class GDaemonObject : public GraphObject {
 
 protected:
     /**
-     * 获取参数信息
-     * @tparam T
-     * @param key
-     * @return
-     */
-    template <typename T,
-            std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
-    T* getGParam(const std::string& key);
-
-    /**
      * 设置参数管理器，这里是统一设置。入参可以为空
      * @param pm
      * @return
@@ -70,7 +60,5 @@ private:
 };
 
 CGRAPH_NAMESPACE_END
-
-#include "GDaemonObject.inl"
 
 #endif //CGRAPH_GDAEMONOBJECT_H

@@ -14,7 +14,12 @@ CStatus GCondition::init() {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr element : this->condition_elements_) {
+        /** init和destroy的时候，切面全部执行。run的时候，仅执行被执行的切面 */
+        status = element->doAspect(GAspectType::BEGIN_INIT);
+        CGRAPH_FUNCTION_CHECK_STATUS
+
         status = element->init();
+        element->doAspect(GAspectType::FINISH_INIT, status);
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 
@@ -26,7 +31,11 @@ CStatus GCondition::destroy() {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr element : this->condition_elements_) {
+        status = element->doAspect(GAspectType::BEGIN_INIT);
+        CGRAPH_FUNCTION_CHECK_STATUS
+
         status = element->destroy();
+        element->doAspect(GAspectType::FINISH_INIT, status);
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 
@@ -46,21 +55,31 @@ CStatus GCondition::addElement(GElementPtr element) {
 CStatus GCondition::run() {
     CGRAPH_FUNCTION_BEGIN
 
-    int loop = 0;
+    CSize loop = 0;
     int index = this->choose();
     if (GROUP_LAST_ELEMENT_INDEX == index
         && !this->condition_elements_.empty()) {
         // 如果返回-1，则直接执行最后一个条件（模仿default功能）
         loop = condition_elements_.back()->loop_;
         while (loop-- > 0) {
-            status = condition_elements_.back()->run();
+            auto element = condition_elements_.back();
+            status = element->doAspect(GAspectType::BEGIN_RUN);
+            CGRAPH_FUNCTION_CHECK_STATUS
+
+            status = element->run();
+            element->doAspect(GAspectType::FINISH_RUN, status);
             CGRAPH_FUNCTION_CHECK_STATUS
         }
     } else if (0 <= index && index < condition_elements_.size()) {
         // 如果返回的内容，在元素范围之内，则直接执行元素的内容。不在的话，则不执行任何操作，直接返回正确状态
         loop = condition_elements_[index]->loop_;
         while (loop-- > 0) {
-            status = condition_elements_[index]->run();
+            auto element = condition_elements_[index];
+            status = element->doAspect(GAspectType::BEGIN_RUN);
+            CGRAPH_FUNCTION_CHECK_STATUS
+
+            status = element->run();
+            element->doAspect(GAspectType::FINISH_RUN, status);
             CGRAPH_FUNCTION_CHECK_STATUS
         }
     }
@@ -69,8 +88,8 @@ CStatus GCondition::run() {
 }
 
 
-int GCondition::getRange() const {
-    return (int)condition_elements_.size();
+CSize GCondition::getRange() const {
+    return (CSize)condition_elements_.size();
 }
 
 CGRAPH_NAMESPACE_END

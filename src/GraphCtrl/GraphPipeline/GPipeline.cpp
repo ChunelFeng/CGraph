@@ -74,9 +74,11 @@ CStatus GPipeline::run() {
 
         int index = 0;
         for (auto& fut : futures) {
+            // 不设定最大运行周期的情况（默认情况）
             if (likely(CGRAPH_DEFAULT_ELEMENT_RUN_TTL == element_run_ttl_)) {
-                status += fut.get();    // 不设定最大运行周期的情况（默认情况）
+                status += fut.get();
             } else {
+                // 如果设定超时时间，则以超时时间为准
                 const auto& futStatus = fut.wait_for(std::chrono::milliseconds(curClusterTtl[index]));
                 switch (futStatus) {
                     case std::future_status::ready: status += fut.get(); break;

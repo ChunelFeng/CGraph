@@ -116,8 +116,8 @@ GElementPtr GElement::setName(const std::string& name) {
 }
 
 
-GElement* GElement::setLoop(int loop) {
-    this->loop_ = (loop >= 0) ? loop : 0;
+GElement* GElement::setLoop(CSize loop) {
+    this->loop_ = loop;
     return this;
 }
 
@@ -162,7 +162,7 @@ CStatus GElement::addDependElements(const GElementPtrSet& dependElements) {
 
 CStatus GElement::setElementInfo(const GElementPtrSet& dependElements,
                                  const std::string& name,
-                                 int loop,
+                                 CSize loop,
                                  GParamManagerPtr paramManager,
                                  UThreadPoolPtr threadPool) {
     CGRAPH_FUNCTION_BEGIN

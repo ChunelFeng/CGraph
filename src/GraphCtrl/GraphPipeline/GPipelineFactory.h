@@ -13,7 +13,6 @@
 #include <mutex>
 
 #include "GPipeline.h"
-#include "../../CObject/CObject.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN

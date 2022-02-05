@@ -12,7 +12,7 @@
 
 #include <string>
 
-#include "../CObject/CObjectInclude.h"
+#include "../CBasic/CBasicInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

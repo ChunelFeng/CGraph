@@ -31,7 +31,7 @@ protected:
      */
     CStatus setElementInfo(const std::set<GElementPtr> &dependElements,
                            const std::string &name,
-                           int loop,
+                           CSize loop,
                            GParamManagerPtr paramManager,
                            UThreadPoolPtr threadPool) override;
 

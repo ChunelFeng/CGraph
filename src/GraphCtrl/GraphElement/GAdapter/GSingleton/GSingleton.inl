@@ -66,7 +66,7 @@ CStatus GSingleton<T>::destroy() {
 template <typename T>
 CStatus GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElements,
                                       const std::string &name,
-                                      int loop,
+                                      CSize loop,
                                       GParamManagerPtr paramManager,
                                       UThreadPoolPtr threadPool) {
     CGRAPH_FUNCTION_BEGIN

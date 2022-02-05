@@ -27,7 +27,7 @@ protected:
      * 获取当前condition组内部元素的个数
      * @return
      */
-    int getRange() const;
+    CSize getRange() const;
 
 private:
     CStatus init() override;

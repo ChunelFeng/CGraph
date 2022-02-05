@@ -11,7 +11,7 @@
 
 #include <string>
 
-#include "CObjectDefine.h"
+#include "CBasicDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -40,7 +40,7 @@ public:
 
     CSTATUS(const CSTATUS &&status) noexcept {
         this->error_code_ = status.error_code_;
-        this->error_info_ = status.error_info_ ;
+        this->error_info_ = status.error_info_;
     }
 
     CSTATUS& operator=(const CSTATUS& status) = default;

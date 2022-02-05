@@ -120,13 +120,6 @@ CStatus GPipeline::createGParam(const std::string& key) {
 }
 
 
-template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
-T* GPipeline::getGParam(const std::string& key) {
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)
-    return param_manager_->get<T>(key);
-}
-
-
 template<typename TAspect, typename TParam,
         std::enable_if_t<std::is_base_of<GAspect, TAspect>::value, int>,
         std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int>>
@@ -154,11 +147,7 @@ GPipelinePtr GPipeline::addGDaemon(CSec s, CMSec ms) {
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(daemon_manager_)
 
-    CMSec interval = s * 1000 + ms;    // 统一换算成ms，然后计算
-    if (0 == interval) {
-        return this;    // 就相当于是不执行了
-    }
-
+    CMSec interval = s * MS_PER_SECOND + ms;    // 统一换算成ms，然后计算
     GDaemonPtr daemon = CGRAPH_SAFE_MALLOC_COBJECT(T)
     daemon->setInterval(interval)->setPipelineParamManager(param_manager_);
     status = daemon_manager_->add(daemon);

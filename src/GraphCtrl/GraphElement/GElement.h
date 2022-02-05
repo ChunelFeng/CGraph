@@ -115,7 +115,7 @@ protected:
      * @param loop
      * @return
      */
-    GElement* setLoop(int loop = 1);
+    GElement* setLoop(CSize loop = 1);
 
     /**
      * 判定element是否可以运行
@@ -164,7 +164,7 @@ protected:
      */
     virtual CStatus setElementInfo(const std::set<GElement *> &dependElements,
                                    const std::string &name,
-                                   int loop,
+                                   CSize loop,
                                    GParamManagerPtr paramManager,
                                    UThreadPoolPtr threadPool);
 
@@ -173,7 +173,7 @@ protected:
     bool done_ { false };                            // 判定被执行结束
     bool is_init_ { false };                         // 是否初始化了
     bool linkable_ { false };                        // 判定是否可以连通计算
-    int loop_ { 1 };                                 // 节点执行次数
+    CSize loop_ { 1 };                               // 节点执行次数
     std::string name_;                               // 节点名称
     std::string session_;                            // 节点唯一id信息
     std::set<GElement *> run_before_;                // 被依赖的节点

@@ -62,7 +62,7 @@ CStatus GCluster::destroy() {
 CStatus GCluster::run() {
     CGRAPH_FUNCTION_BEGIN
     for (GElementPtr element : this->cluster_elements_) {
-        int elementLoop = element->loop_;
+        CSize elementLoop = element->loop_;
         while (elementLoop--) {
             // element需要被执行loop次
             status = element->run();
@@ -83,7 +83,7 @@ CStatus GCluster::process(bool isMock) {
     if (likely(!isMock)) {
         // 如果是mock执行，则不进入这里
         for (GElementPtr element : this->cluster_elements_) {
-            int clusterLoop = element->loop_;
+            CSize clusterLoop = element->loop_;
             while (clusterLoop-- > 0) {
                 // cluster 需要被执行loop次
                 status = element->doAspect(GAspectType::BEGIN_RUN);

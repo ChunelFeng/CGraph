@@ -2,7 +2,7 @@
 @Author: Chunel
 @Contact: chunel@foxmail.com
 @File: GDaemon.h
-@Time: 2022/2/2 9:54 下午
+@Time: 2022/2/3 9:54 下午
 @Desc: 
 ***************************/
 
@@ -30,6 +30,16 @@ protected:
      */
     [[nodiscard]] CMSec getInterval() const;
 
+    /**
+     * 获取参数信息
+     * @tparam T
+     * @param key
+     * @return
+     */
+    template <typename T,
+            std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
+    T* getGParam(const std::string& key);
+
 private:
     CStatus init() final;
     CStatus destroy() final;
@@ -45,5 +55,7 @@ using GDaemonPtr = GDaemon *;
 using GDaemonSet = std::set<GDaemonPtr>;
 
 CGRAPH_NAMESPACE_END
+
+#include "GDaemon.inl"
 
 #endif //CGRAPH_GDAEMON_H
