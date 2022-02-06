@@ -43,7 +43,7 @@ public:
      * @param runTimes
      * @return
      */
-    CStatus process(int runTimes = CGRAPH_DEFAULT_LOOP_TIMES);
+    CStatus process(CSize runTimes = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
      * 根据传入的info信息，创建node节点
@@ -67,7 +67,7 @@ public:
     GGroupPtr createGGroup(const GElementPtrArr &elements,
                            const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                            const std::string &name = "",
-                           int loop = CGRAPH_DEFAULT_LOOP_TIMES);
+                           CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
      * 在图中注册一个Element信息
@@ -84,7 +84,7 @@ public:
     CStatus registerGElement(GElementPtr *elementRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = "",
-                             int loop = CGRAPH_DEFAULT_LOOP_TIMES);
+                             CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
      * 添加参数，pipeline中所有节点共享此参数
@@ -123,8 +123,9 @@ public:
      * @return
      * @notice beta接口
      */
-    GPipeline* setElementRunTtl(int ttl);
+    GPipeline* setElementRunTtl(CMSec ttl);
 
+    /** 不允许外部赋值和构造 */
     GPipeline(const GPipeline &pipeline) = delete;
     GPipeline& operator=(const GPipeline& pipeline) = delete;
 
@@ -134,7 +135,7 @@ protected:
 
 private:
     bool is_init_ = false;                                      // 初始化标志位
-    int element_run_ttl_ = CGRAPH_DEFAULT_ELEMENT_RUN_TTL;      // 单个节点最大运行周期
+    CMSec element_run_ttl_ = CGRAPH_DEFAULT_ELEMENT_RUN_TTL;    // 单个节点最大运行周期
     GElementManagerPtr element_manager_;                        // 节点管理类（管理所有注册过的element信息）
     GElementPtrSet element_repository_;                         // 标记创建的所有节点，最终释放使用
     GParamManagerPtr param_manager_;                            // 参数管理类

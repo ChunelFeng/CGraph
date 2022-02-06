@@ -21,7 +21,7 @@ protected:
      * 超出-1和size之间的范围，则不执行
      * @return
      */
-    virtual int choose() = 0;
+    virtual CIndex choose() = 0;
 
     /**
      * 获取当前condition组内部元素的个数

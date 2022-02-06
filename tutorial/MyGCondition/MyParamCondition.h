@@ -20,8 +20,8 @@ public:
      * 来决定执行执行当前的第几个逻辑
      * @return
      */
-    int choose () override {
-        MyParam* myParam = CGRAPH_GET_GPARAM(MyParam, "param1")
+    CIndex choose () override {
+        auto* myParam = CGRAPH_GET_GPARAM(MyParam, "param1")
         if (nullptr == myParam) {
             return CGraph::GROUP_LAST_ELEMENT_INDEX;    // 如果没获取到，固定执行最后一个逻辑
         }

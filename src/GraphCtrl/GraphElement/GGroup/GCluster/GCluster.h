@@ -33,13 +33,18 @@ protected:
     CStatus afterRun() override;
 
     CStatus addElement(GElementPtr element) override;
-    int getElementNum();
+
+    /**
+     * 获取element个数信息
+     * @return
+     */
+    CSize getElementNum();
 
     /**
      * 判断是否所有element均执行结束了
      * @return
      */
-    bool isElementsDone();
+    CBool isElementsDone();
 
 private:
     GElementPtrArr cluster_elements_;    // 包含的元素信息

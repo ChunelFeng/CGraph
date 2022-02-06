@@ -43,7 +43,7 @@ protected:
      * @param runNodeSize
      * @return
      */
-    CStatus afterRunCheck(int runNodeSize);
+    CStatus afterRunCheck(CSize runNodeSize);
 
     /**
      * 添加一个元素信息

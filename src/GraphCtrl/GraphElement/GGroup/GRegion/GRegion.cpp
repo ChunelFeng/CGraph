@@ -75,7 +75,7 @@ CStatus GRegion::run() {
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
     CGRAPH_ASSERT_NOT_NULL(manager_)
 
-    int runNodeSize = 0;
+    CSize runNodeSize = 0;
     std::vector<std::future<CStatus>> futures;
 
     for (GClusterArrRef clusterArr : manager_->para_cluster_arrs_) {

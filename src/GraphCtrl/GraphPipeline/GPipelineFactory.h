@@ -37,10 +37,6 @@ public:
      */
     static CStatus clear();
 
-protected:
-    CStatus run() override;
-    GPipelineFactory() = default;
-
 private:
     static GPipelinePtrList s_pipeline_list_;    // 记录所有的
     static std::mutex s_lock_;

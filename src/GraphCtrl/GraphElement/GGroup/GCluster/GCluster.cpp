@@ -140,12 +140,13 @@ CStatus GCluster::addElement(GElementPtr element) {
 }
 
 
-int GCluster::getElementNum() {
-    return (int)cluster_elements_.size();
+CSize GCluster::getElementNum() {
+    auto num = (CSize)cluster_elements_.size();
+    return num;
 }
 
 
-bool GCluster::isElementsDone() {
+CBool GCluster::isElementsDone() {
     /* 所有的element均被执行过，则提示true */
     return std::all_of(cluster_elements_.begin(), cluster_elements_.end(),
                        [](GElementPtr element) {

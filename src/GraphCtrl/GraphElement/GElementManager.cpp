@@ -168,7 +168,7 @@ CStatus GElementManager::analyse() {
 }
 
 
-CStatus GElementManager::afterRunCheck(int runNodeSize) {
+CStatus GElementManager::afterRunCheck(CSize runNodeSize) {
     CGRAPH_FUNCTION_BEGIN
 
     /* 验证是否所有的内容均被执行过 */

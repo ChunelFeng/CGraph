@@ -18,9 +18,10 @@ public:
      * 表示在condition中，需要执行第几个。
      * 0表示第0个；1表示第1个；以此类推
      * -1 表示最后一个
+     * 其中，CIndex is for [int]
      * @return
      */
-    int choose () override {
+    CIndex choose () override {
         return 1;
     }
 };

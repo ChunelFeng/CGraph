@@ -14,7 +14,7 @@ template <typename T>
 USingleton<T, USingletonType::HUNGRY> GSingleton<T>::s_singleton_;
 
 template <typename T>
-std::atomic<bool> GSingleton<T>::s_is_init_ = false;
+std::atomic<CBool> GSingleton<T>::s_is_init_ = false;
 
 
 template <typename T>

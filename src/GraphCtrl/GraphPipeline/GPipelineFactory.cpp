@@ -56,9 +56,4 @@ CStatus GPipelineFactory::clear() {
     CGRAPH_FUNCTION_END
 }
 
-
-CStatus GPipelineFactory::run() {
-    CGRAPH_NO_SUPPORT
-}
-
 CGRAPH_NAMESPACE_END

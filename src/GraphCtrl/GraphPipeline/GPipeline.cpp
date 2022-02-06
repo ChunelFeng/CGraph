@@ -57,8 +57,8 @@ CStatus GPipeline::run() {
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
 
-    int runElementSize = 0;    // 用于记录执行的element的总数，用于后期校验
-    std::vector<int> curClusterTtl;    // 用于记录分解后，每个cluster包含的element的个数，用于验证执行的超时情况。
+    CSize runElementSize = 0;    // 用于记录执行的element的总数，用于后期校验
+    std::vector<CMSec> curClusterTtl;    // 用于记录分解后，每个cluster包含的element的个数，用于验证执行的超时情况。
     std::vector<std::future<CStatus>> futures;
 
     for (GClusterArrRef clusterArr : element_manager_->para_cluster_arrs_) {
@@ -112,7 +112,7 @@ CStatus GPipeline::destroy() {
 }
 
 
-CStatus GPipeline::process(int runTimes) {
+CStatus GPipeline::process(CSize runTimes) {
     CGRAPH_FUNCTION_BEGIN
     status = init();
     CGRAPH_FUNCTION_CHECK_STATUS
@@ -127,10 +127,10 @@ CStatus GPipeline::process(int runTimes) {
 }
 
 
-GPipelinePtr GPipeline::setElementRunTtl(int ttl) {
+GPipelinePtr GPipeline::setElementRunTtl(CMSec ttl) {
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
 
-    this->element_run_ttl_ = (ttl > 0) ? ttl : CGRAPH_DEFAULT_ELEMENT_RUN_TTL;
+    this->element_run_ttl_ = ttl;
     return this;
 }
 

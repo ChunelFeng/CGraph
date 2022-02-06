@@ -36,8 +36,8 @@ protected:
                            UThreadPoolPtr threadPool) override;
 
 private:
-    static USingleton<T, USingletonType::HUNGRY> s_singleton_;
-    static std::atomic<bool> s_is_init_;
+    static USingleton<T, USingletonType::HUNGRY> s_singleton_;     // 单例自身
+    static std::atomic<CBool> s_is_init_;                          // 标志是否被初始化过
 
     friend class GPipeline;
 };

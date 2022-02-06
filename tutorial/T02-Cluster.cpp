@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: T02-Cluster.cpp
 @Time: 2021/6/7 8:51 下午
-@Desc: 本例主要演示，GCluster的使用方法
+@Desc: 本例主要演示，GCluster的使用方法，插入的元素按顺序依次执行
 ***************************/
 
 #include "MyGNode/MyNode1.h"

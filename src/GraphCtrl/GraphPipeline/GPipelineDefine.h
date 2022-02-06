@@ -24,9 +24,9 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-const static CSize CGRAPH_DEFAULT_LOOP_TIMES = 1;         // 默认循环次数信息
-const static int CGRAPH_DEFAULT_ELEMENT_RUN_TTL = 0;      // 线程超时时间设定，0为不设定超时信息，单位毫秒
-const static CSize MS_PER_SECOND = 1000;                  // 每秒对应的ms数
+const static CSize CGRAPH_DEFAULT_LOOP_TIMES = 1;           // 默认循环次数信息
+const static CMSec CGRAPH_DEFAULT_ELEMENT_RUN_TTL = 0;      // 线程超时时间设定，0为不设定超时信息，单位毫秒
+const static CSize MS_PER_SECOND = 1000;                    // 每秒对应的ms数
 
 struct GNodeInfo {
     std::string name_;

@@ -151,7 +151,8 @@ protected:
      * @param curStatus
      * @return
      */
-    CStatus doAspect(const GAspectType& aspectType, const CStatus& curStatus = CStatus());
+    CStatus doAspect(const GAspectType& aspectType,
+                     const CStatus& curStatus = CStatus());
 
     /**
      * 设置element信息
@@ -169,7 +170,7 @@ protected:
                                    UThreadPoolPtr threadPool);
 
     /**
-     * 包含相关功能的初始化
+     * 包含相关功能的初始化，fat取自fatjar的意思
      * @return
      */
     CStatus fatInit();
@@ -188,9 +189,9 @@ protected:
 
 
 protected:
-    bool done_ { false };                            // 判定被执行结束
-    bool is_init_ { false };                         // 是否初始化了
-    bool linkable_ { false };                        // 判定是否可以连通计算
+    CBool done_ { false };                           // 判定被执行结束
+    CBool is_init_ { false };                        // 是否初始化了
+    CBool linkable_ { false };                       // 判定是否可以连通计算
     CSize loop_ { 1 };                               // 节点执行次数
     std::string name_;                               // 节点名称
     std::string session_;                            // 节点唯一id信息
