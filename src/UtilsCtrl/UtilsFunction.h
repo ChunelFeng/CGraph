@@ -45,11 +45,12 @@ inline CVoid CGRAPH_ECHO(const char *cmd, ...) {
     std::cout << "[CGraph] " << strTime << " ";
 #else
     // windows系统，打印到秒
-    time_t cur_time = strTime(nullptr);
-        std::string ct = ctime(&cur_time);
-        std::cout << "[CGraph] ["
-                  << ct.assign(ct.begin(), ct.end()-1)    // 去掉时间的最后一位\n信息
-                  << "] ";
+    time_t curTime;
+    time(&curTime);
+    std::string ct = ctime(&curTime);
+    std::cout << "[CGraph] ["
+              << ct.assign(ct.begin(), ct.end()-1)    // 去掉时间的最后一位\n信息
+              << "] ";
 #endif
 
     va_list args;
