@@ -20,6 +20,18 @@ T* GDaemon::getGParam(const std::string &key) {
     return ptr;
 }
 
+template <typename DParam,
+        std::enable_if_t<std::is_base_of<GDaemonParam, DParam>::value, int>>
+GDaemonPtr GDaemon::setDParam(DParam* param) {
+    if (param) {
+        CGRAPH_DELETE_PTR(param_)
+        param_ = CGRAPH_SAFE_MALLOC_COBJECT(DParam)    // 确保param是最新的
+        param_->clone(static_cast<DParam *>(param));
+    }
+
+    return this;
+}
+
 CGRAPH_NAMESPACE_END
 
 #endif // CGRAPH_GDAEMON_INL

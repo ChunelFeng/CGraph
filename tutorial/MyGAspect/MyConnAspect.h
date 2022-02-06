@@ -10,24 +10,24 @@
 #define CGRAPH_MYCONNASPECT_H
 
 #include "../../src/CGraph.h"
-#include "../MyGParam/MyConnAspectParam.h"
+#include "../MyGParam/MyConnParam.h"
 
 class MyConnAspect : public CGraph::GAspect {
 public:
     CStatus beginInit() override {
-        auto* param = this->getAParam<MyConnAspectParam>();    // 注意，这里是AParam，表示的是切面自己的参数，不是GParam
+        auto* param = this->getAParam<MyConnParam>();    // 注意，这里是AParam，表示的是切面自己的参数，不是GParam
         if (param) {
             // 如果传入类型不匹配，则返回param值为空
-            mockConnect(param->ip, param->port);
+            mockConnect(param->ip_, param->port_);
         }
 
         return CStatus();
     }
 
     CVoid finishDestroy(const CStatus& curStatus) override {
-        auto* param = this->getAParam<MyConnAspectParam>();
+        auto* param = this->getAParam<MyConnParam>();
         if (param) {
-            mockDisconnect(param->ip, param->port);
+            mockDisconnect(param->ip_, param->port_);
         }
     }
 

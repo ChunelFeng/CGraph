@@ -1,19 +1,19 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: GAspectDefaultParam.h
+@File: GPassedDefaultParam.h
 @Time: 2021/10/5 12:37 上午
 @Desc:
 ***************************/
 
-#ifndef CGRAPH_GASPECTDEFAULTPARAM_H
-#define CGRAPH_GASPECTDEFAULTPARAM_H
+#ifndef CGRAPH_GPASSEDDEFAULTPARAM_H
+#define CGRAPH_GPASSEDDEFAULTPARAM_H
 
-#include "GAspectParam.h"
+#include "GPassedParam.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GAspectDefaultParam final : public GAspectParam {
+class GPassedDefaultParam final : public GPassedParam {
 
 protected:
     /**
@@ -21,10 +21,13 @@ protected:
      * 目的是防止无法生成默认类型的 GAspectParam 参数
      * 无任何实意，不支持继承
      */
-    CVoid clone(GAspectParamPtr param) final {
+    CVoid clone(GPassedParamPtr param) final {
     }
 };
 
+using GAspectDefaultParam = GPassedDefaultParam;
+using GDaemonDefaultParam = GPassedDefaultParam;
+
 CGRAPH_NAMESPACE_END
 
-#endif //CGRAPH_GASPECTDEFAULTPARAM_H
+#endif //CGRAPH_GPASSEDDEFAULTPARAM_H

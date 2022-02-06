@@ -140,16 +140,19 @@ GPipelinePtr GPipeline::addGAspect(const GElementPtrSet& elements, TParam* param
 }
 
 
-template<typename T, std::enable_if_t<std::is_base_of<GDaemon, T>::value, int>>
-GPipelinePtr GPipeline::addGDaemon(CSec s, CMSec ms) {
+template<typename TDaemon, typename DParam,
+        std::enable_if_t<std::is_base_of<GDaemon, TDaemon>::value, int>,
+        std::enable_if_t<std::is_base_of<GDaemonParam, DParam>::value, int>>
+GPipeline* GPipeline::addGDaemon(CMSec ms, DParam* param) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(daemon_manager_)
 
-    CMSec interval = s * MS_PER_SECOND + ms;    // 统一换算成ms，然后计算
-    GDaemonPtr daemon = CGRAPH_SAFE_MALLOC_COBJECT(T)
-    daemon->setInterval(interval)->setPipelineParamManager(param_manager_);
+    GDaemonPtr daemon = CGRAPH_SAFE_MALLOC_COBJECT(TDaemon)
+    daemon->setDParam<DParam>(param)
+            ->setInterval(ms)
+            ->setPipelineParamManager(param_manager_);
     status = daemon_manager_->add(daemon);
 
     return status.isOK() ? this : nullptr;

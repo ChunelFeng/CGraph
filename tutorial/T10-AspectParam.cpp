@@ -10,7 +10,7 @@
 #include "MyGNode/MyNode2.h"
 #include "MyGNode/MyWriteParamNode.h"
 #include "MyGAspect/MyConnAspect.h"
-#include "MyGParam/MyConnAspectParam.h"
+#include "MyGParam/MyConnParam.h"
 #include "MyGAspect/MyTimerAspect.h"
 #include "MyGAspect/MyPipelineParamAspect.h"
 
@@ -18,13 +18,13 @@ using namespace CGraph;
 
 void tutorial_aspect_param() {
     GPipelinePtr pipeline = GPipelineFactory::create();
-    MyConnAspectParam paramA;
-    paramA.ip = "127.0.0.1";
-    paramA.port = 6666;
+    MyConnParam paramA;
+    paramA.ip_ = "127.0.0.1";
+    paramA.port_ = 6666;
 
-    MyConnAspectParam paramB;
-    paramB.ip = "255.255.255.255";
-    paramB.port = 9999;
+    MyConnParam paramB;
+    paramB.ip_ = "255.255.255.255";
+    paramB.port_ = 9999;
 
     GElementPtr a, b, c = nullptr;
 
@@ -33,10 +33,10 @@ void tutorial_aspect_param() {
     pipeline->registerGElement<MyWriteParamNode>(&c, {b}, "nodeC", 2);
 
     /** 给a节点添加 MyConnAspect 切面的逻辑，并且传入 paramA 相关参数 */
-    a->addGAspect<MyConnAspect, MyConnAspectParam>(&paramA);
+    a->addGAspect<MyConnAspect, MyConnParam>(&paramA);
 
     /** 给b节点添加多个切面，有的传递参数，有的不传递 */
-    b->addGAspect<MyConnAspect, MyConnAspectParam>(&paramB)->addGAspect<MyTimerAspect>();
+    b->addGAspect<MyConnAspect, MyConnParam>(&paramB)->addGAspect<MyTimerAspect>();
 
     /** 在切面中，获取pipeline中的参数，并且进行对应处理 */
     c->addGAspect<MyPipelineParamAspect>();

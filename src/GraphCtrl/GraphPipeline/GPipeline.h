@@ -110,12 +110,14 @@ public:
     /**
      * 添加守护
      * @tparam T
-     * @param s 设置定时间隔信息，单位是s
      * @param ms 设置定时间隔信息，单位是ms
+     * @param param 传入参数信息
      * @return
      */
-    template<typename T, std::enable_if_t<std::is_base_of<GDaemon, T>::value, int> = 0>
-    GPipeline* addGDaemon(CSec s, CMSec ms = 0);
+    template<typename TDaemon, typename DParam = GDaemonDefaultParam,
+            std::enable_if_t<std::is_base_of<GDaemon, TDaemon>::value, int> = 0,
+            std::enable_if_t<std::is_base_of<GDaemonParam, DParam>::value, int> = 0>
+    GPipeline* addGDaemon(CMSec ms, DParam* param = nullptr);
 
     /**
      * 设置执行的最大时间周期，单位为毫秒

@@ -11,20 +11,39 @@
 
 #include "../../src/CGraph.h"
 #include "../MyGParam/MyParam.h"
+#include "../MyGParam/MyConnParam.h"
 
 class MyParamDaemon : public CGraph::GDaemon {
 
 public:
-    CVoid daemonTask() override {
-        auto param = CGRAPH_GET_GPARAM(MyParam, "param1")    // 从注册的pipeline中获取参数信息
-        if (nullptr == param) {
+    CVoid daemonTask(CGraph::GDaemonParamPtr param) override {
+        /**
+         * 从注册的pipeline中获取参数信息
+         * 注意，这里是GParam类型
+         */
+        auto* myParam = CGRAPH_GET_GPARAM(MyParam, "param1")
+        if (nullptr == myParam) {
             CGraph::CGRAPH_ECHO("----> [MyParamDaemon] error, enter no find param path ...");
             return;
         }
 
         // 根据实际情况，选择不上锁，或者上读/写锁
         CGraph::CGRAPH_ECHO("----> [MyParamDaemon] iCount is [%d], just suppose this value is show on dashboard every [%u] ms",
-                            param->iCount, this->getInterval());
+                            myParam->iCount, this->getInterval());
+
+        /**
+         * 获取任务外部传入的参数信息
+         * 需要强转成外部传入的类型，方法如下：
+         */
+        auto connParam = dynamic_cast<MyConnParam *>(param);
+        if (connParam) {
+            // 对应有参数传入的分支
+            CGraph::CGRAPH_ECHO("----> [MyParamDaemon] input param, address is [%s : %d]",
+                                connParam->ip_.c_str(), connParam->port_);
+        } else {
+            // 对应无参数传入的分支
+            CGraph::CGRAPH_ECHO("----> [MyParamDaemon] no input param info.");
+        }
     }
 };
 

@@ -10,6 +10,7 @@
 #include "MyGDaemon/MyParamDaemon.h"
 #include "MyGNode/MyNode1.h"
 #include "MyGNode/MyWriteParamNode.h"
+#include "MyGParam/MyConnParam.h"
 
 using namespace CGraph;
 
@@ -20,12 +21,17 @@ void tutorial_daemon() {
     pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");
     pipeline->registerGElement<MyWriteParamNode>(&b, {}, "writeParamB");
 
+    MyConnParam connParam;
+    connParam.ip_ = "127.0.0.1";
+    connParam.port_ = 6666;
+
     /** 添加两个daemon信息，随pipeline执行 */
-    pipeline->addGDaemon<MyMonitorDaemon>(4)    // 间隔4s执行
-            ->addGDaemon<MyParamDaemon>(1, 500);    // 间隔1500ms执行
+    pipeline->addGDaemon<MyMonitorDaemon>(4000)   // 间隔4s执行
+            ->addGDaemon<MyParamDaemon, MyConnParam>(2500, &connParam)    // 间隔2500ms执行，并且传入参数
+            ->addGDaemon<MyParamDaemon>(8500);    // 对应不传入参数的分支
 
     /** 长时间执行，观察守护器执行状态 */
-    pipeline->process(15);
+    pipeline->process(20);
     GPipelineFactory::remove(pipeline);
 }
 
