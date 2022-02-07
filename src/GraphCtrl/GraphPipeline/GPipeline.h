@@ -128,8 +128,7 @@ public:
     GPipeline* setElementRunTtl(CMSec ttl);
 
     /** 不允许外部赋值和构造 */
-    GPipeline(const GPipeline &pipeline) = delete;
-    GPipeline& operator=(const GPipeline& pipeline) = delete;
+    CGRAPH_NO_ALLOWED_COPY(GPipeline)
 
 protected:
     explicit GPipeline();

@@ -18,6 +18,7 @@ CGRAPH_NAMESPACE_BEGIN
 class UTaskGroup : public UThreadObject {
 public:
     explicit UTaskGroup() = default;
+    CGRAPH_NO_ALLOWED_COPY(UTaskGroup)
 
     /**
      * 直接通过函数来申明taskGroup
@@ -42,7 +43,6 @@ public:
         return this;
     }
 
-
     /**
      * 设置任务最大超时时间
      * @param ttl
@@ -51,7 +51,6 @@ public:
         this->ttl_ms_ = (ttlMs >= 0) ? ttlMs : CGRAPH_MAX_BLOCK_TTL_MS;
         return this;
     }
-
 
     /**
      * 设置执行完成后的回调函数
@@ -63,7 +62,6 @@ public:
         return this;
     }
 
-
     /**
      * 获取最大超时时间信息
      * @return
@@ -72,14 +70,12 @@ public:
         return this->ttl_ms_;
     }
 
-
     /**
      * 清空任务组
      */
     CVoid clear() {
         task_arr_.clear();
     }
-
 
     /**
      * 获取任务组大小

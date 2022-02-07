@@ -14,20 +14,6 @@ GElementManager::GElementManager() = default;
 
 GElementManager::~GElementManager() = default;
 
-GElementManager::GElementManager(const GElementManager& manager) {
-    this->manager_elements_ = manager.manager_elements_;
-}
-
-
-GElementManager& GElementManager::operator=(const GElementManager& manager) {
-    if (this == &manager) {
-        return (*this);
-    }
-
-    this->manager_elements_ = manager.manager_elements_;
-    return (*this);
-}
-
 
 CStatus GElementManager::init() {
     CGRAPH_FUNCTION_BEGIN

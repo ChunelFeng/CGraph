@@ -23,19 +23,6 @@ public:
         clear();
     }
 
-    GAspectManager& operator=(const GAspectManager& manager) {
-        if (this == &manager) {
-            return (*this);
-        }
-
-        this->aspect_arr_ = manager.aspect_arr_;
-        return (*this);
-    }
-
-    GAspectManager(const GAspectManager& manager) : GAspectObject(manager) {
-        this->aspect_arr_ = manager.aspect_arr_;
-    }
-
     /**
      * 执行切面逻辑
      */
@@ -112,6 +99,8 @@ public:
         aspect_arr_.clear();
         CGRAPH_FUNCTION_END
     }
+
+    CGRAPH_NO_ALLOWED_COPY(GAspectManager)
 
 private:
     GAspectPtrArr aspect_arr_;

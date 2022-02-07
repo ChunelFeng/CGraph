@@ -123,9 +123,7 @@ public:
         return queue_.empty();
     }
 
-    /** 直接禁止copy和赋值 */
-    UAtomicQueue(const UAtomicQueue& task) = delete;
-    UAtomicQueue &operator=(const UAtomicQueue& task) = delete;
+    CGRAPH_NO_ALLOWED_COPY(UAtomicQueue)
 
 private:
     std::mutex mutex_;

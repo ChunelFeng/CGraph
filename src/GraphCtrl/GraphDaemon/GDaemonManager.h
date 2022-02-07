@@ -38,6 +38,7 @@ protected:
 
     friend class GPipeline;
     friend class UAllocator;
+    CGRAPH_NO_ALLOWED_COPY(GDaemonManager)
 
 private:
     GDaemonSet daemons_;                    // daemon信息集合

@@ -19,7 +19,7 @@ void tutorial_daemon() {
     GElementPtr a, b = nullptr;
 
     pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");
-    pipeline->registerGElement<MyWriteParamNode>(&b, {}, "writeParamB");
+    pipeline->registerGElement<MyWriteParamNode>(&b, {a}, "writeParamNodeB");    // writeParamNodeB中的值，每隔1s改变一次
 
     MyConnParam connParam;
     connParam.ip_ = "127.0.0.1";
@@ -27,7 +27,7 @@ void tutorial_daemon() {
 
     /** 添加两个daemon信息，随pipeline执行 */
     pipeline->addGDaemon<MyMonitorDaemon>(4000)   // 间隔4s执行
-            ->addGDaemon<MyParamDaemon, MyConnParam>(2500, &connParam)    // 间隔2500ms执行，并且传入参数
+            ->addGDaemon<MyParamDaemon, MyConnParam>(3500, &connParam)    // 间隔3500ms执行，并且传入参数
             ->addGDaemon<MyParamDaemon>(8500);    // 对应不传入参数的分支
 
     /** 长时间执行，观察守护器执行状态 */

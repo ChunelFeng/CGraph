@@ -122,9 +122,7 @@ public:
         return result;    // 如果非空，表示盗取成功
     }
 
-    /** 直接禁止copy和赋值 */
-    UWorkStealingQueue(const UWorkStealingQueue& task) = delete;
-    UWorkStealingQueue &operator=(const UWorkStealingQueue& task) = delete;
+    CGRAPH_NO_ALLOWED_COPY(UWorkStealingQueue)
 
 private:
     std::deque<UTaskWrapper> queue_;

@@ -28,6 +28,8 @@ CGRAPH_NAMESPACE_BEGIN
 class UThreadPool : public UThreadObject {
 
 public:
+    CGRAPH_NO_ALLOWED_COPY(UThreadPool)
+
     /**
      * 通过默认设置参数，来创建线程池
      * @param autoInit 是否自动开启线程池功能
@@ -106,7 +108,7 @@ public:
      */
     template<typename FunctionType>
     auto commit(const FunctionType& func,
-                int index = CGRAPH_DEFAULT_TASK_STRATEGY)
+                CIndex index = CGRAPH_DEFAULT_TASK_STRATEGY)
     -> std::future<typename std::result_of<FunctionType()>::type> {
         typedef typename std::result_of<FunctionType()>::type resultType;
 
@@ -209,7 +211,7 @@ protected:
      * @param task
      * @param index
      */
-    CVoid dispatchTask(UTaskWrapper&& task, int index) {
+    CVoid dispatchTask(UTaskWrapper&& task, CIndex index) {
         if (likely(CGRAPH_DEFAULT_TASK_STRATEGY == index)) {
             /** 默认调度策略信息 */
             if (!config_.fair_lock_enable_

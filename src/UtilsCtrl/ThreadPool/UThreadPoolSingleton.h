@@ -25,9 +25,6 @@ public:
     static UThreadPoolPtr get(bool autoInit = true);
 
 private:
-    UThreadPoolSingleton() = default;
-    ~UThreadPoolSingleton() override = default;
-
     static USingleton<UThreadPool> s_pool_;
 };
 

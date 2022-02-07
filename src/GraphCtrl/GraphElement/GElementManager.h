@@ -18,8 +18,7 @@ class GElementManager : public GraphObject, public GraphManager<GElement> {
 protected:
     explicit GElementManager();
     ~GElementManager() override;    // 注意，manager中的节点，在析构的时候不需要释放。所有的节点信息在GPipeLine类中统一申请和释放
-    GElementManager(const GElementManager& manager);
-    GElementManager& operator=(const GElementManager& manager);
+    CGRAPH_NO_ALLOWED_COPY(GElementManager)
 
     CStatus init() override;
     CStatus run() override;
