@@ -60,6 +60,16 @@ public:
         return (*this);
     }
 
+    void setStatus(const std::string& info) {
+        error_code_ = STATUS_ERR;
+        error_info_ = info;
+    }
+
+    void setStatus(int code, const std::string& info) {
+        error_code_ = code;
+        error_info_ = info;
+    }
+
     [[nodiscard]] int getCode() const {
         return this->error_code_;
     }

@@ -38,6 +38,10 @@ using CGRAPH_CALLBACK_CONST_FUNCTION_REF = const std::function<void(CStatus)>&;
 #define CGRAPH_NO_SUPPORT                                               \
     return CStatus("function not support");                             \
 
+#define CGRAPH_RETURN_ERROR_STATUS(info)                                \
+    return CStatus(info);                                               \
+
+
 /* 定义为不能赋值和拷贝的对象 */
 #define CGRAPH_NO_ALLOWED_COPY(CType)                                   \
     CType(const CType &) = delete;                                      \

@@ -41,7 +41,7 @@ public:
      * @param value
      * @return
      */
-    bool tryPop(T& value) {
+    CBool tryPop(T& value) {
         CGRAPH_LOCK_GUARD lk(mutex_);
         if (queue_.empty()) {
             return false;
@@ -58,7 +58,7 @@ public:
      * @param maxPoolBatchSize
      * @return
      */
-    bool tryPop(std::vector<T>& values, int maxPoolBatchSize) {
+    CBool tryPop(std::vector<T>& values, int maxPoolBatchSize) {
         CGRAPH_LOCK_GUARD lk(mutex_);
         if (queue_.empty() || maxPoolBatchSize <= 0) {
             return false;
@@ -118,7 +118,7 @@ public:
      * 判定队列是否为空
      * @return
      */
-    [[nodiscard]] bool empty() {
+    [[nodiscard]] CBool empty() {
         CGRAPH_LOCK_GUARD lk(mutex_);
         return queue_.empty();
     }

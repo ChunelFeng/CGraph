@@ -45,7 +45,7 @@ public:
      * @param task
      * @return
      */
-    bool tryPop(UTaskWrapper& task) {
+    CBool tryPop(UTaskWrapper& task) {
         // 这里不使用raii锁，主要是考虑到多线程的情况下，可能会重复进入
         bool result = false;
         if (mutex_.try_lock()) {
@@ -67,7 +67,7 @@ public:
      * @param maxLocalBatchSize
      * @return
      */
-    bool tryPop(UTaskWrapperArrRef taskArr,
+    CBool tryPop(UTaskWrapperArrRef taskArr,
                 int maxLocalBatchSize) {
         bool result = false;
         if (mutex_.try_lock()) {
@@ -88,7 +88,7 @@ public:
      * @param task
      * @return
      */
-    bool trySteal(UTaskWrapper& task) {
+    CBool trySteal(UTaskWrapper& task) {
         bool result = false;
         if (mutex_.try_lock()) {
             if (!queue_.empty()) {
@@ -108,7 +108,7 @@ public:
      * @param taskArr
      * @return
      */
-    bool trySteal(UTaskWrapperArrRef taskArr, int maxStealBatchSize) {
+    CBool trySteal(UTaskWrapperArrRef taskArr, int maxStealBatchSize) {
         bool result = false;
         if (mutex_.try_lock()) {
             while (!queue_.empty() && maxStealBatchSize--) {
