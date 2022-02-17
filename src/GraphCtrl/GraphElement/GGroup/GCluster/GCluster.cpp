@@ -38,7 +38,7 @@ CStatus GCluster::init() {
 
     for (GElementPtr element : cluster_elements_) {
         CGRAPH_ASSERT_NOT_NULL(element)
-        status = element->fatInit();
+        status = element->fatProcessor(CFunctionType::INIT);
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 
@@ -52,7 +52,7 @@ CStatus GCluster::destroy() {
 
     for (GElementPtr element : cluster_elements_) {
         CGRAPH_ASSERT_NOT_NULL(element)
-        status = element->fatDestroy();
+        status = element->fatProcessor(CFunctionType::DESTROY);
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 
@@ -67,7 +67,7 @@ CStatus GCluster::run() {
         CSize elementLoop = element->loop_;
         while (elementLoop--) {
             // element需要被执行loop次
-            status = element->fatRun();
+            status = element->fatProcessor(CFunctionType::RUN);
             CGRAPH_FUNCTION_CHECK_STATUS
         }
     }
@@ -88,7 +88,7 @@ CStatus GCluster::process(bool isMock) {
             CSize clusterLoop = element->loop_;
             while (clusterLoop-- > 0) {
                 // cluster 需要被执行loop次
-                status = element->fatRun();
+                status = element->fatProcessor(CFunctionType::RUN);
                 CGRAPH_FUNCTION_CHECK_STATUS
             }
         }

@@ -15,7 +15,7 @@ CStatus GCondition::init() {
 
     for (GElementPtr element : this->condition_elements_) {
         /** init和destroy的时候，切面全部执行。run的时候，仅执行被执行的切面 */
-        status = element->fatInit();
+        status = element->fatProcessor(CFunctionType::INIT);
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 
@@ -27,7 +27,7 @@ CStatus GCondition::destroy() {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr element : this->condition_elements_) {
-        status = element->fatDestroy();
+        status = element->fatProcessor(CFunctionType::DESTROY);
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 
@@ -55,7 +55,7 @@ CStatus GCondition::run() {
         loop = condition_elements_.back()->loop_;
         while (loop-- > 0) {
             auto element = condition_elements_.back();
-            status = element->fatRun();
+            status = element->fatProcessor(CFunctionType::RUN);
             CGRAPH_FUNCTION_CHECK_STATUS
         }
     } else if (0 <= index && index < condition_elements_.size()) {
@@ -63,7 +63,7 @@ CStatus GCondition::run() {
         loop = condition_elements_[index]->loop_;
         while (loop-- > 0) {
             auto element = condition_elements_[index];
-            status = element->fatRun();
+            status = element->fatProcessor(CFunctionType::RUN);
             CGRAPH_FUNCTION_CHECK_STATUS
         }
     }

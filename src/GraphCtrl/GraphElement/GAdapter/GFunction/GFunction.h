@@ -9,8 +9,6 @@
 #ifndef CGRAPH_GFUNCTION_H
 #define CGRAPH_GFUNCTION_H
 
-#include "GFunctionDefine.h"
-
 CGRAPH_NAMESPACE_BEGIN
 
 class GFunction : public GAdapter {
@@ -21,15 +19,15 @@ public:
      * @param func
      * @return
      */
-    GFunction* setFunction(const GFunctionType& type,
+    GFunction* setFunction(const CFunctionType& type,
                            CGRAPH_CSTATUS_CONST_FUNCTION_REF func) {
         CGRAPH_ASSERT_INIT_RETURN_NULL(false)
         CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(func)
 
         switch (type) {
-            case GFunctionType::INIT: init_function_ = func; break;
-            case GFunctionType::RUN: run_function_ = func; break;
-            case GFunctionType::DESTROY: destroy_function_ = func; break;
+            case CFunctionType::INIT: init_function_ = func; break;
+            case CFunctionType::RUN: run_function_ = func; break;
+            case CFunctionType::DESTROY: destroy_function_ = func; break;
             default: return nullptr;     // 不可能出现的情况
         }
 

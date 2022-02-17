@@ -26,7 +26,7 @@ CStatus GElementManager::init() {
     for (GElementPtr element : manager_elements_) {
         CGRAPH_ASSERT_NOT_NULL(element)
 
-        status = element->fatInit();
+        status = element->fatProcessor(CFunctionType::INIT);
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 
@@ -40,7 +40,7 @@ CStatus GElementManager::destroy() {
     for (GElementPtr element : manager_elements_) {
         CGRAPH_ASSERT_NOT_NULL(element)
 
-        status = element->fatDestroy();
+        status = element->fatProcessor(CFunctionType::DESTROY);
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 

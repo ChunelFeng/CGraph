@@ -22,6 +22,16 @@ using CGRAPH_CSTATUS_CONST_FUNCTION_REF = const std::function<CStatus()>&;
 using CGRAPH_CALLBACK_FUNCTION = std::function<void(CStatus)>;
 using CGRAPH_CALLBACK_CONST_FUNCTION_REF = const std::function<void(CStatus)>&;
 
+
+/**
+ * 描述函数类型
+ */
+enum class CFunctionType {
+    INIT = 1,              /** 初始化函数 */
+    RUN = 2,               /** 执行函数 */
+    DESTROY = 3            /** 释放函数 */
+};
+
 /** 开启函数流程 */
 #define CGRAPH_FUNCTION_BEGIN                                           \
     CStatus status;                                                     \
@@ -38,6 +48,7 @@ using CGRAPH_CALLBACK_CONST_FUNCTION_REF = const std::function<void(CStatus)>&;
 #define CGRAPH_NO_SUPPORT                                               \
     return CStatus("function not support");                             \
 
+/** 返回异常信息和状态 */
 #define CGRAPH_RETURN_ERROR_STATUS(info)                                \
     return CStatus(info);                                               \
 

@@ -27,16 +27,16 @@ void tutorial_function() {
 
     int num = 10;
     const std::string& info = "Hello, CGraph";
-    ((GFunctionPtr)c_function)->setFunction(GFunctionType::RUN, [num, info] {
+    ((GFunctionPtr)c_function)->setFunction(CFunctionType::RUN, [num, info] {
         CGRAPH_ECHO("input num i = [%d], info = [%s]", num, info.c_str());    // 传递pipeline外部参数，并在pipeline内部节点执行时使用
         return CStatus();
     });
 
     /** 通过链式调用的方式，注册多个执行函数 */
-    ((GFunctionPtr)d_function)->setFunction(GFunctionType::INIT, [d_function] {
+    ((GFunctionPtr)d_function)->setFunction(CFunctionType::INIT, [d_function] {
         CGRAPH_ECHO("[%s] do init function ...", d_function->getName().c_str());
         return CStatus();
-    })->setFunction(GFunctionType::RUN, [d_function, num] {
+    })->setFunction(CFunctionType::RUN, [d_function, num] {
         auto param = d_function->getGParam<MyParam>("param1");     // 在nodeB(MyWriteParamNode)的init阶段生成，正式使用的时候请注意判空逻辑
         param->iCount += num;
         CGRAPH_ECHO("[%s] do run function, iCount = [%d], iValue = [%d] ...",

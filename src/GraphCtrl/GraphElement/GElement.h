@@ -170,22 +170,11 @@ protected:
                                    UThreadPoolPtr threadPool);
 
     /**
-     * 包含相关功能的初始化，fat取自fatjar的意思
+     * 包含切面相关功能的函数，fat取自fatjar的意思
+     * @param type
      * @return
      */
-    CStatus fatInit();
-
-    /**
-     * 包含相关功能的执行方式，比如添加切面
-     * @return
-     */
-    CStatus fatRun();
-
-    /**
-     * 包含相关功能的销毁函数
-     * @return
-     */
-    CStatus fatDestroy();
+    CStatus fatProcessor(const CFunctionType& type);
 
 
 protected:

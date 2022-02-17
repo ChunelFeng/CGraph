@@ -190,37 +190,37 @@ CStatus GElement::doAspect(const GAspectType& aspectType, const CStatus& curStat
 }
 
 
-CStatus GElement::fatInit() {
+CStatus GElement::fatProcessor(const CFunctionType& type) {
     CGRAPH_FUNCTION_BEGIN
-    status = doAspect(GAspectType::BEGIN_INIT);
-    CGRAPH_FUNCTION_CHECK_STATUS
 
-    status = init();
-    doAspect(GAspectType::FINISH_INIT, status);
+    switch (type) {
+        case CFunctionType::RUN: {
+            /** 执行带切面的run方法 */
+            status = doAspect(GAspectType::BEGIN_RUN);
+            CGRAPH_FUNCTION_CHECK_STATUS
+            status = run();
+            doAspect(GAspectType::FINISH_RUN, status);
+            break;
+        }
+        case CFunctionType::INIT: {
+            status = doAspect(GAspectType::BEGIN_INIT);
+            CGRAPH_FUNCTION_CHECK_STATUS
+            status = init();
+            doAspect(GAspectType::FINISH_INIT, status);
+            break;
+        }
+        case CFunctionType::DESTROY: {
+            status = doAspect(GAspectType::BEGIN_DESTROY);
+            CGRAPH_FUNCTION_CHECK_STATUS
+            status = destroy();
+            doAspect(GAspectType::FINISH_DESTROY, status);
+            break;
+        }
+        default:
+            CGRAPH_RETURN_ERROR_STATUS("get function type error")
+    }
+
     CGRAPH_FUNCTION_END
 }
-
-
-CStatus GElement::fatRun() {
-    CGRAPH_FUNCTION_BEGIN
-    status = doAspect(GAspectType::BEGIN_RUN);
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    status = run();
-    doAspect(GAspectType::FINISH_RUN, status);
-    CGRAPH_FUNCTION_END
-}
-
-
-CStatus GElement::fatDestroy() {
-    CGRAPH_FUNCTION_BEGIN
-    status = doAspect(GAspectType::BEGIN_DESTROY);
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    status = destroy();
-    doAspect(GAspectType::FINISH_DESTROY, status);
-    CGRAPH_FUNCTION_END
-}
-
 
 CGRAPH_NAMESPACE_END
