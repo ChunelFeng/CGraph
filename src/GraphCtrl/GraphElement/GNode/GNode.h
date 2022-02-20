@@ -28,11 +28,12 @@ protected:
      * @param args
      */
     template<typename Func, typename... Args>
-    CStatus detach(const Func&& func, Args&&... args) {
+    static CStatus detach(const Func&& func, Args&&... args) {
         CGRAPH_FUNCTION_BEGIN
-        CGRAPH_ASSERT_NOT_NULL(this->thread_pool_)
+        static UThreadPoolPtr s_pool = UThreadPoolSingleton::get(false);
+        CGRAPH_ASSERT_NOT_NULL(s_pool)
 
-        thread_pool_->commit(std::bind(func, std::forward<Args>(args)...));
+        s_pool->commit(std::bind(func, std::forward<Args>(args)...));
         CGRAPH_FUNCTION_END
     }
 

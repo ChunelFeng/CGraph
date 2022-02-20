@@ -66,6 +66,13 @@ public:
             std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int> = 0>
     GElement* addGAspect(TParam* param = nullptr);
 
+    /**
+     * 添加依赖节点信息
+     * @param dependElements
+     * @return
+     */
+    CStatus addDependElements(const std::set<GElement *> &dependElements);
+
 
 protected:
     /**
@@ -137,13 +144,6 @@ protected:
      * @return
      */
     virtual CStatus process(bool isMock);
-
-    /**
-     * 添加依赖节点信息
-     * @param dependElements
-     * @return
-     */
-    CStatus addDependElements(const std::set<GElement *> &dependElements);
 
     /**
      * 执行切面逻辑

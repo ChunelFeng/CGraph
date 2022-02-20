@@ -139,12 +139,6 @@ CStatus GElement::process(bool isMock) {
 
 CStatus GElement::addDependElements(const GElementPtrSet& dependElements) {
     CGRAPH_FUNCTION_BEGIN
-
-    for (GElementPtr cur: dependElements) {
-        // 如果传入的信息中，有nullptr，则所有的信息均不参与计算
-        CGRAPH_ASSERT_NOT_NULL(cur)
-    }
-
     for (GElementPtr cur: dependElements) {
         if (this == cur) {
             continue;
@@ -155,7 +149,6 @@ CStatus GElement::addDependElements(const GElementPtrSet& dependElements) {
     }
 
     this->left_depend_ = (int)this->dependence_.size();
-
     CGRAPH_FUNCTION_END
 }
 
