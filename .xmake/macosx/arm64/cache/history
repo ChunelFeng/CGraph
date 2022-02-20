@@ -1,0 +1,6 @@
+{
+    cmdlines = {
+        "xmake lua /opt/homebrew/Cellar/xmake/2.5.7/share/xmake/actions/build/statistics.lua",
+        "xmake lua /opt/homebrew/Cellar/xmake/2.5.7/share/xmake/actions/build/cleaner.lua"
+    }
+}

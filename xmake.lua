@@ -10,12 +10,13 @@ set_languages("c++17")
 -- set features on different platform
 if is_plat("macosx") then
     add_defines("_GENERATE_SESSION_")
+    add_defines("_ENABLE_LIKELY_")
 elseif is_plat("linux") then
     add_defines("_ENABLE_LIKELY_")
     add_syslinks("pthread")
 end
 
-turorial_list = {
+tutorial_list = {
         "T00-HelloCGraph",
         "T01-Simple",
         "T02-Cluster",
@@ -36,8 +37,8 @@ turorial_list = {
         "TU04-Timer"
 }
 
--- add tuturial target one by one
-for _, v in pairs(turorial_list) do  
+-- add tutorial target one by one
+for _, v in pairs(tutorial_list) do
     target(v)
         set_kind("binary")
         add_files("src/**.cpp", string.format("tutorial/%s.cpp", v))
