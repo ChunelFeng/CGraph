@@ -6,3 +6,4 @@
 /cmake-build-release/
 /cmake-build-debug-coverage/
 /build/
+/.xmake/
