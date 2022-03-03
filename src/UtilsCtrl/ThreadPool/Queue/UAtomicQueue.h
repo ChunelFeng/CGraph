@@ -80,7 +80,7 @@ public:
     std::unique_ptr<T> waitPop() {
         CGRAPH_UNIQUE_LOCK lk(mutex_);
         cv_.wait(lk, [this] { return !queue_.empty(); });
-        std::unique_ptr<T> result = queue_.front();
+        std::unique_ptr<T> result = std::move(queue_.front());
         queue_.pop();
         return result;
     }
@@ -92,10 +92,7 @@ public:
      */
     std::unique_ptr<T> tryPop() {
         CGRAPH_LOCK_GUARD lk(mutex_);
-        if (queue_.empty()) {
-            return std::unique_ptr<T>();
-        }
-
+        if (queue_.empty()) { return std::unique_ptr<T>(); }
         std::unique_ptr<T> ptr = std::move(queue_.front());
         queue_.pop();
         return ptr;
