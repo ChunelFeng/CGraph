@@ -19,14 +19,12 @@ CGRAPH_NAMESPACE_BEGIN
 
 const static unsigned int DEFAULT_LRU_CACHE_CAPACITY = 10;
 
-template<typename K, typename V>
+template<typename K, typename V, CUint N = DEFAULT_LRU_CACHE_CAPACITY>
 class ULru : public UtilsObject {
 public:
-    explicit ULru(unsigned int capacity) {
-        this->capacity_ = capacity;
+    explicit ULru() {
+        capacity_ = N;
     }
-
-    explicit ULru() = default;
 
     ~ULru() override {
         clear();
@@ -77,7 +75,7 @@ public:
      * 设置capacity信息
      * @param capacity
      */
-    CVoid setCapacity(unsigned int capacity) {
+    CVoid setCapacity(CUint capacity) {
         this->capacity_ = capacity;
     }
 
@@ -85,7 +83,7 @@ public:
      * 获取capacity信息
      * @return
      */
-    unsigned int getCapacity() {
+    CUint getCapacity() {
         return this->capacity_;
     }
 
@@ -100,10 +98,10 @@ public:
 
 
 private:
-    unsigned int cur_size_ { 0 };                                                        // 当前尺寸
-    unsigned int capacity_ { DEFAULT_LRU_CACHE_CAPACITY };                               // 最大容量
-    std::unordered_map<K, typename std::list<ULruNode<K, V>>::iterator> cache_;          // 缓存信息
-    std::list<ULruNode<K, V>> nodes_;                                                    // 节点链表
+    CUint cur_size_ { 0 };                                                           // 当前尺寸
+    CUint capacity_ { DEFAULT_LRU_CACHE_CAPACITY };                                  // 最大容量
+    std::unordered_map<K, typename std::list<ULruNode<K, V>>::iterator> cache_;      // 缓存信息
+    std::list<ULruNode<K, V>> nodes_;                                                // 节点链表
 };
 
 CGRAPH_NAMESPACE_END
