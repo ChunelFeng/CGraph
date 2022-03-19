@@ -36,30 +36,15 @@ public:
 
 protected:
     CStatus init() override {
-        CGRAPH_FUNCTION_BEGIN
-        if (init_function_) {
-            status = init_function_();
-        }
-
-        CGRAPH_FUNCTION_END
+        return init_function_ ? init_function_() : CStatus();
     }
 
     CStatus run() override {
-        CGRAPH_FUNCTION_BEGIN
-        if (run_function_) {
-            status = run_function_();
-        }
-
-        CGRAPH_FUNCTION_END
+        return run_function_ ? run_function_() : CStatus();
     }
 
     CStatus destroy() override {
-        CGRAPH_FUNCTION_BEGIN
-        if (destroy_function_) {
-            status = destroy_function_();
-        }
-
-        CGRAPH_FUNCTION_END
+        return destroy_function_ ? destroy_function_() : CStatus();
     }
 
 private:
