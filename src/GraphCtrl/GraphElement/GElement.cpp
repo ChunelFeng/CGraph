@@ -183,34 +183,36 @@ CStatus GElement::doAspect(const GAspectType& aspectType, const CStatus& curStat
 }
 
 
-CStatus GElement::fatProcessor(const CFunctionType& type) {
+CStatus GElement::fatProcessor(const CFunctionType& type, CSize loop) {
     CGRAPH_FUNCTION_BEGIN
 
-    switch (type) {
-        case CFunctionType::RUN: {
-            /** 执行带切面的run方法 */
-            status = doAspect(GAspectType::BEGIN_RUN);
-            CGRAPH_FUNCTION_CHECK_STATUS
-            status = run();
-            doAspect(GAspectType::FINISH_RUN, status);
-            break;
+    while (loop--) {
+        switch (type) {
+            case CFunctionType::RUN: {
+                /** 执行带切面的run方法 */
+                status = doAspect(GAspectType::BEGIN_RUN);
+                CGRAPH_FUNCTION_CHECK_STATUS
+                status = run();
+                doAspect(GAspectType::FINISH_RUN, status);
+                break;
+            }
+            case CFunctionType::INIT: {
+                status = doAspect(GAspectType::BEGIN_INIT);
+                CGRAPH_FUNCTION_CHECK_STATUS
+                status = init();
+                doAspect(GAspectType::FINISH_INIT, status);
+                break;
+            }
+            case CFunctionType::DESTROY: {
+                status = doAspect(GAspectType::BEGIN_DESTROY);
+                CGRAPH_FUNCTION_CHECK_STATUS
+                status = destroy();
+                doAspect(GAspectType::FINISH_DESTROY, status);
+                break;
+            }
+            default:
+                CGRAPH_RETURN_ERROR_STATUS("get function type error")
         }
-        case CFunctionType::INIT: {
-            status = doAspect(GAspectType::BEGIN_INIT);
-            CGRAPH_FUNCTION_CHECK_STATUS
-            status = init();
-            doAspect(GAspectType::FINISH_INIT, status);
-            break;
-        }
-        case CFunctionType::DESTROY: {
-            status = doAspect(GAspectType::BEGIN_DESTROY);
-            CGRAPH_FUNCTION_CHECK_STATUS
-            status = destroy();
-            doAspect(GAspectType::FINISH_DESTROY, status);
-            break;
-        }
-        default:
-            CGRAPH_RETURN_ERROR_STATUS("get function type error")
     }
 
     CGRAPH_FUNCTION_END

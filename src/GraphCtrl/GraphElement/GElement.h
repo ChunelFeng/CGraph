@@ -18,7 +18,6 @@
 #include "../GraphObject.h"
 #include "../GraphParam/GParamInclude.h"
 #include "../GraphAspect/GAspectInclude.h"
-#include "../../UtilsCtrl/UtilsInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -172,9 +171,10 @@ protected:
     /**
      * 包含切面相关功能的函数，fat取自fatjar的意思
      * @param type
+     * @param loop
      * @return
      */
-    CStatus fatProcessor(const CFunctionType& type);
+    CStatus fatProcessor(const CFunctionType& type, CSize loop = 1);
 
 
 protected:

@@ -10,6 +10,7 @@
 #define CGRAPH_GRAPHOBJECT_H
 
 #include "../CBasic/CBasicInclude.h"
+#include "../UtilsCtrl/UtilsInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

@@ -53,19 +53,15 @@ CStatus GCondition::run() {
         && !this->condition_elements_.empty()) {
         // 如果返回-1，则直接执行最后一个条件（模仿default功能）
         loop = condition_elements_.back()->loop_;
-        while (loop-- > 0) {
-            auto element = condition_elements_.back();
-            status = element->fatProcessor(CFunctionType::RUN);
-            CGRAPH_FUNCTION_CHECK_STATUS
-        }
+        auto element = condition_elements_.back();
+        status = element->fatProcessor(CFunctionType::RUN, loop);
+        CGRAPH_FUNCTION_CHECK_STATUS
     } else if (0 <= index && index < condition_elements_.size()) {
         // 如果返回的内容，在元素范围之内，则直接执行元素的内容。不在的话，则不执行任何操作，直接返回正确状态
         loop = condition_elements_[index]->loop_;
-        while (loop-- > 0) {
-            auto element = condition_elements_[index];
-            status = element->fatProcessor(CFunctionType::RUN);
-            CGRAPH_FUNCTION_CHECK_STATUS
-        }
+        auto element = condition_elements_[index];
+        status = element->fatProcessor(CFunctionType::RUN, loop);
+        CGRAPH_FUNCTION_CHECK_STATUS
     }
 
     CGRAPH_FUNCTION_END
