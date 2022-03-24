@@ -62,7 +62,7 @@ protected:
      * @param element
      * @return
      */
-    bool find(GElementPtr element) const override;
+    CBool find(GElementPtr element) const override;
 
     /**
      * 清空信息

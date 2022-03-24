@@ -43,7 +43,7 @@ protected:
      * @param object
      * @return
      */
-    virtual bool find(T* object) const {
+    virtual CBool find(T* object) const {
         return false;
     }
 

@@ -29,7 +29,7 @@ public:
         }
 
         CGraph::CGRAPH_ECHO("singleton node run, name is [%s], this address is [0x%x], cnt is [%d].",
-                            this->getName().c_str(), this, cnt);
+                            this->getName().c_str(), (unsigned int*)this, cnt);
         return CStatus();
     }
 };

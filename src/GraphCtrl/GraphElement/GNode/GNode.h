@@ -28,12 +28,29 @@ protected:
      * @param args
      */
     template<typename Func, typename... Args>
-    static CStatus detach(const Func&& func, Args&&... args) {
+    static CStatus doDetach(const Func&& func, Args&&... args) {
         CGRAPH_FUNCTION_BEGIN
-        static UThreadPoolPtr s_pool = UThreadPoolSingleton::get(false);
-        CGRAPH_ASSERT_NOT_NULL(s_pool)
+        UThreadPoolPtr tp = UThreadPoolSingleton::get(false);
+        CGRAPH_ASSERT_NOT_NULL(tp)
 
-        s_pool->commit(std::bind(func, std::forward<Args>(args)...));
+        tp->commit(std::bind(func, std::forward<Args>(args)...));
+        CGRAPH_FUNCTION_END
+    }
+
+    /**
+     * 执行批量任务
+     * @param tasks
+     * @param ttl
+     * @return
+     */
+    CStatus doParallel(const UTaskGroup& tasks, CMSec ttl) {
+        CGRAPH_FUNCTION_BEGIN
+        CGRAPH_ASSERT_INIT(true)
+
+        UThreadPoolPtr tp = UThreadPoolSingleton::get(false);
+        CGRAPH_ASSERT_NOT_NULL(tp)
+
+        status = tp->submit(tasks, ttl);
         CGRAPH_FUNCTION_END
     }
 
@@ -41,8 +58,8 @@ protected:
     * 获取当前执行的线程id信息
     * @return
     */
-    static size_t getThreadId() {
-        const size_t& tid = std::hash<std::thread::id>{}(std::this_thread::get_id());
+    static CSize getThreadId() {
+        const CSize& tid = (CSize) std::hash<std::thread::id>{}(std::this_thread::get_id());
         return tid;
     }
 

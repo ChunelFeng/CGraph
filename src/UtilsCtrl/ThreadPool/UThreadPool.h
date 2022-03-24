@@ -131,7 +131,7 @@ public:
      * @return
      */
     CStatus submit(const UTaskGroup& taskGroup,
-                   int ttlMs = CGRAPH_MAX_BLOCK_TTL_MS) {
+                   CMSec ttlMs = CGRAPH_MAX_BLOCK_TTL_MS) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
 

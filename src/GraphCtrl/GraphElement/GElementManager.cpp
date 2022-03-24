@@ -24,10 +24,9 @@ CStatus GElementManager::init() {
     CGRAPH_FUNCTION_CHECK_STATUS
 
     for (GElementPtr element : manager_elements_) {
-        CGRAPH_ASSERT_NOT_NULL(element)
-
         status = element->fatProcessor(CFunctionType::INIT);
         CGRAPH_FUNCTION_CHECK_STATUS
+        element->is_init_ = true;
     }
 
     CGRAPH_FUNCTION_END
@@ -42,6 +41,7 @@ CStatus GElementManager::destroy() {
 
         status = element->fatProcessor(CFunctionType::DESTROY);
         CGRAPH_FUNCTION_CHECK_STATUS
+        element->is_init_ = false;
     }
 
     CGRAPH_FUNCTION_END
@@ -206,6 +206,7 @@ CStatus GElementManager::remove(GElementPtr element) {
     manager_elements_.erase(element);
     CGRAPH_FUNCTION_END
 }
+
 
 CStatus GElementManager::clear() {
     CGRAPH_FUNCTION_BEGIN
