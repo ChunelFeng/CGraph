@@ -1,3 +1,10 @@
+/***************************
+@Author: Chunel
+@Contact: chunel@foxmail.com
+@File: GParamManager.inl
+@Time: 2021/6/11 6:59 下午
+@Desc:
+***************************/
 
 #ifndef CGRAPH_GPARAMMANAGER_INL
 #define CGRAPH_GPARAMMANAGER_INL

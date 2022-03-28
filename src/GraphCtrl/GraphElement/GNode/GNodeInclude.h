@@ -10,7 +10,5 @@
 #define CGRAPH_GNODEINCLUDE_H
 
 #include "GNode.h"
-#include "GCpuNode.h"
-#include "GIoNode.h"
 
 #endif //CGRAPH_GNODEINCLUDE_H
