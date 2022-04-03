@@ -23,7 +23,8 @@ public:
         CStatus status;
         result = 0;
         for (CSize i = 0; i < dim1; i++) {
-            result += (v1[i] + v2[i]);    // 自定义一种距离计算方式，距离的计算方式，就是两个向量所有元素之和
+            /* 自定义一种距离计算方式，距离的计算方式是：所有 向量1的元素乘以2，加上向量2的元素除以2 之和 */
+            result += (v1[i] * 2 + v2[i] / 2);
         }
 
         return status;
