@@ -73,7 +73,7 @@ public:
         results.clear();
         results.reserve(nodes.size());    // 预分配空间信息
         for (const std::vector<T>& node : nodes) {
-            T result;
+            T result = 0;    // 在这里初始化一下，防止calculate()实现过程中，不复位result的情况
             status += calculate(query, node, result, ext);
             results.emplace_back(result);
         }
@@ -84,19 +84,26 @@ public:
      * 将数据归一化
      * @param v
      * @param dim
+     * @param ext
      * @return
      */
-    CStatus normalize(T* v, CSize dim) {
-        return distance_.normalize(v, dim);
+    CStatus normalize(T* v, CSize dim, CVoidPtr ext = nullptr) {
+        CGRAPH_FUNCTION_BEGIN
+        status = needCheck ? distance_.check(v, dim, ext) : CStatus();
+        CGRAPH_FUNCTION_CHECK_STATUS
+
+        status = distance_.normalize(v, dim, ext);
+        CGRAPH_FUNCTION_END
     }
 
     /**
      * 数据归一化
      * @param v
+     * @param ext
      * @return
      */
-    CStatus normalize(std::vector<T>& v) {
-        return normalize(v.data(), v.size());
+    CStatus normalize(std::vector<T>& v, CVoidPtr ext = nullptr) {
+        return normalize(v.data(), v.size(), ext);
     }
 
 

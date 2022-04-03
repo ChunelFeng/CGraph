@@ -13,7 +13,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T>    // 默认为float方式
+template<typename T>
 class UDistance : public UDistanceObject {
 public:
     /**
@@ -29,7 +29,7 @@ public:
     virtual CStatus calc(const T* v1, const T* v2, CSize dim1, CSize dim2, T& result, CVoidPtr ext) = 0;
 
     /**
-     * 判断入参信息是否符合（可选实现）
+     * 判断入参信息是否符合
      * @param v1
      * @param v2
      * @param dim1
@@ -40,12 +40,13 @@ public:
     virtual CStatus check(const T* v1, const T* v2, CSize dim1, CSize dim2, CVoidPtr ext);
 
     /**
-     * 将数据归一化（可选实现）
+     * 将数据归一化
      * @param v
      * @param dim
+     * @param ext
      * @return
      */
-    virtual CStatus normalize(T* v, CSize dim);
+    virtual CStatus normalize(T* v, CSize dim, CVoidPtr ext);
 };
 
 CGRAPH_NAMESPACE_END

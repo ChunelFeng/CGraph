@@ -30,7 +30,7 @@ CStatus UDistance<T>::check(const T* v1, const T* v2, CSize dim1, CSize dim2, CV
 
 
 template<typename T>
-CStatus UDistance<T>::normalize(T* v, CSize dim) {
+CStatus UDistance<T>::normalize(T* v, CSize dim, CVoidPtr ext) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(v)
 

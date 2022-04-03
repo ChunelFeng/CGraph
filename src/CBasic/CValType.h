@@ -24,7 +24,6 @@ using CBool = CGraph::CBOOL;
 using CIndex = CGraph::CINT;            // 表示标识信息，可以为负数
 using CFloat = CGraph::CFLOAT;
 using CDouble = CGraph::CDOUBLE;
-using CResult = CGraph::CFLOAT;
 
 using CStatus = CGraph::CSTATUS;
 
