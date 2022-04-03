@@ -35,6 +35,7 @@ tutorial_list = {
         "TU02-Lru",
         "TU03-Trie",
         "TU04-Timer"
+        "TU05-Distance"
 }
 
 -- add tutorial target one by one

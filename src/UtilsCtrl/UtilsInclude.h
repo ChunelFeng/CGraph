@@ -16,5 +16,6 @@
 #include "Lru/ULru.h"
 #include "Trie/UTrie.h"
 #include "Timer/UTimer.h"
+#include "Distance/UDistanceInclude.h"
 
 #endif //CGRAPH_UTILSINCLUDE_H

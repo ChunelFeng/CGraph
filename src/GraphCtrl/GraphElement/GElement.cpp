@@ -10,20 +10,16 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-/******** public ********/
-/* 获取name信息 */
 const std::string& GElement::getName() const {
     return this->name_;
 }
 
 
-/* 获取session信息（全局唯一） */
 const std::string& GElement::getSession() const {
     return this->session_;
 }
 
 
-/******** protected ********/
 GElement::GElement() {
     this->session_ = CGRAPH_GENERATE_SESSION()
 }

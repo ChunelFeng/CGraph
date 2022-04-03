@@ -115,16 +115,15 @@ void tutorial_simple() {
 ------------
 #### 附录-1. 版本信息
 
-[2022.01.23 - v1.8.3 - Chunel]
-* 提供`function`适配器，实现函数式编程功能
-* 提供线程优先级调度功能，提供线程绑定cpu执行功能
-* 更新`tutorial`内容
-
 [2022.01.31 - v1.8.4 - Chunel]
 * 提供`node`(节点)异步执行的功能
 
 [2022.02.03 - v1.8.5 - Chunel]
 * 提供`daemon`(守护)功能，用于定时执行非流图中任务
+* 更新`tutorial`内容
+
+[2022.04.03 - v1.8.6 - Chunel]
+* 提供`DistanceCalculator`算子，用于实现任意数据类型、任意距离类型的计算
 * 更新`tutorial`内容
 
 > 更多版本变更信息，请参考 [ChangeLog.md](https://github.com/ChunelFeng/CGraph/blob/main/ChangeLog.md) 文件

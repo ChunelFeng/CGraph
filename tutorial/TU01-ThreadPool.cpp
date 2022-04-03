@@ -7,7 +7,7 @@
 ***************************/
 
 #include "../src/CGraph.h"
-#include "MyUFunction/MyFunction.h"
+#include "MyUtils/MyFunction.h"
 
 using namespace CGraph;
 

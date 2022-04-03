@@ -23,6 +23,8 @@ using CINT = int;
 using CLONG = long;
 using CULONG = unsigned long;
 using CBOOL = bool;
+using CFLOAT = float;
+using CDOUBLE = double;
 
 CGRAPH_NAMESPACE_END
 
