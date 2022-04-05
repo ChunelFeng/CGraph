@@ -109,6 +109,14 @@ protected:
     virtual CStatus afterRun();
 
     /**
+     * 是否持续进行
+     * 默认为false，表示仅执行且仅一次
+     * 可以根据自己逻辑，来实现"持续循环执行，直到特定条件出现的时候停止"的逻辑
+     * @return
+     */
+    virtual CBool isHold();
+
+    /**
      * 设置name信息
      * @param name
      * @return
@@ -127,13 +135,13 @@ protected:
      * 可执行的条件为：自身未被执行且依赖节点全部被执行
      * @return
      */
-    [[nodiscard]] bool isRunnable() const;
+    [[nodiscard]] CBool isRunnable() const;
 
     /**
      * 判定node是否可以和前面节点一起执行
      * @return
      */
-    [[nodiscard]] bool isLinkable() const;
+    [[nodiscard]] CBool isLinkable() const;
 
     /**
      * 线程池中的运行函数，依次执行beforeRun，run和afterRun方法，
@@ -174,7 +182,6 @@ protected:
      * @return
      */
     CStatus fatProcessor(const CFunctionType& type, CSize loop = 1);
-
 
 protected:
     CBool done_ { false };                           // 判定被执行结束

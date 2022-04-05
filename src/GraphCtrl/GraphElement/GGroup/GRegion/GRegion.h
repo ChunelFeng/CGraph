@@ -27,14 +27,6 @@ protected:
 
     CStatus addElement(GElementPtr element) final;
 
-    /**
-     * 判定region运行的时候，是否需要结束。
-     * 默认执行一次后，直接结束。可根据需求，进行自定义扩展
-     * 如果返回值为true的话，则重新执行run方法，直到返回值为false结束
-     * @return
-     */
-    virtual CBool isHold();
-
 private:
     GElementManagerPtr manager_;
 

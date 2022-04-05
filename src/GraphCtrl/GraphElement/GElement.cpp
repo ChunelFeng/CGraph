@@ -118,12 +118,12 @@ GElement* GElement::setLoop(CSize loop) {
 }
 
 
-bool GElement::isRunnable() const {
+CBool GElement::isRunnable() const {
     return 0 >= this->left_depend_ && !this->done_;
 }
 
 
-bool GElement::isLinkable() const {
+CBool GElement::isLinkable() const {
     return this->linkable_;
 }
 
@@ -188,7 +188,14 @@ CStatus GElement::fatProcessor(const CFunctionType& type, CSize loop) {
                 /** 执行带切面的run方法 */
                 status = doAspect(GAspectType::BEGIN_RUN);
                 CGRAPH_FUNCTION_CHECK_STATUS
-                status = run();
+                do {
+                    status = run();
+                    /**
+                     * 如果状态是ok的，并且被条件hold住，则循环执行
+                     * 默认所有element的isHold条件均为false，即不hold，即执行一次
+                     * 可以根据需求，对任意element类型，添加特定的isHold条件
+                     * */
+                } while (isHold() && status.isOK());
                 doAspect(GAspectType::FINISH_RUN, status);
                 break;
             }
@@ -212,6 +219,11 @@ CStatus GElement::fatProcessor(const CFunctionType& type, CSize loop) {
     }
 
     CGRAPH_FUNCTION_END
+}
+
+
+CBool GElement::isHold() {
+    return false;
 }
 
 CGRAPH_NAMESPACE_END

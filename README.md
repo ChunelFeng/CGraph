@@ -40,7 +40,7 @@
 
 * Windows环境中，使用`Visual Studio`作为IDE的开发者，clone本工程前请优先设置换行符类型
   ```shell
-  $ git config --global core.autocrlf true              # 设置windows平台支持的CRLF换行符形式
+  $ git config --global core.autocrlf true              # 设置Windows平台支持的CRLF换行符形式
   $ git clone https://github.com/ChunelFeng/CGraph.git
   $ ... ...                                             # 接下来操作同Linux命令行环境，即可生成相应的*.sln文件
   ```
