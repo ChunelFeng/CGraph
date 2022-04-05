@@ -9,7 +9,7 @@
 #ifndef CGRAPH_UDISTANCECOSINE_H
 #define CGRAPH_UDISTANCECOSINE_H
 
-#include "../UDistanceObject.h"
+#include "../UDistance.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

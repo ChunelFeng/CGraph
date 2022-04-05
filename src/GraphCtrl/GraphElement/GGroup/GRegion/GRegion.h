@@ -15,22 +15,30 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-/* region 中包含了 cluster 信息 */
+/** region 中包含了 cluster 的所有功能 */
 class GRegion : public GGroup {
 protected:
     explicit GRegion();
     ~GRegion() override;
 
-    GRegion(const GRegion& region);
-    GRegion& operator=(const GRegion& region);
+    CStatus init() final;
+    CStatus run() final;
+    CStatus destroy() final;
 
-    CStatus init() override;
-    CStatus destroy() override;
-    CStatus run() override;
-    CStatus addElement(GElementPtr element) override;
+    CStatus addElement(GElementPtr element) final;
+
+    /**
+     * 判定region运行的时候，是否需要结束。
+     * 默认执行一次后，直接结束。可根据需求，进行自定义扩展
+     * 如果返回值为true的话，则重新执行run方法，直到返回值为false结束
+     * @return
+     */
+    virtual CBool isHold();
 
 private:
     GElementManagerPtr manager_;
+
+    CGRAPH_NO_ALLOWED_COPY(GRegion)
 
     friend class GPipeline;
     friend class UAllocator;

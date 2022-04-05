@@ -44,7 +44,7 @@ public:
     T* getGParam(const std::string& key);
 
     /**
-     * 创建param信息，如果过了，则直接返回ok
+     * 创建param信息，如果创建成功，则直接返回ok
      * @tparam T
      * @param key
      * @return
@@ -70,8 +70,7 @@ public:
      * @param dependElements
      * @return
      */
-    CStatus addDependElements(const std::set<GElement *> &dependElements);
-
+    CStatus addDependElements(const std::set<GElement *>& dependElements);
 
 protected:
     /**

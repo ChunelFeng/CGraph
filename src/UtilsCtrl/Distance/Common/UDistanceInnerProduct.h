@@ -9,7 +9,7 @@
 #ifndef CGRAPH_UDISTANCEINNERPRODUCT_H
 #define CGRAPH_UDISTANCEINNERPRODUCT_H
 
-#include "../UDistanceObject.h"
+#include "../UDistance.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

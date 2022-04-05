@@ -9,6 +9,7 @@
 #ifndef CGRAPH_GNODEINCLUDE_H
 #define CGRAPH_GNODEINCLUDE_H
 
+#include "GNodeDefine.h"
 #include "GNode.h"
 
 #endif //CGRAPH_GNODEINCLUDE_H

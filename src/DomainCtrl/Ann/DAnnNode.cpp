@@ -11,6 +11,8 @@
 CGRAPH_NAMESPACE_BEGIN
 
 DAnnNode::DAnnNode() {
+    setType(GNodeType::CPU);    // 计算密集型算子
+
     /** 初始化函数映射关系 */
     ann_func_arr_[static_cast<CUint>(DAnnFuncType::ANN_TRAIN)] = &DAnnNode::train;
     ann_func_arr_[static_cast<CUint>(DAnnFuncType::ANN_SEARCH)] = &DAnnNode::search;
@@ -25,8 +27,9 @@ DAnnNode::DAnnNode() {
 CStatus DAnnNode::run() {
     CGRAPH_FUNCTION_BEGIN
     const DAnnFuncType& funcType = prepareParam();
-    if (funcType <= DAnnFuncType::ANN_DEFAULT || funcType >= DAnnFuncType::ANN_MAX_SIZE) {
-        return CStatus("error ann function type");
+    if (unlikely(funcType <= DAnnFuncType::ANN_DEFAULT
+        || funcType >= DAnnFuncType::ANN_MAX_SIZE)) {
+        CGRAPH_RETURN_ERROR_STATUS("error ann function type")
     }
 
     status = (this->*ann_func_arr_[static_cast<CUint>(funcType)])();

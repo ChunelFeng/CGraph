@@ -30,6 +30,13 @@ protected:
     CStatus doParallel(const UTaskGroup& tasks, CMSec ttl);
 
     /**
+     * 设置节点类型
+     * @param type
+     * @return
+     */
+    GNode* setType(const GNodeType& type);
+
+    /**
      * 异步执行信息，适用于传入静态类函数或者lambda表达式信息
      * @tparam Func
      * @tparam Args

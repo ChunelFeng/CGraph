@@ -27,6 +27,12 @@ CStatus GNode::doParallel(const UTaskGroup& tasks, CMSec ttl) {
 }
 
 
+GNode* GNode::setType(const GNodeType& type) {
+    node_type_ = type;
+    return this;
+}
+
+
 CSize GNode::getThreadId() {
     const CSize& tid = (CSize) std::hash<std::thread::id>{}(std::this_thread::get_id());
     return tid;

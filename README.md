@@ -132,7 +132,8 @@ void tutorial_simple() {
 * 更新`tutorial`内容
 
 [2022.04.05 - v2.0.0 - Chunel]
-* 提供`Domain`(领域)功能，提供`Ann`领域抽象模型，开始支持特定专业方向
+* 提供`Domain`(领域)功能，提供`Ann`领域抽象模型，开始支持个别专业方向
+* 提供hold执行机制，支持根据运行时条件，判断是否需要重新执行当前内容，直到满足条件为止
 
 > 更多版本变更信息，请参考 [ChangeLog.md](https://github.com/ChunelFeng/CGraph/blob/main/ChangeLog.md) 文件
 
