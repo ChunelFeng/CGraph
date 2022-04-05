@@ -15,6 +15,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class DAnnNode : public DAnnObject, public GNode {
+protected:
     /**
      * 预处理参数信息，并且返回需要执行的函数信息
      * @return
@@ -64,7 +65,12 @@ class DAnnNode : public DAnnObject, public GNode {
     virtual CStatus saveModel();
 
 protected:
+    /**
+     * 构造函数信息
+     */
     explicit DAnnNode();
+
+    CGRAPH_NO_ALLOWED_COPY(DAnnNode)
 
     /**
      * 分拆执行函数

@@ -127,11 +127,11 @@ public:
      * 执行任务组信息
      * 取taskGroup内部ttl和入参ttl的最小值，为计算ttl标准
      * @param taskGroup
-     * @param ttlMs
+     * @param ttl
      * @return
      */
     CStatus submit(const UTaskGroup& taskGroup,
-                   CMSec ttlMs = CGRAPH_MAX_BLOCK_TTL_MS) {
+                   CMSec ttl = CGRAPH_MAX_BLOCK_TTL) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
 
@@ -142,7 +142,7 @@ public:
 
         // 计算最终运行时间信息
         std::chrono::system_clock::time_point deadline
-                = std::chrono::system_clock::now() + std::chrono::milliseconds(std::min(taskGroup.getTtlMs(), ttlMs));
+                = std::chrono::system_clock::now() + std::chrono::milliseconds(std::min(taskGroup.getTtl(), ttl));
 
         for (auto& fut : futures) {
             const auto& futStatus = fut.wait_until(deadline);
@@ -164,14 +164,14 @@ public:
     /**
      * 针对单个任务的情况，复用任务组信息，实现单个任务直接执行
      * @param task
-     * @param ttlMs
+     * @param ttl
      * @param onFinished
      * @return
      */
     CStatus submit(CGRAPH_DEFAULT_CONST_FUNCTION_REF func,
-                   int ttlMs = CGRAPH_MAX_BLOCK_TTL_MS,
+                   CMSec ttl = CGRAPH_MAX_BLOCK_TTL,
                    CGRAPH_CALLBACK_CONST_FUNCTION_REF onFinished = nullptr) {
-        UTaskGroup taskGroup(func, ttlMs, onFinished);
+        UTaskGroup taskGroup(func, ttl, onFinished);
         return submit(taskGroup);
     }
 

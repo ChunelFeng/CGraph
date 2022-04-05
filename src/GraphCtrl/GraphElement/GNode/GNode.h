@@ -24,10 +24,10 @@ protected:
     /**
      * 执行批量任务
      * @param tasks
-     * @param ttl
+     * @param ttl，单位是ms
      * @return
      */
-    CStatus doParallel(const UTaskGroup& tasks, CMSec ttl);
+    CStatus doParallel(const UTaskGroup& tasks, CMSec ttl = CGRAPH_MAX_BLOCK_TTL);
 
     /**
      * 设置节点类型

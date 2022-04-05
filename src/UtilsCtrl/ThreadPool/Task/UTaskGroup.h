@@ -23,14 +23,14 @@ public:
     /**
      * 直接通过函数来申明taskGroup
      * @param task
-     * @param ttlMs
+     * @param ttl
      * @param onFinished
      */
     explicit UTaskGroup(CGRAPH_DEFAULT_CONST_FUNCTION_REF task,
-                        CMSec ttlMs = CGRAPH_MAX_BLOCK_TTL_MS,
+                        CMSec ttl = CGRAPH_MAX_BLOCK_TTL,
                         CGRAPH_CALLBACK_CONST_FUNCTION_REF onFinished = nullptr) noexcept {
         this->addTask(task)
-            ->setTtlMs(ttlMs)
+            ->setTtl(ttl)
             ->setOnFinished(onFinished);
     }
 
@@ -47,8 +47,8 @@ public:
      * 设置任务最大超时时间
      * @param ttl
      */
-    UTaskGroup* setTtlMs(CMSec ttlMs) {
-        this->ttl_ms_ = ttlMs;
+    UTaskGroup* setTtl(CMSec ttl) {
+        this->ttl_ = ttl;
         return this;
     }
 
@@ -66,8 +66,8 @@ public:
      * 获取最大超时时间信息
      * @return
      */
-    [[nodiscard]] CMSec getTtlMs() const {
-        return this->ttl_ms_;
+    [[nodiscard]] CMSec getTtl() const {
+        return this->ttl_;
     }
 
     /**
@@ -88,7 +88,7 @@ public:
 
 private:
     std::vector<CGRAPH_DEFAULT_FUNCTION> task_arr_;         // 任务消息
-    CMSec ttl_ms_ = CGRAPH_MAX_BLOCK_TTL_MS;                // 任务组最大执行耗时(如果是0的话，则表示不阻塞)
+    CMSec ttl_ = CGRAPH_MAX_BLOCK_TTL;                      // 任务组最大执行耗时(如果是0的话，则表示不阻塞)
     CGRAPH_CALLBACK_FUNCTION on_finished_ = nullptr;        // 执行函数任务结束
 
     friend class UThreadPool;
