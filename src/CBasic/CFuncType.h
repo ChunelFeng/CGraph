@@ -46,14 +46,13 @@ enum class CFunctionType {
 
 /** 不支持当前功能 */
 #define CGRAPH_NO_SUPPORT                                               \
-    return CStatus("function not support");                             \
+    return CStatus("function no support");                              \
 
 /** 返回异常信息和状态 */
 #define CGRAPH_RETURN_ERROR_STATUS(info)                                \
     return CStatus(info);                                               \
 
-
-/* 定义为不能赋值和拷贝的对象 */
+/** 定义为不能赋值和拷贝的对象类型 */
 #define CGRAPH_NO_ALLOWED_COPY(CType)                                   \
     CType(const CType &) = delete;                                      \
     const CType &operator=(const CType &) = delete;                     \

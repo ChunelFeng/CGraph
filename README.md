@@ -27,7 +27,7 @@
 <br>
 
 ## 二. 编译说明
-* 本工程支持MacOS、Linux和Windows系统，无任何第三方依赖。使用CLion作为IDE的开发者，打开CMakeLists.txt文件作为工程，即可编译通过
+* 本工程支持MacOS、Linux和Windows系统，无任何第三方依赖。使用`CLion`作为IDE的开发者，打开`CMakeLists.txt`文件作为工程，即可编译通过
 
 * Linux环境开发者，在命令行模式下，输入以下指令，即可编译通过
   ```shell
@@ -35,7 +35,14 @@
   $ cd CGraph
   $ cmake . -Bbuild
   $ cd build
-  $ make
+  $ make -j8
+  ```
+
+* Windows环境中，使用`Visual Studio`作为IDE的开发者，clone本工程前请优先设置换行符类型
+  ```shell
+  $ git config --global core.autocrlf true              # 设置windows平台支持的CRLF换行符形式
+  $ git clone https://github.com/ChunelFeng/CGraph.git
+  $ ... ...                                             # 接下来操作同Linux命令行环境，即可生成相应的*.sln文件
   ```
 
 * 提供基于`Ubuntu 20.04.3 LTS`的Docker镜像。输入以下指令，即可获取并进入
@@ -111,12 +118,10 @@ void tutorial_simple() {
 
 ## 四. 感谢
 * 感谢《HelloGithub》期刊介绍和推荐：[HelloGithub 第70期](https://github.com/521xueweihan/HelloGitHub/blob/master/content/70/HelloGitHub70.md)
+* 感谢 [Doocs 微信公众号](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzIxNjA5ODQ0OQ==&action=getalbum&album_id=1989460124624551937&scene=173&from_msgid=2654703194&from_itemidx=1&count=3&nolastread=1#wechat_redirect) 刊登相关介绍文档，欢迎加入 [Doocs 开源社区](https://github.com/doocs)
 
 ------------
 #### 附录-1. 版本信息
-
-[2022.01.31 - v1.8.4 - Chunel]
-* 提供`node`(节点)异步执行的功能
 
 [2022.02.03 - v1.8.5 - Chunel]
 * 提供`daemon`(守护)功能，用于定时执行非流图中任务
@@ -125,6 +130,9 @@ void tutorial_simple() {
 [2022.04.03 - v1.8.6 - Chunel]
 * 提供`DistanceCalculator`算子，用于实现任意数据类型、任意距离类型的计算
 * 更新`tutorial`内容
+
+[2022.04.05 - v2.0.0 - Chunel]
+* 提供`Domain`(领域)功能，提供`Ann`领域抽象模型，开始支持特定专业方向
 
 > 更多版本变更信息，请参考 [ChangeLog.md](https://github.com/ChunelFeng/CGraph/blob/main/ChangeLog.md) 文件
 

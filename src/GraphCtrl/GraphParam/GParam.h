@@ -10,6 +10,7 @@
 #define CGRAPH_GPARAM_H
 
 #include <shared_mutex>
+
 #include "GParamObject.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
 

@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: T13-Daemon.cpp
 @Time: 2022/2/3 11:31 上午
-@Desc: 本例子主要展示，添加Daemon节点完成对pipeline的实时
+@Desc: 本例子主要展示，添加Daemon节点完成对pipeline的实时信息获取
 ***************************/
 
 #include "MyGDaemon/MyMonitorDaemon.h"

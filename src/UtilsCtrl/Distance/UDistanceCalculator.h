@@ -89,7 +89,8 @@ public:
      */
     CStatus normalize(T* v, CSize dim, CVoidPtr ext = nullptr) {
         CGRAPH_FUNCTION_BEGIN
-        status = needCheck ? distance_.check(v, dim, ext) : CStatus();
+        // 这里强行将一个向量copy一份传入判断，目的是为了是的 normalize 和 calculate 的判断逻辑，保持一致
+        status = needCheck ? distance_.check(v, v, dim, dim, ext) : CStatus();
         CGRAPH_FUNCTION_CHECK_STATUS
 
         status = distance_.normalize(v, dim, ext);

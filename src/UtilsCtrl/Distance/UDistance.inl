@@ -21,8 +21,8 @@ CStatus UDistance<T>::check(const T* v1, const T* v2, CSize dim1, CSize dim2, CV
     CGRAPH_ASSERT_NOT_NULL(v1)
     CGRAPH_ASSERT_NOT_NULL(v2)
     if (0 == dim1 * dim2) {
-        // 通常情况下，没有dim=0的向量
-        status.setStatus("input dim error");
+        // 理论上不应该传入 dim=0 向量
+        CGRAPH_RETURN_ERROR_STATUS("input dim error")
     }
 
     CGRAPH_FUNCTION_END
@@ -32,8 +32,8 @@ CStatus UDistance<T>::check(const T* v1, const T* v2, CSize dim1, CSize dim2, CV
 template<typename T>
 CStatus UDistance<T>::normalize(T* v, CSize dim, CVoidPtr ext) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(v)
 
+    /** 这里不需要判定v为空的情况，需要的话可以通过开启 needCheck 逻辑来判断 */
     T val = 0;
     for (CSize i = 0; i < dim; i++) {
         val += (v[i] * v[i]);
