@@ -9,7 +9,6 @@
 #ifndef CGRAPH_GNODE_H
 #define CGRAPH_GNODE_H
 
-#include "../GElement.h"
 #include "GNodeDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN

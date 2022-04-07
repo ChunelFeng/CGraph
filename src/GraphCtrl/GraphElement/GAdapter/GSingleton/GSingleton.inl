@@ -76,7 +76,7 @@ CStatus GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElement
 
     // 这里，内部和外部均需要设定name信息
     this->setName(name)->setLoop(loop);
-    status = this->addDependElements(dependElements);
+    status = this->addDependGElements(dependElements);
     CGRAPH_FUNCTION_CHECK_STATUS
 
     // 获取单例信息，然后将信息node中信息

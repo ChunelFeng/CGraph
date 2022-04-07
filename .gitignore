@@ -7,3 +7,6 @@
 /cmake-build-debug-coverage/
 /build/
 /.xmake/
+/CGraph.srctrlbm
+/CGraph.srctrldb
+/CGraph.srctrlprj

@@ -133,9 +133,9 @@ CStatus GElement::process(bool isMock) {
 }
 
 
-CStatus GElement::addDependElements(const GElementPtrSet& dependElements) {
+CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
-    for (GElementPtr cur: dependElements) {
+    for (GElementPtr cur: elements) {
         if (this == cur) {
             continue;
         }
@@ -161,7 +161,7 @@ CStatus GElement::setElementInfo(const GElementPtrSet& dependElements,
     this->setName(name)->setLoop(loop);
     param_manager_ = paramManager;
     thread_pool_ = threadPool;
-    status = this->addDependElements(dependElements);
+    status = this->addDependGElements(dependElements);
     CGRAPH_FUNCTION_END
 }
 
@@ -223,6 +223,10 @@ CStatus GElement::fatProcessor(const CFunctionType& type, CSize loop) {
 
 
 CBool GElement::isHold() {
+    /**
+     * 默认仅返回false
+     * 可以根据自己逻辑，来实现"持续循环执行，直到特定条件出现的时候停止"的逻辑
+     */
     return false;
 }
 

@@ -22,7 +22,8 @@ enum class D_ANN_FUNC_TYPE {
     ANN_REMOVE = 5,        // 删除
     ANN_LOAD_MODEL = 6,    // 加载模型
     ANN_SAVE_MODEL = 7,    // 保存模型
-    ANN_MAX_SIZE = 8       // 未知函数
+    ANN_EDITION = 8,       // 其他
+    ANN_MAX_SIZE = 9       // 标记大小使用，无实意
 };
 
 CGRAPH_NAMESPACE_END

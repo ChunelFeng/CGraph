@@ -21,6 +21,7 @@ DAnnNode::DAnnNode() {
     ann_func_arr_[static_cast<CUint>(DAnnFuncType::ANN_REMOVE)] = &DAnnNode::remove;
     ann_func_arr_[static_cast<CUint>(DAnnFuncType::ANN_LOAD_MODEL)] = &DAnnNode::loadModel;
     ann_func_arr_[static_cast<CUint>(DAnnFuncType::ANN_SAVE_MODEL)] = &DAnnNode::saveModel;
+    ann_func_arr_[static_cast<CUint>(DAnnFuncType::ANN_EDITION)] = &DAnnNode::edition;
 }
 
 
@@ -68,6 +69,11 @@ CStatus DAnnNode::loadModel() {
 
 
 CStatus DAnnNode::saveModel() {
+    CGRAPH_NO_SUPPORT
+}
+
+
+CStatus DAnnNode::edition() {
     CGRAPH_NO_SUPPORT
 }
 

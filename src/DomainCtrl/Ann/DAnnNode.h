@@ -64,6 +64,11 @@ protected:
      */
     virtual CStatus saveModel();
 
+    /**
+     * 其他方法
+     */
+    virtual CStatus edition();
+
 protected:
     /**
      * 构造函数信息

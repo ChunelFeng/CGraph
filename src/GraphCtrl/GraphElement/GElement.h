@@ -67,10 +67,10 @@ public:
 
     /**
      * 添加依赖节点信息
-     * @param dependElements
+     * @param elements
      * @return
      */
-    CStatus addDependElements(const std::set<GElement *>& dependElements);
+    CStatus addDependGElements(const std::set<GElement *>& elements);
 
 protected:
     /**
@@ -110,8 +110,7 @@ protected:
 
     /**
      * 是否持续进行
-     * 默认为false，表示仅执行且仅一次
-     * 可以根据自己逻辑，来实现"持续循环执行，直到特定条件出现的时候停止"的逻辑
+     * 默认为false，表示执行且仅执行一次
      * @return
      */
     virtual CBool isHold();

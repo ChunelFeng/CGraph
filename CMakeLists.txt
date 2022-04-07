@@ -36,6 +36,7 @@ set(TUTORIAL_LIST
         T11-Singleton
         T12-Function
         T13-Daemon
+        T14-Hold
         TU01-ThreadPool
         TU02-Lru
         TU03-Trie
