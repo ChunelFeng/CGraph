@@ -26,14 +26,23 @@ DAnnNode::DAnnNode() {
 
 
 CStatus DAnnNode::run() {
+    /**
+     * 整体流程思路
+     * 1，先准备参数，并且确定走哪个功能函数（必须实现）
+     * 2，执行具体功能函数
+     * 3，如有参数修改，将最终的参数同步回主流程
+     */
     CGRAPH_FUNCTION_BEGIN
     const DAnnFuncType& funcType = prepareParam();
-    if (unlikely(funcType <= DAnnFuncType::ANN_DEFAULT
+    if (unlikely(funcType <= DAnnFuncType::ANN_PREPARE_ERROR
         || funcType >= DAnnFuncType::ANN_MAX_SIZE)) {
         CGRAPH_RETURN_ERROR_STATUS("error ann function type")
     }
 
     status = (this->*ann_func_arr_[static_cast<CUint>(funcType)])();
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    status = refreshParam();
     CGRAPH_FUNCTION_END
 }
 
@@ -75,6 +84,11 @@ CStatus DAnnNode::saveModel() {
 
 CStatus DAnnNode::edition() {
     CGRAPH_NO_SUPPORT
+}
+
+
+CStatus DAnnNode::refreshParam() {
+    CGRAPH_EMPTY_FUNCTION
 }
 
 CGRAPH_NAMESPACE_END

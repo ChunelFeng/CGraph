@@ -127,7 +127,7 @@ CStatus GPipeline::process(CSize runTimes) {
 }
 
 
-GPipelinePtr GPipeline::setElementRunTtl(CMSec ttl) {
+GPipelinePtr GPipeline::setGElementRunTtl(CMSec ttl) {
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
 
     this->element_run_ttl_ = ttl;

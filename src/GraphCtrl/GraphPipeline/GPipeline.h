@@ -125,7 +125,7 @@ public:
      * @return
      * @notice beta接口
      */
-    GPipeline* setElementRunTtl(CMSec ttl);
+    GPipeline* setGElementRunTtl(CMSec ttl);
 
     /** 不允许外部赋值和构造 */
     CGRAPH_NO_ALLOWED_COPY(GPipeline)

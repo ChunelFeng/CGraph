@@ -69,6 +69,12 @@ protected:
      */
     virtual CStatus edition();
 
+    /**
+     * 将参数更新，作用于所有功能函数之后
+     * @return
+     */
+    virtual CStatus refreshParam();
+
 protected:
     /**
      * 构造函数信息

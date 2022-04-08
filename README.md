@@ -152,6 +152,8 @@ void tutorial_simple() {
 * [纯序员给你介绍图化框架的简单实现——线程池优化（三）](http://www.chunel.cn/archives/cgraph-threadpool-3-introduce)
 * [纯序员给你介绍图化框架的简单实现——线程池优化（四）](http://www.chunel.cn/archives/cgraph-threadpool-4-introduce)
 * [纯序员给你介绍图化框架的简单实现——线程池优化（五）](http://www.chunel.cn/archives/cgraph-threadpool-5-introduce)
+<br><br>
+* [CGraph 主打歌——《听码农的话》](http://www.chunel.cn/archives/listen-to-coder)
 
 ------------
 #### 附录-3. 联系方式

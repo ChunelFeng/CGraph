@@ -86,8 +86,8 @@ CStatus GElementManager::preRunCheck() {
 CStatus GElementManager::analyse() {
     CGRAPH_FUNCTION_BEGIN
 
-    int runElementSize = 0;
-    int totalElementSize = (int)manager_elements_.size();
+    CSize runElementSize = 0;
+    auto totalElementSize = (CSize)manager_elements_.size();
     para_cluster_arrs_.clear();
 
     GClusterArr curClusterArr;    // 记录每一层，可以并行的逻辑
@@ -120,7 +120,7 @@ CStatus GElementManager::analyse() {
             status = cluster.process(true);    // 不执行run方法的process
             CGRAPH_FUNCTION_CHECK_STATUS
         }
-        runElementSize += (int)runnableClusterArr.size();
+        runElementSize += (CSize)runnableClusterArr.size();
 
         GElementPtrSet duplications;
         for (GClusterRef cluster : runnableClusterArr) {
@@ -164,14 +164,14 @@ CStatus GElementManager::afterRunCheck(CSize runNodeSize) {
 
     /* 验证是否所有的内容均被执行过 */
     if (runNodeSize != manager_elements_.size()) {
-        return CStatus("pipeline run element size check failed...");
+        CGRAPH_RETURN_ERROR_STATUS("pipeline run element size check failed...")
     }
 
     /* 需要验证每个cluster里的每个内容是否被执行过一次 */
     for (GClusterArrRef clusterArr : para_cluster_arrs_) {
         for (GClusterRef cluster : clusterArr) {
             if (!cluster.isElementsDone()) {
-                return CStatus("pipeline done status check failed...");
+                CGRAPH_RETURN_ERROR_STATUS("pipeline done status check failed...");
             }
         }
     }
@@ -190,7 +190,7 @@ CStatus GElementManager::add(GElementPtr element) {
 }
 
 
-bool GElementManager::find(GElementPtr element) const {
+CBool GElementManager::find(GElementPtr element) const {
     if (nullptr == element) {
         return false;
     }
