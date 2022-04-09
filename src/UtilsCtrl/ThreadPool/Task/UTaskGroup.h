@@ -82,7 +82,7 @@ public:
      * @return
      */
     [[nodiscard]] CSize getSize() const {
-        auto size = (CSize) task_arr_.size();
+        auto size = task_arr_.size();
         return size;
     }
 

@@ -13,7 +13,7 @@
 #include <memory>
 #include <list>
 
-#include "GPipelineDefine.h"
+#include "../GraphElement/GElementInclude.h"
 #include "../GraphDaemon/GDaemonInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -127,12 +127,12 @@ public:
      */
     GPipeline* setGElementRunTtl(CMSec ttl);
 
-    /** 不允许外部赋值和构造 */
-    CGRAPH_NO_ALLOWED_COPY(GPipeline)
-
 protected:
     explicit GPipeline();
     ~GPipeline() override;
+
+    /** 不允许外部赋值和构造 */
+    CGRAPH_NO_ALLOWED_COPY(GPipeline)
 
 private:
     bool is_init_ = false;                                      // 初始化标志位
@@ -148,7 +148,6 @@ private:
 };
 
 using GPipelinePtr = GPipeline *;
-using GPipelineSPtr = std::unique_ptr<GPipeline>;
 using GPipelinePtrList = std::list<GPipelinePtr>;
 
 CGRAPH_NAMESPACE_END

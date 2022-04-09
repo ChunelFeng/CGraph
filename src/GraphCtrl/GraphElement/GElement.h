@@ -15,6 +15,7 @@
 #include <atomic>
 #include <algorithm>
 
+#include "GElementDefine.h"
 #include "../GraphObject.h"
 #include "../GraphParam/GParamInclude.h"
 #include "../GraphAspect/GAspectInclude.h"
@@ -191,7 +192,7 @@ protected:
     std::string session_;                            // 节点唯一id信息
     std::set<GElement *> run_before_;                // 被依赖的节点
     std::set<GElement *> dependence_;                // 依赖的节点信息
-    std::atomic<int> left_depend_ { 0 };          // 当 left_depend_ 值为0的时候，即可以执行该node信息
+    std::atomic<CSize> left_depend_ { 0 };        // 当 left_depend_ 值为0的时候，即可以执行该node信息
     GParamManagerPtr param_manager_ { nullptr };     // 整体流程的参数管理类，所有pipeline中的所有节点共享
     GAspectManagerPtr aspect_manager_ { nullptr };   // 整体流程的切面管理类
     UThreadPoolPtr thread_pool_ { nullptr };         // 用于执行的线程池信息

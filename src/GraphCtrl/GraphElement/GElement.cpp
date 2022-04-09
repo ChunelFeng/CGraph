@@ -79,7 +79,7 @@ GElement& GElement::operator=(const GElement& element) {
 CStatus GElement::beforeRun() {
     CGRAPH_FUNCTION_BEGIN
     this->done_ = false;
-    this->left_depend_ = (int)dependence_.size();
+    this->left_depend_ = dependence_.size();
 
     CGRAPH_FUNCTION_END
 }
@@ -144,7 +144,7 @@ CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
         this->dependence_.insert(cur);
     }
 
-    this->left_depend_ = (int)this->dependence_.size();
+    this->left_depend_ = this->dependence_.size();
     CGRAPH_FUNCTION_END
 }
 
@@ -195,7 +195,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type, CSize loop) {
                      * 默认所有element的isHold条件均为false，即不hold，即执行一次
                      * 可以根据需求，对任意element类型，添加特定的isHold条件
                      * */
-                } while (isHold() && status.isOK());
+                } while (status.isOK() && this->isHold());
                 doAspect(GAspectType::FINISH_RUN, status);
                 break;
             }

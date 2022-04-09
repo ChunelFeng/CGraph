@@ -9,6 +9,8 @@
 #ifndef CGRAPH_CBASICDEFINE_H
 #define CGRAPH_CBASICDEFINE_H
 
+#include <cstddef>
+
 #define CGRAPH_NAMESPACE_BEGIN                                          \
 namespace CGraph {                                                      \
 
@@ -25,6 +27,7 @@ using CULONG = unsigned long;
 using CBOOL = bool;
 using CFLOAT = float;
 using CDOUBLE = double;
+using CSIZE = size_t;
 
 CGRAPH_NAMESPACE_END
 

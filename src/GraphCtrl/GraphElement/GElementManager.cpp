@@ -87,7 +87,7 @@ CStatus GElementManager::analyse() {
     CGRAPH_FUNCTION_BEGIN
 
     CSize runElementSize = 0;
-    auto totalElementSize = (CSize)manager_elements_.size();
+    auto totalElementSize = manager_elements_.size();
     para_cluster_arrs_.clear();
 
     GClusterArr curClusterArr;    // 记录每一层，可以并行的逻辑
@@ -120,7 +120,7 @@ CStatus GElementManager::analyse() {
             status = cluster.process(true);    // 不执行run方法的process
             CGRAPH_FUNCTION_CHECK_STATUS
         }
-        runElementSize += (CSize)runnableClusterArr.size();
+        runElementSize += runnableClusterArr.size();
 
         GElementPtrSet duplications;
         for (GClusterRef cluster : runnableClusterArr) {

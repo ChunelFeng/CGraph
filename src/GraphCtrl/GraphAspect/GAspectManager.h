@@ -82,7 +82,7 @@ public:
      * @return
      */
     [[nodiscard]] CSize getSize() const override {
-        auto size = (CSize)aspect_arr_.size();
+        auto size = aspect_arr_.size();
         return size;
     }
 

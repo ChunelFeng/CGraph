@@ -99,7 +99,7 @@ CStatus GCluster::beforeRun() {
     CGRAPH_FUNCTION_BEGIN
 
     this->done_ = false;
-    this->left_depend_ = (int)dependence_.size();
+    this->left_depend_ = dependence_.size();
     for (GElementPtr element : this->cluster_elements_) {
         status = element->beforeRun();
         CGRAPH_FUNCTION_CHECK_STATUS
@@ -137,7 +137,7 @@ CStatus GCluster::addElement(GElementPtr element) {
 
 
 CSize GCluster::getElementNum() {
-    auto num = (CSize)cluster_elements_.size();
+    auto num = cluster_elements_.size();
     return num;
 }
 

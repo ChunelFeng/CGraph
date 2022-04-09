@@ -55,13 +55,11 @@ CStatus GCondition::run() {
         loop = condition_elements_.back()->loop_;
         auto element = condition_elements_.back();
         status = element->fatProcessor(CFunctionType::RUN, loop);
-        CGRAPH_FUNCTION_CHECK_STATUS
-    } else if (0 <= index && index < condition_elements_.size()) {
+    } else if (0 <= index && index < (CIndex)condition_elements_.size()) {
         // 如果返回的内容，在元素范围之内，则直接执行元素的内容。不在的话，则不执行任何操作，直接返回正确状态
         loop = condition_elements_[index]->loop_;
         auto element = condition_elements_[index];
         status = element->fatProcessor(CFunctionType::RUN, loop);
-        CGRAPH_FUNCTION_CHECK_STATUS
     }
 
     CGRAPH_FUNCTION_END
@@ -69,7 +67,7 @@ CStatus GCondition::run() {
 
 
 CSize GCondition::getRange() const {
-    return (CSize)condition_elements_.size();
+    return condition_elements_.size();
 }
 
 CGRAPH_NAMESPACE_END
