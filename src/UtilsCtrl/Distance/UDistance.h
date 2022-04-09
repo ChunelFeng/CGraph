@@ -13,7 +13,8 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T>
+/** 传入的类型和计算结果的类型，可能不同。一般默认相同 */
+template<typename TSrc, typename TRes = TSrc>
 class UDistance : public UDistanceObject {
 public:
     /**
@@ -26,7 +27,7 @@ public:
      * @param ext 可扩展信息
      * @return
      */
-    virtual CStatus calc(const T* v1, const T* v2, CSize dim1, CSize dim2, T& result, CVoidPtr ext) = 0;
+    virtual CStatus calc(const TSrc* v1, const TSrc* v2, CSize dim1, CSize dim2, TRes& result, CVoidPtr ext) = 0;
 
     /**
      * 判断入参信息是否符合
@@ -37,7 +38,7 @@ public:
      * @param ext
      * @return
      */
-    virtual CStatus check(const T* v1, const T* v2, CSize dim1, CSize dim2, CVoidPtr ext);
+    virtual CStatus check(const TSrc* v1, const TSrc* v2, CSize dim1, CSize dim2, CVoidPtr ext);
 
     /**
      * 将数据归一化
@@ -46,7 +47,7 @@ public:
      * @param ext
      * @return
      */
-    virtual CStatus normalize(T* v, CSize dim, CVoidPtr ext);
+    virtual CStatus normalize(TSrc* v, CSize dim, CVoidPtr ext);
 };
 
 CGRAPH_NAMESPACE_END

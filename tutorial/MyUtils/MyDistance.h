@@ -11,13 +11,13 @@
 
 #include "../../src/CGraph.h"
 
-template<typename T>    // 自定义距离类型
-class MyDistance : public CGraph::UDistance<T> {
+template<typename TSrc, typename TRes>    // 自定义距离类型
+class MyDistance : public CGraph::UDistance<TSrc, TRes> {
 public:
-    CStatus calc(const T* v1, const T* v2, CSize dim1, CSize dim2, T& result, CVoidPtr ext) override {
+    CStatus calc(const TSrc* v1, const TSrc* v2, CSize dim1, CSize dim2, TRes& result, CVoidPtr ext) override {
         /**
          * 如果需要实现自定义距离
-         * 只要生成 UDistance<T> 的子类，并且实现其中的 calc 方法即可
+         * 只要生成 UDistance<TSrc, TRes> 的子类，并且实现其中的 calc 方法即可
          * normalize 和 check 函数可选择实现
          */
         CStatus status;

@@ -15,8 +15,8 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T>
-CStatus UDistance<T>::check(const T* v1, const T* v2, CSize dim1, CSize dim2, CVoidPtr ext) {
+template<typename TSrc, typename TRes>
+CStatus UDistance<TSrc, TRes>::check(const TSrc* v1, const TSrc* v2, CSize dim1, CSize dim2, CVoidPtr ext) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(v1)
     CGRAPH_ASSERT_NOT_NULL(v2)
@@ -29,17 +29,17 @@ CStatus UDistance<T>::check(const T* v1, const T* v2, CSize dim1, CSize dim2, CV
 }
 
 
-template<typename T>
-CStatus UDistance<T>::normalize(T* v, CSize dim, CVoidPtr ext) {
+template<typename TSrc, typename TRes>
+CStatus UDistance<TSrc, TRes>::normalize(TSrc* v, CSize dim, CVoidPtr ext) {
     CGRAPH_FUNCTION_BEGIN
 
     /** 这里不需要判定v为空的情况，需要的话可以通过开启 needCheck 逻辑来判断 */
-    T val = 0;
+    TSrc val = 0;
     for (CSize i = 0; i < dim; i++) {
         val += (v[i] * v[i]);
     }
 
-    const T& denominator = 1 / std::sqrt(val);    // 分母信息
+    const TSrc& denominator = 1 / std::sqrt(val);    // 分母信息
     for (CSize i = 0; i < dim; i++) {
         v[i] = v[i] * denominator;
     }

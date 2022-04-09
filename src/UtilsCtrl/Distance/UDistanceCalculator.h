@@ -16,8 +16,9 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T, typename UD, const CBool needCheck = false,
-        std::enable_if_t<std::is_base_of<UDistance<T>, UD>::value, int> = 0>
+template<typename TSrc, typename TRes, typename UDist,
+        const CBool needCheck = false,
+        std::enable_if_t<std::is_base_of<UDistance<TSrc, TRes>, UDist>::value, int> = 0>
 class UDistanceCalculator : public UDistanceObject {
 public:
     /**
@@ -30,9 +31,9 @@ public:
      * @param ext
      * @return
      */
-    CStatus calculate(const T* v1, const T* v2,
+    CStatus calculate(const TSrc* v1, const TSrc* v2,
                       CSize dim1, CSize dim2,
-                      T& result,
+                      TRes& result,
                       CVoidPtr ext = nullptr) {
         CGRAPH_FUNCTION_BEGIN
         status = needCheck ? distance_.check(v1, v2, dim1, dim2, ext) : CStatus();
@@ -50,9 +51,9 @@ public:
      * @param ext
      * @return
      */
-    CStatus calculate(const std::vector<T>& v1,
-                      const std::vector<T>& v2,
-                      T& result,
+    CStatus calculate(const std::vector<TSrc>& v1,
+                      const std::vector<TSrc>& v2,
+                      TRes& result,
                       CVoidPtr ext = nullptr) {
         return calculate(v1.data(), v2.data(), v1.size(), v2.size(), result, ext);
     }
@@ -65,15 +66,15 @@ public:
      * @param ext
      * @return
      */
-    CStatus calculate(const std::vector<T>& query,
-                      const std::vector<std::vector<T> >& nodes,
-                      std::vector<T>& results,
+    CStatus calculate(const std::vector<TSrc>& query,
+                      const std::vector<std::vector<TSrc> >& nodes,
+                      std::vector<TRes>& results,
                       CVoidPtr ext = nullptr) {
         CGRAPH_FUNCTION_BEGIN
         results.clear();
         results.reserve(nodes.size());    // 预分配空间信息
-        for (const std::vector<T>& node : nodes) {
-            T result = 0;    // 在这里初始化一下，防止calculate()实现过程中，不复位result的情况
+        for (const std::vector<TSrc>& node : nodes) {
+            TRes result = 0;    // 在这里初始化一下，防止calculate()实现过程中，不复位result的情况
             status += calculate(query, node, result, ext);
             results.emplace_back(result);
         }
@@ -87,7 +88,7 @@ public:
      * @param ext
      * @return
      */
-    CStatus normalize(T* v, CSize dim, CVoidPtr ext = nullptr) {
+    CStatus normalize(TSrc* v, CSize dim, CVoidPtr ext = nullptr) {
         CGRAPH_FUNCTION_BEGIN
         // 这里强行将一个向量copy一份传入判断，目的是为了是的 normalize 和 calculate 的判断逻辑，保持一致
         status = needCheck ? distance_.check(v, v, dim, dim, ext) : CStatus();
@@ -103,13 +104,13 @@ public:
      * @param ext
      * @return
      */
-    CStatus normalize(std::vector<T>& v, CVoidPtr ext = nullptr) {
+    CStatus normalize(std::vector<TSrc>& v, CVoidPtr ext = nullptr) {
         return normalize(v.data(), v.size(), ext);
     }
 
 
 private:
-    UD distance_;        // 具体的距离计算类
+    UDist distance_;        // 具体的距离计算类
 };
 
 CGRAPH_NAMESPACE_END

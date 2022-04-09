@@ -13,10 +13,10 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T = CFloat>
-class UDistanceInnerProduct : public UDistance<T> {
+template<typename TSrc, typename TRes = TSrc>
+class UDistanceInnerProduct : public UDistance<TSrc, TRes> {
 public:
-    CStatus calc(const T* v1, const T* v2, CSize dim1, CSize dim2, T& result, CVoidPtr ext) override {
+    CStatus calc(const TSrc* v1, const TSrc* v2, CSize dim1, CSize dim2, TRes& result, CVoidPtr ext) override {
         CGRAPH_FUNCTION_BEGIN
         result = 0;
         for (CSize i = 0; i < dim1; i++) {

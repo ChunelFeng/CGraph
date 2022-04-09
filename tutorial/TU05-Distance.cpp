@@ -13,20 +13,25 @@
 using namespace CGraph;
 
 void tutorial_distance() {
-    using DistValType = float;    // 支持任意类型信息，如 float，int，double等
+    /**
+     * 支持任意类型信息，如 float，int，double等
+     * 并且支持结果类型转换
+     */
+    using DistSrcType = float;    // 向量值类型
+    using DistResType = float;    // 计算结果类型
     const int dim = 4;
 
-    std::vector<DistValType> vec1;
-    std::vector<DistValType> vec2;
+    std::vector<DistSrcType> vec1;
+    std::vector<DistSrcType> vec2;
     for (int i = 0; i < dim; i++) {
         // 生成两个向量信息
-        vec1.push_back((DistValType)i);
-        vec2.push_back((DistValType)(i * i));
+        vec1.push_back((DistSrcType)i);
+        vec2.push_back((DistSrcType)(i * i));
     }
 
-    DistValType result = 0.0;
+    DistResType result = 0.0;
     // 计算欧氏距离
-    UDistanceCalculator<DistValType, UDistanceEuclidean<DistValType> > eucDist;
+    UDistanceCalculator<DistSrcType, DistResType, UDistanceEuclidean<DistSrcType, DistResType> > eucDist;
     eucDist.calculate(vec1, vec2, result);
     std::cout << "UDistanceEuclidean distance result is : " << result << std::endl;
 
@@ -36,7 +41,7 @@ void tutorial_distance() {
      * 故 vec1->vec2 的距离和 vec2->vec1的距离，是不同的。
      * 下例中给出对应的展示
      */
-    UDistanceCalculator<DistValType, MyDistance<DistValType> > myDist;
+    UDistanceCalculator<DistSrcType, DistResType, MyDistance<DistSrcType, DistResType> > myDist;
     myDist.calculate(vec1, vec2, result);
     std::cout << "MyDistance distance vec1 -> vec2 result is : " << result << std::endl;
 
