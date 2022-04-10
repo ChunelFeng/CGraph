@@ -79,7 +79,7 @@ public:
 #define CGRAPH_MAKE_UNIQUE_COBJECT(Type)                         \
     UAllocator::makeUniqueCObject<Type>();                       \
 
-#define CGRAPH_GENERATE_SESSION()                                \
+#define CGRAPH_GENERATE_SESSION                                  \
     UAllocator::generateSession();                               \
 
 CGRAPH_NAMESPACE_END

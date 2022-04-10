@@ -25,9 +25,7 @@ void tutorial_simple() {
     GElementPtr a, b, c, d = nullptr;
 
     /**
-     * 注册节点，其中MyNode1和MyNode2必须为GraphNode的子类，否则无法通过编译。
-     * MyNode1中run()执行内容为sleep(1s)
-     * MyNode2中run()执行内容为sleep(2s)
+     * 注册节点，其中MyNode1和MyNode2必须为GNode的子类，否则无法通过编译。
      * status+= 操作，可以用于记录链路异常问题
      * */
     CStatus status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");    // 将名为nodeA，无执行依赖的node信息，注册入pipeline中
@@ -44,9 +42,7 @@ void tutorial_simple() {
     /* 运行流图信息。初始化后，支持多次循环计算 */
     for (int i = 0; i < 3; i++) {
         status = pipeline->run();
-        std::cout << "[CGraph] tutorial_simple, loop : " << i + 1
-                  << ", and run status = " << status.getCode()
-                  << std::endl;
+        CGRAPH_ECHO("==== tutorial_simple, loop : [%d], and run status = [%d].", i + 1, status.getCode());
     }
 
     /* 图信息逆初始化，准备结束计算 */

@@ -21,58 +21,12 @@ const std::string& GElement::getSession() const {
 
 
 GElement::GElement() {
-    this->session_ = CGRAPH_GENERATE_SESSION()
+    this->session_ = CGRAPH_GENERATE_SESSION
 }
 
 
 GElement::~GElement() {
     CGRAPH_DELETE_PTR(aspect_manager_)
-}
-
-
-GElement::GElement(const GElement& element) {
-    this->done_ = element.done_;
-    this->is_init_ = element.is_init_;
-    this->run_before_ = element.run_before_;
-    this->dependence_ = element.dependence_;
-    this->left_depend_.store(element.left_depend_);
-    this->linkable_ = element.linkable_;
-    this->session_ = element.session_;
-    this->loop_ = element.loop_;
-    this->name_ = element.name_;
-    this->thread_pool_ = element.thread_pool_;
-
-    if (element.aspect_manager_) {
-        this->aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager)
-        this->aspect_manager_->aspect_arr_ = element.aspect_manager_->aspect_arr_;
-        this->aspect_manager_->setName(element.aspect_manager_->getName());
-    }
-}
-
-
-GElement& GElement::operator=(const GElement& element) {
-    if (this == &element) {
-        return *this;
-    }
-
-    this->done_ = element.done_;
-    this->is_init_ = element.is_init_;
-    this->run_before_ = element.run_before_;
-    this->dependence_ = element.dependence_;
-    this->left_depend_.store(element.left_depend_);
-    this->linkable_ = element.linkable_;
-    this->session_ = element.session_;
-    this->loop_ = element.loop_;
-    this->name_ = element.name_;
-    this->thread_pool_ = element.thread_pool_;
-
-    if (element.aspect_manager_) {
-        this->aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager)
-        this->aspect_manager_->aspect_arr_ = element.aspect_manager_->aspect_arr_;
-        this->aspect_manager_->setName(element.aspect_manager_->getName());
-    }
-
-    return *this;
 }
 
 
@@ -98,11 +52,8 @@ CStatus GElement::afterRun() {
 
 
 GElementPtr GElement::setName(const std::string& name) {
-    if (!name.empty()) {
-        this->name_ = name;
-    } else {
-        this->name_ = this->session_;
-    }
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    this->name_ = name.empty() ? this->session_ : name;
 
     // 设置name信息的时候，顺便给 aspect_manager_ 一起设置了
     if (aspect_manager_) {
@@ -113,6 +64,8 @@ GElementPtr GElement::setName(const std::string& name) {
 
 
 GElement* GElement::setLoop(CSize loop) {
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+
     this->loop_ = loop;
     return this;
 }

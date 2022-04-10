@@ -48,10 +48,6 @@ CStatus GElementManager::destroy() {
 }
 
 
-/**
- * 无法执行manager的run方法
- * @return
- */
 CStatus GElementManager::run() {
     CGRAPH_NO_SUPPORT
 }

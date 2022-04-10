@@ -73,6 +73,20 @@ public:
      */
     CStatus addDependGElements(const std::set<GElement *>& elements);
 
+    /**
+     * 设置name信息
+     * @param name
+     * @return
+     */
+    GElement* setName(const std::string& name);
+
+    /**
+     * 设置循环次数
+     * @param loop
+     * @return
+     */
+    GElement* setLoop(CSize loop);
+
 protected:
     /**
      * 构造函数
@@ -83,19 +97,6 @@ protected:
      * 析构函数
      */
     ~GElement() override;
-
-    /**
-     * 实现拷贝构造函数
-     * @param element
-     */
-    GElement(const GElement& element);
-
-    /**
-     * 赋值构造函数
-     * @param element
-     * @return
-     */
-    GElement& operator=(const GElement& element);
 
     /**
      * run方法执行之前的执行函数
@@ -115,20 +116,6 @@ protected:
      * @return
      */
     virtual CBool isHold();
-
-    /**
-     * 设置name信息
-     * @param name
-     * @return
-     */
-    GElement* setName(const std::string& name);
-
-    /**
-     * 设置循环次数
-     * @param loop
-     * @return
-     */
-    GElement* setLoop(CSize loop = 1);
 
     /**
      * 判定element是否可以运行
@@ -183,6 +170,8 @@ protected:
      */
     CStatus fatProcessor(const CFunctionType& type, CSize loop = 1);
 
+    CGRAPH_NO_ALLOWED_COPY(GElement);
+
 protected:
     CBool done_ { false };                           // 判定被执行结束
     CBool is_init_ { false };                        // 是否初始化了
@@ -204,7 +193,6 @@ protected:
     friend class GElementManager;
     friend class GGroup;
     friend class GPipeline;
-    friend class GAdapter;
     template<typename T> friend class GSingleton;
 };
 

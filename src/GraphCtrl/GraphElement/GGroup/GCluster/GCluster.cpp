@@ -10,15 +10,13 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-GCluster::GCluster() : GGroup() {
-
-}
+GCluster::GCluster() = default;
 
 
 GCluster::~GCluster() = default;
 
 
-GCluster::GCluster(const GCluster& cluster)  : GGroup(cluster) {
+GCluster::GCluster(const GCluster& cluster) {
     this->cluster_elements_ = cluster.cluster_elements_;
 }
 
@@ -146,8 +144,8 @@ CBool GCluster::isElementsDone() {
     /* 所有的element均被执行过，则提示true */
     return std::all_of(cluster_elements_.begin(), cluster_elements_.end(),
                        [](GElementPtr element) {
-         return element->done_;
-    });
+                           return element->done_;
+                       });
 }
 
 CGRAPH_NAMESPACE_END
