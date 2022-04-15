@@ -47,6 +47,10 @@ static std::mutex g_check_status_mtx;
         return status;                                                                       \
     }                                                                                        \
 
+/* 抛出异常 */
+#define CGRAPH_THROW_EXCEPTION(info)                          \
+    throw CGraph::CException(info);                           \
+
 /* 删除资源信息 */
 #define CGRAPH_DELETE_PTR(ptr)                                \
     if (unlikely((ptr) != nullptr)) {                         \

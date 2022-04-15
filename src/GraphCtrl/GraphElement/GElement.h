@@ -118,6 +118,13 @@ protected:
     virtual CBool isHold();
 
     /**
+     * 崩溃流程处理
+     * @param ex
+     * @return
+     */
+    virtual CStatus crashed(const CException& ex);
+
+    /**
      * 判定element是否可以运行
      * 可执行的条件为：自身未被执行且依赖节点全部被执行
      * @return

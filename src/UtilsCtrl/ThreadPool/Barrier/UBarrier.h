@@ -25,15 +25,13 @@ public:
     };
 
     explicit UBarrier() = delete;
-    UBarrier(const UBarrier& barrier) = delete;
-    UBarrier& operator=(const UBarrier& node) = delete;
-
+    CGRAPH_NO_ALLOWED_COPY(UBarrier)
 
     /**
      * 执行等待
      * @return
      */
-    bool wait() {
+    CBool wait() {
         CGRAPH_UNIQUE_LOCK lock(mutex_);
 
         unsigned int gen = generation_;
@@ -58,7 +56,7 @@ public:
      * 获取执行状态
      * @return
      */
-    bool getStatus() {
+    CBool getStatus() {
         CGRAPH_UNIQUE_LOCK lock(mutex_);
         return status_;
     }
@@ -66,10 +64,10 @@ public:
 private:
     std::mutex mutex_;
     std::condition_variable cv_;
-    unsigned int threshold_;                            // 进入次数阈值
-    unsigned int cnt_;                                  // 进入次数记录
-    unsigned int generation_ {0};                       // 轮数（持续递增，防止伪唤醒）
-    bool status_ { false };
+    CUint threshold_;                            // 进入次数阈值
+    CUint cnt_;                                  // 进入次数记录
+    CUint generation_ {0};                       // 轮数（持续递增，防止伪唤醒）
+    CBool status_ { false };
 
     friend class UThreadPool;
 };

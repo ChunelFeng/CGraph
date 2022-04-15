@@ -18,11 +18,9 @@ GNode::GNode() : GElement() {
 CStatus GNode::doParallel(const UTaskGroup& tasks, CMSec ttl) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(true)
+    CGRAPH_ASSERT_NOT_NULL(thread_pool_)
 
-    UThreadPoolPtr tp = UThreadPoolSingleton::get(false);
-    CGRAPH_ASSERT_NOT_NULL(tp)
-
-    status = tp->submit(tasks, ttl);
+    status = thread_pool_->submit(tasks, ttl);
     CGRAPH_FUNCTION_END
 }
 

@@ -59,7 +59,7 @@ CStatus GPipeline::run() {
 
     CSize runElementSize = 0;    // 用于记录执行的element的总数，用于后期校验
     std::vector<CMSec> curClusterTtl;    // 用于记录分解后，每个cluster包含的element的个数，用于验证执行的超时情况。
-    std::vector<std::future<CStatus>> futures;
+    std::vector<std::future<CStatus> > futures;
 
     for (GClusterArrRef clusterArr : element_manager_->para_cluster_arrs_) {
         futures.clear();

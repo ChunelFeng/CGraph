@@ -135,40 +135,44 @@ CStatus GElement::doAspect(const GAspectType& aspectType, const CStatus& curStat
 CStatus GElement::fatProcessor(const CFunctionType& type, CSize loop) {
     CGRAPH_FUNCTION_BEGIN
 
-    while (loop--) {
-        switch (type) {
-            case CFunctionType::RUN: {
-                /** 执行带切面的run方法 */
-                status = doAspect(GAspectType::BEGIN_RUN);
-                CGRAPH_FUNCTION_CHECK_STATUS
-                do {
-                    status = run();
-                    /**
-                     * 如果状态是ok的，并且被条件hold住，则循环执行
-                     * 默认所有element的isHold条件均为false，即不hold，即执行一次
-                     * 可以根据需求，对任意element类型，添加特定的isHold条件
-                     * */
-                } while (status.isOK() && this->isHold());
-                doAspect(GAspectType::FINISH_RUN, status);
-                break;
+    try {
+        while (loop--) {
+            switch (type) {
+                case CFunctionType::RUN: {
+                    /** 执行带切面的run方法 */
+                    status = doAspect(GAspectType::BEGIN_RUN);
+                    CGRAPH_FUNCTION_CHECK_STATUS
+                    do {
+                        status = run();
+                        /**
+                         * 如果状态是ok的，并且被条件hold住，则循环执行
+                         * 默认所有element的isHold条件均为false，即不hold，即执行一次
+                         * 可以根据需求，对任意element类型，添加特定的isHold条件
+                         * */
+                    } while (status.isOK() && this->isHold());
+                    doAspect(GAspectType::FINISH_RUN, status);
+                    break;
+                }
+                case CFunctionType::INIT: {
+                    status = doAspect(GAspectType::BEGIN_INIT);
+                    CGRAPH_FUNCTION_CHECK_STATUS
+                    status = init();
+                    doAspect(GAspectType::FINISH_INIT, status);
+                    break;
+                }
+                case CFunctionType::DESTROY: {
+                    status = doAspect(GAspectType::BEGIN_DESTROY);
+                    CGRAPH_FUNCTION_CHECK_STATUS
+                    status = destroy();
+                    doAspect(GAspectType::FINISH_DESTROY, status);
+                    break;
+                }
+                default:
+                    CGRAPH_RETURN_ERROR_STATUS("get function type error")
             }
-            case CFunctionType::INIT: {
-                status = doAspect(GAspectType::BEGIN_INIT);
-                CGRAPH_FUNCTION_CHECK_STATUS
-                status = init();
-                doAspect(GAspectType::FINISH_INIT, status);
-                break;
-            }
-            case CFunctionType::DESTROY: {
-                status = doAspect(GAspectType::BEGIN_DESTROY);
-                CGRAPH_FUNCTION_CHECK_STATUS
-                status = destroy();
-                doAspect(GAspectType::FINISH_DESTROY, status);
-                break;
-            }
-            default:
-                CGRAPH_RETURN_ERROR_STATUS("get function type error")
         }
+    } catch (const CException& ex) {
+        status = crashed(ex);
     }
 
     CGRAPH_FUNCTION_END
@@ -181,6 +185,15 @@ CBool GElement::isHold() {
      * 可以根据自己逻辑，来实现"持续循环执行，直到特定条件出现的时候停止"的逻辑
      */
     return false;
+}
+
+
+CStatus GElement::crashed(const CException& ex) {
+    /**
+     * 默认直接抛出异常的
+     * 如果需要处理的话，可以通过覆写此函数来
+     */
+    CGRAPH_THROW_EXCEPTION(ex.what())
 }
 
 CGRAPH_NAMESPACE_END

@@ -17,22 +17,23 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GCluster : public GGroup {
 public:
-    /* 涉及到与线程池的联动，cluster类无法将构造函数申明成protected类型 */
+    /** 涉及到与线程池的联动，cluster类无法将构造函数申明成protected类型 */
     explicit GCluster();
     ~GCluster() override;
     GCluster(const GCluster& cluster);
     GCluster& operator=(const GCluster& cluster);
 
 protected:
-    CStatus init() override;
-    CStatus destroy() override;
-    CStatus run() override;
-    CStatus process(bool isMock) override;
+    /** cluster结构在工程中，被用于自动合并和串行流程。禁止外部修改cluster的逻辑结构 */
+    CStatus init() final;
+    CStatus destroy() final;
+    CStatus run() final;
+    CStatus process(bool isMock) final;
 
-    CStatus beforeRun() override;
-    CStatus afterRun() override;
+    CStatus beforeRun() final;
+    CStatus afterRun() final;
 
-    CStatus addElement(GElementPtr element) override;
+    CStatus addElement(GElementPtr element) final;
 
     /**
      * 获取element个数信息
