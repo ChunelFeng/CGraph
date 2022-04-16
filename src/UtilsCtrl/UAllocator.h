@@ -67,7 +67,7 @@ public:
 
                 return session;
         #else
-                return "";    // 非mac平台，暂时不支持自动生成session信息
+                return CGRAPH_EMPTY;    // 非mac平台，暂时不支持自动生成session信息
         #endif
     }
 };

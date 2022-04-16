@@ -12,16 +12,14 @@
 #include <string>
 #include <exception>
 
+#include "CInfoDefine.h"
+
 CGRAPH_NAMESPACE_BEGIN
 
-class CException : public std::exception {
+class CEXCEPTION : public std::exception {
 public:
-    explicit CException() {
-        info_ = "CGraph Exception";
-    }
-
-    explicit CException(const std::string& info) {
-        info_ = info;
+    explicit CEXCEPTION(const std::string& info = CGRAPH_EMPTY) {
+        info_ = info.empty() ? CGRAPH_BASIC_EXCEPTION : info;
     }
 
     /**

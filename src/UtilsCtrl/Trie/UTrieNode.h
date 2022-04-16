@@ -17,7 +17,7 @@ const static unsigned int MAX_TRIE_NODE_SIZE = 256;
 
 class UTrieNode : public UtilsObject {
 public:
-    explicit UTrieNode(const std::string& path = "") {
+    explicit UTrieNode(const std::string& path = CGRAPH_EMPTY) {
         path_ = path;
         for (auto& child : children_) {
             child = nullptr;

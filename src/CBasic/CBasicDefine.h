@@ -19,14 +19,17 @@ namespace CGraph {                                                      \
 
 CGRAPH_NAMESPACE_BEGIN
 
+using CCHAR = char;
 using CUINT = unsigned int;
 using CVOID = void;
 using CINT = int;
 using CLONG = long;
 using CULONG = unsigned long;
 using CBOOL = bool;
+using CBIGBOOL = int;
 using CFLOAT = float;
 using CDOUBLE = double;
+using CCONSTR = const char*;
 using CSIZE = size_t;
 
 CGRAPH_NAMESPACE_END

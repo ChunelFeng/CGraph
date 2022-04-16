@@ -66,7 +66,7 @@ public:
     template<typename T, std::enable_if_t<std::is_base_of<GGroup, T>::value, int> = 0>
     GGroupPtr createGGroup(const GElementPtrArr &elements,
                            const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
-                           const std::string &name = "",
+                           const std::string &name = CGRAPH_EMPTY,
                            CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
@@ -83,7 +83,7 @@ public:
     template<typename T, std::enable_if_t<std::is_base_of<GElement, T>::value, int> = 0>
     CStatus registerGElement(GElementPtr *elementRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
-                             const std::string &name = "",
+                             const std::string &name = CGRAPH_EMPTY,
                              CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**

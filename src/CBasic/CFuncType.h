@@ -11,6 +11,7 @@
 
 #include <functional>
 
+#include "CInfoDefine.h"
 #include "CValType.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -46,7 +47,7 @@ enum class CFunctionType {
 
 /** 不支持当前功能 */
 #define CGRAPH_NO_SUPPORT                                               \
-    return CStatus("function no support");                              \
+    return CStatus(CGRAPH_FUNCTION_NO_SUPPORT);                         \
 
 /** 返回异常信息和状态 */
 #define CGRAPH_RETURN_ERROR_STATUS(info)                                \
@@ -56,6 +57,10 @@ enum class CFunctionType {
 #define CGRAPH_NO_ALLOWED_COPY(CType)                                   \
     CType(const CType &) = delete;                                      \
     const CType &operator=(const CType &) = delete;                     \
+
+/** 抛出异常 */
+#define CGRAPH_THROW_EXCEPTION(info)                                    \
+    throw CException(info);                                             \
 
 CGRAPH_NAMESPACE_END
 
