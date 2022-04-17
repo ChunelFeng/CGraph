@@ -172,10 +172,9 @@ protected:
     /**
      * 包含切面相关功能的函数，fat取自fatjar的意思
      * @param type
-     * @param loop
      * @return
      */
-    CStatus fatProcessor(const CFunctionType& type, CSize loop = 1);
+    CStatus fatProcessor(const CFunctionType& type);
 
     CGRAPH_NO_ALLOWED_COPY(GElement);
 
