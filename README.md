@@ -10,7 +10,7 @@
 </h1>
 
 >CGraph is a cross-platform `DAG`(Directed Acyclic Graph) framework based on C++17 without any 3rd-party.</br></br>
->You, with it, can build your own operators simply, and then describe any running schedules for them as you need, such as dependence, parallelling, loop, condition and aggregation. Some useful tools and plugins are also provided to improve your project.</br></br>
+>You, with it, can build your own operators simply, and then describe any running schedules as you need, such as dependence, parallelling, aggregation and so on. Some useful tools and plugins are also provided to improve your project.</br></br>
 >Tutorials and contact information are shown as follows. Please get in touch with us for free if you need more about this repository.
 
 ## 一. 简介
@@ -25,6 +25,7 @@
 
 ![CGraph Skeleton](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Skeleton.jpg)
 <br>
+
 
 ## 二. 编译说明
 * 本工程支持MacOS、Linux和Windows系统，无任何第三方依赖。使用`CLion`作为IDE的开发者，打开`CMakeLists.txt`文件作为工程，即可编译通过
@@ -83,14 +84,14 @@ public:
 };
 ```
 
-#### demo.cpp
+#### main.cpp
 ```cpp
 #include "MyGNode/MyNode1.h"
 #include "MyGNode/MyNode2.h"
 
 using namespace CGraph;
 
-void tutorial_simple() {
+int main() {
     /* 创建一个流水线，用于设定和执行流图信息 */
     GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b, c, d = nullptr;
@@ -109,6 +110,8 @@ void tutorial_simple() {
     /* 执行流图框架 */
     status = pipeline->process();
     GPipelineFactory::remove(pipeline);
+
+    return 0;
 }
 ```
 
@@ -116,11 +119,22 @@ void tutorial_simple() {
 <br>
 如上图所示，图结构执行的时候，首先执行`a`节点。`a`节点执行完毕后，并行执行`b`和`c`节点。`b`和`c`节点全部执行完毕后，再执行`d`节点。
 
-## 四. 感谢
-* 感谢《HelloGithub》期刊介绍和推荐：[HelloGithub 第70期](https://github.com/521xueweihan/HelloGitHub/blob/master/content/70/HelloGitHub70.md)
-* 感谢 [Doocs 微信公众号](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzIxNjA5ODQ0OQ==&action=getalbum&album_id=1989460124624551937&scene=173&from_msgid=2654703194&from_itemidx=1&count=3&nolastread=1#wechat_redirect) 刊登相关介绍文档，欢迎加入 [Doocs 开源社区](https://github.com/doocs)
-* 感谢 [@yangyuxiang77](https://github.com/yangyuxiang77) [@wuxing](https://github.com/logerrors) [@whenever5225](https://github.com/whenever5225) [@Yaha](https://github.com/May-Yaha) 等朋友（排名按贡献时间为顺序）为项目做出的贡献
-* 感谢所有为`CGraph`项目提出的意见和建议的朋友，在此不一一提及。随时欢迎大家加入，一起共建
+## 四. 推荐阅读
+
+* [纯序员给你介绍图化框架的简单实现——执行逻辑](http://www.chunel.cn/archives/cgraph-run-introduce)
+* [纯序员给你介绍图化框架的简单实现——循环逻辑](http://www.chunel.cn/archives/cgraph-loop-introduce)
+* [纯序员给你介绍图化框架的简单实现——参数传递](http://www.chunel.cn/archives/cgraph-param-introduce)
+* [纯序员给你介绍图化框架的简单实现——条件判断](http://www.chunel.cn/archives/cgraph-condition-introduce)
+* [纯序员给你介绍图化框架的简单实现——面向切面](http://www.chunel.cn/archives/cgraph-aspect-introduce)
+* [纯序员给你介绍图化框架的简单实现——函数注入](http://www.chunel.cn/archives/cgraph-function-introduce)
+* [纯序员给你介绍图化框架的简单实现——线程池优化（一）](http://www.chunel.cn/archives/cgraph-threadpool-1-introduce)
+* [纯序员给你介绍图化框架的简单实现——线程池优化（二）](http://www.chunel.cn/archives/cgraph-threadpool-2-introduce)
+* [纯序员给你介绍图化框架的简单实现——线程池优化（三）](http://www.chunel.cn/archives/cgraph-threadpool-3-introduce)
+* [纯序员给你介绍图化框架的简单实现——线程池优化（四）](http://www.chunel.cn/archives/cgraph-threadpool-4-introduce)
+* [纯序员给你介绍图化框架的简单实现——线程池优化（五）](http://www.chunel.cn/archives/cgraph-threadpool-5-introduce)
+* [纯序员给你介绍图化框架的简单实现——距离计算](http://www.chunel.cn/archives/cgraph-distance-introduce)
+  <br><br>
+* [CGraph 主打歌——《听码农的话》](http://www.chunel.cn/archives/listen-to-coder)
 
 ------------
 #### 附录-1. 版本信息
@@ -141,22 +155,12 @@ void tutorial_simple() {
 > 更多版本变更信息，请参考 [ChangeLog.md](https://github.com/ChunelFeng/CGraph/blob/main/ChangeLog.md) 文件
 
 ------------
-#### 附录-2. 推荐阅读
+#### 附录-2. 感谢
 
-* [纯序员给你介绍图化框架的简单实现——执行逻辑](http://www.chunel.cn/archives/cgraph-run-introduce)
-* [纯序员给你介绍图化框架的简单实现——循环逻辑](http://www.chunel.cn/archives/cgraph-loop-introduce)
-* [纯序员给你介绍图化框架的简单实现——参数传递](http://www.chunel.cn/archives/cgraph-param-introduce)
-* [纯序员给你介绍图化框架的简单实现——条件判断](http://www.chunel.cn/archives/cgraph-condition-introduce)
-* [纯序员给你介绍图化框架的简单实现——面向切面](http://www.chunel.cn/archives/cgraph-aspect-introduce)
-* [纯序员给你介绍图化框架的简单实现——函数注入](http://www.chunel.cn/archives/cgraph-function-introduce)
-* [纯序员给你介绍图化框架的简单实现——线程池优化（一）](http://www.chunel.cn/archives/cgraph-threadpool-1-introduce)
-* [纯序员给你介绍图化框架的简单实现——线程池优化（二）](http://www.chunel.cn/archives/cgraph-threadpool-2-introduce)
-* [纯序员给你介绍图化框架的简单实现——线程池优化（三）](http://www.chunel.cn/archives/cgraph-threadpool-3-introduce)
-* [纯序员给你介绍图化框架的简单实现——线程池优化（四）](http://www.chunel.cn/archives/cgraph-threadpool-4-introduce)
-* [纯序员给你介绍图化框架的简单实现——线程池优化（五）](http://www.chunel.cn/archives/cgraph-threadpool-5-introduce)
-* [纯序员给你介绍图化框架的简单实现——距离计算](http://www.chunel.cn/archives/cgraph-distance-introduce)
-<br><br>
-* [CGraph 主打歌——《听码农的话》](http://www.chunel.cn/archives/listen-to-coder)
+* 感谢《HelloGithub》期刊介绍和推荐：[HelloGithub 第70期](https://github.com/521xueweihan/HelloGitHub/blob/master/content/70/HelloGitHub70.md)
+* 感谢 [Doocs 微信公众号](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzIxNjA5ODQ0OQ==&action=getalbum&album_id=1989460124624551937&scene=173&from_msgid=2654703194&from_itemidx=1&count=3&nolastread=1#wechat_redirect) 刊登相关介绍文档，欢迎加入 [Doocs 开源社区](https://github.com/doocs)
+* 感谢 [@yangyuxiang77](https://github.com/yangyuxiang77) [@wuxing](https://github.com/logerrors) [@whenever5225](https://github.com/whenever5225) [@Yaha](https://github.com/May-Yaha) 等朋友（排名按贡献时间为顺序）为项目做出的贡献
+* 感谢所有为`CGraph`项目提出的意见和建议的朋友，在此不一一提及。随时欢迎大家加入，一起共建
 
 ------------
 #### 附录-3. 联系方式
