@@ -159,6 +159,7 @@ protected:
      * @param dependElements
      * @param name
      * @param loop
+     * @param level
      * @param paramManager
      * @param threadPool
      * @return
@@ -166,8 +167,17 @@ protected:
     virtual CStatus setElementInfo(const std::set<GElement *> &dependElements,
                                    const std::string &name,
                                    CSize loop,
+                                   CLevel level,
                                    GParamManagerPtr paramManager,
                                    UThreadPoolPtr threadPool);
+
+    /**
+     * 设置level信息，用于控制init和destroy方法的执行顺序
+     * level值越低，函数越先执行
+     * @param level
+     * @return
+     */
+    GElement* setLevel(CLevel level);
 
     /**
      * 包含切面相关功能的函数，fat取自fatjar的意思
@@ -183,6 +193,7 @@ protected:
     CBool is_init_ { false };                        // 是否初始化了
     CBool linkable_ { false };                       // 判定是否可以连通计算
     CSize loop_ { 1 };                               // 节点执行次数
+    CLevel level_ { 0 };                             // 用于设定init的执行顺序(值小的，优先init，可以为负数)
     std::string name_;                               // 节点名称
     std::string session_;                            // 节点唯一id信息
     std::set<GElement *> run_before_;                // 被依赖的节点
@@ -199,6 +210,7 @@ protected:
     friend class GElementManager;
     friend class GGroup;
     friend class GPipeline;
+    friend class GElementSorter;
     template<typename T> friend class GSingleton;
 };
 

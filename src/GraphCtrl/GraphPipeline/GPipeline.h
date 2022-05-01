@@ -48,22 +48,26 @@ public:
     /**
      * 根据传入的info信息，创建node节点
      * @tparam T
+     * @tparam level
      * @param info
      * @return
      */
-    template<typename T, std::enable_if_t<std::is_base_of<GNode, T>::value, int> = 0>
+    template<typename T, CLevel level = CGRAPH_DEFAULT_ELEMENT_LEVEL,
+            std::enable_if_t<std::is_base_of<GNode, T>::value, int> = 0>
     GNodePtr createGNode(const GNodeInfo &info);
 
     /**
      * 根据传入的信息，创建Group信息
      * @tparam T
+     * @tparam level
      * @param elements
      * @param dependElements
      * @param name
      * @param loop
      * @return
      */
-    template<typename T, std::enable_if_t<std::is_base_of<GGroup, T>::value, int> = 0>
+    template<typename T, CLevel level = CGRAPH_DEFAULT_ELEMENT_LEVEL,
+            std::enable_if_t<std::is_base_of<GGroup, T>::value, int> = 0>
     GGroupPtr createGGroup(const GElementPtrArr &elements,
                            const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                            const std::string &name = CGRAPH_EMPTY,
@@ -74,13 +78,15 @@ public:
      * 如果注册的是GNode信息，则内部自动生成
      * 如果注册的是GGroup信息，则需外部提前生成，然后注册进来
      * @tparam T
+     * @tparam level
      * @param elementRef
      * @param dependElements
      * @param name
      * @param loop
      * @return
      */
-    template<typename T, std::enable_if_t<std::is_base_of<GElement, T>::value, int> = 0>
+    template<typename T, CLevel level = CGRAPH_DEFAULT_ELEMENT_LEVEL,
+            std::enable_if_t<std::is_base_of<GElement, T>::value, int> = 0>
     CStatus registerGElement(GElementPtr *elementRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = CGRAPH_EMPTY,
@@ -135,7 +141,7 @@ protected:
     CGRAPH_NO_ALLOWED_COPY(GPipeline)
 
 private:
-    bool is_init_ = false;                                      // 初始化标志位
+    CBOOL is_init_ = false;                                     // 初始化标志位
     CMSec element_run_ttl_ = CGRAPH_DEFAULT_ELEMENT_RUN_TTL;    // 单个节点最大运行周期
     GElementManagerPtr element_manager_;                        // 节点管理类（管理所有注册过的element信息）
     GElementPtrSet element_repository_;                         // 标记创建的所有节点，最终释放使用

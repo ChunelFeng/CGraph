@@ -13,7 +13,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T, std::enable_if_t<std::is_base_of<GElement, T>::value, int>>
+template<typename T, CLevel level, std::enable_if_t<std::is_base_of<GElement, T>::value, int>>
 CStatus GPipeline::registerGElement(GElementPtr *elementRef,
                                     const GElementPtrSet &dependElements,
                                     const std::string &name,
@@ -40,7 +40,7 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
     }
 
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
-    status = (*elementRef)->setElementInfo(dependElements, name, loop,
+    status = (*elementRef)->setElementInfo(dependElements, name, loop, level,
                                            this->param_manager_,
                                            this->thread_pool_);
     CGRAPH_FUNCTION_CHECK_STATUS
@@ -52,13 +52,14 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
 }
 
 
-template<typename T, std::enable_if_t<std::is_base_of<GNode, T>::value, int>>
+template<typename T, CLevel level,
+        std::enable_if_t<std::is_base_of<GNode, T>::value, int>>
 GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_FUNCTION_BEGIN
     GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(node)
 
-    status = node->setElementInfo(info.dependence_, info.name_, info.loop_,
+    status = node->setElementInfo(info.dependence_, info.name_, info.loop_, level,
                                   this->param_manager_,
                                   this->thread_pool_);
     if (!status.isOK()) {
@@ -71,7 +72,8 @@ GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
 }
 
 
-template<typename T, std::enable_if_t<std::is_base_of<GGroup, T>::value, int>>
+template<typename T, CLevel level,
+        std::enable_if_t<std::is_base_of<GGroup, T>::value, int>>
 GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
                                   const GElementPtrSet &dependElements,
                                   const std::string &name,
@@ -96,7 +98,7 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
         group->addElement(element);
     }
 
-    status = group->setElementInfo(dependElements, name, loop,
+    status = group->setElementInfo(dependElements, name, loop, level,
                                    nullptr,
                                    this->thread_pool_);    // 注册group信息的时候，不能注册paramManager信息
     if (unlikely(!status.isOK())) {

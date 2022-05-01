@@ -71,6 +71,14 @@ GElement* GElement::setLoop(CSize loop) {
 }
 
 
+GElement* GElement::setLevel(CLevel level) {
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+
+    this->level_ = level;
+    return this;
+}
+
+
 CBool GElement::isRunnable() const {
     return 0 >= this->left_depend_ && !this->done_;
 }
@@ -105,13 +113,14 @@ CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
 CStatus GElement::setElementInfo(const GElementPtrSet& dependElements,
                                  const std::string& name,
                                  CSize loop,
+                                 CLevel level,
                                  GParamManagerPtr paramManager,
                                  UThreadPoolPtr threadPool) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(threadPool)
     CGRAPH_ASSERT_INIT(false)
 
-    this->setName(name)->setLoop(loop);
+    this->setName(name)->setLoop(loop)->setLevel(level);
     param_manager_ = paramManager;
     thread_pool_ = threadPool;
     status = this->addDependGElements(dependElements);

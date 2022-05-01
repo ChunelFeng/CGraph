@@ -66,7 +66,7 @@ private:
     std::atomic<CBool> is_stop_ { true };
     std::mutex mutex_;
     std::condition_variable cv_;
-    std::future<CVoid> future_;
+    std::future<CVoid> future_ {};
 };
 
 CGRAPH_NAMESPACE_END

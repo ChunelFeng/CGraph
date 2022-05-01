@@ -46,7 +46,7 @@
   $ ... ...     # 接下来操作同Linux命令行环境，即可生成相应的*.sln文件
   ```
 
-* 提供基于`Ubuntu 20.04.3 LTS`的Docker镜像。输入以下指令，即可获取并进入
+* 提供基于`Ubuntu 20.04.3`的Docker镜像。输入以下指令，即可获取并进入
   ```shell
   $ docker pull chunelfeng/cenv                         # 获取docker镜像
   $ docker run -it --name CGraphEnv chunelfeng/cenv     # 开启docker容器，并进入
@@ -136,13 +136,12 @@ int main() {
   <br><br>
 * [CGraph 主打歌——《听码农的话》](http://www.chunel.cn/archives/listen-to-coder)
 
+## 五. 关联项目
+
+* [GraphANNS](https://github.com/whenever5225/GraphANNS) : Graph-based Approximate Nearest Neighbor Search Working off CGraph
+
 ------------
 #### 附录-1. 版本信息
-
-[2022.02.03 - v1.8.5 - Chunel]
-* 提供`daemon`(守护)功能，用于定时执行非流图中任务
-* 更新`tutorial`内容
-
 [2022.04.03 - v1.8.6 - Chunel]
 * 提供`DistanceCalculator`算子，用于实现任意数据类型、任意距离类型的计算
 * 更新`tutorial`内容
@@ -151,6 +150,9 @@ int main() {
 * 提供`Domain`(领域)功能，提供`Ann`领域抽象模型，开始支持个别专业方向
 * 提供hold执行机制，支持根据运行时条件，判断是否需要重新执行当前内容，直到满足条件为止
 * 更新`tutorial`内容
+
+[2022.05.01 - v2.0.1 - Chunel]
+* 优化`pipeline`注册机制，支持init方法自定义顺序执行
 
 > 更多版本变更信息，请参考 [ChangeLog.md](https://github.com/ChunelFeng/CGraph/blob/main/ChangeLog.md) 文件
 
@@ -166,8 +168,7 @@ int main() {
 
 <p align="center"><img src="https://github.com/ChunelFeng/CGraph/blob/main/doc/image/GrowingGit%20Logo.png"/></p>
 
-
-* 感谢 [@yangyuxiang77](https://github.com/yangyuxiang77) [@wuxing](https://github.com/logerrors) [@whenever5225](https://github.com/whenever5225) [@Yaha](https://github.com/May-Yaha) 等朋友（排名按贡献时间为顺序）为项目做出的贡献
+* 感谢 [@yangyuxiang77](https://github.com/yangyuxiang77) [@wuxing](https://github.com/logerrors) [@whenever5225](https://github.com/whenever5225) [@Yaha](https://github.com/May-Yaha) 等朋友（以贡献时间先后为顺序）为项目做出的贡献
 * 感谢所有为`CGraph`项目提出的意见和建议的朋友，在此不一一提及。随时欢迎大家加入，一起共建
 
 ------------

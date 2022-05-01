@@ -25,6 +25,7 @@ protected:
      * @param dependElements
      * @param name
      * @param loop
+     * @param level
      * @param paramManager
      * @param threadPool
      * @return
@@ -32,6 +33,7 @@ protected:
     CStatus setElementInfo(const std::set<GElementPtr> &dependElements,
                            const std::string &name,
                            CSize loop,
+                           CLevel level,
                            GParamManagerPtr paramManager,
                            UThreadPoolPtr threadPool) override;
 

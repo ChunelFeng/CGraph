@@ -20,6 +20,7 @@ using CSize = CGraph::CSIZE;
 using CVoid = CGraph::CVOID;
 using CVoidPtr = CGraph::CVOID *;
 using CInt = CGraph::CINT;
+using CLevel = CGraph::CINT;
 using CLong = CGraph::CLONG;
 using CULong = CGraph::CULONG;
 using CBool = CGraph::CBOOL;

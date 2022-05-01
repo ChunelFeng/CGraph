@@ -28,6 +28,19 @@ public:
         result = needSqrt ? std::sqrt(result) : result;
         CGRAPH_FUNCTION_END
     }
+
+
+    CStatus check(const TSrc* v1, const TSrc* v2, CSize dim1, CSize dim2, CVoidPtr ext) override {
+        CGRAPH_FUNCTION_BEGIN
+        CGRAPH_ASSERT_NOT_NULL(v1)
+        CGRAPH_ASSERT_NOT_NULL(v2)
+        if (dim1 != dim2 || 0 == dim1 * dim2) {
+            // 不相等，或者有任何一个值为0，则认为是异常
+            CGRAPH_RETURN_ERROR_STATUS("euclidean distance dim error")
+        }
+
+        CGRAPH_FUNCTION_END
+    }
 };
 
 CGRAPH_NAMESPACE_END

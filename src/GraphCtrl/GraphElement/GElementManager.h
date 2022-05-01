@@ -10,6 +10,7 @@
 #define CGRAPH_GELEMENTMANAGER_H
 
 #include "GElement.h"
+#include "GElementSorter.h"
 #include "GGroup/GCluster/GCluster.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -71,8 +72,8 @@ protected:
     CStatus clear() final;
 
 private:
-    GElementPtrSet manager_elements_;                    // 保存节点信息的内容
-    ParaWorkedClusterArrs para_cluster_arrs_;            // 可以并行的cluster数组
+    GSortedGElementPtrSet manager_elements_;                    // 保存节点信息的内容
+    ParaWorkedClusterArrs para_cluster_arrs_;                   // 可以并行的cluster数组
 
     friend class GPipeline;
     friend class GRegion;
