@@ -41,9 +41,9 @@
 
 * Windows环境中，使用`Visual Studio`作为IDE的开发者，clone本工程前请优先设置换行符类型
   ```shell
-  $ git config --global core.autocrlf true              # 设置Windows平台支持的CRLF换行符形式
+  $ git config --global core.autocrlf true        # 设置Windows平台支持的CRLF换行符形式
   $ git clone https://github.com/ChunelFeng/CGraph.git
-  $ ... ...     # 接下来操作同Linux命令行环境，即可生成相应的*.sln文件
+  $ ... ...        # 接下来操作同Linux命令行环境，即可生成相应的*.sln文件
   ```
 
 * 提供基于`Ubuntu 20.04.3`的Docker镜像。输入以下指令，即可获取并进入
@@ -96,15 +96,13 @@ int main() {
     GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b, c, d = nullptr;
 
-    /* 注册节点，其中MyNode1和MyNode2必须为GNode的子类，否则无法通过编译。
-     * MyNode1中run()执行内容为sleep(1s)
-     * MyNode2中run()执行内容为sleep(2s) */
+    /* 注册节点，其中MyNode1和MyNode2必须为GNode的子类，否则无法通过编译 */
     CStatus status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");    // 将名为nodeA，无执行依赖的node信息，注册入pipeline中
     status += pipeline->registerGElement<MyNode2>(&b, {a}, "nodeB");    // 将名为nodeB，依赖a执行的node信息，注册入pipeline中
     status += pipeline->registerGElement<MyNode1>(&c, {a}, "nodeC");
     status += pipeline->registerGElement<MyNode2>(&d, {b, c}, "nodeD");    // 将名为nodeD，依赖{b,c}执行的node信息，注册入pipeline中
     if (!status.isOK()) {
-        return;    // 使用时，请对所有CGraph接口的返回值做判定
+        return;    // 对以上所有CGraph接口的返回值做判定
     }
 
     /* 执行流图框架 */
@@ -135,6 +133,7 @@ int main() {
 * [纯序员给你介绍图化框架的简单实现——距离计算](http://www.chunel.cn/archives/cgraph-distance-introduce)
   <br><br>
 * [CGraph 主打歌——《听码农的话》](http://www.chunel.cn/archives/listen-to-coder)
+* [聊聊我写CGraph的这一年](http://www.chunel.cn/archives/cgraph-anniversary-introduce)
 
 ## 五. 关联项目
 
