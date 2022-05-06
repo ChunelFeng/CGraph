@@ -12,25 +12,21 @@ cmake_minimum_required(VERSION 3.5.0)
 
 project(CGraph VERSION 2.0.1)
 
+# cpp17 is recommended for CGraph, we also provide cpp14 version is you needed
 set(CMAKE_CXX_STANDARD 17)
+
+# add CGraph environment info
+include(cmake/CGraph_env_include.cmake)
+
+file(GLOB_RECURSE CGRAPH_SRC_LIST "./src/*.cpp")
 
 # 如果开启此宏定义，则CGraph执行过程中，不会在控制台打印任何信息
 # add_definitions(-D_CGRAPH_SILENCE_)
 
-IF(APPLE)
-    # 非mac平台，暂时不支持自动生成session信息
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64 -finline-functions -Wno-deprecated-declarations")
-    add_definitions(-D_GENERATE_SESSION_)
-    add_definitions(-D_ENABLE_LIKELY_)
-ELSEIF(UNIX)
-    # linux平台加入多线程内容
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -pthread -Wno-format-overflow")
-    add_definitions(-D_ENABLE_LIKELY_)
-ENDIF()
+# 编译libCGraph动态库
+# add_library(CGraph SHARED ${CGRAPH_SRC_LIST})
 
-file(GLOB_RECURSE SRC_LIST "./src/*.cpp")
-
-set(TUTORIAL_LIST
+set(CGRAPH_TUTORIAL_LIST
         T00-HelloCGraph
         T01-Simple
         T02-Cluster
@@ -52,9 +48,6 @@ set(TUTORIAL_LIST
         TU04-Timer
         TU05-Distance)
 
-# 编译libCGraph动态库
-# add_library(CGraph SHARED ${SRC_LIST})
-
-foreach(tut ${TUTORIAL_LIST})
-    add_executable(${tut} tutorial/${tut}.cpp ${SRC_LIST})
+foreach(tut ${CGRAPH_TUTORIAL_LIST})
+    add_executable(${tut} tutorial/${tut}.cpp ${CGRAPH_SRC_LIST})
 endforeach()
