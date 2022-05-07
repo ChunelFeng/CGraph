@@ -52,6 +52,12 @@
   $ docker run -it --name CGraphEnv chunelfeng/cenv     # 开启docker容器，并进入
   ```
 
+* 提供online版本的编译调试环境，点击进入页面：[CGraph env online](https://gitpod.io/#/github.com/ChunelFeng/CGraph)，输入以下指令，即可编译通过，并查看执行结果
+  ```shell
+  $ ./CGraph_build.sh          # 编译CGraph工程，生成的内容在同级/build/文件夹中
+  $ ./build/T00-HelloCGraph    # 运行第一个实例程序，并且在终端输出 Hello, CGraph.
+  ```
+
 ## 三. 使用Demo
 
 #### MyNode1.h
@@ -152,6 +158,7 @@ int main() {
 
 [2022.05.01 - v2.0.1 - Chunel]
 * 优化`pipeline`注册机制，支持init方法自定义顺序执行
+* 提供一键编译脚本
 
 > 更多版本变更信息，请参考 [ChangeLog.md](https://github.com/ChunelFeng/CGraph/blob/main/ChangeLog.md) 文件
 
