@@ -16,7 +16,7 @@ project(CGraph VERSION 2.0.1)
 set(CMAKE_CXX_STANDARD 17)
 
 # add CGraph environment info
-include(cmake/CGraph_env_include.cmake)
+include(cmake/CGraph-env-include.cmake)
 
 file(GLOB_RECURSE CGRAPH_SRC_LIST "./src/*.cpp")
 
