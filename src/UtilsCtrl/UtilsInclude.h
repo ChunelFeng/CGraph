@@ -17,5 +17,6 @@
 #include "Trie/UTrie.h"
 #include "Timer/UTimer.h"
 #include "Distance/UDistanceInclude.h"
+#include "Random/URandom.h"
 
 #endif //CGRAPH_UTILSINCLUDE_H
