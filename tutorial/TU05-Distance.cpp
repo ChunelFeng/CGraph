@@ -19,15 +19,14 @@ void tutorial_distance() {
      */
     using DistSrcType = float;    // 向量值类型
     using DistResType = float;    // 计算结果类型
-    const int dim = 4;
+    const int dim = 16;
 
     std::vector<DistSrcType> vec1;
     std::vector<DistSrcType> vec2;
-    for (int i = 0; i < dim; i++) {
-        // 生成两个向量信息
-        vec1.push_back((DistSrcType)i);
-        vec2.push_back((DistSrcType)(i * i));
-    }
+
+    // 随机生成两个 DistSrcType 类型，dim 维度，且值在[0.0~1.0]的向量
+    URandom<DistSrcType>::generate(vec1, dim, 0.0, 1.0);
+    URandom<DistSrcType>::generate(vec2, dim, 0.0, 1.0);
 
     DistResType result = 0.0;
     // 计算欧氏距离
@@ -48,6 +47,7 @@ void tutorial_distance() {
     myDist.calculate(vec2, vec1, result);
     std::cout << "MyDistance distance vec2 -> vec1 result is : " << result << std::endl;
 }
+
 
 int main() {
     tutorial_distance();
