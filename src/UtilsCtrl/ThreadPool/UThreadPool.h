@@ -115,11 +115,14 @@ public:
         std::packaged_task<resultType()> task(func);
         std::future<resultType> result(task.get_future());
 
-        /**
-         * 将任务分配到对应的线程上去执行
-         * 如果传入的是CGRAPH_DEFAULT_TASK_STRATEGY，则均分任务
-         */
-        dispatchTask(std::move(task), index);
+        CIndex realIndex = dispatch(index);
+        if (realIndex >= 0 && realIndex < config_.default_thread_size_) {
+            // 如果返回的结果，在主线程数量之间，则放到主线程的queue中执行
+            primary_threads_[realIndex]->work_stealing_queue_.push(std::move(task));
+        } else {
+            // 返回其他结果，放到pool的queue中执行
+            task_queue_.push(std::move(task));
+        }
         return result;
     }
 
@@ -207,34 +210,30 @@ public:
 
 protected:
     /**
-     * 将任务分配到对应的线程中执行
-     * @param task
-     * @param index
+     * 根据传入的策略信息，确定最终执行方式
+     * @param origIndex
+     * @return
      */
-    CVoid dispatchTask(UTaskWrapper&& task, CIndex index) {
-        if (likely(CGRAPH_DEFAULT_TASK_STRATEGY == index)) {
-            /** 默认调度策略信息 */
-            if (!config_.fair_lock_enable_
-                && cur_index_ >= 0
-                && cur_index_ < config_.default_thread_size_) {
-                /** 部分任务直接放到线程的队列中执行 */
-                primary_threads_[cur_index_]->work_stealing_queue_.push(std::move(task));
-            } else {
-                /** 部分数据被分流到线程池（总体）的任务队列中 */
-                task_queue_.push(std::move(task));
-            }
+    virtual CIndex dispatch(CIndex origIndex) {
+        if (unlikely(config_.fair_lock_enable_)) {
+            return CGRAPH_DEFAULT_TASK_STRATEGY;    // 如果开启fair lock，则全部写入 pool的queue中，依次执行
+        }
 
-            cur_index_++;
+        CIndex realIndex = 0;
+        if (CGRAPH_DEFAULT_TASK_STRATEGY == origIndex) {
+            /**
+             * 如果是默认策略信息，在[0, default_thread_size_) 之间的，通过 thread 中queue来调度
+             * 在[default_thread_size_, max_thread_size_) 之间的，通过 pool 中的queue来调度
+             */
+            realIndex = cur_index_++;
             if (cur_index_ >= config_.max_thread_size_ || cur_index_ < 0) {
                 cur_index_ = 0;
             }
-        } else if (index >= 0 && index < config_.default_thread_size_ && !config_.fair_lock_enable_) {
-            /** 如果指定的是主线程，则直接放到主线程执行 */
-            primary_threads_[index]->work_stealing_queue_.push(std::move(task));
         } else {
-            /** 如果是其他情况，则放到通用线程中等待执行 */
-            task_queue_.push(std::move(task));
+            realIndex = origIndex;    // 交到上游去判断，走哪个线程
         }
+
+        return realIndex;
     }
 
     /**
