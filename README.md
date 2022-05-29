@@ -147,10 +147,6 @@ int main() {
 
 ------------
 #### 附录-1. 版本信息
-[2022.04.03 - v1.8.6 - Chunel]
-* 提供`DistanceCalculator`算子，用于实现任意数据类型、任意距离类型的计算
-* 更新`tutorial`内容
-
 [2022.04.05 - v2.0.0 - Chunel]
 * 提供`Domain`(领域)功能，提供`Ann`领域抽象模型，开始支持个别专业方向
 * 提供hold执行机制，支持根据运行时条件，判断是否需要重新执行当前内容，直到满足条件为止
@@ -159,6 +155,10 @@ int main() {
 [2022.05.01 - v2.0.1 - Chunel]
 * 优化`pipeline`注册机制，支持init方法自定义顺序执行
 * 提供一键编译脚本
+
+[2022.05.29 - v2.1.0 - Chunel]
+* 提供element参数写入方法
+* 更新`tutorial`内容
 
 > 更多版本变更信息，请参考 [ChangeLog.md](https://github.com/ChunelFeng/CGraph/blob/main/ChangeLog.md) 文件
 

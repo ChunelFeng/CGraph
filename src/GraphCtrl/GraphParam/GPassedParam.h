@@ -9,6 +9,8 @@
 #ifndef CGRAPH_GPASSEDPARAM_H
 #define CGRAPH_GPASSEDPARAM_H
 
+#include <unordered_map>
+
 #include "GParamObject.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -30,9 +32,13 @@ public:
  */
 using GAspectParam = GPassedParam;
 using GDaemonParam = GPassedParam;
+using GElementParam = GPassedParam;
 using GPassedParamPtr = GPassedParam *;
-using GAspectParamPtr = GPassedParam *;
-using GDaemonParamPtr = GPassedParam *;
+using GAspectParamPtr = GAspectParam *;
+using GDaemonParamPtr = GDaemonParam *;
+using GElementParamPtr = GElementParam *;
+
+using GElementParamKV = std::unordered_map<std::string, GElementParamPtr>;
 
 CGRAPH_NAMESPACE_END
 

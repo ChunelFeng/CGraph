@@ -10,7 +10,7 @@ message("* * * * * * * * * * * * * * * * * * * * * * * * * * * * *")
 
 cmake_minimum_required(VERSION 3.5.0)
 
-project(CGraph VERSION 2.0.1)
+project(CGraph VERSION 2.1.0)
 
 # cpp17 is recommended for CGraph, we also provide cpp14 version is you needed
 set(CMAKE_CXX_STANDARD 17)
@@ -42,6 +42,7 @@ set(CGRAPH_TUTORIAL_LIST
         T12-Function
         T13-Daemon
         T14-Hold
+        T15-ElementParam
         TU01-ThreadPool
         TU02-Lru
         TU03-Trie

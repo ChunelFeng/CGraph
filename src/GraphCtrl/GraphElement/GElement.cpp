@@ -27,6 +27,9 @@ GElement::GElement() {
 
 GElement::~GElement() {
     CGRAPH_DELETE_PTR(aspect_manager_)
+    for (auto& param : local_params_) {
+        CGRAPH_DELETE_PTR(param.second)   // 依次删除本地的参数信息
+    }
 }
 
 

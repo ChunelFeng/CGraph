@@ -67,6 +67,17 @@ public:
     GElement* addGAspect(TParam* param = nullptr);
 
     /**
+     * 添加当前element内部参数
+     * @tparam T
+     * @param key
+     * @param param
+     * @return
+     */
+    template<typename T,
+            std::enable_if_t<std::is_base_of<GElementParam, T>::value, int> = 0>
+    GElement* addEParam(const std::string& key, T* param);
+
+    /**
      * 添加依赖节点信息
      * @param elements
      * @return
@@ -172,6 +183,16 @@ protected:
                                    UThreadPoolPtr threadPool);
 
     /**
+     * 获取当前element内部参数
+     * @tparam T
+     * @param key
+     * @return
+     */
+    template<typename T,
+            std::enable_if_t<std::is_base_of<GElementParam, T>::value, int> = 0>
+    T* getEParam(const std::string& key);
+
+    /**
      * 设置level信息，用于控制init和destroy方法的执行顺序
      * level值越低，函数越先执行
      * @param level
@@ -202,6 +223,7 @@ protected:
     GParamManagerPtr param_manager_ { nullptr };     // 整体流程的参数管理类，所有pipeline中的所有节点共享
     GAspectManagerPtr aspect_manager_ { nullptr };   // 整体流程的切面管理类
     UThreadPoolPtr thread_pool_ { nullptr };         // 用于执行的线程池信息
+    GElementParamKV local_params_;                   // 用于记录当前element的内部参数
 
     friend class GNode;
     friend class GCluster;

@@ -12,7 +12,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 template<typename T,
-        std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
+        std::enable_if_t<std::is_base_of<GParam, T>::value, int> >
 CStatus GElement::createGParam(const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(this->param_manager_)
@@ -23,7 +23,7 @@ CStatus GElement::createGParam(const std::string& key) {
 
 
 template<typename T,
-        std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
+        std::enable_if_t<std::is_base_of<GParam, T>::value, int> >
 T* GElement::getGParam(const std::string& key) {
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(this->param_manager_)
 
@@ -34,7 +34,7 @@ T* GElement::getGParam(const std::string& key) {
 
 template<typename TAspect, typename TParam,
         std::enable_if_t<std::is_base_of<GAspect, TAspect>::value, int>,
-        std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int>>
+        std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int> >
 GElementPtr GElement::addGAspect(TParam* param) {
     if (!aspect_manager_) {
         /** 采用懒加载的方式执行，这里不会有并发问题，故不需要采用单例模式了 */
@@ -47,6 +47,31 @@ GElementPtr GElement::addGAspect(TParam* param) {
         ->setPipelineParamManager(this->param_manager_);
     aspect_manager_->add(aspect);
     return this;
+}
+
+
+template<typename T,
+        std::enable_if_t<std::is_base_of<GElementParam, T>::value, int> >
+GElementPtr GElement::addEParam(const std::string& key, T* param) {
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param)
+    if (local_params_.end() != local_params_.find(key)) {
+        // 如果重复同名key信息，则删除原先的内容
+        CGRAPH_DELETE_PTR(local_params_[key]);
+    }
+    T* cur = CGRAPH_SAFE_MALLOC_COBJECT(T);
+    cur->clone(param);
+
+    local_params_[key] = cur;    // 写入其中
+    return this;
+}
+
+
+template<typename T,
+        std::enable_if_t<std::is_base_of<GElementParam, T>::value, int> >
+T* GElement::getEParam(const std::string& key) {
+    auto iter = local_params_.find(key);
+    return dynamic_cast<T *>((iter != local_params_.end()) ? iter->second : nullptr);
 }
 
 CGRAPH_NAMESPACE_END

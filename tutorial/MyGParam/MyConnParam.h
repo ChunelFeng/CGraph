@@ -11,6 +11,8 @@
 
 #include "../../src/CGraph.h"
 
+const static char* CONN_PARAM_KEY = "conn";
+
 struct MyConnParam : public CGraph::GPassedParam {
     /**
      * 必须实现 clone 函数
