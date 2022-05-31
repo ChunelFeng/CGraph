@@ -19,6 +19,10 @@ CGRAPH_NAMESPACE_BEGIN
 #define CGRAPH_GET_GPARAM(Type, key)                  \
     this->getGParam<Type>(key);                       \
 
+/** 获取element内部参数信息 */
+#define CGRAPH_GET_EPARAM(Type, key)                  \
+    this->getEParam<Type>(key);                       \
+
 /** 上参数写锁 */
 #define CGRAPH_PARAM_WRITE_CODE_BLOCK(param)                                    \
     CGraph::CGRAPH_WRITE_LOCK __paramWLock__((param)->_param_shared_lock_);     \

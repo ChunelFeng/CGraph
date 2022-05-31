@@ -18,6 +18,10 @@ void tutorial_element_param() {
     GElementPtr a, v1, v2 = nullptr;
 
     pipeline->registerGElement<MyNode1>(&a, {}, "node-1");
+    /**
+     * 注册同样类型（MyEParamNode）的节点，但在下方传入不同类型的参数（EParam）
+     * 从而执行不同的结果
+     */
     pipeline->registerGElement<MyEParamNode>(&v1, {a}, "version-1");
     pipeline->registerGElement<MyEParamNode>(&v2, {v1}, "version-2");
 
