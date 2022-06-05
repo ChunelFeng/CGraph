@@ -140,6 +140,8 @@ int main() {
   <br><br>
 * [CGraph 主打歌——《听码农的话》](http://www.chunel.cn/archives/listen-to-coder)
 * [聊聊我写CGraph的这一年](http://www.chunel.cn/archives/cgraph-anniversary-introduce)
+  <br><br>
+* [【B站视频】CGraph 快速引入的方法介绍](https://www.bilibili.com/video/BV1gY4y1x7JT?spm_id_from=333.337)
 
 ## 五. 关联项目
 
