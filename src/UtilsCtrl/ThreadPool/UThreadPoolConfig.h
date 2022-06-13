@@ -32,15 +32,7 @@ struct UThreadPoolConfig : public UThreadObject {
     bool batch_task_enable_ = CGRAPH_BATCH_TASK_ENABLE;
     bool fair_lock_enable_ = CGRAPH_FAIR_LOCK_ENABLE;
 
-
-    /**
-     * 设置默认信息
-     */
-    CVoid reset() {
-        (*this) = UThreadPoolConfig();
-    }
-
-
+protected:
     /**
      * 计算可盗取的范围，盗取范围不能超过默认线程数-1
      * @return
@@ -60,6 +52,9 @@ struct UThreadPoolConfig : public UThreadObject {
         bool ratio = (this->batch_task_enable_) && (!this->fair_lock_enable_);
         return ratio;
     }
+
+    friend class UThreadPrimary;
+    friend class UThreadSecondary;
 };
 
 using UThreadPoolConfigPtr = UThreadPoolConfig *;
