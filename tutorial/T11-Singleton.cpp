@@ -11,6 +11,8 @@
 
 using namespace CGraph;
 
+#if _LIBCPP_STD_VER >= 17
+
 void tutorial_singleton() {
     GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b, c, d, e = nullptr;
@@ -32,3 +34,12 @@ int main() {
     tutorial_singleton();
     return 0;
 }
+
+#else
+
+int main() {
+    CGRAPH_ECHO("[warning] tutorial_singleton only support C++17 or upper version.");
+    return 0;
+}
+
+#endif

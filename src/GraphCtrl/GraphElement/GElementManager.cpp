@@ -125,7 +125,7 @@ CStatus GElementManager::analyse() {
                     /**
                      * 判断element是否需要被加入
                      * 1，该元素是可以执行的
-                     * 2，改元素本次循环是第一次被遍历
+                     * 2，该元素本次循环是第一次被遍历
                      */
                     if (cur->isRunnable() && duplications.end() == duplications.find(cur)) {
                         GCluster curCluster;

@@ -10,13 +10,23 @@
 #define CGRAPH_UTHREADPOOLDEFINE_H
 
 #include <thread>
+    #if _LIBCPP_STD_VER >= 17
 #include <shared_mutex>
+    #else
+# include <mutex>
+    #endif
 #include <memory>
 
 CGRAPH_NAMESPACE_BEGIN
 
+    #if _LIBCPP_STD_VER >= 17
 using CGRAPH_READ_LOCK = std::shared_lock<std::shared_mutex>;
 using CGRAPH_WRITE_LOCK = std::unique_lock<std::shared_mutex>;
+    #else
+using CGRAPH_READ_LOCK = std::unique_lock<std::mutex>;    // C++14不支持读写锁，使用mutex替代
+using CGRAPH_WRITE_LOCK = std::unique_lock<std::mutex>;
+    #endif
+
 using CGRAPH_LOCK_GUARD = std::lock_guard<std::mutex>;
 using CGRAPH_UNIQUE_LOCK = std::unique_lock<std::mutex>;
 

@@ -98,7 +98,7 @@ void tutorial_threadpool_3(UThreadPoolPtr tp) {
     const int size = 100;
     CGRAPH_ECHO("thread pool task submit version : ");
     for (int i = 0; i < size; i++) {
-        tp->submit([i] { std::cout << i << " "; });    // 可以看到，submit版本是有序执行的。如果需要想要无需执行，可以通过创建taskGroup的方式进行，或者使用commit方法
+        tp->submit([i] { std::cout << i << " "; });    // 可以看到，submit版本是有序执行的。如果需要想要无序执行，可以通过创建taskGroup的方式进行，或者使用commit方法
     }
     CGRAPH_SLEEP_SECOND(1)    // 等待上面函数执行完毕，以便于观察结果。无实际意义
     std::cout << "\r\n";

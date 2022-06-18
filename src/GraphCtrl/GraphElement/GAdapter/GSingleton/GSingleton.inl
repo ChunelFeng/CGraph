@@ -8,6 +8,8 @@
 
 #include "GSingleton.h"
 
+#if _LIBCPP_STD_VER >= 17
+
 CGRAPH_NAMESPACE_BEGIN
 
 template <typename T>
@@ -98,3 +100,5 @@ CStatus GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElement
 }
 
 CGRAPH_NAMESPACE_END
+
+#endif  //_LIBCPP_STD_VER >= 17

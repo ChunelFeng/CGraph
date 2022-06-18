@@ -12,7 +12,7 @@ cmake_minimum_required(VERSION 3.5.0)
 
 project(CGraph VERSION 2.1.0)
 
-# cpp17 is recommended for CGraph, we also provide cpp14 version is you needed
+# CGraph推荐使用C++17或以上版本。支持无缝切换C++14版本，仅有个别功能功能的弱化和剪裁。暂不支持C++11或以下版本
 set(CMAKE_CXX_STANDARD 17)
 
 # add CGraph environment info
@@ -38,7 +38,7 @@ set(CGRAPH_TUTORIAL_LIST
         T08-Template
         T09-Aspect
         T10-AspectParam
-        T11-Singleton
+        T11-Singleton    # T11-Singleton only support for C++17 or upper version
         T12-Function
         T13-Daemon
         T14-Hold

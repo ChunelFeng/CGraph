@@ -9,8 +9,8 @@
   CGraph 说明文档
 </h1>
 
->CGraph is a cross-platform `DAG`(Directed Acyclic Graph) framework based on C++17 without any 3rd-party.</br></br>
->You, with it, can build your own operators simply, and then describe any running schedules as you need, such as dependence, parallelling, aggregation and so on. Some useful tools and plugins are also provided to improve your project.</br></br>
+>CGraph is a cross-platform `DAG`(Directed Acyclic Graph) framework based on pure C++ without any 3rd-party.</br></br>
+>You, with it, can build your own operators simply, and describe any running schedules as you need, such as dependence, parallelling, aggregation and so on. Some useful tools and plugins are also provided to improve your project.</br></br>
 >Tutorials and contact information are shown as follows. Please get in touch with us for free if you need more about this repository.
 
 ## 一. 简介
@@ -28,7 +28,9 @@
 
 
 ## 二. 编译说明
-* 本工程支持MacOS、Linux和Windows系统，无任何第三方依赖。使用`CLion`作为IDE的开发者，打开`CMakeLists.txt`文件作为工程，即可编译通过
+* 本工程支持MacOS、Linux和Windows系统，无任何第三方依赖。推荐使用C++17（默认）或以上版本，向下兼容C++14版本，不支持C++11或以下版本
+
+* 使用`CLion`作为IDE的开发者，打开`CMakeLists.txt`文件作为工程，即可编译通过
 
 * Linux环境开发者，在命令行模式下，输入以下指令，即可编译通过
   ```shell
@@ -160,6 +162,7 @@ int main() {
 
 [2022.05.29 - v2.1.0 - Chunel]
 * 提供element参数写入方法
+* 提供针对C++14版本的支持，个别功能有裁剪
 * 更新`tutorial`内容
 
 > 更多版本变更信息，请参考 [ChangeLog.md](https://github.com/ChunelFeng/CGraph/blob/main/ChangeLog.md) 文件

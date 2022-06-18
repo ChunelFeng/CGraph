@@ -10,7 +10,12 @@
 #define CGRAPH_GPARAM_H
 
 #include <string>
+
+    #if _LIBCPP_STD_VER >= 17
 #include <shared_mutex>
+    #else
+#include <mutex>
+    #endif
 
 #include "GParamObject.h"
 #include "../../UtilsCtrl/UtilsInclude.h"
@@ -19,7 +24,11 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GParam : public GParamObject {
 public:
+#if _LIBCPP_STD_VER >= 17
     std::shared_mutex _param_shared_lock_;    // 用于参数互斥的锁信息
+#else
+    std::mutex _param_shared_lock_;
+#endif
 
     /**
      * 保存参数信息

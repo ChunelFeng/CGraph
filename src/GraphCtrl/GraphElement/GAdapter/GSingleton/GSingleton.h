@@ -3,13 +3,15 @@
 @Contact: chunel@foxmail.com
 @File: GSingleton.h
 @Time: 2021/10/30 10:24 下午
-@Desc: 
+@Desc: 本功能，仅在C++17或以上版本生效
 ***************************/
 
 #ifndef CGRAPH_GSINGLETON_H
 #define CGRAPH_GSINGLETON_H
 
 #include "../GAdapter.h"
+
+#if _LIBCPP_STD_VER >= 17
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -52,3 +54,6 @@ CGRAPH_NAMESPACE_END
 #include "GSingleton.inl"
 
 #endif //CGRAPH_GSINGLETON_H
+
+#endif // _LIBCPP_STD_VER >= 17
+
