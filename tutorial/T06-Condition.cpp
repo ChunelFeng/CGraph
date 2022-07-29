@@ -32,10 +32,6 @@ void tutorial_condition() {
         pipeline->createGNode<MyNode1>(GNodeInfo("paramConditionNodeD2", 1))
     });
 
-    if (nullptr == b_condition || nullptr == d_condition) {
-        return;
-    }
-
     status += pipeline->registerGElement<MyWriteParamNode>(&a, {}, "writeNodeA", 1);
     status += pipeline->registerGElement<MyCondition>(&b_condition, {a}, "conditionB", 1);
     status += pipeline->registerGElement<MyReadParamNode>(&c, {b_condition}, "readNodeC", 1);

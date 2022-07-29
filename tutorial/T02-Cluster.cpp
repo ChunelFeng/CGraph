@@ -22,10 +22,6 @@ void tutorial_cluster () {
          pipeline->createGNode<MyNode2>(GNodeInfo("nodeB3", 1))
     });    // 创建cluster信息，包含了三个node信息
 
-    if (nullptr == b_cluster) {
-        return;
-    }
-
     /* 正式使用时，请对所有返回值进行判定 */
     status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA", 1);    // 将名为nodeA的node信息，注册入pipeline中
     status += pipeline->registerGElement<GCluster>(&b_cluster, {a}, "clusterB", 2);    // 将名为clusterB，依赖a执行且自循环2次的cluster信息，注册入pipeline中
@@ -35,6 +31,7 @@ void tutorial_cluster () {
         return;
     }
 
+    /* process函数，相当于 init(),run()*n,destroy()函数，同时调用 */
     status = pipeline->process();
     CGRAPH_ECHO("pipeline process status is : [%d]", status.getCode());
 

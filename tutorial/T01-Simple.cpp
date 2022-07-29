@@ -15,13 +15,7 @@ void tutorial_simple() {
     /* 创建图对应的pipeline */
     GPipelinePtr pipeline = GPipelineFactory::create();
 
-    /**
-     * 本例中为了简化流程，做此写法。实际使用中，建议每个变量定义一行，例：
-     * GElementPtr a = nullptr;
-     * GElementPtr b = nullptr;
-     * GElementPtr c = nullptr;
-     * GElementPtr d = nullptr;
-     */
+    /* 定义GElementPtr类型的变量 */
     GElementPtr a, b, c, d = nullptr;
 
     /**
