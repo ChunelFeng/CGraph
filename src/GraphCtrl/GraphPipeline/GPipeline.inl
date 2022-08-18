@@ -29,7 +29,7 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
          */
         if ((*elementRef) != nullptr
             && (*elementRef)->param_manager_ != nullptr) {
-            return CStatus("group register duplicate");
+            CGRAPH_RETURN_ERROR_STATUS("group register duplicate")
         }
     } else if constexpr (std::is_base_of<GNode, T>::value || std::is_base_of<GAdapter, T>::value) {
         /**
@@ -40,9 +40,7 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
     }
 
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
-    status = (*elementRef)->setElementInfo(dependElements, name, loop, level,
-                                           this->param_manager_,
-                                           this->thread_pool_);
+    status = (*elementRef)->setElementInfo(dependElements, name, loop, level, this->param_manager_);
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status = element_manager_->add(dynamic_cast<GElementPtr>(*elementRef));
@@ -57,11 +55,7 @@ template<typename T, CLevel level,
 GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_FUNCTION_BEGIN
     GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T)
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(node)
-
-    status = node->setElementInfo(info.dependence_, info.name_, info.loop_, level,
-                                  this->param_manager_,
-                                  this->thread_pool_);
+    status = node->setElementInfo(info.dependence_, info.name_, info.loop_, level, this->param_manager_);
     if (!status.isOK()) {
         CGRAPH_DELETE_PTR(node);
         return nullptr;
@@ -79,7 +73,6 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
                                   const std::string &name,
                                   CSize loop) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(this->thread_pool_)    // 所有的pipeline必须有线程池
 
     // 如果不是所有的都非空，则创建失败
     if (std::any_of(elements.begin(), elements.end(),
@@ -93,14 +86,12 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
     }
 
     GGroupPtr group = CGRAPH_SAFE_MALLOC_COBJECT(T)
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(group)
     for (GElementPtr element : elements) {
         group->addElement(element);
     }
 
     status = group->setElementInfo(dependElements, name, loop, level,
-                                   nullptr,
-                                   this->thread_pool_);    // 注册group信息的时候，不能注册paramManager信息
+                                   nullptr);    // 注册group信息的时候，不能注册paramManager信息
     if (unlikely(!status.isOK())) {
         CGRAPH_DELETE_PTR(group)
         return nullptr;

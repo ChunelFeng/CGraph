@@ -22,6 +22,10 @@ public:
 
     CStatus run () override {
         auto myParam = CGRAPH_GET_GPARAM(MyParam, "param2")
+        if (nullptr == myParam) {
+            return CStatus("get param2 failed");
+        }
+
         int cnt = 0;
         {
             CGRAPH_PARAM_WRITE_CODE_BLOCK(myParam)

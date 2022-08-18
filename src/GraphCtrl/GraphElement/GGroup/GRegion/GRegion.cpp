@@ -53,24 +53,7 @@ CStatus GRegion::run() {
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
     CGRAPH_ASSERT_NOT_NULL(manager_)
 
-    CSize runNodeSize = 0;
-    std::vector<std::future<CStatus> > futures;
-
-    for (GClusterArrRef clusterArr : manager_->para_cluster_arrs_) {
-        futures.clear();
-
-        for (GClusterRef cluster : clusterArr) {
-            futures.emplace_back(thread_pool_->commit(std::bind(&GCluster::process, std::ref(cluster), false)));
-            runNodeSize += cluster.getElementNum();
-        }
-
-        for (auto& fut : futures) {
-            status = fut.get();
-            CGRAPH_FUNCTION_CHECK_STATUS
-        }
-    }
-
-    status = manager_->afterRunCheck(runNodeSize);
+    status = manager_->run();
     CGRAPH_FUNCTION_END
 }
 

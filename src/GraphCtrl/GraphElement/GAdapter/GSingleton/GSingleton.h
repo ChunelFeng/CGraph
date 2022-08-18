@@ -29,15 +29,13 @@ protected:
      * @param loop
      * @param level
      * @param paramManager
-     * @param threadPool
      * @return
      */
     CStatus setElementInfo(const std::set<GElementPtr> &dependElements,
                            const std::string &name,
                            CSize loop,
                            CLevel level,
-                           GParamManagerPtr paramManager,
-                           UThreadPoolPtr threadPool) override;
+                           GParamManagerPtr paramManager) override;
 
 private:
     static USingleton<T, USingletonType::HUNGRY> s_singleton_;     // 单例自身

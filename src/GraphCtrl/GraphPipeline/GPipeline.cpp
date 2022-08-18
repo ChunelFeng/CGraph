@@ -38,10 +38,9 @@ CStatus GPipeline::init() {
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
     CGRAPH_ASSERT_NOT_NULL(daemon_manager_)
 
-    status = element_manager_->init();
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    status = daemon_manager_->init();    // daemon的初始化，需要晚于所有element的初始化
+    status += param_manager_->init();
+    status += element_manager_->init();
+    status += daemon_manager_->init();    // daemon的初始化，需要晚于所有element的初始化
     CGRAPH_FUNCTION_CHECK_STATUS
 
     is_init_ = true;
@@ -53,47 +52,13 @@ CStatus GPipeline::run() {
     CGRAPH_FUNCTION_BEGIN
 
     CGRAPH_ASSERT_INIT(true)
-    CGRAPH_ASSERT_NOT_NULL(thread_pool_)
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
 
-    CSize runElementSize = 0;    // 用于记录执行的element的总数，用于后期校验
-    std::vector<CMSec> curClusterTtl;    // 用于记录分解后，每个cluster包含的element的个数，用于验证执行的超时情况。
-    std::vector<std::future<CStatus> > futures;
-
-    for (GClusterArrRef clusterArr : element_manager_->para_cluster_arrs_) {
-        futures.clear();
-        curClusterTtl.clear();
-
-        /** 将分解后的pipeline信息，以cluster为维度，放入线程池依次执行 */
-        for (GClusterRef cluster : clusterArr) {
-            futures.emplace_back(thread_pool_->commit(std::bind(&GCluster::process, std::ref(cluster), false)));
-            runElementSize += cluster.getElementNum();
-            curClusterTtl.emplace_back(cluster.getElementNum() * element_run_ttl_);
-        }
-
-        int index = 0;
-        for (auto& fut : futures) {
-            // 不设定最大运行周期的情况（默认情况）
-            if (likely(CGRAPH_DEFAULT_ELEMENT_RUN_TTL == element_run_ttl_)) {
-                status += fut.get();
-            } else {
-                // 如果设定超时时间，则以超时时间为准
-                const auto& futStatus = fut.wait_for(std::chrono::milliseconds(curClusterTtl[index]));
-                switch (futStatus) {
-                    case std::future_status::ready: status += fut.get(); break;
-                    case std::future_status::timeout: status += CStatus("thread status timeout"); break;
-                    case std::future_status::deferred: status += CStatus("thread status deferred"); break;
-                    default: status += CStatus("thread status unknown");
-                }
-            }
-            index++;
-            CGRAPH_FUNCTION_CHECK_STATUS
-        }
-    }
+    status = element_manager_->run();
+    CGRAPH_FUNCTION_CHECK_STATUS
 
     param_manager_->reset();
-    status = element_manager_->afterRunCheck(runElementSize);
     CGRAPH_FUNCTION_END
 }
 
@@ -101,13 +66,13 @@ CStatus GPipeline::run() {
 CStatus GPipeline::destroy() {
     CGRAPH_FUNCTION_BEGIN
 
-    status = daemon_manager_->destroy();
-    CGRAPH_FUNCTION_CHECK_STATUS
+    CGRAPH_ASSERT_NOT_NULL(element_manager_)
+    CGRAPH_ASSERT_NOT_NULL(param_manager_)
+    CGRAPH_ASSERT_NOT_NULL(daemon_manager_)
 
-    status = element_manager_->destroy();
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    status = param_manager_->destroy();
+    status += daemon_manager_->destroy();
+    status += element_manager_->destroy();
+    status += param_manager_->destroy();
     CGRAPH_FUNCTION_END
 }
 
@@ -130,7 +95,8 @@ CStatus GPipeline::process(CSize runTimes) {
 GPipelinePtr GPipeline::setGElementRunTtl(CMSec ttl) {
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
 
-    this->element_run_ttl_ = ttl;
+    // 在element_manager中区执行信息了，所以ttl放到
+    element_manager_->element_run_ttl_ = ttl;
     return this;
 }
 

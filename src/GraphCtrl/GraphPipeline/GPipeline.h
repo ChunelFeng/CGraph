@@ -142,7 +142,6 @@ protected:
 
 private:
     CBOOL is_init_ = false;                                     // 初始化标志位
-    CMSec element_run_ttl_ = CGRAPH_DEFAULT_ELEMENT_RUN_TTL;    // 单个节点最大运行周期
     GElementManagerPtr element_manager_;                        // 节点管理类（管理所有注册过的element信息）
     GElementPtrSet element_repository_;                         // 标记创建的所有节点，最终释放使用
     GParamManagerPtr param_manager_;                            // 参数管理类

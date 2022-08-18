@@ -32,7 +32,7 @@ GNode* GNode::setType(const GNodeType& type) {
 
 
 CSize GNode::getThreadId() {
-    const CSize& tid = (CSize) std::hash<std::thread::id>{}(std::this_thread::get_id());
+    const CSize& tid = (CSize)std::hash<std::thread::id>{}(std::this_thread::get_id());
     return tid;
 }
 

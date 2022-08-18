@@ -42,7 +42,7 @@ template <typename T>
 CStatus GSingleton<T>::run() {
     CGRAPH_FUNCTION_BEGIN
 
-    auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
+    auto element = dynamic_cast<T *>(s_singleton_.get());
     status = element->run();
     CGRAPH_FUNCTION_END
 }
@@ -70,12 +70,10 @@ CStatus GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElement
                                       const std::string &name,
                                       CSize loop,
                                       CLevel level,
-                                      GParamManagerPtr paramManager,
-                                      UThreadPoolPtr threadPool) {
+                                      GParamManagerPtr paramManager) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
     CGRAPH_ASSERT_NOT_NULL(paramManager)
-    CGRAPH_ASSERT_NOT_NULL(threadPool)
 
     // 这里，内部和外部均需要设定name信息
     this->setName(name)->setLoop(loop)->setLevel(level);
@@ -94,7 +92,6 @@ CStatus GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElement
      * 依赖关系也注册在adapter上
      */
     element->param_manager_ = paramManager;
-    element->thread_pool_ = threadPool;
     element->name_ = name;
     CGRAPH_FUNCTION_END
 }

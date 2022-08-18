@@ -21,7 +21,8 @@ const std::string& GElement::getSession() const {
 
 
 GElement::GElement() {
-    this->session_ = CGRAPH_GENERATE_SESSION
+    this->session_ = CGRAPH_GENERATE_SESSION;
+    this->thread_pool_ = UThreadPoolSingleton::get();
 }
 
 
@@ -117,15 +118,12 @@ CStatus GElement::setElementInfo(const GElementPtrSet& dependElements,
                                  const std::string& name,
                                  CSize loop,
                                  CLevel level,
-                                 GParamManagerPtr paramManager,
-                                 UThreadPoolPtr threadPool) {
+                                 GParamManagerPtr paramManager) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(threadPool)
     CGRAPH_ASSERT_INIT(false)
 
     this->setName(name)->setLoop(loop)->setLevel(level);
     param_manager_ = paramManager;
-    thread_pool_ = threadPool;
     status = this->addDependGElements(dependElements);
     CGRAPH_FUNCTION_END
 }

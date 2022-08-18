@@ -172,15 +172,13 @@ protected:
      * @param loop
      * @param level
      * @param paramManager
-     * @param threadPool
      * @return
      */
     virtual CStatus setElementInfo(const std::set<GElement *> &dependElements,
                                    const std::string &name,
                                    CSize loop,
                                    CLevel level,
-                                   GParamManagerPtr paramManager,
-                                   UThreadPoolPtr threadPool);
+                                   GParamManagerPtr paramManager);
 
     /**
      * 获取当前element内部参数
