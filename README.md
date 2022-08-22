@@ -23,6 +23,8 @@
 
 此外，还可以通过添加`GAspect`(切面)的方式，实现以上各种元素功能的横向扩展，或是通过引入各种`GAdapter`(适配器)对单个节点功能进行加强。
 
+进入 [B站](https://www.bilibili.com/) 搜索框中输入`CGraph`有惊喜。
+
 ![CGraph Skeleton](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Skeleton.jpg)
 <br>
 
@@ -30,7 +32,9 @@
 ## 二. 编译说明
 * 本工程支持MacOS、Linux和Windows系统，无任何第三方依赖。推荐使用C++17（默认）或以上版本，向下兼容C++14版本，不支持C++11或以下版本
 
-* 使用`CLion`作为IDE的开发者，打开`CMakeLists.txt`文件作为工程，即可编译通过
+* 使用`CLion`作为IDE的开发者，或使用`Visual Studio 17`(或以上版本)作为IDE的开发者，打开`CMakeLists.txt`文件作为工程，即可编译通过
+
+* 使用`Visual Studio 2015`作为IDE的开发者，修改`CMakeLists.txt`文件中的`set(CMAKE_CXX_STANDARD 17)`为`set(CMAKE_CXX_STANDARD 14)`，然后打开`CMakeLists.txt`文件作为工程，即可编译通过
 
 * Linux环境开发者，在命令行模式下，输入以下指令，即可编译通过
   ```shell
@@ -41,20 +45,13 @@
   $ make -j8
   ```
 
-* Windows环境中，使用`Visual Studio`作为IDE的开发者，clone本工程前请优先设置换行符类型
-  ```shell
-  $ git config --global core.autocrlf true        # 设置Windows平台支持的CRLF换行符形式
-  $ git clone https://github.com/ChunelFeng/CGraph.git
-  $ ... ...        # 接下来操作同Linux命令行环境，即可生成相应的*.sln文件
-  ```
-
 * 提供基于`Ubuntu 20.04.3`的Docker镜像。输入以下指令，即可获取并进入
   ```shell
   $ docker pull chunelfeng/cenv                         # 获取docker镜像
   $ docker run -it --name CGraphEnv chunelfeng/cenv     # 开启docker容器，并进入
   ```
 
-* 提供online版本的编译调试环境，点击进入页面：[CGraph env online](https://gitpod.io/#/github.com/ChunelFeng/CGraph)，输入以下指令，即可编译通过，并查看执行结果
+* 提供online版本的编译调试环境，点击进入页面：[CGraph env online](https://gitpod.io/#/github.com/ChunelFeng/CGraph) ，输入以下指令，即可编译通过，并查看执行结果
   ```shell
   $ ./CGraph-build.sh          # 编译CGraph工程，生成的内容在同级/build/文件夹中
   $ ./build/T00-HelloCGraph    # 运行第一个实例程序，并且在终端输出 Hello, CGraph.
