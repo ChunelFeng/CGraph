@@ -38,17 +38,21 @@ protected:
     /**
      * 设置pool的信息
      * @param poolTaskQueue
+     * @param poolLongTimeTaskQueue
      * @param config
      * @return
      */
     CStatus setThreadPoolInfo(UAtomicQueue<UTaskWrapper>* poolTaskQueue,
+                              UAtomicQueue<UTaskWrapper>* poolLongTimeTaskQueue,
                               UThreadPoolConfigPtr config) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(false)    // 初始化之前，设置参数
         CGRAPH_ASSERT_NOT_NULL(poolTaskQueue)
+        CGRAPH_ASSERT_NOT_NULL(poolLongTimeTaskQueue)
         CGRAPH_ASSERT_NOT_NULL(config)
 
         this->pool_task_queue_ = poolTaskQueue;
+        this->pool_long_time_task_queue_ = poolLongTimeTaskQueue;
         this->config_ = config;
         CGRAPH_FUNCTION_END
     }
@@ -115,7 +119,7 @@ protected:
     }
 
 private:
-    int cur_ttl_;                                                             // 当前最大生存周期
+    int cur_ttl_ = 0;                                                      // 当前最大生存周期
 
     friend class UThreadPool;
 };

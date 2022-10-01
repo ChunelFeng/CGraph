@@ -110,15 +110,21 @@ public:
     auto commit(const FunctionType& func,
                 CIndex index = CGRAPH_DEFAULT_TASK_STRATEGY)
     -> std::future<typename std::result_of<FunctionType()>::type> {
-        typedef typename std::result_of<FunctionType()>::type resultType;
+        typedef typename std::result_of<FunctionType()>::type ResultType;
 
-        std::packaged_task<resultType()> task(func);
-        std::future<resultType> result(task.get_future());
+        std::packaged_task<ResultType()> task(func);
+        std::future<ResultType> result(task.get_future());
 
         CIndex realIndex = dispatch(index);
         if (realIndex >= 0 && realIndex < config_.default_thread_size_) {
             // 如果返回的结果，在主线程数量之间，则放到主线程的queue中执行
             primary_threads_[realIndex]->work_stealing_queue_.push(std::move(task));
+        } else if (CGRAPH_LONG_TIME_TASK_STRATEGY == realIndex) {
+            /**
+             * 如果是长时间任务，则交给特定的任务队列，仅由辅助线程处理
+             * 目的是防止有很多长时间任务，将所有运行的线程均阻塞，而
+             **/
+            long_time_task_queue_.push(std::move(task));
         } else {
             // 返回其他结果，放到pool的queue中执行
             task_queue_.push(std::move(task));
@@ -188,21 +194,21 @@ public:
             CGRAPH_FUNCTION_END
         }
 
-        is_init_ = false;
         // primary 线程是普通指针，需要delete
         for (auto& pt : primary_threads_) {
-            status = pt->destroy();
-            CGRAPH_FUNCTION_CHECK_STATUS
+            status += pt->destroy();
             CGRAPH_DELETE_PTR(pt)
         }
+        CGRAPH_FUNCTION_CHECK_STATUS
         primary_threads_.clear();
 
         // secondary 线程是智能指针，不需要delete
         for (auto& st : secondary_threads_) {
-            st->destroy();
-            CGRAPH_FUNCTION_CHECK_STATUS
+            status += st->destroy();
         }
+        CGRAPH_FUNCTION_CHECK_STATUS
         secondary_threads_.clear();
+        is_init_ = false;
 
         CGRAPH_FUNCTION_END
     }
@@ -230,10 +236,10 @@ protected:
                 cur_index_ = 0;
             }
         } else {
-            realIndex = origIndex;    // 交到上游去判断，走哪个线程
+            realIndex = origIndex;
         }
 
-        return realIndex;
+        return realIndex;    // 交到上游去判断，走哪个线程
     }
 
     /**
@@ -256,10 +262,11 @@ protected:
             bool busy = std::all_of(primary_threads_.begin(), primary_threads_.end(),
                                     [](UThreadPrimaryPtr ptr) { return nullptr != ptr && ptr->is_running_; });
 
-            // 如果忙碌，则需要添加 secondary线程
-            if (busy && (secondary_threads_.size() + config_.default_thread_size_) < config_.max_thread_size_) {
+            // 如果忙碌或者有长期任务，则需要添加 secondary线程
+            if ((busy || !long_time_task_queue_.empty())
+                && (secondary_threads_.size() + config_.default_thread_size_) < config_.max_thread_size_) {
                 auto ptr = CGRAPH_MAKE_UNIQUE_COBJECT(UThreadSecondary)
-                ptr->setThreadPoolInfo(&task_queue_, &config_);
+                ptr->setThreadPoolInfo(&task_queue_, &long_time_task_queue_, &config_);
                 ptr->init();
                 secondary_threads_.emplace_back(std::move(ptr));
             }
@@ -281,6 +288,7 @@ protected:
     bool is_monitor_ { true };                                                      // 是否需要监控
     int cur_index_;                                                                 // 记录放入的线程数
     UAtomicQueue<UTaskWrapper> task_queue_;                                         // 用于存放普通任务
+    UAtomicQueue<UTaskWrapper> long_time_task_queue_;                               // 运行时间较长的任务队列，由上游标注
     std::vector<UThreadPrimaryPtr> primary_threads_;                                // 记录所有的核心线程
     std::list<std::unique_ptr<UThreadSecondary>> secondary_threads_;                // 用于记录所有的非核心线程数
     UThreadPoolConfig config_;                                                      // 线程池设置值

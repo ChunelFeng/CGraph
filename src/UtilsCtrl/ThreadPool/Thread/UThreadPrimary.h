@@ -78,7 +78,7 @@ protected:
                         [](UThreadPrimary* thd) {
                             return nullptr == thd;
                         })) {
-            return CStatus("primary thread is null");
+            CGRAPH_RETURN_ERROR_STATUS("primary thread is null")
         }
 
         if (config_->calcBatchTaskRatio()) {

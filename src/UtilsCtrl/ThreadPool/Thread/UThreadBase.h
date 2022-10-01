@@ -25,6 +25,7 @@ protected:
         is_init_ = false;
         is_running_ = false;
         pool_task_queue_ = nullptr;
+        pool_long_time_task_queue_ = nullptr;
         config_ = nullptr;
         total_task_num_ = 0;
     }
@@ -55,7 +56,12 @@ protected:
      * @return
      */
     virtual bool popPoolTask(UTaskWrapperRef task) {
-        return (pool_task_queue_ && pool_task_queue_->tryPop(task));
+        bool result = pool_task_queue_ && pool_task_queue_->tryPop(task);
+        if (!result && CGRAPH_THREAD_TYPE_SECONDARY == type_) {
+            // 如果辅助线程没有获取到的话，还需要再尝试从长时间任务队列中，获取一次。
+            result = pool_long_time_task_queue_ && pool_long_time_task_queue_->tryPop(task);
+        }
+        return result;
     }
 
 
@@ -96,7 +102,7 @@ protected:
 
 
     /**
-     * 清空所有任荣
+     * 清空所有任务内容
      */
     CVoid reset() {
         done_ = false;
@@ -188,12 +194,13 @@ protected:
     bool is_init_;                                            // 标记初始化状态
     bool is_running_;                                         // 是否正在执行
     int type_ = 0;                                            // 用于区分线程类型（主线程、辅助线程）
-    unsigned long long total_task_num_;                       // 处理的任务的数字
+    unsigned long total_task_num_ = 0;                        // 处理的任务的数字
 
-    UAtomicQueue<UTaskWrapper>* pool_task_queue_;             // 用于存放线程池中的普通任务
-    UThreadPoolConfigPtr config_;                             // 配置参数信息
+    UAtomicQueue<UTaskWrapper>* pool_task_queue_;              // 用于存放线程池中的普通任务
+    UAtomicQueue<UTaskWrapper>* pool_long_time_task_queue_;    // 用于存放线程池中的
+    UThreadPoolConfigPtr config_ = nullptr;                    // 配置参数信息
 
-    std::thread thread_;                                      // 线程类
+    std::thread thread_;                                       // 线程类
 };
 
 CGRAPH_NAMESPACE_END
