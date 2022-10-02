@@ -15,12 +15,12 @@
 #include <condition_variable>
 
 #include "../UThreadPoolDefine.h"
-#include "../UThreadObject.h"
+#include "UQueueObject.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
 template<typename T>
-class UAtomicQueue : public UThreadObject {
+class UAtomicQueue : public UQueueObject {
 public:
     UAtomicQueue() = default;
 
@@ -123,9 +123,7 @@ public:
     CGRAPH_NO_ALLOWED_COPY(UAtomicQueue)
 
 private:
-    std::mutex mutex_;
     std::queue<std::unique_ptr<T>> queue_;
-    std::condition_variable cv_;
 };
 
 CGRAPH_NAMESPACE_END

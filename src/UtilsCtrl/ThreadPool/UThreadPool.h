@@ -21,12 +21,11 @@
 #include "UThreadPoolConfig.h"
 #include "Queue/UQueueInclude.h"
 #include "Thread/UThreadInclude.h"
-#include "Task/UTaskGroup.h"
+#include "Task/UTaskInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
 class UThreadPool : public UThreadObject {
-
 public:
     CGRAPH_NO_ALLOWED_COPY(UThreadPool)
 
@@ -52,7 +51,7 @@ public:
      * 析构函数
      */
     ~UThreadPool() override {
-        is_monitor_ = false;    // 在析构的时候，才释放监控线程
+        is_monitor_ = false;    // 在析构的时候，才释放监控线程。先释放监控线程，再释放其他的线程
         if (monitor_thread_.joinable()) {
             monitor_thread_.join();
         }
@@ -122,9 +121,9 @@ public:
         } else if (CGRAPH_LONG_TIME_TASK_STRATEGY == realIndex) {
             /**
              * 如果是长时间任务，则交给特定的任务队列，仅由辅助线程处理
-             * 目的是防止有很多长时间任务，将所有运行的线程均阻塞，而
+             * 目的是防止有很多长时间任务，将所有运行的线程均阻塞
              **/
-            long_time_task_queue_.push(std::move(task));
+            long_time_task_priority_queue_.push(std::move(task));
         } else {
             // 返回其他结果，放到pool的queue中执行
             task_queue_.push(std::move(task));
@@ -150,8 +149,8 @@ public:
         }
 
         // 计算最终运行时间信息
-        std::chrono::system_clock::time_point deadline
-                = std::chrono::system_clock::now() + std::chrono::milliseconds(std::min(taskGroup.getTtl(), ttl));
+        auto deadline = std::chrono::system_clock::now()
+                        + std::chrono::milliseconds(std::min(taskGroup.getTtl(), ttl));
 
         for (auto& fut : futures) {
             const auto& futStatus = fut.wait_until(deadline);
@@ -180,8 +179,7 @@ public:
     CStatus submit(CGRAPH_DEFAULT_CONST_FUNCTION_REF func,
                    CMSec ttl = CGRAPH_MAX_BLOCK_TTL,
                    CGRAPH_CALLBACK_CONST_FUNCTION_REF onFinished = nullptr) {
-        UTaskGroup taskGroup(func, ttl, onFinished);
-        return submit(taskGroup);
+        return submit(UTaskGroup(func, ttl, onFinished));
     }
 
     /**
@@ -263,10 +261,10 @@ protected:
                                     [](UThreadPrimaryPtr ptr) { return nullptr != ptr && ptr->is_running_; });
 
             // 如果忙碌或者有长期任务，则需要添加 secondary线程
-            if ((busy || !long_time_task_queue_.empty())
+            if ((busy || !long_time_task_priority_queue_.empty())
                 && (secondary_threads_.size() + config_.default_thread_size_) < config_.max_thread_size_) {
                 auto ptr = CGRAPH_MAKE_UNIQUE_COBJECT(UThreadSecondary)
-                ptr->setThreadPoolInfo(&task_queue_, &long_time_task_queue_, &config_);
+                ptr->setThreadPoolInfo(&task_queue_, &long_time_task_priority_queue_, &config_);
                 ptr->init();
                 secondary_threads_.emplace_back(std::move(ptr));
             }
@@ -288,7 +286,7 @@ protected:
     bool is_monitor_ { true };                                                      // 是否需要监控
     int cur_index_;                                                                 // 记录放入的线程数
     UAtomicQueue<UTaskWrapper> task_queue_;                                         // 用于存放普通任务
-    UAtomicQueue<UTaskWrapper> long_time_task_queue_;                               // 运行时间较长的任务队列，由上游标注
+    UAtomicPriorityQueue<UTaskWrapper> long_time_task_priority_queue_;              // 运行时间较长的任务队列，仅在辅助线程中执行
     std::vector<UThreadPrimaryPtr> primary_threads_;                                // 记录所有的核心线程
     std::list<std::unique_ptr<UThreadSecondary>> secondary_threads_;                // 用于记录所有的非核心线程数
     UThreadPoolConfig config_;                                                      // 线程池设置值

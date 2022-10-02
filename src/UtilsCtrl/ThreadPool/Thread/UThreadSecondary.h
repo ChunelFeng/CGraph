@@ -43,7 +43,7 @@ protected:
      * @return
      */
     CStatus setThreadPoolInfo(UAtomicQueue<UTaskWrapper>* poolTaskQueue,
-                              UAtomicQueue<UTaskWrapper>* poolLongTimeTaskQueue,
+                              UAtomicPriorityQueue<UTaskWrapper>* poolLongTimeTaskQueue,
                               UThreadPoolConfigPtr config) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(false)    // 初始化之前，设置参数

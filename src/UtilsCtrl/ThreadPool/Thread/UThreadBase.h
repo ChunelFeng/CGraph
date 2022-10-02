@@ -13,6 +13,7 @@
 
 #include "../UThreadObject.h"
 #include "../Queue/UQueueInclude.h"
+#include "../Task/UTaskInclude.h"
 
 
 CGRAPH_NAMESPACE_BEGIN
@@ -56,10 +57,10 @@ protected:
      * @return
      */
     virtual bool popPoolTask(UTaskWrapperRef task) {
-        bool result = pool_task_queue_ && pool_task_queue_->tryPop(task);
+        bool result = pool_task_queue_->tryPop(task);
         if (!result && CGRAPH_THREAD_TYPE_SECONDARY == type_) {
             // 如果辅助线程没有获取到的话，还需要再尝试从长时间任务队列中，获取一次。
-            result = pool_long_time_task_queue_ && pool_long_time_task_queue_->tryPop(task);
+            result = pool_long_time_task_queue_->tryPop(task);
         }
         return result;
     }
@@ -71,7 +72,11 @@ protected:
      * @return
      */
     virtual bool popPoolTask(UTaskWrapperArrRef tasks) {
-        return (pool_task_queue_ && pool_task_queue_->tryPop(tasks, config_->max_pool_batch_size_));
+        bool result = pool_task_queue_->tryPop(tasks, config_->max_pool_batch_size_);
+        if (!result && CGRAPH_THREAD_TYPE_SECONDARY == type_) {
+            result = pool_long_time_task_queue_->tryPop(tasks, 1);
+        }
+        return result;
     }
 
 
@@ -190,17 +195,17 @@ private:
 
 
 protected:
-    bool done_;                                               // 线程状态标记
-    bool is_init_;                                            // 标记初始化状态
-    bool is_running_;                                         // 是否正在执行
-    int type_ = 0;                                            // 用于区分线程类型（主线程、辅助线程）
-    unsigned long total_task_num_ = 0;                        // 处理的任务的数字
+    bool done_;                                                        // 线程状态标记
+    bool is_init_;                                                     // 标记初始化状态
+    bool is_running_;                                                  // 是否正在执行
+    int type_ = 0;                                                     // 用于区分线程类型（主线程、辅助线程）
+    unsigned long total_task_num_ = 0;                                 // 处理的任务的数字
 
-    UAtomicQueue<UTaskWrapper>* pool_task_queue_;              // 用于存放线程池中的普通任务
-    UAtomicQueue<UTaskWrapper>* pool_long_time_task_queue_;    // 用于存放线程池中的
-    UThreadPoolConfigPtr config_ = nullptr;                    // 配置参数信息
+    UAtomicQueue<UTaskWrapper>* pool_task_queue_;                      // 用于存放线程池中的普通任务
+    UAtomicPriorityQueue<UTaskWrapper>* pool_long_time_task_queue_;    // 用于存放线程池中的
+    UThreadPoolConfigPtr config_ = nullptr;                            // 配置参数信息
 
-    std::thread thread_;                                       // 线程类
+    std::thread thread_;                                                // 线程类
 };
 
 CGRAPH_NAMESPACE_END

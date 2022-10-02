@@ -14,12 +14,12 @@
 #include <mutex>
 #include <deque>
 
-#include "../UThreadObject.h"
+#include "UQueueObject.h"
 #include "../Task/UTaskWrapper.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-class UWorkStealingQueue : public UThreadObject {
+class UWorkStealingQueue : public UQueueObject {
 public:
     UWorkStealingQueue() = default;
 
@@ -126,7 +126,6 @@ public:
 
 private:
     std::deque<UTaskWrapper> queue_;
-    std::mutex mutex_;
 };
 
 CGRAPH_NAMESPACE_END
