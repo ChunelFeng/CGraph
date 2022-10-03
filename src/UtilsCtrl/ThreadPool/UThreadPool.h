@@ -38,9 +38,16 @@ public:
                          const UThreadPoolConfig& config = UThreadPoolConfig()) noexcept {
         cur_index_ = 0;
         is_init_ = false;
+        input_task_num_ = 0;
         this->setConfig(config);
         /* 开启监控线程 */
         is_monitor_ = true;
+
+        /**
+         * CGraph 本身支持跨平台运行
+         * 如果在windows平台上，通过Visual Studio(2017版本或以下) 版本，将 UThreadPool 类封装程.dll文件时，遇到无法启动的问题
+         * 请参考此链接：https://github.com/ChunelFeng/CGraph/issues/17
+         */
         monitor_thread_ = std::move(std::thread(&UThreadPool::monitor, this));
         if (autoInit) {
             this->init();
@@ -84,15 +91,14 @@ public:
         }
 
         primary_threads_.reserve(config_.default_thread_size_);
-        for (int i = 0; i < config_.default_thread_size_; ++i) {
+        for (int i = 0; i < config_.default_thread_size_; i++) {
             auto ptr = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary)    // 创建核心线程数
 
             ptr->setThreadPoolInfo(i, &task_queue_, &primary_threads_, &config_);
-            status = ptr->init();
-            CGRAPH_FUNCTION_CHECK_STATUS
-
+            status += ptr->init();
             primary_threads_.emplace_back(ptr);
         }
+        CGRAPH_FUNCTION_CHECK_STATUS
 
         is_init_ = true;
         CGRAPH_FUNCTION_END
@@ -109,7 +115,7 @@ public:
     auto commit(const FunctionType& func,
                 CIndex index = CGRAPH_DEFAULT_TASK_STRATEGY)
     -> std::future<typename std::result_of<FunctionType()>::type> {
-        typedef typename std::result_of<FunctionType()>::type ResultType;
+        using ResultType = typename std::result_of<FunctionType()>::type;
 
         std::packaged_task<ResultType()> task(func);
         std::future<ResultType> result(task.get_future());
@@ -122,12 +128,39 @@ public:
             /**
              * 如果是长时间任务，则交给特定的任务队列，仅由辅助线程处理
              * 目的是防止有很多长时间任务，将所有运行的线程均阻塞
+             * 长任务程序，默认优先级较低
              **/
-            long_time_task_priority_queue_.push(std::move(task));
+            priority_task_queue_.push(std::move(task), CGRAPH_LONG_TIME_TASK_STRATEGY);
         } else {
             // 返回其他结果，放到pool的queue中执行
             task_queue_.push(std::move(task));
         }
+        input_task_num_++;    // 计数
+        return result;
+    }
+
+    /**
+     * 根据优先级，执行任务
+     * @tparam FunctionType
+     * @param func
+     * @param priority 优先级别。自然序从大到小依次执行
+     * @return
+     * @notice 建议，priority 范围在 [-100, 100] 之间
+     */
+    template<typename FunctionType>
+    auto commitWithPriority(const FunctionType& func, int priority)
+    -> std::future<typename std::result_of<FunctionType()>::type> {
+        using ResultType = typename std::result_of<FunctionType()>::type;
+
+        std::packaged_task<ResultType()> task(func);
+        std::future<ResultType> result(task.get_future());
+
+        if (secondary_threads_.empty()) {
+            createSecondaryThread(1);    // 如果没有开启辅助线程，则直接开启一个
+        }
+
+        priority_task_queue_.push(std::move(task), priority);
+        input_task_num_++;
         return result;
     }
 
@@ -241,6 +274,22 @@ protected:
     }
 
     /**
+     * 生成辅助线程。内部确保辅助线程数量不超过设定参数
+     * @param size
+     * @return
+     */
+    CVoid createSecondaryThread(int size) {
+        for (int i = 0;
+             i < size && (secondary_threads_.size() + config_.default_thread_size_ < config_.max_thread_size_);
+             i++) {
+            auto ptr = CGRAPH_MAKE_UNIQUE_COBJECT(UThreadSecondary)
+            ptr->setThreadPoolInfo(&task_queue_, &priority_task_queue_, &config_);
+            ptr->init();
+            secondary_threads_.emplace_back(std::move(ptr));
+        }
+    }
+
+    /**
      * 监控线程执行函数，主要是判断是否需要增加线程，或销毁线程
      * 增/删 操作，仅针对secondary类型线程生效
      */
@@ -261,21 +310,13 @@ protected:
                                     [](UThreadPrimaryPtr ptr) { return nullptr != ptr && ptr->is_running_; });
 
             // 如果忙碌或者有长期任务，则需要添加 secondary线程
-            if ((busy || !long_time_task_priority_queue_.empty())
-                && (secondary_threads_.size() + config_.default_thread_size_) < config_.max_thread_size_) {
-                auto ptr = CGRAPH_MAKE_UNIQUE_COBJECT(UThreadSecondary)
-                ptr->setThreadPoolInfo(&task_queue_, &long_time_task_priority_queue_, &config_);
-                ptr->init();
-                secondary_threads_.emplace_back(std::move(ptr));
+            if ((busy || !priority_task_queue_.empty())) {
+                createSecondaryThread(1);
             }
 
             // 判断 secondary 线程是否需要退出
             for (auto iter = secondary_threads_.begin(); iter != secondary_threads_.end(); ) {
-                if ((*iter)->freeze()) {
-                    secondary_threads_.erase(iter++);
-                } else {
-                    iter++;
-                }
+                (*iter)->freeze() ? secondary_threads_.erase(iter++) : iter++;
             }
         }
     }
@@ -284,9 +325,10 @@ protected:
 protected:
     bool is_init_ { false };                                                        // 是否初始化
     bool is_monitor_ { true };                                                      // 是否需要监控
-    int cur_index_;                                                                 // 记录放入的线程数
-    UAtomicQueue<UTaskWrapper> task_queue_;                                         // 用于存放普通任务
-    UAtomicPriorityQueue<UTaskWrapper> long_time_task_priority_queue_;              // 运行时间较长的任务队列，仅在辅助线程中执行
+    int cur_index_ = 0;                                                             // 记录放入的线程数
+    unsigned long input_task_num_ = 0;                                              // 放入的任务的个数
+    UAtomicQueue<UTask> task_queue_;                                                // 用于存放普通任务
+    UAtomicPriorityQueue<UTask> priority_task_queue_;                               // 运行时间较长的任务队列，仅在辅助线程中执行
     std::vector<UThreadPrimaryPtr> primary_threads_;                                // 记录所有的核心线程
     std::list<std::unique_ptr<UThreadSecondary>> secondary_threads_;                // 用于记录所有的非核心线程数
     UThreadPoolConfig config_;                                                      // 线程池设置值

@@ -26,7 +26,7 @@ protected:
         is_init_ = false;
         is_running_ = false;
         pool_task_queue_ = nullptr;
-        pool_long_time_task_queue_ = nullptr;
+        pool_priority_task_queue_ = nullptr;
         config_ = nullptr;
         total_task_num_ = 0;
     }
@@ -56,11 +56,11 @@ protected:
      * @param task
      * @return
      */
-    virtual bool popPoolTask(UTaskWrapperRef task) {
+    virtual bool popPoolTask(UTaskRef task) {
         bool result = pool_task_queue_->tryPop(task);
         if (!result && CGRAPH_THREAD_TYPE_SECONDARY == type_) {
             // 如果辅助线程没有获取到的话，还需要再尝试从长时间任务队列中，获取一次。
-            result = pool_long_time_task_queue_->tryPop(task);
+            result = pool_priority_task_queue_->tryPop(task);
         }
         return result;
     }
@@ -71,10 +71,10 @@ protected:
      * @param tasks
      * @return
      */
-    virtual bool popPoolTask(UTaskWrapperArrRef tasks) {
+    virtual bool popPoolTask(UTaskArrRef tasks) {
         bool result = pool_task_queue_->tryPop(tasks, config_->max_pool_batch_size_);
         if (!result && CGRAPH_THREAD_TYPE_SECONDARY == type_) {
-            result = pool_long_time_task_queue_->tryPop(tasks, 1);
+            result = pool_priority_task_queue_->tryPop(tasks, 1);
         }
         return result;
     }
@@ -84,7 +84,7 @@ protected:
      * 执行单个任务
      * @param task
      */
-    CVoid runTask(UTaskWrapper& task) {
+    CVoid runTask(UTask& task) {
         is_running_ = true;
         task();
         total_task_num_++;
@@ -96,7 +96,7 @@ protected:
      * 批量执行任务
      * @param tasks
      */
-    CVoid runTasks(UTaskWrapperArr& tasks) {
+    CVoid runTasks(UTaskArr& tasks) {
         is_running_ = true;
         for (auto& task : tasks) {
             task();
@@ -201,11 +201,10 @@ protected:
     int type_ = 0;                                                     // 用于区分线程类型（主线程、辅助线程）
     unsigned long total_task_num_ = 0;                                 // 处理的任务的数字
 
-    UAtomicQueue<UTaskWrapper>* pool_task_queue_;                      // 用于存放线程池中的普通任务
-    UAtomicPriorityQueue<UTaskWrapper>* pool_long_time_task_queue_;    // 用于存放线程池中的
+    UAtomicQueue<UTask>* pool_task_queue_;                             // 用于存放线程池中的普通任务
+    UAtomicPriorityQueue<UTask>* pool_priority_task_queue_;            // 用于存放线程池中的包含优先级任务的队列，仅辅助线程可以执行
     UThreadPoolConfigPtr config_ = nullptr;                            // 配置参数信息
-
-    std::thread thread_;                                                // 线程类
+    std::thread thread_;                                               // 线程类
 };
 
 CGRAPH_NAMESPACE_END

@@ -60,9 +60,11 @@ public:
     /**
      * 传入数据
      * @param value
+     * @param priority 任务优先级，数字排序
+     * @return
      */
-    CVoid push(T&& value) {
-        std::unique_ptr<T> task(std::make_unique<T>(std::move(value)));
+    CVoid push(T&& value, int priority) {
+        std::unique_ptr<T> task(std::make_unique<T>(std::move(value), priority));
         CGRAPH_LOCK_GUARD lk(mutex_);
         priority_queue_.push(std::move(task));
         cv_.notify_one();
