@@ -35,36 +35,12 @@ public:
      * @param config
      */
     explicit UThreadPool(bool autoInit = true,
-                         const UThreadPoolConfig& config = UThreadPoolConfig()) noexcept {
-        cur_index_ = 0;
-        is_init_ = false;
-        input_task_num_ = 0;
-        this->setConfig(config);
-        /* 开启监控线程 */
-        is_monitor_ = true;
-
-        /**
-         * CGraph 本身支持跨平台运行
-         * 如果在windows平台上，通过Visual Studio(2017版本或以下) 版本，将 UThreadPool 类封装程.dll文件时，遇到无法启动的问题
-         * 请参考此链接：https://github.com/ChunelFeng/CGraph/issues/17
-         */
-        monitor_thread_ = std::move(std::thread(&UThreadPool::monitor, this));
-        if (autoInit) {
-            this->init();
-        }
-    }
+                         const UThreadPoolConfig& config = UThreadPoolConfig()) noexcept;
 
     /**
      * 析构函数
      */
-    ~UThreadPool() override {
-        is_monitor_ = false;    // 在析构的时候，才释放监控线程。先释放监控线程，再释放其他的线程
-        if (monitor_thread_.joinable()) {
-            monitor_thread_.join();
-        }
-
-        destroy();
-    }
+    ~UThreadPool() override;
 
     /**
      * 设置线程池相关配置信息，需要在init()函数调用前，完成设置
@@ -72,37 +48,13 @@ public:
      * @return
      * @notice 通过单例类(UThreadPoolSingleton)开启线程池，则线程池默认init。需要 destroy 后才可以设置参数
      */
-    CStatus setConfig(const UThreadPoolConfig &config) {
-        CGRAPH_FUNCTION_BEGIN
-        CGRAPH_ASSERT_INIT(false)    // 初始化后，无法设置参数信息
-
-        this->config_ = config;
-        CGRAPH_FUNCTION_END
-    }
+    CStatus setConfig(const UThreadPoolConfig &config);
 
     /**
      * 开启所有的线程信息
      * @return
      */
-    CStatus init() final {
-        CGRAPH_FUNCTION_BEGIN
-        if (is_init_) {
-            CGRAPH_FUNCTION_END
-        }
-
-        primary_threads_.reserve(config_.default_thread_size_);
-        for (int i = 0; i < config_.default_thread_size_; i++) {
-            auto ptr = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary)    // 创建核心线程数
-
-            ptr->setThreadPoolInfo(i, &task_queue_, &primary_threads_, &config_);
-            status += ptr->init();
-            primary_threads_.emplace_back(ptr);
-        }
-        CGRAPH_FUNCTION_CHECK_STATUS
-
-        is_init_ = true;
-        CGRAPH_FUNCTION_END
-    }
+    CStatus init() final;
 
     /**
      * 提交任务信息
@@ -114,30 +66,7 @@ public:
     template<typename FunctionType>
     auto commit(const FunctionType& func,
                 CIndex index = CGRAPH_DEFAULT_TASK_STRATEGY)
-    -> std::future<typename std::result_of<FunctionType()>::type> {
-        using ResultType = typename std::result_of<FunctionType()>::type;
-
-        std::packaged_task<ResultType()> task(func);
-        std::future<ResultType> result(task.get_future());
-
-        CIndex realIndex = dispatch(index);
-        if (realIndex >= 0 && realIndex < config_.default_thread_size_) {
-            // 如果返回的结果，在主线程数量之间，则放到主线程的queue中执行
-            primary_threads_[realIndex]->work_stealing_queue_.push(std::move(task));
-        } else if (CGRAPH_LONG_TIME_TASK_STRATEGY == realIndex) {
-            /**
-             * 如果是长时间任务，则交给特定的任务队列，仅由辅助线程处理
-             * 目的是防止有很多长时间任务，将所有运行的线程均阻塞
-             * 长任务程序，默认优先级较低
-             **/
-            priority_task_queue_.push(std::move(task), CGRAPH_LONG_TIME_TASK_STRATEGY);
-        } else {
-            // 返回其他结果，放到pool的queue中执行
-            task_queue_.push(std::move(task));
-        }
-        input_task_num_++;    // 计数
-        return result;
-    }
+    -> std::future<typename std::result_of<FunctionType()>::type>;
 
     /**
      * 根据优先级，执行任务
@@ -148,21 +77,9 @@ public:
      * @notice 建议，priority 范围在 [-100, 100] 之间
      */
     template<typename FunctionType>
-    auto commitWithPriority(const FunctionType& func, int priority)
-    -> std::future<typename std::result_of<FunctionType()>::type> {
-        using ResultType = typename std::result_of<FunctionType()>::type;
-
-        std::packaged_task<ResultType()> task(func);
-        std::future<ResultType> result(task.get_future());
-
-        if (secondary_threads_.empty()) {
-            createSecondaryThread(1);    // 如果没有开启辅助线程，则直接开启一个
-        }
-
-        priority_task_queue_.push(std::move(task), priority);
-        input_task_num_++;
-        return result;
-    }
+    auto commitWithPriority(const FunctionType& func,
+                            int priority)
+    -> std::future<typename std::result_of<FunctionType()>::type>;
 
     /**
      * 执行任务组信息
@@ -172,35 +89,7 @@ public:
      * @return
      */
     CStatus submit(const UTaskGroup& taskGroup,
-                   CMSec ttl = CGRAPH_MAX_BLOCK_TTL) {
-        CGRAPH_FUNCTION_BEGIN
-        CGRAPH_ASSERT_INIT(true)
-
-        std::vector<std::future<CVoid>> futures;
-        for (const auto& task : taskGroup.task_arr_) {
-            futures.emplace_back(commit(task));
-        }
-
-        // 计算最终运行时间信息
-        auto deadline = std::chrono::system_clock::now()
-                        + std::chrono::milliseconds(std::min(taskGroup.getTtl(), ttl));
-
-        for (auto& fut : futures) {
-            const auto& futStatus = fut.wait_until(deadline);
-            switch (futStatus) {
-                case std::future_status::ready: break;    // 正常情况，直接返回了
-                case std::future_status::timeout: status += CStatus("thread status timeout"); break;
-                case std::future_status::deferred: status += CStatus("thread status deferred"); break;
-                default: status += CStatus("thread status unknown");
-            }
-        }
-
-        if (taskGroup.on_finished_) {
-            taskGroup.on_finished_(status);
-        }
-
-        CGRAPH_FUNCTION_END
-    }
+                   CMSec ttl = CGRAPH_MAX_BLOCK_TTL);
 
     /**
      * 针对单个任务的情况，复用任务组信息，实现单个任务直接执行
@@ -211,38 +100,13 @@ public:
      */
     CStatus submit(CGRAPH_DEFAULT_CONST_FUNCTION_REF func,
                    CMSec ttl = CGRAPH_MAX_BLOCK_TTL,
-                   CGRAPH_CALLBACK_CONST_FUNCTION_REF onFinished = nullptr) {
-        return submit(UTaskGroup(func, ttl, onFinished));
-    }
+                   CGRAPH_CALLBACK_CONST_FUNCTION_REF onFinished = nullptr);
 
     /**
      * 释放所有的线程信息
      * @return
      */
-    CStatus destroy() final {
-        CGRAPH_FUNCTION_BEGIN
-        if (!is_init_) {
-            CGRAPH_FUNCTION_END
-        }
-
-        // primary 线程是普通指针，需要delete
-        for (auto& pt : primary_threads_) {
-            status += pt->destroy();
-            CGRAPH_DELETE_PTR(pt)
-        }
-        CGRAPH_FUNCTION_CHECK_STATUS
-        primary_threads_.clear();
-
-        // secondary 线程是智能指针，不需要delete
-        for (auto& st : secondary_threads_) {
-            status += st->destroy();
-        }
-        CGRAPH_FUNCTION_CHECK_STATUS
-        secondary_threads_.clear();
-        is_init_ = false;
-
-        CGRAPH_FUNCTION_END
-    }
+    CStatus destroy() final;
 
 
 protected:
@@ -251,75 +115,20 @@ protected:
      * @param origIndex
      * @return
      */
-    virtual CIndex dispatch(CIndex origIndex) {
-        if (unlikely(config_.fair_lock_enable_)) {
-            return CGRAPH_DEFAULT_TASK_STRATEGY;    // 如果开启fair lock，则全部写入 pool的queue中，依次执行
-        }
-
-        CIndex realIndex = 0;
-        if (CGRAPH_DEFAULT_TASK_STRATEGY == origIndex) {
-            /**
-             * 如果是默认策略信息，在[0, default_thread_size_) 之间的，通过 thread 中queue来调度
-             * 在[default_thread_size_, max_thread_size_) 之间的，通过 pool 中的queue来调度
-             */
-            realIndex = cur_index_++;
-            if (cur_index_ >= config_.max_thread_size_ || cur_index_ < 0) {
-                cur_index_ = 0;
-            }
-        } else {
-            realIndex = origIndex;
-        }
-
-        return realIndex;    // 交到上游去判断，走哪个线程
-    }
+    virtual CIndex dispatch(CIndex origIndex);
 
     /**
      * 生成辅助线程。内部确保辅助线程数量不超过设定参数
      * @param size
      * @return
      */
-    CVoid createSecondaryThread(int size) {
-        for (int i = 0;
-             i < size && (secondary_threads_.size() + config_.default_thread_size_ < config_.max_thread_size_);
-             i++) {
-            auto ptr = CGRAPH_MAKE_UNIQUE_COBJECT(UThreadSecondary)
-            ptr->setThreadPoolInfo(&task_queue_, &priority_task_queue_, &config_);
-            ptr->init();
-            secondary_threads_.emplace_back(std::move(ptr));
-        }
-    }
+    CVoid createSecondaryThread(int size);
 
     /**
      * 监控线程执行函数，主要是判断是否需要增加线程，或销毁线程
      * 增/删 操作，仅针对secondary类型线程生效
      */
-    CVoid monitor() {
-        while (is_monitor_) {
-            while (is_monitor_ && !is_init_) {
-                // 如果没有init，则一直处于空跑状态
-                CGRAPH_SLEEP_SECOND(1)
-            }
-
-            int span = config_.monitor_span_;
-            while (is_monitor_ && is_init_ && span--) {
-                CGRAPH_SLEEP_SECOND(1)    // 保证可以快速退出
-            }
-
-            // 如果 primary线程都在执行，则表示忙碌
-            bool busy = std::all_of(primary_threads_.begin(), primary_threads_.end(),
-                                    [](UThreadPrimaryPtr ptr) { return nullptr != ptr && ptr->is_running_; });
-
-            // 如果忙碌或者有长期任务，则需要添加 secondary线程
-            if ((busy || !priority_task_queue_.empty())) {
-                createSecondaryThread(1);
-            }
-
-            // 判断 secondary 线程是否需要退出
-            for (auto iter = secondary_threads_.begin(); iter != secondary_threads_.end(); ) {
-                (*iter)->freeze() ? secondary_threads_.erase(iter++) : iter++;
-            }
-        }
-    }
+    CVoid monitor();
 
 
 protected:
@@ -338,5 +147,7 @@ protected:
 using UThreadPoolPtr = UThreadPool *;
 
 CGRAPH_NAMESPACE_END
+
+#include "UThreadPool.inl"
 
 #endif //CGRAPH_UTHREADPOOL_H
