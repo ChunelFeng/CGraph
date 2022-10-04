@@ -27,14 +27,12 @@ CGRAPH_NAMESPACE_BEGIN
 
 class UThreadPool : public UThreadObject {
 public:
-    CGRAPH_NO_ALLOWED_COPY(UThreadPool)
-
     /**
      * 通过默认设置参数，来创建线程池
      * @param autoInit 是否自动开启线程池功能
      * @param config
      */
-    explicit UThreadPool(bool autoInit = true,
+    explicit UThreadPool(CBool autoInit = true,
                          const UThreadPoolConfig& config = UThreadPoolConfig()) noexcept;
 
     /**
@@ -122,7 +120,7 @@ protected:
      * @param size
      * @return
      */
-    CVoid createSecondaryThread(int size);
+    CStatus createSecondaryThread(CInt size);
 
     /**
      * 监控线程执行函数，主要是判断是否需要增加线程，或销毁线程
@@ -130,16 +128,17 @@ protected:
      */
     CVoid monitor();
 
+    CGRAPH_NO_ALLOWED_COPY(UThreadPool)
 
 protected:
-    bool is_init_ { false };                                                        // 是否初始化
-    bool is_monitor_ { true };                                                      // 是否需要监控
-    int cur_index_ = 0;                                                             // 记录放入的线程数
-    unsigned long input_task_num_ = 0;                                              // 放入的任务的个数
+    CBool is_init_ { false };                                                       // 是否初始化
+    CBool is_monitor_ { true };                                                     // 是否需要监控
+    CInt cur_index_ = 0;                                                            // 记录放入的线程数
+    CULong input_task_num_ = 0;                                                     // 放入的任务的个数
     UAtomicQueue<UTask> task_queue_;                                                // 用于存放普通任务
     UAtomicPriorityQueue<UTask> priority_task_queue_;                               // 运行时间较长的任务队列，仅在辅助线程中执行
-    std::vector<UThreadPrimaryPtr> primary_threads_;                                // 记录所有的核心线程
-    std::list<std::unique_ptr<UThreadSecondary>> secondary_threads_;                // 用于记录所有的非核心线程数
+    std::vector<UThreadPrimaryPtr> primary_threads_;                                // 记录所有的主线程
+    std::list<std::unique_ptr<UThreadSecondary>> secondary_threads_;                // 用于记录所有的辅助线程
     UThreadPoolConfig config_;                                                      // 线程池设置值
     std::thread monitor_thread_;                                                    // 监控线程
 };

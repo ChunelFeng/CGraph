@@ -10,7 +10,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-UThreadPool::UThreadPool(bool autoInit, const UThreadPoolConfig& config) noexcept {
+UThreadPool::UThreadPool(CBool autoInit, const UThreadPoolConfig& config) noexcept {
     cur_index_ = 0;
     is_init_ = false;
     input_task_num_ = 0;
@@ -100,6 +100,7 @@ CStatus UThreadPool::submit(const UTaskGroup& taskGroup, CMSec ttl) {
     CGRAPH_FUNCTION_END
 }
 
+
 CStatus UThreadPool::submit(CGRAPH_DEFAULT_CONST_FUNCTION_REF func, CMSec ttl,
                             CGRAPH_CALLBACK_CONST_FUNCTION_REF onFinished) {
     return submit(UTaskGroup(func, ttl, onFinished));
@@ -155,15 +156,19 @@ CIndex UThreadPool::dispatch(CIndex origIndex) {
 }
 
 
-CVoid UThreadPool::createSecondaryThread(int size) {
-    for (int i = 0;
-         i < size && (secondary_threads_.size() + config_.default_thread_size_ < config_.max_thread_size_);
-         i++) {
+CStatus UThreadPool::createSecondaryThread(CInt size) {
+    CGRAPH_FUNCTION_BEGIN
+
+    int leftSize = (int)(config_.max_thread_size_ - config_.default_thread_size_ - secondary_threads_.size());
+    int realSize = std::min(size, leftSize);    // 使用 realSize 来确保所有的线程数量之和，不会超过设定max值
+    for (int i = 0; i < realSize; i++) {
         auto ptr = CGRAPH_MAKE_UNIQUE_COBJECT(UThreadSecondary)
         ptr->setThreadPoolInfo(&task_queue_, &priority_task_queue_, &config_);
-        ptr->init();
+        status += ptr->init();
         secondary_threads_.emplace_back(std::move(ptr));
     }
+
+    CGRAPH_FUNCTION_END
 }
 
 
@@ -183,7 +188,7 @@ CVoid UThreadPool::monitor() {
         bool busy = std::all_of(primary_threads_.begin(), primary_threads_.end(),
                                 [](UThreadPrimaryPtr ptr) { return nullptr != ptr && ptr->is_running_; });
 
-        // 如果忙碌或者有长期任务，则需要添加 secondary线程
+        // 如果忙碌或者priority_task_queue_中有任务，则需要添加 secondary线程
         if (busy || !priority_task_queue_.empty()) {
             createSecondaryThread(1);
         }
