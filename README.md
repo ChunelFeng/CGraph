@@ -146,6 +146,7 @@ int main() {
 ## 五. 关联项目
 
 * [GraphANNS](https://github.com/whenever5225/GraphANNS) : Graph-based Approximate Nearest Neighbor Search Working off CGraph
+* [CThreadPool](https://github.com/ChunelFeng/CThreadPool) : 一个简单好用且性能优异的跨平台的C++线程池
 
 ------------
 #### 附录-1. 版本信息
