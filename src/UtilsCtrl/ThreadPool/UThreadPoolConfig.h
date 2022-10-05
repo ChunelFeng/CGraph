@@ -31,6 +31,8 @@ struct UThreadPoolConfig : public UThreadObject {
     bool bind_cpu_enable_ = CGRAPH_BIND_CPU_ENABLE;
     bool batch_task_enable_ = CGRAPH_BATCH_TASK_ENABLE;
     bool fair_lock_enable_ = CGRAPH_FAIR_LOCK_ENABLE;
+    bool monitor_enable_ = CGRAPH_MONITOR_ENABLE;
+
 
 protected:
     /**

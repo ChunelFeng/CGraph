@@ -14,10 +14,8 @@ UThreadPool::UThreadPool(CBool autoInit, const UThreadPoolConfig& config) noexce
     cur_index_ = 0;
     is_init_ = false;
     input_task_num_ = 0;
-    this->setConfig(config);
-    /* 开启监控线程 */
-    is_monitor_ = true;
-
+    this->setConfig(config);    // setConfig 函数，用在 is_init_ 设定之后
+    is_monitor_ = config_.monitor_enable_;        /** 根据参数设定，决定是否开启监控线程。默认开启 */
     /**
      * CGraph 本身支持跨平台运行
      * 如果在windows平台上，通过Visual Studio(2017版本或以下) 版本，将 UThreadPool 类封装程.dll文件时，遇到无法启动的问题
