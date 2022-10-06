@@ -9,6 +9,8 @@
 #ifndef CGRAPH_GPARAMDEFINE_H
 #define CGRAPH_GPARAMDEFINE_H
 
+#include "../../CBasic/CBasicDefine.h"
+
 CGRAPH_NAMESPACE_BEGIN
 
 /** 创建参数信息 */

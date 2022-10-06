@@ -15,6 +15,8 @@
 #include <cstdarg>
 #include <algorithm>
 
+#include "../CBasic/CBasicInclude.h"
+
 CGRAPH_NAMESPACE_BEGIN
 
 /**

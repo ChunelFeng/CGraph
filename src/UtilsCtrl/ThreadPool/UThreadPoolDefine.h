@@ -17,6 +17,8 @@
     #endif
 #include <memory>
 
+#include "../../CBasic/CValType.h"
+
 CGRAPH_NAMESPACE_BEGIN
 
     #if _LIBCPP_STD_VER >= 17
