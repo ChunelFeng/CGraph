@@ -9,7 +9,7 @@
 #ifndef CGRAPH_GPARAMDEFINE_H
 #define CGRAPH_GPARAMDEFINE_H
 
-#include "../../CBasic/CBasicDefine.h"
+#include "../../CBasic/CBasicInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

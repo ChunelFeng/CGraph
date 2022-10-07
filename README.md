@@ -146,7 +146,7 @@ int main() {
 ## 五. 关联项目
 
 * [GraphANNS](https://github.com/whenever5225/GraphANNS) : Graph-based Approximate Nearest Neighbor Search Working off CGraph
-* [CThreadPool](https://github.com/ChunelFeng/CThreadPool) : 一个简单好用且性能优异的跨平台的C++线程池
+* [CThreadPool](https://github.com/ChunelFeng/CThreadPool) : 一个简单好用，性能优异的跨平台的C++线程池
 
 ------------
 #### 附录-1. 版本信息
@@ -178,7 +178,7 @@ int main() {
 
 * Thanks to the recommendation from `Taskflow Group`: [awesome-parallel-computing](https://github.com/taskflow/awesome-parallel-computing), and we always treat [taskflow](https://github.com/taskflow/taskflow) as a role model
 * Thanks to the recommendation from [awesome-workflow-engines](https://github.com/meirwah/awesome-workflow-engines)
-* 感谢 [@yangyuxiang77](https://github.com/yangyuxiang77) [@wuxing](https://github.com/logerrors) [@whenever5225](https://github.com/whenever5225) [@Yaha](https://github.com/May-Yaha) 等朋友（以贡献时间先后为顺序）为项目做出的贡献
+* 感谢 [@yangyuxiang77](https://github.com/yangyuxiang77) [@logerrors](https://github.com/logerrors) [@whenever5225](https://github.com/whenever5225) [@May-Yaha](https://github.com/May-Yaha) [@Codesire-Deng](https://github.com/Codesire-Deng) 等朋友（以贡献时间先后为顺序）为项目做出的贡献
 * 感谢所有为`CGraph`项目提出的意见和建议的朋友，在此不一一提及。随时欢迎大家加入，一起共建
 
 ------------
