@@ -9,7 +9,7 @@
 #ifndef CGRAPH_GASPECTDEFINE_H
 #define CGRAPH_GASPECTDEFINE_H
 
-#include "../../CBasic/CBasicInclude.h"
+#include "../GraphObject.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

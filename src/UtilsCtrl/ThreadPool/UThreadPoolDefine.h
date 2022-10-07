@@ -17,7 +17,7 @@
     #endif
 #include <memory>
 
-#include "../../CBasic/CBasicInclude.h"
+#include "../UtilsDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
