@@ -9,6 +9,8 @@
 #ifndef CGRAPH_GASPECTDEFINE_H
 #define CGRAPH_GASPECTDEFINE_H
 
+#include "../../CBasic/CBasicDefine.h"
+
 CGRAPH_NAMESPACE_BEGIN
 
 enum class GAspectType {

@@ -16,6 +16,8 @@
 #include <mutex>
 #include <memory>
 
+#include "../CBasic/CBasicInclude.h"
+
 CGRAPH_NAMESPACE_BEGIN
 
 static std::mutex g_session_mtx;
