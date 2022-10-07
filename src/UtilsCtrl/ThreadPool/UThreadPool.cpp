@@ -63,6 +63,14 @@ CStatus UThreadPool::init() {
     }
     CGRAPH_FUNCTION_CHECK_STATUS
 
+    /**
+     * 策略更新：
+     * 初始化的时候，也可以创建n个辅助线程。目的是为了配合仅使用 pool中 priority_queue 的场景
+     * 一般情况下，建议为0。
+     */
+    status = createSecondaryThread(config_.secondary_thread_size_);
+    CGRAPH_FUNCTION_CHECK_STATUS
+
     is_init_ = true;
     CGRAPH_FUNCTION_END
 }

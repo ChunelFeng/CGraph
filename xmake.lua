@@ -2,7 +2,7 @@
 set_project("CGraph")
 
 -- set project version
-set_version("1.8.5")
+set_version("2.1.1")
 
 -- set language: c++17
 set_languages("c++17")
