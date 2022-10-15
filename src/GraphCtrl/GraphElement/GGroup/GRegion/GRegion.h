@@ -28,9 +28,10 @@ protected:
     CStatus addElement(GElementPtr element) final;
 
 private:
-    GElementManagerPtr manager_;
+    GElementManagerPtr manager_;    // region 内部通过 manager来管理其中的 element 信息
 
     CGRAPH_NO_ALLOWED_COPY(GRegion)
+
 
     friend class GPipeline;
     friend class UAllocator;

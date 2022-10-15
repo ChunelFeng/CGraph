@@ -30,13 +30,9 @@ protected:
     CSize getRange() const;
 
 private:
-    CStatus init() override;
     CStatus run() override;
-    CStatus destroy() override;
-    CStatus addElement(GElementPtr element) override;
 
-private:
-    GElementPtrArr condition_elements_;
+    CStatus addElement(GElementPtr element) override;
 
     friend class GPipeline;
 };

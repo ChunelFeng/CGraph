@@ -27,6 +27,13 @@ public:
      * @return
      */
     virtual CStatus addElement(GElementPtr element) = 0;
+
+    CStatus init() override;
+
+    CStatus destroy() override;
+
+protected:
+    GElementPtrArr group_elements_arr_;    // 存放 element的数组
 };
 
 using GGroupPtr = GGroup *;

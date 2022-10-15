@@ -161,7 +161,7 @@ CStatus GElementManager::analyse() {
 
         GElementPtrSet duplications;
         for (GClusterRef cluster : runnableClusterArr) {
-            for (GElementPtr element : cluster.cluster_elements_) {
+            for (GElementPtr element : cluster.group_elements_arr_) {
                 for (GElementPtr cur : element->run_before_) {
                     /**
                      * 判断element是否需要被加入

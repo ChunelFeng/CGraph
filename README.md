@@ -15,7 +15,7 @@
 
 ## 一. 简介
 
-本工程实现了一套无任何第三方依赖的跨平台图流程计算框架。通过`GPipeline`(流水线)底层调度，实现了依赖元素依次顺序执行、非依赖元素并发执行的调度功能。
+`CGraph`中文名为【色丶图】，是一套无任何第三方依赖的跨平台图流程执行框架。通过`GPipeline`(流水线)底层调度，实现了依赖元素依次顺序执行、非依赖元素并发执行的调度功能。
 
 使用者只需继承`GNode`(节点)类，实现子类的run()方法，并根据需要设定依赖关系，即可实现任务的图化执行。
 
@@ -146,10 +146,99 @@ int main() {
 ## 五. 关联项目
 
 * [GraphANNS](https://github.com/whenever5225/GraphANNS) : Graph-based Approximate Nearest Neighbor Search Working off CGraph
-* [CThreadPool](https://github.com/ChunelFeng/CThreadPool) : 一个简单好用，性能优异的跨平台的C++线程池
+* [CThreadPool](https://github.com/ChunelFeng/CThreadPool) : 一个简单好用、功能强大、性能优异、跨平台的C++线程池
 
 ------------
-#### 附录-1. 版本信息
+<details>
+<summary><b>附录-1. 版本信息</b></summary>
+
+[2021.05.04 - v1.0.0 - Chunel]
+* 提供图化执行功能，支持非依赖节点并行计算
+
+[2021.05.09 - v1.1.0 - Chunel]
+* 优化图执行过程中的并发度
+
+[2021.05.18 - v1.1.1 - Chunel]
+* 添加节点`name`和`session`信息
+
+[2021.05.23 - v1.2.0 - Chunel]
+* 提供单节点循环执行功能
+
+[2021.05.29 - v1.3.0 - Chunel]
+* 提供`cluster`（簇）和`region`（区域）划分和循环执行功能
+* 提供`tutorial`内容，包含多种使用样例
+
+[2021.06.14 - v1.4.0 - Chunel]
+* 提供`param`（参数）传递机制
+* 提供`group`（组）功能，多节点模块统一继承自`group`模块
+* 添加对Linux系统的的支持
+
+[2021.06.20 - v1.4.1 - Chunel]
+* 提供`condition`（条件）功能
+* 添加对Windows系统的支持
+
+[2021.06.24 - v1.5.0 - Chunel]
+* 提供`pipeline`工厂创建方法
+* 更新`tutorial`内容
+
+[2021.07.07 - v1.5.1 - Chunel]
+* 优化线程池功能。实现任务盗取机制
+
+[2021.07.11 - v1.5.2 - Chunel]
+* 优化线程池功能。实现线程数量自动调节机制
+
+[2021.07.31 - v1.5.3 - Chunel]
+* 优化线程池功能。实现任务批量获取功能，优化任务盗取机制
+
+[2021.08.29 - v1.6.0 - Chunel]
+* 提供多`pipeline`功能，优化底层逻辑
+* 更新`tutorial`内容
+
+[2021.09.19 - v1.6.1 - Chunel]
+* 提供`Lru`算子、`Trie`算子和模板节点功能，优化底层逻辑
+* 更新`tutorial`内容
+
+[2021.09.29 - v1.7.0 - Chunel]
+* 提供`aspect`(切面)功能，用于横向扩展`node`或`group`功能
+* 更新`tutorial`内容
+
+[2021.10.07 - v1.7.1 - Chunel]
+* 优化`aspect`(切面)实现逻辑，提供切面参数功能，提供批量添加切面功能
+* 更新`tutorial`内容
+
+[2021.11.01 - v1.8.0 - Chunel]
+* 提供`adapter`(适配器)功能，提供`singleton`适配器功能
+* 优化`pipeline`执行逻辑
+* 更新`tutorial`内容
+
+[2021.12.18 - v1.8.1 - Chunel]
+* 优化了返回值`CStatus`信息
+
+[2022.01.02 - v1.8.2 - Chunel]
+* 提供节点执行超时自动退出功能，提供`task group`(任务组)功能
+* 提供线程池配置参数设置方法
+
+[2022.01.23 - v1.8.3 - Chunel]
+* 提供`function`适配器，实现函数式编程功能
+* 提供线程优先级调度功能，提供线程绑定cpu执行功能
+* 更新`tutorial`内容
+
+[2022.01.31 - v1.8.4 - Chunel]
+* 提供`node`(节点)异步执行的功能
+
+[2022.02.03 - v1.8.5 - Chunel]
+* 提供`daemon`(守护)功能，用于定时执行非流图中任务
+* 更新`tutorial`内容
+
+[2022.04.03 - v1.8.6 - Chunel]
+* 提供`DistanceCalculator`算子，用于实现任意数据类型、任意距离类型的计算
+* 更新`tutorial`内容
+
+[2022.04.05 - v2.0.0 - Chunel]
+* 提供`domain`(领域)功能，提供`Ann`领域抽象模型，开始支持个别专业方向
+* 提供hold执行机制，支持根据运行时条件，判断是否需要重新执行当前内容，直到满足条件为止
+* 更新`tutorial`内容
+
 [2022.05.01 - v2.0.1 - Chunel]
 * 优化`pipeline`注册机制，支持init方法自定义顺序执行
 * 提供一键编译脚本
@@ -159,13 +248,15 @@ int main() {
 * 提供针对C++14版本的支持，个别功能有裁剪
 * 更新`tutorial`内容
 
-[2022.10.03 - v2.1.1 - Chunel]
+[2022.10.03 - v2.1.1 - Chunel]  
 * 提供线程池中的任务优先级机制
+* 优化`group`执行逻辑
 
-> 更多版本变更信息，请参考 [ChangeLog.md](https://github.com/ChunelFeng/CGraph/blob/main/ChangeLog.md) 文件
+</details>
 
 ------------
-#### 附录-2. 感谢
+<details>
+<summary><b>附录-2. 感谢</b></summary>
 
 * 感谢 [Doocs 微信公众号](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzIxNjA5ODQ0OQ==&action=getalbum&album_id=1989460124624551937&scene=173&from_msgid=2654703194&from_itemidx=1&count=3&nolastread=1#wechat_redirect) 刊登相关介绍文档，欢迎加入 [Doocs 开源社区](https://github.com/doocs)
 * 感谢《HelloGithub》期刊介绍和推荐：[HelloGithub 第70期](https://github.com/521xueweihan/HelloGitHub/blob/master/content/HelloGitHub70.md)
@@ -181,8 +272,11 @@ int main() {
 * 感谢 [@yangyuxiang77](https://github.com/yangyuxiang77) [@logerrors](https://github.com/logerrors) [@whenever5225](https://github.com/whenever5225) [@May-Yaha](https://github.com/May-Yaha) [@Codesire-Deng](https://github.com/Codesire-Deng) 等朋友（以贡献时间先后为顺序）为项目做出的贡献
 * 感谢所有为`CGraph`项目提出的意见和建议的朋友，在此不一一提及。随时欢迎大家加入，一起共建
 
+</details>
+
 ------------
-#### 附录-3. 联系方式
+<details>
+<summary><b>附录-3. 联系方式</b></summary>
 
 * 微信： ChunelFeng
 * 邮箱： chunel@foxmail.com
@@ -190,3 +284,5 @@ int main() {
 * 论坛： www.chunel.cn
 
 ![CGraph Author](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Author.jpg)
+
+</details>
