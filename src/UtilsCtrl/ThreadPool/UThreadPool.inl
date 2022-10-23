@@ -40,6 +40,7 @@ auto UThreadPool::commit(const FunctionType& func, CIndex index)
     return result;
 }
 
+
 template<typename FunctionType>
 auto UThreadPool::commitWithPriority(const FunctionType& func, int priority)
 -> std::future<typename std::result_of<FunctionType()>::type> {

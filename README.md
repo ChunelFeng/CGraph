@@ -23,8 +23,6 @@
 
 此外，还可以通过添加`GAspect`(切面)的方式，实现以上各种元素功能的横向扩展，或是通过引入各种`GAdapter`(适配器)对单个节点功能进行加强。
 
-进入 [B站](https://www.bilibili.com/) 搜索框中输入`CGraph`有惊喜。
-
 ![CGraph Skeleton](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Skeleton.jpg)
 <br>
 
