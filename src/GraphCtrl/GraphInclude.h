@@ -14,5 +14,6 @@
 #include "GraphParam/GParamInclude.h"
 #include "GraphAspect/GAspectInclude.h"
 #include "GraphDaemon/GDaemonInclude.h"
+#include "GraphMessage/GMessageInclude.h"
 
 #endif //CGRAPH_GRAPHINCLUDE_H

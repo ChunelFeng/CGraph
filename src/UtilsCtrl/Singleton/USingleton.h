@@ -15,13 +15,18 @@
 CGRAPH_NAMESPACE_BEGIN
 
 template<typename T,
-        USingletonType type = USingletonType::HUNGRY>
+        USingletonType type = USingletonType::HUNGRY,
+        CBool autoInit = false>
 class USingleton : public UtilsObject {
 public:
     explicit USingleton() {
-        if constexpr (USingletonType::HUNGRY == type) {
+        if constexpr (USingletonType::HUNGRY == type || autoInit) {
             /* 如果是饥汉模式，则直接构造 */
             create();
+        }
+
+        if constexpr(autoInit) {
+            init();
         }
     }
 
@@ -61,6 +66,10 @@ protected:
         CGRAPH_FUNCTION_END
     }
 
+    /**
+     * 单例的创建一个句柄
+     * @return
+     */
     CVoid create() {
         if (nullptr == handle_) {
             CGRAPH_LOCK_GUARD lock(lock_);
@@ -70,9 +79,15 @@ protected:
         }
     }
 
-    CVoid clear() {
+    /**
+     * 销毁单例句柄
+     * @return
+     */
+    CStatus clear() {
+        CGRAPH_FUNCTION_BEGIN
         CGRAPH_LOCK_GUARD lock(lock_);
         CGRAPH_DELETE_PTR(handle_)
+        CGRAPH_FUNCTION_END
     }
 
 private:

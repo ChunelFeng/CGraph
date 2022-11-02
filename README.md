@@ -250,6 +250,9 @@ int main() {
 * 提供线程池中的任务优先级机制
 * 优化`group`执行逻辑
 
+[2022.11.03 - v2.2.0 - Chunel]
+* 提供`message`(消息)功能，用于实现`element`和`pipeline`之间的消息传递机制
+
 </details>
 
 ------------

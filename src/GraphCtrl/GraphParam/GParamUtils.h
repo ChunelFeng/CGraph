@@ -1,13 +1,13 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: GParamDefine.h
-@Time: 2022/1/25 10:34 下午
-@Desc: 
+@File: GParamUtils.h
+@Time: 2022/11/1 23:37
+@Desc:
 ***************************/
 
-#ifndef CGRAPH_GPARAMDEFINE_H
-#define CGRAPH_GPARAMDEFINE_H
+#ifndef CGRAPH_GPARAMUTILS_H
+#define CGRAPH_GPARAMUTILS_H
 
 #include "../GraphObject.h"
 
@@ -35,4 +35,5 @@ CGRAPH_NAMESPACE_BEGIN
 
 CGRAPH_NAMESPACE_END
 
-#endif //CGRAPH_GPARAMDEFINE_H
+
+#endif //CGRAPH_GPARAMUTILS_H

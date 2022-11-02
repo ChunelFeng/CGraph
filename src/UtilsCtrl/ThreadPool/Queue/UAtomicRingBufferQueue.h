@@ -16,7 +16,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T, int capacity = CGRAPH_DEFAULT_RINGBUFFER_SIZE>
+template<typename T, CUint capacity = CGRAPH_DEFAULT_RINGBUFFER_SIZE>
 class UAtomicRingBufferQueue : public UQueueObject {
 public:
     explicit UAtomicRingBufferQueue() {
@@ -26,42 +26,74 @@ public:
         ring_buffer_queue_.resize(capacity_);
     }
 
+    /**
+     * 设置容量信息
+     * @param size
+     * @return
+     * @notice 谨慎使用，push信息之后，不推荐使用
+     */
+    CVoid setCapacity(CUint size) {
+        capacity_ = size;
+        ring_buffer_queue_.resize(capacity_);
+    }
+
+    /**
+     * 获取容量信息
+     * @return
+     */
+    [[nodiscard]] CUint getCapacity() const {
+        return capacity_;
+    }
 
     /**
      * 写入信息
      * @param value
      * @return
      */
-    CVoid push(T&& value) {
+    template<class TImpl = T>
+    CVoid push(const TImpl& value) {
         {
             CGRAPH_UNIQUE_LOCK lk(mutex_);
             if (isFull()) {
                 push_cv_.wait(lk, [this] { return !isFull(); });
             }
 
-            ring_buffer_queue_[tail_] = std::move(std::make_unique<T>(value));
+            ring_buffer_queue_[tail_] = std::move(std::make_unique<TImpl>(value));
             tail_ = (tail_ + 1) % capacity_;
         }
         pop_cv_.notify_one();
     }
-
 
     /**
      * 等待弹出信息
      * @param value
      * @return
      */
-    CVoid waitPop(T& value) {
+    template<class TImpl = T>
+    CVoid waitPop(TImpl& value) {
         {
             CGRAPH_UNIQUE_LOCK lk(mutex_);
             if (isEmpty()) {
                 pop_cv_.wait(lk, [this] { return !isEmpty(); });
             }
 
-            value = std::move(*ring_buffer_queue_[head_]);
+            value = (*ring_buffer_queue_[head_]);
+            ring_buffer_queue_[head_] = {};
             head_ = (head_ + 1) % capacity_;
         }
         push_cv_.notify_one();
+    }
+
+    /**
+     * 清空所有的数据
+     * @return
+     */
+    CStatus clear() {
+        CGRAPH_FUNCTION_BEGIN
+        ring_buffer_queue_.resize(0);
+        head_ = 0;
+        tail_ = 0;
+        CGRAPH_FUNCTION_END
     }
 
 protected:
@@ -77,9 +109,9 @@ protected:
     CGRAPH_NO_ALLOWED_COPY(UAtomicRingBufferQueue)
 
 private:
-    int head_;                                                      // 头结点位置
-    int tail_;                                                      // 尾结点位置
-    int capacity_;                                                  // 环形缓冲的容量大小
+    CUint head_;                                                    // 头结点位置
+    CUint tail_;                                                    // 尾结点位置
+    CUint capacity_;                                                // 环形缓冲的容量大小
 
     std::condition_variable push_cv_;                               // 写入的条件变量。为了保持语义完整，也考虑今后多入多出的可能性，不使用 父类中的 cv_了
     std::condition_variable pop_cv_;                                // 读取的条件变量
