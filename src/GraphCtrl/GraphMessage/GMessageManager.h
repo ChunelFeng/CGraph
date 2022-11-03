@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: GMessageManager.h
 @Time: 2022/10/30 20:48
-@Desc: 信息管理类。注意：这个类不属于 GraphManager 的子类。
+@Desc: 信息管理类
 ***************************/
 
 #ifndef CGRAPH_GMESSAGEMANAGER_H
@@ -34,19 +34,16 @@ public:
 
         auto result = message_map_.find(topic);
         if (result != message_map_.end()) {
-            /**
-             * 如果类型和size完全匹配的话，则直接返回创建成功
-             * 否则返回错误
-             */
+            // 如果类型和size完全匹配的话，则直接返回创建成功。否则返回错误
             auto curTopic = result->second;
-            return (typeid(*curTopic).name() == typeid(GMessage<TImpl>).name()
-                    && curTopic->getCapacity() == size)
-                ? CStatus() : CStatus("create topic duplicate");
+            status = (typeid(*curTopic).name() == typeid(GMessage<TImpl>).name() && curTopic->getCapacity() == size)
+                     ? CStatus() : CStatus("create topic duplicate");
+        } else {
+            // 创建一个 topic信息
+            auto message = CGRAPH_SAFE_MALLOC_COBJECT(GMessage<TImpl>);
+            message->setCapacity(size);
+            message_map_.insert(std::pair<const std::string&, GMessagePtr<T> >(topic, GMessagePtr<T>(message)));
         }
-
-        auto message = CGRAPH_SAFE_MALLOC_COBJECT(GMessage<TImpl>);
-        message->setCapacity(size);
-        message_map_.insert(std::pair<const std::string&, GMessagePtr<T> >(topic, GMessagePtr<T>(message)));
 
         CGRAPH_FUNCTION_END
     }

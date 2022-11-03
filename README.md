@@ -251,7 +251,8 @@ int main() {
 * 优化`group`执行逻辑
 
 [2022.11.03 - v2.2.0 - Chunel]
-* 提供`message`(消息)功能，用于实现`element`和`pipeline`之间的消息传递机制
+* 提供`message`(消息)功能，用于实现不同`pipeline`之间`element`的数据传递机制
+* 更新`tutorial`内容
 
 </details>
 
@@ -260,6 +261,7 @@ int main() {
 <summary><b>附录-2. 感谢</b></summary>
 
 * 感谢 [Doocs 微信公众号](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzIxNjA5ODQ0OQ==&action=getalbum&album_id=1989460124624551937&scene=173&from_msgid=2654703194&from_itemidx=1&count=3&nolastread=1#wechat_redirect) 刊登相关介绍文档，欢迎加入 [Doocs 开源社区](https://github.com/doocs)
+
 * 感谢《HelloGithub》期刊介绍和推荐：[HelloGithub 第70期](https://github.com/521xueweihan/HelloGitHub/blob/master/content/HelloGitHub70.md)
 
 <p align="center"><img src="https://github.com/ChunelFeng/CGraph/blob/main/doc/image/HelloGithub%20Logo.gif"/></p>
@@ -268,6 +270,7 @@ int main() {
 
 <p align="center"><img src="https://github.com/ChunelFeng/CGraph/blob/main/doc/image/GrowingGit%20Logo.png"/></p>
 
+* Thanks to the recommendation from [awesome-cpp](https://github.com/fffaraz/awesome-cpp), we all know, it is the most authoritative recommendation list for cpp project in the world
 * Thanks to the recommendation from `Taskflow Group`: [awesome-parallel-computing](https://github.com/taskflow/awesome-parallel-computing), and we always treat [taskflow](https://github.com/taskflow/taskflow) as a role model
 * Thanks to the recommendation from [awesome-workflow-engines](https://github.com/meirwah/awesome-workflow-engines)
 * 感谢 [@yangyuxiang77](https://github.com/yangyuxiang77) [@logerrors](https://github.com/logerrors) [@whenever5225](https://github.com/whenever5225) [@May-Yaha](https://github.com/May-Yaha) [@Codesire-Deng](https://github.com/Codesire-Deng) 等朋友（以贡献时间先后为顺序）为项目做出的贡献
