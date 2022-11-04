@@ -45,10 +45,11 @@ set(CGRAPH_TUTORIAL_LIST
         T15-ElementParam
         T16-Message
         TU01-ThreadPool
-        TU02-Lru
-        TU03-Trie
-        TU04-Timer
-        TU05-Distance)
+        # TU02-Lru
+        # TU03-Trie
+        # TU04-Timer
+        # TU05-Distance
+        )
 
 foreach(tut ${CGRAPH_TUTORIAL_LIST})
     add_executable(${tut} tutorial/${tut}.cpp ${CGRAPH_SRC_LIST})
