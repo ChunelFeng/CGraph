@@ -8,7 +8,7 @@
 
 #include "GSingleton.h"
 
-#if _LIBCPP_STD_VER >= 17
+#if __cplusplus >= 201703L
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -98,4 +98,4 @@ CStatus GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElement
 
 CGRAPH_NAMESPACE_END
 
-#endif  //_LIBCPP_STD_VER >= 17
+#endif  //__cplusplus >= 201703L

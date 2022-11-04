@@ -11,7 +11,7 @@
 
 #include <string>
 
-    #if _LIBCPP_STD_VER >= 17
+    #if __cplusplus >= 201703L
 #include <shared_mutex>
     #else
 #include <mutex>
@@ -24,7 +24,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GParam : public GParamObject {
 public:
-#if _LIBCPP_STD_VER >= 17
+#if __cplusplus >= 201703L
     std::shared_mutex _param_shared_lock_;    // 用于参数互斥的锁信息
 #else
     std::mutex _param_shared_lock_;
