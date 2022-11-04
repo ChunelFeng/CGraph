@@ -15,6 +15,10 @@ struct MyMessageParam : public CGraph::GMessageParam {
     int num;
     std::string info;
 
+    MyMessageParam() = default;
+    MyMessageParam(const MyMessageParam&) = default;
+    MyMessageParam(MyMessageParam&&) = default;
+
     MyMessageParam& operator=(const MyMessageParam& param) {
         /**
          * 注意：
@@ -26,6 +30,17 @@ struct MyMessageParam : public CGraph::GMessageParam {
         }
 
         this->info = param.info;
+        this->num = param.num;
+        return (*this);
+    }
+
+    MyMessageParam& operator=(MyMessageParam&& param) {
+        if (this == &param) {
+            return *this;
+        }
+
+        this->CGraph::GMessageParam::operator=(std::move(param));
+        this->info = std::move(param.info);
         this->num = param.num;
         return (*this);
     }
