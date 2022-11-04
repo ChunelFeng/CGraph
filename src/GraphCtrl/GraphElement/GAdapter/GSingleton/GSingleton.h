@@ -11,7 +11,7 @@
 
 #include "../GAdapter.h"
 
-#if _LIBCPP_STD_VER >= 17
+#if __cplusplus >= 201703L
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -53,5 +53,5 @@ CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GSINGLETON_H
 
-#endif // _LIBCPP_STD_VER >= 17
+#endif // __cplusplus >= 201703L
 

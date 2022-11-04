@@ -10,7 +10,7 @@
 #define CGRAPH_UTHREADPOOLDEFINE_H
 
 #include <thread>
-    #if _LIBCPP_STD_VER >= 17
+    #if __cplusplus >= 201703L
 #include <shared_mutex>
     #else
 # include <mutex>
@@ -21,7 +21,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-    #if _LIBCPP_STD_VER >= 17
+    #if __cplusplus >= 201703L
 using CGRAPH_READ_LOCK = std::shared_lock<std::shared_mutex>;
 using CGRAPH_WRITE_LOCK = std::unique_lock<std::shared_mutex>;
     #else
