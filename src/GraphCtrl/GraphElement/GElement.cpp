@@ -101,11 +101,9 @@ CStatus GElement::process(bool isMock) {
 CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
     for (GElementPtr cur: elements) {
+        CGRAPH_ASSERT_NOT_NULL(cur)
         if (this == cur) {
             continue;
-        }
-        if (nullptr == cur) {
-            CGRAPH_RETURN_ERROR_STATUS("element has not been initialized");
         }
 
         cur->run_before_.insert(this);
