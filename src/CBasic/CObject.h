@@ -35,7 +35,7 @@ public:
     virtual CStatus run() = 0;
 
     /**
-     * 释放函数（对应原先deinit函数）
+     * 释放函数
      */
     virtual CStatus destroy() {
         CGRAPH_EMPTY_FUNCTION

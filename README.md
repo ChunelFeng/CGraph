@@ -5,14 +5,14 @@
   <a href="https://github.com/ChunelFeng/CGraph/network/members"><img src="https://badgen.net/github/forks/ChunelFeng/CGraph?color=cyan" alt="forks"></a>
 </p>
 
-[![awesome-cpp](https://badgen.net/badge/icon/awesome-cpp/blue?icon=awesome&label&color)](https://github.com/fffaraz/awesome-cpp)
-[![HelloGithub](https://badgen.net/badge/icon/HelloGithub/blue?icon=awesome&label&color)](https://github.com/521xueweihan/HelloGitHub/blob/master/content/HelloGitHub70.md)
+[![awesome-cpp](https://badgen.net/badge/icon/awesome-cpp/purple?icon=awesome&label&color)](https://github.com/fffaraz/awesome-cpp)
+[![HelloGithub](https://badgen.net/badge/icon/HelloGithub/purple?icon=awesome&label&color)](https://github.com/521xueweihan/HelloGitHub/blob/master/content/HelloGitHub70.md)
 
 <h1 align="center">
   CGraph 说明文档
 </h1>
 
->CGraph is a cross-platform <b>D</b>irected <b>A</b>cyclic <b>G</b>raph framework based on pure C++ without any 3rd-party. It is recommended in [`awesome-cpp`](https://github.com/fffaraz/awesome-cpp), [`HelloGithub`](https://github.com/521xueweihan/HelloGitHub/blob/master/content/HelloGitHub70.md) and some other lists. </br></br>
+>CGraph is a cross-platform <b>D</b>irected <b>A</b>cyclic <b>G</b>raph framework based on pure C++ without any 3rd-party. It is recommended by [`awesome-cpp`](https://github.com/fffaraz/awesome-cpp), [`HelloGithub`](https://github.com/521xueweihan/HelloGitHub/blob/master/content/HelloGitHub70.md) and so on. </br></br>
 >You, with it, can build your own operators simply, and describe any running schedules as you need, such as dependence, parallelling, aggregation and so on. Some useful tools and plugins are also provide to improve your project.</br></br>
 >Tutorials and contact information are show as follows. Please get in touch with us for free if you need more about this repository.
 
@@ -129,6 +129,7 @@ int main() {
 * [纯序员给你介绍图化框架的简单实现——条件判断](http://www.chunel.cn/archives/cgraph-condition-introduce)
 * [纯序员给你介绍图化框架的简单实现——面向切面](http://www.chunel.cn/archives/cgraph-aspect-introduce)
 * [纯序员给你介绍图化框架的简单实现——函数注入](http://www.chunel.cn/archives/cgraph-function-introduce)
+*（[纯序员给你介绍图化框架的简单实现——消息机制](http://www.chunel.cn/archives/cgraph-message-introduce)
 * [纯序员给你介绍图化框架的简单实现——线程池优化（一）](http://www.chunel.cn/archives/cgraph-threadpool-1-introduce)
 * [纯序员给你介绍图化框架的简单实现——线程池优化（二）](http://www.chunel.cn/archives/cgraph-threadpool-2-introduce)
 * [纯序员给你介绍图化框架的简单实现——线程池优化（三）](http://www.chunel.cn/archives/cgraph-threadpool-3-introduce)
