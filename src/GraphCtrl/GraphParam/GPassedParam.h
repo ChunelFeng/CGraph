@@ -38,7 +38,7 @@ using GAspectParamPtr = GAspectParam *;
 using GDaemonParamPtr = GDaemonParam *;
 using GElementParamPtr = GElementParam *;
 
-using GElementParamKV = std::unordered_map<std::string, GElementParamPtr>;
+using GElementParamMap = std::unordered_map<std::string, GElementParamPtr>;
 
 CGRAPH_NAMESPACE_END
 
