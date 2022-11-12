@@ -65,8 +65,8 @@ CStatus GElementManager::run() {
 
         /** 将分解后的pipeline信息，以cluster为维度，放入线程池依次执行 */
         for (GClusterRef cluster : clusterArr) {
-            futures.emplace_back(thread_pool_->commit([&cluster] {
-                return cluster.process(false);
+            futures.emplace_back(thread_pool_->commit([clusterPtr=&cluster] {
+                return clusterPtr->process(false);
             }, this->schedule_strategy_));
 
             runElementSize += cluster.getElementNum();
