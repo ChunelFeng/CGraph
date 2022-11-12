@@ -49,8 +49,10 @@ static const int CGRAPH_THREAD_MIN_PRIORITY = 0;                                
 static const int CGRAPH_THREAD_MAX_PRIORITY = 99;                                           // 线程最高优先级
 static const CMSec CGRAPH_MAX_BLOCK_TTL = 10000000;                                         // 最大阻塞时间，单位为ms
 static const CUint CGRAPH_DEFAULT_RINGBUFFER_SIZE = 100;                                    // 默认环形队列的大小
+
 static const int CGRAPH_DEFAULT_TASK_STRATEGY = -1;                                         // 默认线程调度策略
 static const int CGRAPH_LONG_TIME_TASK_STRATEGY = -101;                                     // 长时间任务调度策略
+static const int CGRAPH_REGION_TASK_STRATEGY = -102;                                        // region的调度策略
 
 /**
  * 以下为线程池配置信息

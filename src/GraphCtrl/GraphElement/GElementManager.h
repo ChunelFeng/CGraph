@@ -71,11 +71,19 @@ protected:
      */
     CStatus clear() final;
 
+    /**
+     * 设置调度策略
+     * @param type
+     * @return
+     */
+    GElementManager* setScheduleStrategy(int strategy);
+
 private:
     GSortedGElementPtrSet manager_elements_;                    // 保存节点信息的内容
     ParaWorkedClusterArrs para_cluster_arrs_;                   // 可以并行的cluster数组
     UThreadPoolPtr thread_pool_ { nullptr };                    // 内部执行的线程池
     CMSec element_run_ttl_ = CGRAPH_DEFAULT_ELEMENT_RUN_TTL;    // 单个节点最大运行周期
+    int schedule_strategy_;                                     // 调度策略
 
     friend class GPipeline;
     friend class GRegion;

@@ -11,7 +11,8 @@
 CGRAPH_NAMESPACE_BEGIN
 
 GElementManager::GElementManager() {
-    this->thread_pool_ = UThreadPoolSingleton::get();
+    thread_pool_ = UThreadPoolSingleton::get();
+    schedule_strategy_ = CGRAPH_DEFAULT_TASK_STRATEGY;
 }
 
 
@@ -64,7 +65,10 @@ CStatus GElementManager::run() {
 
         /** 将分解后的pipeline信息，以cluster为维度，放入线程池依次执行 */
         for (GClusterRef cluster : clusterArr) {
-            futures.emplace_back(thread_pool_->commit(std::bind(&GCluster::process, std::ref(cluster), false)));
+            futures.emplace_back(thread_pool_->commit([&cluster] {
+                return cluster.process(false);
+            }, this->schedule_strategy_));
+
             runElementSize += cluster.getElementNum();
             curClusterTtl.emplace_back(cluster.getElementNum() * element_run_ttl_);
         }
@@ -254,6 +258,12 @@ CStatus GElementManager::clear() {
 
     manager_elements_.clear();
     CGRAPH_FUNCTION_END
+}
+
+
+GElementManagerPtr GElementManager::setScheduleStrategy(int strategy) {
+    this->schedule_strategy_ = strategy;
+    return this;
 }
 
 CGRAPH_NAMESPACE_END

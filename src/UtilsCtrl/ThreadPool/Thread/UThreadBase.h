@@ -59,7 +59,7 @@ protected:
     virtual bool popPoolTask(UTaskRef task) {
         bool result = pool_task_queue_->tryPop(task);
         if (!result && CGRAPH_THREAD_TYPE_SECONDARY == type_) {
-            // 如果辅助线程没有获取到的话，还需要再尝试从长时间任务队列中，获取一次。
+            // 如果辅助线程没有获取到的话，还需要再尝试从长时间任务队列中，获取一次
             result = pool_priority_task_queue_->tryPop(task);
         }
         return result;
@@ -74,7 +74,7 @@ protected:
     virtual bool popPoolTask(UTaskArrRef tasks) {
         bool result = pool_task_queue_->tryPop(tasks, config_->max_pool_batch_size_);
         if (!result && CGRAPH_THREAD_TYPE_SECONDARY == type_) {
-            result = pool_priority_task_queue_->tryPop(tasks, 1);
+            result = pool_priority_task_queue_->tryPop(tasks, 1);    // 从优先队列里，最多pop出来一个
         }
         return result;
     }
