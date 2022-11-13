@@ -146,6 +146,8 @@ private:
     template<typename U, USingletonType, CBool> friend class USingleton;
 };
 
+static USingleton<GMessageManager<>, USingletonType::LAZY, false> GMessageManagerSingleton;    // 对外提供的GMessageManager方式
+
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GMESSAGEMANAGER_H

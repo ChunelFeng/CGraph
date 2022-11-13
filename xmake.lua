@@ -32,6 +32,8 @@ tutorial_list = {
         "T12-Function",
         "T13-Daemon",
         "T14-Hold",
+        "T15-ElementParam",
+        "T16-Message",
         "TU01-ThreadPool",
         "TU02-Lru",
         "TU03-Trie",

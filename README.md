@@ -12,7 +12,7 @@
   CGraph 说明文档
 </h1>
 
->CGraph is a cross-platform <b>D</b>irected <b>A</b>cyclic <b>G</b>raph framework based on pure C++ without any 3rd-party. It is recommended by [`awesome-cpp`](https://github.com/fffaraz/awesome-cpp), [`HelloGithub`](https://github.com/521xueweihan/HelloGitHub/blob/master/content/HelloGitHub70.md) and so on. </br></br>
+>`CGraph` is a cross-platform <b>D</b>irected <b>A</b>cyclic <b>G</b>raph framework based on pure C++ without any 3rd-party.</br></br>
 >You, with it, can build your own operators simply, and describe any running schedules as you need, such as dependence, parallelling, aggregation and so on. Some useful tools and plugins are also provide to improve your project.</br></br>
 >Tutorials and contact information are show as follows. Please get in touch with us for free if you need more about this repository.
 
