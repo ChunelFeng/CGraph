@@ -139,6 +139,9 @@ protected:
         CGRAPH_EMPTY_FUNCTION
     }
 
+    ~GMessageManager() override {
+        clear();    // 释放所有的信息
+    }
 
 private:
     std::unordered_map<std::string, GMessagePtr<T> > message_map_;    // 记录 topic 和 message queue 信息

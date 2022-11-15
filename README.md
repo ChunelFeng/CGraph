@@ -12,7 +12,7 @@
   CGraph 说明文档
 </h1>
 
->`CGraph` is a cross-platform <b>D</b>irected <b>A</b>cyclic <b>G</b>raph framework based on pure C++ without any 3rd-party.</br></br>
+>CGraph is a cross-platform <b>D</b>irected <b>A</b>cyclic <b>G</b>raph framework based on pure C++ without any 3rd-party.</br></br>
 >You, with it, can build your own operators simply, and describe any running schedules as you need, such as dependence, parallelling, aggregation and so on. Some useful tools and plugins are also provide to improve your project.</br></br>
 >Tutorials and contact information are show as follows. Please get in touch with us for free if you need more about this repository.
 
@@ -44,7 +44,7 @@
   $ make -j8
   ```
 
-* 提供基于`Ubuntu 20.04.3`的Docker镜像。输入以下指令，即可获取并进入
+* 提供基于`Ubuntu 20.04`的Docker镜像。输入以下指令，即可获取并进入
   ```shell
   $ docker pull chunelfeng/cenv                         # 获取docker镜像
   $ docker run -it --name CGraphEnv chunelfeng/cenv     # 开启docker容器，并进入
@@ -253,7 +253,7 @@ int main() {
 * 优化`group`执行逻辑
 
 [2022.11.03 - v2.2.0 - Chunel]
-* 提供`message`(消息)功能，用于实现不同`pipeline`之间`element`的数据传递机制
+* 提供`message`(消息)功能，主要用于完成不同`pipeline`之间的数据传递
 * 更新`tutorial`内容
 
 </details>
