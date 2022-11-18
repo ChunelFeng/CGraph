@@ -30,10 +30,4 @@ GNode* GNode::setType(const GNodeType& type) {
     return this;
 }
 
-
-int GNode::getThreadNum() {
-    auto tid = (CSize)std::hash<std::thread::id>{}(std::this_thread::get_id());
-    return thread_pool_->getThreadNum(tid);
-}
-
 CGRAPH_NAMESPACE_END

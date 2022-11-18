@@ -207,4 +207,14 @@ CStatus GElement::crashed(const CException& ex) {
     CGRAPH_THROW_EXCEPTION(ex.what())
 }
 
+
+int GElement::getThreadNum() {
+    if (nullptr == thread_pool_) {
+        return -1;    // 理论不存在的情况
+    }
+
+    auto tid = (CSize)std::hash<std::thread::id>{}(std::this_thread::get_id());
+    return thread_pool_->getThreadNum(tid);
+}
+
 CGRAPH_NAMESPACE_END

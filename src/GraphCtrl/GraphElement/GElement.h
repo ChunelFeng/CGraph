@@ -205,6 +205,13 @@ protected:
      */
     CStatus fatProcessor(const CFunctionType& type);
 
+    /**
+     * 获取执行线程对应的信息
+     * @return
+     * @notice 辅助线程返回-1
+     */
+    int getThreadNum();
+
     CGRAPH_NO_ALLOWED_COPY(GElement);
 
 protected:

@@ -36,12 +36,6 @@ protected:
     GNode* setType(const GNodeType& type);
 
     /**
-     * 获取当前执行的线程的num信息
-     * @return
-     */
-    int getThreadNum();
-
-    /**
      * 异步执行信息，适用于传入静态类函数或者lambda表达式信息
      * @tparam Func
      * @tparam Args
