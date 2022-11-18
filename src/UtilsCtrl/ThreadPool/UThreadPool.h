@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <list>
+#include <map>
 #include <future>
 #include <thread>
 #include <algorithm>
@@ -101,6 +102,14 @@ public:
                    CGRAPH_CALLBACK_CONST_FUNCTION_REF onFinished = nullptr);
 
     /**
+     * 获取根据线程id信息，获取线程num信息
+     * @param tid
+     * @return
+     * @notice 辅助线程返回-1
+     */
+    int getThreadNum(CSize tid);
+
+    /**
      * 释放所有的线程信息
      * @return
      */
@@ -130,7 +139,7 @@ protected:
 
     CGRAPH_NO_ALLOWED_COPY(UThreadPool)
 
-protected:
+private:
     CBool is_init_ { false };                                                       // 是否初始化
     CBool is_monitor_ { true };                                                     // 是否需要监控
     CInt cur_index_ = 0;                                                            // 记录放入的线程数
@@ -141,6 +150,7 @@ protected:
     std::list<std::unique_ptr<UThreadSecondary>> secondary_threads_;                // 用于记录所有的辅助线程
     UThreadPoolConfig config_;                                                      // 线程池设置值
     std::thread monitor_thread_;                                                    // 监控线程
+    std::map<CSize, int> thread_record_map_;                                        // 线程记录的信息
 };
 
 using UThreadPoolPtr = UThreadPool *;

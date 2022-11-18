@@ -31,9 +31,9 @@ GNode* GNode::setType(const GNodeType& type) {
 }
 
 
-CSize GNode::getThreadId() {
-    const CSize& tid = (CSize)std::hash<std::thread::id>{}(std::this_thread::get_id());
-    return tid;
+int GNode::getThreadNum() {
+    auto tid = (CSize)std::hash<std::thread::id>{}(std::this_thread::get_id());
+    return thread_pool_->getThreadNum(tid);
 }
 
 CGRAPH_NAMESPACE_END

@@ -58,7 +58,7 @@
 
 ## 三. 使用Demo
 
-#### MyNode1.h
+#### MyNode.h
 ```cpp
 #include "../../src/CGraph.h"
 
@@ -71,11 +71,7 @@ public:
         return status;
     }
 };
-```
 
-#### MyNode2.h
-```cpp
-#include "../../src/CGraph.h"
 
 class MyNode2 : public CGraph::GNode {
 public:
@@ -90,8 +86,7 @@ public:
 
 #### main.cpp
 ```cpp
-#include "MyGNode/MyNode1.h"
-#include "MyGNode/MyNode2.h"
+#include "MyGNode/MyNode.h"
 
 using namespace CGraph;
 
@@ -244,7 +239,7 @@ int main() {
 * 提供一键编译脚本
 
 [2022.05.29 - v2.1.0 - Chunel]
-* 提供element参数写入方法
+* 提供`element`参数写入方法
 * 提供针对C++14版本的支持，个别功能有裁剪
 * 更新`tutorial`内容
 

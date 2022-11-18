@@ -53,12 +53,15 @@ CStatus UThreadPool::init() {
         CGRAPH_FUNCTION_END
     }
 
+    thread_record_map_.clear();
     primary_threads_.reserve(config_.default_thread_size_);
     for (int i = 0; i < config_.default_thread_size_; i++) {
-        auto ptr = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary)    // 创建核心线程数
-
+        auto ptr = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary);    // 创建核心线程数
         ptr->setThreadPoolInfo(i, &task_queue_, &primary_threads_, &config_);
         status += ptr->init();
+
+        // 记录线程和匹配id信息
+        thread_record_map_.insert(std::pair<CSize, int>((CSize)std::hash<std::thread::id>{}(ptr->thread_.get_id()), i));
         primary_threads_.emplace_back(ptr);
     }
     CGRAPH_FUNCTION_CHECK_STATUS
@@ -113,6 +116,17 @@ CStatus UThreadPool::submit(CGRAPH_DEFAULT_CONST_FUNCTION_REF func, CMSec ttl,
 }
 
 
+int UThreadPool::getThreadNum(CSize tid) {
+    int threadNum = -1;
+    auto result = thread_record_map_.find(tid);
+    if (result != thread_record_map_.end()) {
+        threadNum = result->second;
+    }
+
+    return threadNum;
+}
+
+
 CStatus UThreadPool::destroy() {
     CGRAPH_FUNCTION_BEGIN
     if (!is_init_) {
@@ -133,6 +147,7 @@ CStatus UThreadPool::destroy() {
     }
     CGRAPH_FUNCTION_CHECK_STATUS
     secondary_threads_.clear();
+    thread_record_map_.clear();
     is_init_ = false;
 
     CGRAPH_FUNCTION_END
