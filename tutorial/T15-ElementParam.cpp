@@ -10,7 +10,6 @@
 #include "MyGNode/MyEParamNode.h"
 #include "MyGParam/MyConnParam.h"
 
-
 using namespace CGraph;
 
 void tutorial_element_param() {

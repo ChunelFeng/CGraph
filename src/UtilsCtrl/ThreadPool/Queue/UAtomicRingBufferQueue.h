@@ -26,6 +26,10 @@ public:
         ring_buffer_queue_.resize(capacity_);
     }
 
+    ~UAtomicRingBufferQueue() override {
+        clear();
+    }
+
     /**
      * 设置容量信息
      * @param size
