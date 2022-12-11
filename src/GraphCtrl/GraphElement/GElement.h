@@ -238,6 +238,7 @@ protected:
     friend class GGroup;
     friend class GPipeline;
     friend class GElementSorter;
+    friend class GStaticEngine;
     template<typename T> friend class GSingleton;
 };
 

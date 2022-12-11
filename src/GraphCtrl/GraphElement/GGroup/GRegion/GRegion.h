@@ -15,7 +15,6 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-/** region 中包含了 cluster 的所有功能 */
 class GRegion : public GGroup {
 protected:
     explicit GRegion();
@@ -28,10 +27,9 @@ protected:
     CStatus addElement(GElementPtr element) final;
 
 private:
-    GElementManagerPtr manager_;    // region 内部通过 manager来管理其中的 element 信息
+    GElementManagerPtr manager_ = nullptr;    // region 内部通过 manager来管理其中的 element 信息
 
     CGRAPH_NO_ALLOWED_COPY(GRegion)
-
 
     friend class GPipeline;
     friend class UAllocator;
