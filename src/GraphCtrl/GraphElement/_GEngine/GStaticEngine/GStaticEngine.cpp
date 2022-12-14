@@ -157,7 +157,6 @@ CStatus GStaticEngine::run() {
         }
     }
 
-    status = afterRunCheck();
     CGRAPH_FUNCTION_END
 }
 

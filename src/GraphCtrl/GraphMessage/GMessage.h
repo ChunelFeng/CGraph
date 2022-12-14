@@ -53,8 +53,9 @@ public:
      * @param size
      * @return
      */
-    CVoid setCapacity(CUint size) {
+    GMessage* setCapacity(CUint size) {
         queue_.setCapacity(size);
+        return this;
     }
 
     /**

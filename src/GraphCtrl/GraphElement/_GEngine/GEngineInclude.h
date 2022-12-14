@@ -10,6 +10,6 @@
 #define CGRAPH_GENGINEINCLUDE_H
 
 #include "GEngine.h"
-#include "GStaticEngine.h"
+#include "GStaticEngine/GStaticEngine.h"
 
 #endif //CGRAPH_GENGINEINCLUDE_H

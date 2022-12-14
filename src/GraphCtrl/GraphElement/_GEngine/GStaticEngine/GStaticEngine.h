@@ -9,8 +9,8 @@
 #ifndef CGRAPH_GSTATICENGINE_H
 #define CGRAPH_GSTATICENGINE_H
 
-#include "GEngine.h"
-#include "../GGroup/GCluster/GCluster.h"
+#include "../GEngine.h"
+#include "../../GGroup/GCluster/GCluster.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

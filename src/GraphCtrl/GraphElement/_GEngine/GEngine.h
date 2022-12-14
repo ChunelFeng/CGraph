@@ -15,7 +15,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class GEngine : public GEngineObject {
-public:
+protected:
     /**
      * 构造函数
      */

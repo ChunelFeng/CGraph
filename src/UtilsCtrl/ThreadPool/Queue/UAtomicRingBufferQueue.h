@@ -36,9 +36,10 @@ public:
      * @return
      * @notice 谨慎使用，push信息之后，不推荐使用
      */
-    CVoid setCapacity(CUint size) {
+    UAtomicRingBufferQueue* setCapacity(CUint size) {
         capacity_ = size;
         ring_buffer_queue_.resize(capacity_);
+        return this;
     }
 
     /**
