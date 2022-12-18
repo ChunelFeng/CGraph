@@ -71,18 +71,6 @@ CSize GDaemonManager::getSize() const {
 }
 
 
-GDaemonManagerPtr GDaemonManager::setPipelineParamManager(GParamManagerPtr pm) {
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(pm)
-
-    for (auto daemon : daemons_) {
-        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(daemon)
-        daemon->pipeline_param_manager_ = pm;
-    }
-
-    return this;
-}
-
-
 GDaemonManagerPtr GDaemonManager::setInterval(CMSec interval) {
     if (0 == interval) {
         return this;

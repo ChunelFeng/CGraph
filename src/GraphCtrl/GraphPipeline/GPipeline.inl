@@ -144,8 +144,8 @@ GPipeline* GPipeline::addGDaemon(CMSec ms, DParam* param) {
 
     GDaemonPtr daemon = CGRAPH_SAFE_MALLOC_COBJECT(TDaemon)
     daemon->setDParam<DParam>(param)
-            ->setInterval(ms)
-            ->setPipelineParamManager(param_manager_);
+            ->setInterval(ms);
+    daemon->setGParamManager(this->param_manager_);
     status = daemon_manager_->add(daemon);
 
     return status.isOK() ? this : nullptr;

@@ -16,8 +16,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GDaemon : public GDaemonObject {
-
+class GDaemon : public GDaemonObject, public GParamManagerWrapper {
 protected:
     /**
      * 后台执行函数，间隔interval时间后，执行一次

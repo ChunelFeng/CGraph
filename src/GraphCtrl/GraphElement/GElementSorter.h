@@ -15,7 +15,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GElementSorter : public GraphObject {
+class GElementSorter : public GElementObject {
 public:
     /**
      * 当level不同的时候，level值小的element优先被init和destroy

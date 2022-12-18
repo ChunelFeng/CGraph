@@ -21,17 +21,6 @@ protected:
     }
 
     /**
-     * 设置参数管理器，这里是统一设置。入参可以为空
-     * @param pm
-     * @return
-     */
-    virtual GDaemonObject* setPipelineParamManager(GParamManagerPtr pm) {
-        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(pm)
-        this->pipeline_param_manager_ = pm;
-        return this;
-    }
-
-    /**
      * 设置休眠时间信息，单位ms
      * @return
      */
@@ -43,16 +32,6 @@ protected:
         interval_ = interval;
         return this;
     }
-
-    /**
-     * 获取参数信息
-     * @tparam T
-     * @param key
-     * @return
-     */
-    template <typename T,
-            std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
-    T* getGParam(const std::string& key);
 
     /**
      * 设置daemon中参数，类型为GDaemonParam (即：GPassedParam)
@@ -78,10 +57,11 @@ private:
     friend class GPipeline;
 
 private:
-    GParamManagerPtr pipeline_param_manager_ = nullptr;        // 获取参数管理类
     GDaemonParamPtr param_ = nullptr;                          // 用于存储daemon对象
     CMSec interval_ = 0;
 };
+
+using GDaemonObjectPtr = GDaemonObject *;
 
 CGRAPH_NAMESPACE_END
 

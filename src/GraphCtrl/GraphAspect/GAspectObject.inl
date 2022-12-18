@@ -38,16 +38,6 @@ T* GAspectObject::getAParam() {
     return param;
 }
 
-
-template <typename T,
-          std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
-T* GAspectObject::getGParam(const std::string& key) {
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(pipeline_param_manager_)
-
-    T* ptr = this->pipeline_param_manager_->get<T>(key);
-    return ptr;
-}
-
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GASPECTOBJECT_INL

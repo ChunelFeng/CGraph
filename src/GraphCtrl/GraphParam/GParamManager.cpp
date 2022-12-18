@@ -48,11 +48,9 @@ CStatus GParamManager::clear() {
 CStatus GParamManager::reset() {
     CGRAPH_FUNCTION_BEGIN
     for (auto cur : params_map_) {
-        if (unlikely(!cur.second)) {
-            continue;
+        if (likely(cur.second)) {
+            cur.second->reset();
         }
-
-        cur.second->reset();
     }
     CGRAPH_FUNCTION_END
 }

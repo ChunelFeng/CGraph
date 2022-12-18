@@ -14,13 +14,13 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GDaemonManager : public GDaemonObject, public GraphManager<GDaemon> {
+class GDaemonManager : public GDaemonObject,
+                       public GParamManagerWrapper,
+                       public GraphManager<GDaemon> {
 protected:
     explicit GDaemonManager() = default;
 
     ~GDaemonManager() override;
-
-    GDaemonManager* setPipelineParamManager(GParamManagerPtr pm) override;
 
     GDaemonManager* setInterval(CMSec interval) override;
 

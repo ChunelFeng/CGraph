@@ -16,7 +16,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GElementManager : public GraphObject, public GraphManager<GElement> {
+class GElementManager : public GElementObject, public GraphManager<GElement> {
 protected:
     explicit GElementManager();
     ~GElementManager() override;

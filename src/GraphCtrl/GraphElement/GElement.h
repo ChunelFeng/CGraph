@@ -16,13 +16,13 @@
 #include <algorithm>
 
 #include "GElementDefine.h"
-#include "../GraphObject.h"
+#include "GElementObject.h"
 #include "../GraphParam/GParamInclude.h"
 #include "../GraphAspect/GAspectInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GElement : public GraphObject {
+class GElement : public GElementObject {
 public:
     /**
      * 获取name信息
