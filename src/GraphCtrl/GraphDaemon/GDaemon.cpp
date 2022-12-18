@@ -10,11 +10,6 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-GDaemon::~GDaemon() {
-    CGRAPH_DELETE_PTR(param_)
-}
-
-
 CStatus GDaemon::init() {
     CGRAPH_FUNCTION_BEGIN
     timer_.start(interval_, [&] {
@@ -34,6 +29,5 @@ CStatus GDaemon::destroy() {
 [[nodiscard]] CMSec GDaemon::getInterval() const {
     return interval_;
 }
-
 
 CGRAPH_NAMESPACE_END
