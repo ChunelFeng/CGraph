@@ -15,7 +15,8 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GAspectManager : public GAspectObject, public GraphManager<GAspect> {
+class GAspectManager : public GAspectObject,
+                       public GraphManager<GAspect> {
 public:
     explicit GAspectManager() = default;
 

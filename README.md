@@ -60,7 +60,7 @@
 
 #### MyNode.h
 ```cpp
-#include "../../src/CGraph.h"
+#include "../src/CGraph.h"
 
 class MyNode1 : public CGraph::GNode {
 public:
@@ -86,7 +86,7 @@ public:
 
 #### main.cpp
 ```cpp
-#include "MyGNode/MyNode.h"
+#include "MyNode.h"
 
 using namespace CGraph;
 

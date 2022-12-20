@@ -18,7 +18,8 @@ CGRAPH_NAMESPACE_BEGIN
 
 template<typename T = GMessageParam,
         std::enable_if_t<std::is_base_of<GMessageParam, T>::value, int> = 0>
-class GMessageManager : public GMessageObject, public GraphManager<T> {
+class GMessageManager : public GMessageObject,
+                        public GraphManager<T> {
 public:
     /**
      * 创建 topic

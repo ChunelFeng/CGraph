@@ -18,7 +18,8 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GParamManager : public GParamObject, public GraphManager<GParam> {
+class GParamManager : public GParamObject,
+                      public GraphManager<GParam> {
 public:
     /**
      * 创建一个特定类型的参数

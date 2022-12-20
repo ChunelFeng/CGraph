@@ -15,7 +15,6 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class GDaemonManager : public GDaemonObject,
-                       public GParamManagerWrapper,
                        public GraphManager<GDaemon> {
 protected:
     explicit GDaemonManager() = default;

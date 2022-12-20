@@ -31,16 +31,16 @@ void tutorial_simple() {
     }
 
     /* 图信息初始化，准备开始计算 */
-    status = pipeline->init();
+    status += pipeline->init();
 
     /* 运行流图信息。初始化后，支持多次循环计算 */
     for (int i = 0; i < 3; i++) {
-        status = pipeline->run();
+        status += pipeline->run();
         CGRAPH_ECHO("==== tutorial_simple, loop : [%d], and run status = [%d].", i + 1, status.getCode());
     }
 
     /* 图信息逆初始化，准备结束计算 */
-    status = pipeline->destroy();
+    status += pipeline->destroy();
     GPipelineFactory::remove(pipeline);
 }
 
