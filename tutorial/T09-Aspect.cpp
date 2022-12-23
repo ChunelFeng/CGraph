@@ -10,6 +10,7 @@
 #include "MyGNode/MyNode2.h"
 #include "MyGAspect/MyTimerAspect.h"
 #include "MyGAspect/MyTraceAspect.h"
+#include "MyGAspect/MyTemplateAspect.h"
 
 using namespace CGraph;
 
@@ -28,6 +29,9 @@ void tutorial_aspect() {
 
     /** 针对node类型，添加 MyTraceAspect 切面逻辑 */
     a->addGAspect<MyTraceAspect>();
+
+    /** 针对node类型，添加可变参的MyTemplateAspect 切面逻辑 */
+    a->addGAspect<MyTemplateAspect<int, double>>(20, 7.0);
 
     /** 针对group类型，添加 MyTimerAspect 切面逻辑 */
     b_region->addGAspect<MyTimerAspect>();

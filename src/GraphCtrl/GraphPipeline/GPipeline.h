@@ -126,6 +126,18 @@ public:
     GPipeline* addGDaemon(CMSec ms, DParam* param = nullptr);
 
     /**
+     * 添加模板类型守护
+     * @tparam TAspect
+     * @tparam Args
+     * @param ms
+     * @param args
+     * @return
+     */
+    template<typename TDaemon, typename ...Args,
+            std::enable_if_t<std::is_base_of<GTemplateDaemon<Args...>, TDaemon>::value, int> = 0>
+    GPipeline* addGDaemon(CMSec ms, Args&&... args);
+
+    /**
      * 设置执行的最大时间周期，单位为毫秒
      * @param ttl
      * @return

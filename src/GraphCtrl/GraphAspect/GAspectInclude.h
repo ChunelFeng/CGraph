@@ -10,6 +10,7 @@
 #define CGRAPH_GASPECTINCLUDE_H
 
 #include "GAspect.h"
+#include "GTemplateAspect.h"
 #include "GAspectManager.h"
 
 #endif //CGRAPH_GASPECTINCLUDE_H

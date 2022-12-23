@@ -67,6 +67,16 @@ public:
     GElement* addGAspect(TParam* param = nullptr);
 
     /**
+     * 实现添加模板切面的逻辑
+     * @tparam TAspect
+     * @tparam Args
+     * @return
+     */
+    template<typename TAspect, typename ...Args,
+            std::enable_if_t<std::is_base_of<GTemplateAspect<Args...>, TAspect>::value, int> = 0>
+    GElement* addGAspect(Args&&... args);
+
+    /**
      * 添加当前element内部参数
      * @tparam T
      * @param key

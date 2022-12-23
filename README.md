@@ -22,7 +22,7 @@
 
 使用者只需继承`GNode`(节点)类，实现子类的run()方法，并根据需要设定依赖关系，即可实现任务的图化执行。还可以通过设定各种包含多节点信息的`GGroup`(组)，自行控制图的条件判断、循环和并发执行逻辑。
 
-项目提供了丰富的参数类型，用于不同应用场景下的数据互通。此外，还可以通过添加`GAspect`(切面)的方式，实现以上各种元素功能的横向扩展。或是通过引入`GAdapter`(适配器)对单个节点功能进行加强。
+项目提供了丰富的参数类型，用于不同应用场景下的数据互通。此外，还可以通过添加`GAspect`(切面)的方式，实现以上各种元素功能的横向扩展，或是通过引入`GAdapter`(适配器)对单个节点功能进行加强。
 
 ![CGraph Skeleton](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Skeleton.jpg)
 <br>
@@ -250,6 +250,9 @@ int main() {
 [2022.11.03 - v2.2.0 - Chunel]
 * 提供`message`(消息)功能，主要用于完成不同`pipeline`之间的数据传递
 * 更新`tutorial`内容
+
+[2022.12.24 - v2.2.1 - Chunel]
+* 优化`aspect`和`daemon`中参数传递的功能
 
 </details>
 

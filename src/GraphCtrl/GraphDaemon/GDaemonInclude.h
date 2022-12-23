@@ -10,6 +10,7 @@
 #define CGRAPH_GDAEMONINCLUDE_H
 
 #include "GDaemon.h"
+#include "GTemplateDaemon.h"
 #include "GDaemonManager.h"
 
 #endif //CGRAPH_GDAEMONINCLUDE_H

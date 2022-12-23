@@ -10,7 +10,7 @@ message("* * * * * * * * * * * * * * * * * * * * * * * * * * * * *")
 
 cmake_minimum_required(VERSION 3.5.0)
 
-project(CGraph VERSION 2.2.0)
+project(CGraph VERSION 2.2.1)
 
 # CGraph推荐使用C++17或以上版本。支持无缝切换C++14版本，仅有个别功能功能的弱化和剪裁。暂不支持C++11或以下版本
 set(CMAKE_CXX_STANDARD 17)

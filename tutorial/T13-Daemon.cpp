@@ -8,6 +8,7 @@
 
 #include "MyGDaemon/MyMonitorDaemon.h"
 #include "MyGDaemon/MyParamDaemon.h"
+#include "MyGDaemon/MyTemplateDaemon.h"
 #include "MyGNode/MyNode1.h"
 #include "MyGNode/MyWriteParamNode.h"
 #include "MyGParam/MyConnParam.h"
@@ -28,12 +29,13 @@ void tutorial_daemon() {
     /** 添加两个daemon信息，随pipeline执行 */
     pipeline->addGDaemon<MyMonitorDaemon>(4000)   // 间隔4s执行
             ->addGDaemon<MyParamDaemon, MyConnParam>(3500, &connParam)    // 间隔3500ms执行，并且传入参数
-            ->addGDaemon<MyParamDaemon>(8500);    // 对应不传入参数的分支
+            ->addGDaemon<MyTemplateDaemon<int>>(2750, 300);    // 添加模板daemon信息
 
     /** 长时间执行，观察守护器执行状态 */
     pipeline->process(20);
     GPipelineFactory::remove(pipeline);
 }
+
 
 int main() {
     tutorial_daemon();

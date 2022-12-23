@@ -151,6 +151,22 @@ GPipeline* GPipeline::addGDaemon(CMSec ms, DParam* param) {
     return status.isOK() ? this : nullptr;
 }
 
+
+template<typename TDaemon, typename ...Args,
+        std::enable_if_t<std::is_base_of<GTemplateDaemon<Args...>, TDaemon>::value, int>>
+GPipeline* GPipeline::addGDaemon(CMSec ms, Args&&... args) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(daemon_manager_)
+    auto daemon = UAllocator::safeMallocTemplateCObject<TDaemon>(std::forward<Args>(args)...);
+    daemon->setInterval(ms);
+    daemon->setGParamManager(this->param_manager_);
+    status = daemon_manager_->add(daemon);
+
+    return status.isOK() ? this : nullptr;
+}
+
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GPIPELINE_INL

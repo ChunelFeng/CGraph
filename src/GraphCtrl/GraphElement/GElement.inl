@@ -50,6 +50,21 @@ GElementPtr GElement::addGAspect(TParam* param) {
 }
 
 
+template<typename TAspect, typename ...Args,
+        std::enable_if_t<std::is_base_of<GTemplateAspect<Args...>, TAspect>::value, int>>
+GElement* GElement::addGAspect(Args&&... args) {
+    if (!aspect_manager_) {
+        aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager)
+    }
+
+    auto aspect = UAllocator::safeMallocTemplateCObject<TAspect>(std::forward<Args>(args)...);
+    aspect->setName(this->getName());
+    aspect->setGParamManager(this->param_manager_);
+    aspect_manager_->add(aspect);
+    return this;
+}
+
+
 template<typename T,
         std::enable_if_t<std::is_base_of<GElementParam, T>::value, int> >
 GElementPtr GElement::addEParam(const std::string& key, T* param) {
