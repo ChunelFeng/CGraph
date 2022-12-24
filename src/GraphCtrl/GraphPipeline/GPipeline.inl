@@ -50,6 +50,29 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
 }
 
 
+template<typename T, typename ...Args,
+        std::enable_if_t<std::is_base_of<GTemplateElement<Args ...>, T>::value, int>>
+CStatus GPipeline::registerGElement(GTemplateElementPtr<Args ...> *elementRef,
+                                    const GElementPtrSet &dependElements,
+                                    Args&&... args) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(false)
+
+    // 构建模板node信息
+    (*elementRef) = new(std::nothrow) T(std::forward<Args &&>(args)...);
+    CGRAPH_ASSERT_NOT_NULL(*elementRef)
+    // 以下 name，loop，level 信息，可以由外部设置
+    status = (*elementRef)->setElementInfo(dependElements, CGRAPH_EMPTY, CGRAPH_DEFAULT_LOOP_TIMES,
+                                           CGRAPH_DEFAULT_ELEMENT_LEVEL, this->param_manager_);
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    status = element_manager_->add(dynamic_cast<GElementPtr>(*elementRef));
+    CGRAPH_FUNCTION_CHECK_STATUS
+    element_repository_.insert(*elementRef);
+    CGRAPH_FUNCTION_END
+}
+
+
 template<typename T, CLevel level,
         std::enable_if_t<std::is_base_of<GNode, T>::value, int>>
 GNodePtr GPipeline::createGNode(const GNodeInfo &info) {

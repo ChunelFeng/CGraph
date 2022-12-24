@@ -240,7 +240,7 @@ int main() {
 
 [2022.05.29 - v2.1.0 - Chunel]
 * 提供`element`参数写入方法
-* 提供针对C++14版本的支持，个别功能有裁剪
+* 提供针对C++14版本的支持
 * 更新`tutorial`内容
 
 [2022.10.03 - v2.1.1 - Chunel]  
@@ -252,7 +252,8 @@ int main() {
 * 更新`tutorial`内容
 
 [2022.12.24 - v2.2.1 - Chunel]
-* 优化`aspect`和`daemon`中参数传递的功能
+* 提供`TemplateNode`(模板节点)，`TemplateAspect`(模板切面)，`TemplateDaemon`(模板守护)功能，用于优化参数传参方式
+* 更新`tutorial`内容
 
 </details>
 

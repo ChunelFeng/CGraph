@@ -108,6 +108,14 @@ public:
      */
     GElement* setLoop(CSize loop);
 
+    /**
+     * 设置level信息，用于控制init和destroy方法的执行顺序
+     * level值越低，函数越先执行
+     * @param level
+     * @return
+     */
+    GElement* setLevel(CLevel level);
+
 protected:
     /**
      * 构造函数
@@ -199,14 +207,6 @@ protected:
     template<typename T,
             std::enable_if_t<std::is_base_of<GElementParam, T>::value, int> = 0>
     T* getEParam(const std::string& key);
-
-    /**
-     * 设置level信息，用于控制init和destroy方法的执行顺序
-     * level值越低，函数越先执行
-     * @param level
-     * @return
-     */
-    GElement* setLevel(CLevel level);
 
     /**
      * 包含切面相关功能的函数，fat取自fatjar的意思

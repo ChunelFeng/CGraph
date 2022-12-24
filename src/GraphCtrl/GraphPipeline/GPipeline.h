@@ -93,6 +93,20 @@ public:
                              CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
+     * 在图中注册一个模板Element信息
+     * @tparam T
+     * @tparam Args
+     * @param elementRef
+     * @param dependElements
+     * @return
+     */
+    template<typename T, typename ...Args,
+            std::enable_if_t<std::is_base_of<GTemplateElement<Args ...>, T>::value, int> = 0>
+    CStatus registerGElement(GTemplateElementPtr<Args ...> *elementRef,
+                             const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
+                             Args&&... args);
+
+    /**
      * 添加参数，pipeline中所有节点共享此参数
      * @tparam T
      * @param key
