@@ -12,7 +12,7 @@
 #include "../../src/CGraph.h"
 
 template <typename ...Args>
-class MyTemplateNode : public CGraph::GTemplateElement<Args ...> {
+class MyTemplateNode : public CGraph::GTemplateNode<Args ...> {
 public:
     // 通过两种不同的方式，实现构造函数，可以在pipeline中通过不同的方式 register 进来
     explicit MyTemplateNode(int num, float score) {

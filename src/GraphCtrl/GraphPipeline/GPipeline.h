@@ -101,8 +101,8 @@ public:
      * @return
      */
     template<typename T, typename ...Args,
-            std::enable_if_t<std::is_base_of<GTemplateElement<Args ...>, T>::value, int> = 0>
-    CStatus registerGElement(GTemplateElementPtr<Args ...> *elementRef,
+            std::enable_if_t<std::is_base_of<GTemplateNode<Args ...>, T>::value, int> = 0>
+    CStatus registerGElement(GTemplateNodePtr<Args ...> *elementRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              Args&&... args);
 

@@ -12,9 +12,9 @@ using namespace CGraph;
 
 void tutorial_template() {
     GPipelinePtr pipeline = GPipelineFactory::create();
-    GTemplateElement<int, float>* a = nullptr;
-    GTemplateElement<int, float>* b = nullptr;
-    GTemplateElement<int>* c = nullptr;
+    GTemplateNode<int, float>* a = nullptr;
+    GTemplateNode<int, float>* b = nullptr;
+    GTemplateNode<int>* c = nullptr;
 
     /**
      * 注册几个模板节点

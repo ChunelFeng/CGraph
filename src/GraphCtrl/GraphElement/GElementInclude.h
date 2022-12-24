@@ -11,7 +11,6 @@
 #define CGRAPH_GELEMENTINCLUDE_H
 
 #include "GElement.h"
-#include "GTemplateElement.h"
 #include "GNode/GNodeInclude.h"
 #include "GGroup/GGroupInclude.h"
 #include "GAdapter/GAdapterInclude.h"
