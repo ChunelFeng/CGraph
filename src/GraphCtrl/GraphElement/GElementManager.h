@@ -60,6 +60,13 @@ protected:
     GElementManager* setScheduleStrategy(int strategy);
 
     /**
+     * 设置图引擎运行模式
+     * @param engineType
+     * @return
+    */
+    GElementManager* setExecuteModule(GEngineType engineType);
+
+    /**
      * 构造执行引擎
      * @param strategy
      * @return
@@ -69,6 +76,7 @@ protected:
 private:
     GSortedGElementPtrSet manager_elements_;                    // 保存节点信息的内容
     GEnginePtr engine_ = nullptr;                               // 执行引擎
+    GEngineType engine_type_ = GEngineType::STATIC;             // 引擎执行方式
 
     friend class GPipeline;
     friend class GRegion;

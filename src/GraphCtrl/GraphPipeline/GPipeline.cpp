@@ -38,6 +38,7 @@ CStatus GPipeline::init() {
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
     CGRAPH_ASSERT_NOT_NULL(daemon_manager_)
 
+    element_manager_->setExecuteModule(GEngineType::DYNAMIC);
     status += param_manager_->init();
     status += element_manager_->init();
     status += daemon_manager_->init();    // daemon的初始化，需要晚于所有element的初始化

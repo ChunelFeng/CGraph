@@ -122,13 +122,24 @@ GElementManager* GElementManager::setScheduleStrategy(int strategy) {
 }
 
 
+GElementManagerPtr GElementManager::setExecuteModule(GEngineType engineType) {
+    engine_type_ = engineType;
+    return this;
+}
+
+
 CStatus GElementManager::initEngine() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_DELETE_PTR(engine_)
-    // 这里可以根据一系列策略，来确定执行引擎的类型。暂时默认为是静态执行的
-    engine_ = CGRAPH_SAFE_MALLOC_COBJECT(GStaticEngine)
-    status = engine_->setUp(manager_elements_);
 
+    switch (engine_type_) {
+        case GEngineType::DYNAMIC : engine_ = CGRAPH_SAFE_MALLOC_COBJECT(GDynamicEngine); break;
+        case GEngineType::STATIC : engine_ = CGRAPH_SAFE_MALLOC_COBJECT(GStaticEngine); break;
+        default: status = CStatus("unknown running module");
+    }
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    status = engine_->setUp(manager_elements_);
     CGRAPH_FUNCTION_END
 }
 
