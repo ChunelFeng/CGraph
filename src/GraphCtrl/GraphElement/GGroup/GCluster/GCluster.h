@@ -65,6 +65,7 @@ protected:
     friend class GRegion;
     friend class GPipeline;
     friend class GStaticEngine;
+    friend class GDynamicEngine;
 };
 
 using GClusterPtr = GCluster *;

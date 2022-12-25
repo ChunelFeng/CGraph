@@ -255,6 +255,9 @@ int main() {
 * 提供`TemplateNode`(模板节点)，`TemplateAspect`(模板切面)，`TemplateDaemon`(模板守护)功能，用于优化参数传参方式
 * 更新`tutorial`内容
 
+[2022.12.25 - v2.2.2 - [yeshenyong](https://github.com/yeshenyong)]
+* 优化图执行逻辑
+
 </details>
 
 ------------
