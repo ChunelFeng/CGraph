@@ -25,11 +25,7 @@ public:
     }
 
     CStatus run () override {
-        MyParam* myParam = CGRAPH_GET_GPARAM(MyParam, "param1")
-        if (nullptr == myParam) {
-            return CStatus("get param error");    // 如果获取myParam1失败，则返回错误码信息
-        }
-
+        auto* myParam = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(MyParam, "param1")
         int val = 0;
         int cnt = 0;
         {
@@ -43,7 +39,8 @@ public:
         }
 
         /* 执行时，仅依赖val值，跟当前param1->iValue值无关，可以放到 CODE_BLOCK 外部 */
-        CGraph::CGRAPH_ECHO("[%s], iValue value is : [%d], iCount value is [%d] ... ", this->getName().c_str(), val, cnt);
+        CGraph::CGRAPH_ECHO("[%s], iValue value is : [%d], iCount value is [%d] ... ",
+                            this->getName().c_str(), val, cnt);
 
         return CStatus();
     }

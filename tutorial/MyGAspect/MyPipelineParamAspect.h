@@ -16,16 +16,7 @@ class MyPipelineParamAspect : public CGraph::GAspect {
 public:
     CStatus beginRun() override {
         CStatus status;
-
-        /**
-         * 在切面层，获取pipeline中的参数值信息，进行一些逻辑处理
-         * 可以用于异常判断、限流等逻辑
-         * */
-        auto* pipelineParam = CGRAPH_GET_GPARAM(MyParam, "param1")
-        if (nullptr == pipelineParam) {
-            return CStatus("pipelineParam is null");
-        }
-
+        auto* pipelineParam = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(MyParam, "param1")
         /** 遇到并发情况，请考虑加锁保护（参考 T05-Param 中逻辑） */
         int cnt = pipelineParam->iCount;
         CGraph::CGRAPH_ECHO("----> [MyPipelineParamAspect] pipeline param iCount is [%d] before run.", cnt);

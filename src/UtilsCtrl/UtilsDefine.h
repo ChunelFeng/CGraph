@@ -29,13 +29,19 @@ CGRAPH_NAMESPACE_BEGIN
 /* 判断传入的指针信息是否为空 */
 #define CGRAPH_ASSERT_NOT_NULL(ptr)                 \
     if (unlikely(nullptr == (ptr))) {               \
-        return CStatus("ptr is nullptr");           \
+        return CStatus("input is nullptr");         \
     }                                               \
 
 #define CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)     \
     if (unlikely(nullptr == (ptr))) {               \
         return nullptr;                             \
     }                                               \
+
+#define CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr)     \
+    if (unlikely(nullptr == (ptr))) {               \
+        CGRAPH_THROW_EXCEPTION("input is null")     \
+    }
+
 
 /* 判断函数流程是否可以继续 */
 static std::mutex g_check_status_mtx;

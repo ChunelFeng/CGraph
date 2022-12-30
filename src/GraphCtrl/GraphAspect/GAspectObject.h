@@ -27,7 +27,7 @@ public:
      * 获取name信息
      * @return
      */
-    virtual const std::string& getName() final {
+    virtual const std::string& getName() {
         return name_;
     }
 

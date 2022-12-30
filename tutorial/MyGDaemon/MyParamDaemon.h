@@ -14,19 +14,13 @@
 #include "../MyGParam/MyConnParam.h"
 
 class MyParamDaemon : public CGraph::GDaemon {
-
 public:
     CVoid daemonTask(CGraph::GDaemonParamPtr param) override {
         /**
          * 从注册的pipeline中获取参数信息
          * 注意，这里是GParam类型
          */
-        auto* myParam = CGRAPH_GET_GPARAM(MyParam, "param1")
-        if (nullptr == myParam) {
-            CGraph::CGRAPH_ECHO("----> [MyParamDaemon] error, enter no find param path ...");
-            return;
-        }
-
+        auto* myParam = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(MyParam, "param1")
         // 根据实际情况，选择不上锁，或者上读/写锁
         CGraph::CGRAPH_ECHO("----> [MyParamDaemon] iCount is [%d], just suppose this value is show on dashboard every [%u] ms",
                             myParam->iCount, this->getInterval());

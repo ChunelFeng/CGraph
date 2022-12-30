@@ -32,6 +32,14 @@ T* GElement::getGParam(const std::string& key) {
 }
 
 
+template<typename T,
+        std::enable_if_t<std::is_base_of<GParam, T>::value, int> >
+T* GElement::getGParamWithNoEmpty(const std::string& key) {
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(this->param_manager_)
+    return this->param_manager_->getWithNoEmpty<T>(key);
+}
+
+
 template<typename TAspect, typename TParam,
         std::enable_if_t<std::is_base_of<GAspect, TAspect>::value, int>,
         std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int> >

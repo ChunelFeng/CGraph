@@ -18,7 +18,6 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class GPipelineFactory : public GraphObject {
-
 public:
     /**
      * 创建一个pipeline信息

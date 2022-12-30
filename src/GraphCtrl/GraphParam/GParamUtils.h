@@ -21,6 +21,10 @@ CGRAPH_NAMESPACE_BEGIN
 #define CGRAPH_GET_GPARAM(Type, key)                  \
     this->getGParam<Type>(key);                       \
 
+/** 获取参数信息，为空则抛出异常 */
+#define CGRAPH_GET_GPARAM_WITH_NO_EMPTY(Type, key)    \
+    this->getGParamWithNoEmpty<Type>(key);            \
+
 /** 获取element内部参数信息 */
 #define CGRAPH_GET_EPARAM(Type, key)                  \
     this->getEParam<Type>(key);                       \

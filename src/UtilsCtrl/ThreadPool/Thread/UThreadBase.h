@@ -19,7 +19,6 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class UThreadBase : public UThreadObject {
-
 protected:
     explicit UThreadBase() {
         done_ = true;

@@ -12,7 +12,6 @@
 #include "../../src/CGraph.h"
 
 class MyCondition : public CGraph::GCondition {
-
 public:
     /**
      * 表示在condition中，需要执行第几个。

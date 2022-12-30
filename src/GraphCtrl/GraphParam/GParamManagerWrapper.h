@@ -54,6 +54,20 @@ protected:
         return param_manager_->get<T>(key);
     }
 
+    /**
+     * 获取参数信息，未获得的情况下，抛出异常
+     * @tparam T
+     * @param key
+     * @return
+     */
+    template<typename T,
+            std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
+    T* getGParamWithNoEmpty(const std::string& key) {
+        CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_)
+        return param_manager_->getWithNoEmpty<T>(key);
+    }
+
+
 private:
     GParamManagerPtr param_manager_ = nullptr;    // GParam管理类，必须在pipeline一层创建和销毁。
 
