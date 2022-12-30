@@ -19,6 +19,10 @@ template<typename T, CUint capacity = CGRAPH_DEFAULT_RINGBUFFER_SIZE,
         std::enable_if_t<std::is_base_of<GMessageParam, T>::value, int> = 0>
 class GMessage : public GMessageObject {
 public:
+    explicit GMessage(CUint size = capacity) {
+        queue_.setCapacity(size);
+    }
+
     /**
      * 析构函数。释放前，要先释放队列中所有的信息
      */
@@ -33,7 +37,7 @@ public:
      */
     template<class TImpl,
             std::enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CVoid pub(const TImpl& value) {
+    CVoid send(const TImpl& value) {
         queue_.push(value);
     }
 
@@ -44,18 +48,8 @@ public:
      */
     template<class TImpl,
             std::enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CVoid sub(TImpl& value) {
+    CVoid recv(TImpl& value) {
         queue_.waitPop(value);
-    }
-
-    /**
-     * 设置容量大小
-     * @param size
-     * @return
-     */
-    GMessage* setCapacity(CUint size) {
-        queue_.setCapacity(size);
-        return this;
     }
 
     /**

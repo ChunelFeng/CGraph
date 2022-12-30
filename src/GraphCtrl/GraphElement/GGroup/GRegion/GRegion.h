@@ -16,6 +16,9 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class GRegion : public GGroup {
+public:
+    GRegion* setEngineType(GEngineType type);
+
 protected:
     explicit GRegion();
     ~GRegion() override;

@@ -38,6 +38,7 @@ void tutorial_cluster () {
     GPipelineFactory::clear();    // clear表示清空所有的pipeline信息
 }
 
+
 int main () {
     tutorial_cluster();
     return 0;

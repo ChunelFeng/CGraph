@@ -94,17 +94,17 @@ public:
 
     /**
      * 在图中注册一个模板Element信息
-     * @tparam T
+     * @tparam TNode
      * @tparam Args
      * @param elementRef
      * @param dependElements
      * @return
      */
-    template<typename T, typename ...Args,
-            std::enable_if_t<std::is_base_of<GTemplateNode<Args ...>, T>::value, int> = 0>
+    template<typename TNode, typename ...Args,
+            std::enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int> = 0>
     CStatus registerGElement(GTemplateNodePtr<Args ...> *elementRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
-                             Args&&... args);
+                             Args... args);
 
     /**
      * 添加参数，pipeline中所有节点共享此参数
@@ -149,7 +149,7 @@ public:
      */
     template<typename TDaemon, typename ...Args,
             std::enable_if_t<std::is_base_of<GTemplateDaemon<Args...>, TDaemon>::value, int> = 0>
-    GPipeline* addGDaemon(CMSec ms, Args&&... args);
+    GPipeline* addGDaemon(CMSec ms, Args... args);
 
     /**
      * 设置执行的最大时间周期，单位为毫秒
@@ -158,6 +158,13 @@ public:
      * @notice beta接口
      */
     GPipeline* setGElementRunTtl(CMSec ttl);
+
+    /**
+     * 设置引擎策略
+     * @param type
+     * @return
+     */
+    GPipeline* setEngineType(GEngineType type);
 
 protected:
     explicit GPipeline();

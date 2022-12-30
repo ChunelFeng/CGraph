@@ -13,14 +13,13 @@
 #include "../MyGParam/MyParam.h"
 
 class MyShowAddressNode : public CGraph::GNode {
-
 public:
     CStatus init() override {
         CStatus status = CGRAPH_CREATE_GPARAM(MyParam, "param2")
         return status;
     }
 
-    CStatus run () override {
+    CStatus run() override {
         auto myParam = CGRAPH_GET_GPARAM(MyParam, "param2")
         if (nullptr == myParam) {
             return CStatus("get param2 failed");

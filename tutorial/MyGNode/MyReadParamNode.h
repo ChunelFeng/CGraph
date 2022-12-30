@@ -13,10 +13,9 @@
 #include "../MyGParam/MyParam.h"
 
 class MyReadParamNode : public CGraph::GNode {
-
 public:
-    CStatus run () override {
-        MyParam* myParam = CGRAPH_GET_GPARAM(MyParam, "param1")    // 获取类型为MyParam且名为"param1"的参数
+    CStatus run() override {
+        auto myParam = CGRAPH_GET_GPARAM(MyParam, "param1")    // 获取类型为MyParam且名为"param1"的参数
         if (nullptr == myParam) {
             return CStatus("get param error");    // 如果没有获取到参数，则返回执行失败
         }

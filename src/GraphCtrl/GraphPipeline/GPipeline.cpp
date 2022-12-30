@@ -38,7 +38,6 @@ CStatus GPipeline::init() {
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
     CGRAPH_ASSERT_NOT_NULL(daemon_manager_)
 
-    element_manager_->setExecuteModule(GEngineType::DYNAMIC);
     status += param_manager_->init();
     status += element_manager_->init();
     status += daemon_manager_->init();    // daemon的初始化，需要晚于所有element的初始化
@@ -95,13 +94,20 @@ CStatus GPipeline::process(CSize runTimes) {
 
 GPipelinePtr GPipeline::setGElementRunTtl(CMSec ttl) {
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
-    if (nullptr == element_manager_
-        || nullptr == element_manager_->engine_) {
-        return nullptr;
-    }
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(element_manager_)
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(element_manager_->engine_)
 
     // 在element_manager中区执行信息了，所以ttl放到
     element_manager_->engine_->element_run_ttl_ = ttl;
+    return this;
+}
+
+
+GPipelinePtr GPipeline::setEngineType(GEngineType type) {
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(element_manager_)
+
+    element_manager_->setEngineType(type);
     return this;
 }
 

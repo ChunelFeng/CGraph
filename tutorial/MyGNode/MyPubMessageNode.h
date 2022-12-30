@@ -14,11 +14,19 @@
 
 class MyPubMessageNode : public CGraph::GNode {
 public:
-    CStatus run () override {
+    CStatus init() override {
+        int sleep = 300;
+        CGRAPH_SLEEP_MILLISECOND(sleep)    // 休息，确保其他的sub节点，已经完成了订阅
+        CGraph::CGRAPH_ECHO("==> [MyPubMessageNode] [init], sleep [%d] ms, to make sure sub node prepare ok.",
+                            sleep);
+        return CStatus();
+    }
+
+    CStatus run() override {
         MyMessageParam mp;    // 创建一个消息，并且发送出去
-        mp.num = num_++;
-        mp.info = "this is a test info";
-        CStatus status = CGRAPH_PUB_MPARAM(MyMessageParam, "test", mp);
+        mp.num = (num_++) * 100;
+        mp.info = "this is a test info, num = " + std::to_string(mp.num);
+        CStatus status = CGRAPH_PUB_MPARAM(MyMessageParam, "pub-sub", mp);
         return status;
     }
 

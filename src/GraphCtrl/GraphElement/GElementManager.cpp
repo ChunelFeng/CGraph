@@ -19,7 +19,7 @@ GElementManager::~GElementManager() {
      * manager中的节点，在析构的时候不需要释放。
      * 所有的节点信息在GPipeLine类中统一申请和释放
      */
-    CGRAPH_DELETE_PTR(engine_);
+    CGRAPH_DELETE_PTR(engine_)
 }
 
 
@@ -48,8 +48,6 @@ CStatus GElementManager::destroy() {
     CGRAPH_FUNCTION_BEGIN
 
     for (GElementPtr element : manager_elements_) {
-        CGRAPH_ASSERT_NOT_NULL(element)
-
         status = element->fatProcessor(CFunctionType::DESTROY);
         CGRAPH_FUNCTION_CHECK_STATUS
         element->is_init_ = false;
@@ -113,16 +111,14 @@ CStatus GElementManager::clear() {
 
 
 GElementManager* GElementManager::setScheduleStrategy(int strategy) {
-    if (nullptr == engine_) {
-        return nullptr;
-    }
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(engine_)
 
     engine_->schedule_strategy_ = strategy;
     return this;
 }
 
 
-GElementManagerPtr GElementManager::setExecuteModule(GEngineType engineType) {
+GElementManagerPtr GElementManager::setEngineType(GEngineType engineType) {
     engine_type_ = engineType;
     return this;
 }
@@ -133,8 +129,8 @@ CStatus GElementManager::initEngine() {
     CGRAPH_DELETE_PTR(engine_)
 
     switch (engine_type_) {
-        case GEngineType::DYNAMIC : engine_ = CGRAPH_SAFE_MALLOC_COBJECT(GDynamicEngine); break;
         case GEngineType::STATIC : engine_ = CGRAPH_SAFE_MALLOC_COBJECT(GStaticEngine); break;
+        case GEngineType::DYNAMIC : engine_ = CGRAPH_SAFE_MALLOC_COBJECT(GDynamicEngine); break;
         default: status = CStatus("unknown running module");
     }
     CGRAPH_FUNCTION_CHECK_STATUS

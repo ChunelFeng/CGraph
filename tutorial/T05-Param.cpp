@@ -37,6 +37,7 @@ void tutorial_param() {
     GPipelineFactory::remove(pipeline);
 }
 
+
 int main() {
     tutorial_param();
     return 0;

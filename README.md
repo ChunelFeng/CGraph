@@ -12,7 +12,7 @@
   CGraph 说明文档
 </h1>
 
->CGraph is a cross-platform <b>D</b>irected <b>A</b>cyclic <b>G</b>raph framework based on pure C++ without any 3rd-party.</br></br>
+><b>CGraph</b> is a cross-platform <b>D</b>irected <b>A</b>cyclic <b>G</b>raph framework based on pure C++ without any 3rd-party.</br></br>
 >You, with it, can build your own operators simply, and describe any running schedules as you need, such as dependence, parallelling, aggregation and so on. Some useful tools and plugins are also provide to improve your project.</br></br>
 >Tutorials and contact information are show as follows. Please get in touch with us for free if you need more about this repository.
 
@@ -252,11 +252,15 @@ int main() {
 * 更新`tutorial`内容
 
 [2022.12.24 - v2.2.1 - Chunel]
-* 提供`TemplateNode`(模板节点)，`TemplateAspect`(模板切面)，`TemplateDaemon`(模板守护)功能，用于优化参数传参方式
+* 提供`TemplateNode`(模板节点)功能，用于优化参数传参方式
 * 更新`tutorial`内容
 
 [2022.12.25 - v2.2.2 - [yeshenyong](https://github.com/yeshenyong)]
 * 优化图执行逻辑
+
+[2022.12.30 - v2.2.3 - Chunel]
+* 提供`message`发布订阅功能
+* 提供执行引擎切换功能
 
 </details>
 
@@ -270,7 +274,7 @@ int main() {
 
 <p align="center"><img src="https://github.com/ChunelFeng/CGraph/blob/main/doc/image/HelloGithub%20Logo.gif"/></p>
 
-* 感谢《Github中文排行榜》介绍和推荐：[Github中文排行榜 增速榜-C++分类](https://github.com/GrowingGit/GitHub-Chinese-Top-Charts/blob/master/content/charts/growth/knowledge/CPP.md)
+* 感谢《Github中文排行榜》介绍和推荐：[Github中文排行榜 增速榜-C++分类](https://github.com/GrowingGit/GitHub-Chinese-Top-Charts/blob/master/content/charts/growth/software/CPP.md)
 
 <p align="center"><img src="https://github.com/ChunelFeng/CGraph/blob/main/doc/image/GrowingGit%20Logo.png"/></p>
 

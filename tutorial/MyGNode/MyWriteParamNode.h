@@ -13,7 +13,6 @@
 #include "../MyGParam/MyParam.h"
 
 class MyWriteParamNode : public CGraph::GNode {
-
 public:
     CStatus init () override {
         CStatus status;

@@ -74,7 +74,7 @@ public:
      */
     template<typename TAspect, typename ...Args,
             std::enable_if_t<std::is_base_of<GTemplateAspect<Args...>, TAspect>::value, int> = 0>
-    GElement* addGAspect(Args&&... args);
+    GElement* addGAspect(Args... args);
 
     /**
      * 添加当前element内部参数

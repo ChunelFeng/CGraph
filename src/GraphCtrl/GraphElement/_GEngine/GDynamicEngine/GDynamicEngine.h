@@ -9,6 +9,8 @@
 #ifndef CGRAPH_GDYNAMICENGINE_H
 #define CGRAPH_GDYNAMICENGINE_H
 
+#include <mutex>
+
 #include "../GEngine.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -36,18 +38,11 @@ protected:
     CStatus beforeRun();
 
     /**
-     * elment 运行调用
+     * element 运行element
      * @param element
      * @return
     */
-    CVoid runElementTask(GElementPtr element);
-
-    /**
-     * element 运行
-     * @param element
-     * @return
-     */
-    CVoid runElement(GElementPtr element);
+    CStatus process(GElementPtr element);
 
     /**
      * element 运行完成处理
@@ -64,18 +59,20 @@ protected:
     CVoid wait();
 
     /**
-     * 执行结束节点数量
+     * 查看是否结束
      * @param
      * @return
     */
-    CVoid increaseEnd();
+    CVoid checkFinishState();
 
 private:
+    GElementPtrArr total_element_arr_;                          // pipeline中所有的元素信息集合
+    GElementPtrArr front_element_arr_;                          // 没有依赖的元素信息
+    CUint total_end_size_ = 0;                                  // 图结束节点数量
+    CUint finished_end_size_ = 0;                               // 执行结束节点数量
+
     std::mutex lock_;
     std::condition_variable cv_;
-    GSortedGElementPtrSet manager_elements_;                    // 保存节点信息的内容
-    CUint end_size_ = 0;                                        // 图结束节点数量
-    CUint finish_end_size = 0;                                  // 执行结束节点数量
 };
 
 CGRAPH_NAMESPACE_END

@@ -40,6 +40,7 @@ void tutorial_region() {
     GPipelineFactory::remove(pipeline);
 }
 
+
 int main () {
     tutorial_region();
     return 0;

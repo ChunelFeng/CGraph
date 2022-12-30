@@ -13,13 +13,23 @@ CGRAPH_NAMESPACE_BEGIN
 CStatus GDynamicEngine::setUp(const GSortedGElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
 
-    end_size_ = 0;
+    // 给所有的值清空
+    total_element_arr_.clear();
+    front_element_arr_.clear();
+    total_end_size_ = 0;
+
+    // 确定所有的信息
     for (GElementPtr element : elements) {
+        CGRAPH_ASSERT_NOT_NULL(element)
         if (element->run_before_.empty()) {
-            end_size_++;
+            total_end_size_++;
         }
+
+        if (element->dependence_.empty()) {
+            front_element_arr_.emplace_back(element);
+        }
+        total_element_arr_.emplace_back(element);
     }
-    manager_elements_ = elements;
 
     CGRAPH_FUNCTION_END
 }
@@ -27,7 +37,6 @@ CStatus GDynamicEngine::setUp(const GSortedGElementPtrSet& elements) {
 
 CStatus GDynamicEngine::run() {
     CGRAPH_FUNCTION_BEGIN
-
     status = beforeRun();
     CGRAPH_FUNCTION_CHECK_STATUS
 
@@ -41,7 +50,7 @@ CStatus GDynamicEngine::run() {
 CStatus GDynamicEngine::afterRunCheck() {
     CGRAPH_FUNCTION_BEGIN
 
-    for (GElementPtr element : manager_elements_) {
+    for (GElementPtr element : total_element_arr_) {
         if (!element->done_) {
             CGRAPH_RETURN_ERROR_STATUS("pipeline run check failed...");
         }
@@ -52,10 +61,8 @@ CStatus GDynamicEngine::afterRunCheck() {
 
 
 CVoid GDynamicEngine::asyncRun() {
-    for (const auto& element : manager_elements_) {
-        if (element->dependence_.empty() && !element->done_) {
-            runElementTask(element);
-        }
+    for (const auto& element : front_element_arr_) {
+        process(element);
     }
 }
 
@@ -63,58 +70,51 @@ CVoid GDynamicEngine::asyncRun() {
 CStatus GDynamicEngine::beforeRun() {
     CGRAPH_FUNCTION_BEGIN
 
-    for (GElementPtr element : manager_elements_) {
-        element->done_ = false;
-        status = element->beforeRun();
-        CGRAPH_FUNCTION_CHECK_STATUS
+    finished_end_size_ = 0;
+    for (GElementPtr element : total_element_arr_) {
+        status += element->beforeRun();
     }
-    finish_end_size = 0;
 
     CGRAPH_FUNCTION_END
 }
 
 
-CVoid GDynamicEngine::runElementTask(GElementPtr element) {
-    thread_pool_->commit(std::bind(&GDynamicEngine::runElement, this, element));
-}
+CStatus GDynamicEngine::process(GElementPtr element) {
+    CGRAPH_FUNCTION_BEGIN
+    thread_pool_->commit([this, element] {
+        element->fatProcessor(CFunctionType::RUN);
+        afterElementRun(element);
+    }, this->schedule_strategy_);
 
-
-CVoid GDynamicEngine::runElement(GElementPtr element) {
-    element->fatProcessor(CFunctionType::RUN);
-    afterElementRun(element);
+    CGRAPH_FUNCTION_END
 }
 
 
 CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     element->done_ = true;
-
     for(auto cur : element->run_before_) {
-        bool runnable = (0 == (--cur->left_depend_));
-        if (!runnable) continue;
-
-        runElementTask(cur);
+        if (--cur->left_depend_ <= 0) {
+            process(cur);
+        }
     }
 
     if (element->run_before_.empty()) {
-        this->increaseEnd();    // 计算执行结束节点数量
+        this->checkFinishState();    // 计算执行结束节点数量
     }
 }
 
 
 CVoid GDynamicEngine::wait() {
     CGRAPH_UNIQUE_LOCK lock(lock_);
-
-    while(finish_end_size < end_size_) {
+    while(finished_end_size_ < total_end_size_) {
         cv_.wait(lock);
     }
 }
 
 
-CVoid GDynamicEngine::increaseEnd() {
+CVoid GDynamicEngine::checkFinishState() {
     CGRAPH_UNIQUE_LOCK lock(lock_);
-    ++finish_end_size;
-    if (finish_end_size >= end_size_) {
-        finish_end_size = end_size_;
+    if (++finished_end_size_ >= total_end_size_) {
         cv_.notify_one();
     }
 }

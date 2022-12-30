@@ -50,16 +50,16 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
 }
 
 
-template<typename T, typename ...Args,
-        std::enable_if_t<std::is_base_of<GTemplateNode<Args ...>, T>::value, int>>
+template<typename TNode, typename ...Args,
+        std::enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int>>
 CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,
                                     const GElementPtrSet &dependElements,
-                                    Args&&... args) {
+                                    Args... args) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
 
     // 构建模板node信息
-    (*elementRef) = new(std::nothrow) T(std::forward<Args &&>(args)...);
+    (*elementRef) = new(std::nothrow) TNode(std::forward<Args &&>(args)...);
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
     // 以下 name，loop，level 信息，可以由外部设置
     status = (*elementRef)->setElementInfo(dependElements, CGRAPH_EMPTY, CGRAPH_DEFAULT_LOOP_TIMES,
@@ -177,7 +177,7 @@ GPipeline* GPipeline::addGDaemon(CMSec ms, DParam* param) {
 
 template<typename TDaemon, typename ...Args,
         std::enable_if_t<std::is_base_of<GTemplateDaemon<Args...>, TDaemon>::value, int>>
-GPipeline* GPipeline::addGDaemon(CMSec ms, Args&&... args) {
+GPipeline* GPipeline::addGDaemon(CMSec ms, Args... args) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)

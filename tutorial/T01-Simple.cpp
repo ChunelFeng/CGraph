@@ -44,6 +44,7 @@ void tutorial_simple() {
     GPipelineFactory::remove(pipeline);
 }
 
+
 int main () {
     tutorial_simple();
     return 0;

@@ -12,20 +12,36 @@
 #include "../../src/CGraph.h"
 #include "../MyGParam/MyMessageParam.h"
 
-
-class MySubMessageNode : public CGraph::GNode {
+template <typename ...Args>
+class MySubMessageNode : public CGraph::GTemplateNode<Args ...> {
 public:
-    CStatus run () override {
+    explicit MySubMessageNode(int connId) {
+        conn_id_ = connId;
+    }
+
+    CStatus init() override {
+        CGraph::CGRAPH_ECHO("==> [%s] [init] get conn id = [%d]",
+                            this->getName().c_str(), conn_id_);
+        return CStatus();
+    }
+
+    CStatus run() override {
         MyMessageParam mp;    // 接收一个消息
-        CStatus status = CGRAPH_SUB_MPARAM(MyMessageParam, "test", mp);
+        CStatus status = CGRAPH_SUB_MPARAM(MyMessageParam, conn_id_, mp)
         if (!status.isOK()) {
-            CGraph::CGRAPH_ECHO("MySubMessageNode sub message error");
+            CGraph::CGRAPH_ECHO("[%s] recv message error", this->getName().c_str());
             return status;
         }
 
-        CGraph::CGRAPH_ECHO("num = [%d], info = [%s]", mp.num, mp.info.c_str());
+        if (mp.num % 1 == 0) {
+            CGraph::CGRAPH_ECHO("[%s] conn id = [%d], num = [%d], info = [%s]",
+                                this->getName().c_str(), conn_id_, mp.num, mp.info.c_str());
+        }
         return status;
     }
+
+private:
+    CIndex conn_id_;
 };
 
 #endif //CGRAPH_MYSUBMESSAGENODE_H

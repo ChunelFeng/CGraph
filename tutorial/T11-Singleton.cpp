@@ -30,6 +30,7 @@ void tutorial_singleton() {
     GPipelineFactory::remove(pipeline);
 }
 
+
 int main() {
     tutorial_singleton();
     return 0;

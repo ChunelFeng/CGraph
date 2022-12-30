@@ -29,7 +29,6 @@ CStatus GRegion::init() {
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
     CGRAPH_ASSERT_NOT_NULL(manager_)
 
-    this->manager_->setExecuteModule(GEngineType::STATIC);
     // 在region中，需要专门的调度逻辑
     this->manager_->setScheduleStrategy(CGRAPH_REGION_TASK_STRATEGY);
     status = this->manager_->init();
@@ -71,5 +70,13 @@ CStatus GRegion::addElement(GElementPtr element) {
     CGRAPH_FUNCTION_END
 }
 
+
+GRegion* GRegion::setEngineType(GEngineType type) {
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(manager_)
+
+    this->manager_->setEngineType(type);
+    return this;
+}
 
 CGRAPH_NAMESPACE_END

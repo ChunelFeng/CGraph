@@ -12,7 +12,6 @@
 #include "../../src/CGraph.h"
 
 class MyNode1 : public CGraph::GNode {
-
 public:
     CStatus run () override {
         CStatus status;

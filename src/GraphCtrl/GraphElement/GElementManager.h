@@ -40,7 +40,7 @@ protected:
     CStatus remove(GElementPtr element) override;
 
     /**
-     * 查找传入object
+     * 查找传入元素
      * @param element
      * @return
      */
@@ -64,7 +64,7 @@ protected:
      * @param engineType
      * @return
     */
-    GElementManager* setExecuteModule(GEngineType engineType);
+    GElementManager* setEngineType(GEngineType engineType);
 
     /**
      * 构造执行引擎

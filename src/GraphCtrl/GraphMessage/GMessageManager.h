@@ -10,9 +10,12 @@
 #define CGRAPH_GMESSAGEMANAGER_H
 
 #include <string>
+#include <set>
 #include <unordered_map>
+#include <atomic>
 
 #include "GMessage.h"
+#include "GMessageDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -33,17 +36,17 @@ public:
     CStatus createTopic(const std::string& topic, CUint size) {
         CGRAPH_FUNCTION_BEGIN
 
-        auto result = message_map_.find(topic);
-        if (result != message_map_.end()) {
+        auto innerTopic = SEND_RECV_PREFIX + topic;    // 中间做一层映射，用来区分是 PubSub的，还是SendRecv的
+        auto result = send_recv_message_map_.find(innerTopic);
+        if (result != send_recv_message_map_.end()) {
             // 如果类型和size完全匹配的话，则直接返回创建成功。否则返回错误
             auto curTopic = result->second;
             status = (typeid(*curTopic).name() == typeid(GMessage<TImpl>).name() && curTopic->getCapacity() == size)
                      ? CStatus() : CStatus("create topic duplicate");
         } else {
             // 创建一个 topic信息
-            auto message = CGRAPH_SAFE_MALLOC_COBJECT(GMessage<TImpl>);
-            message->setCapacity(size);
-            message_map_.insert(std::pair<const std::string&, GMessagePtr<T> >(topic, GMessagePtr<T>(message)));
+            auto message = UAllocator::safeMallocTemplateCObject<GMessage<TImpl>, CUint>(size);
+            send_recv_message_map_.insert(std::pair<const std::string&, GMessagePtr<T> >(innerTopic, GMessagePtr<T>(message)));
         }
 
         CGRAPH_FUNCTION_END
@@ -56,13 +59,14 @@ public:
      */
     CStatus removeTopic(const std::string& topic) {
         CGRAPH_FUNCTION_BEGIN
-        auto result = message_map_.find(topic);
-        if (result == message_map_.end()) {
+        auto innerTopic = SEND_RECV_PREFIX + topic;
+        auto result = send_recv_message_map_.find(innerTopic);
+        if (result == send_recv_message_map_.end()) {
             CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
         }
 
         CGRAPH_DELETE_PTR(result->second);
-        message_map_.erase(result);
+        send_recv_message_map_.erase(result);
 
         CGRAPH_FUNCTION_END
     }
@@ -76,17 +80,18 @@ public:
      */
     template<typename TImpl,
             std::enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CStatus subTopicValue(const std::string& topic, TImpl& value) {
+    CStatus recvTopicValue(const std::string& topic, TImpl& value) {
         CGRAPH_FUNCTION_BEGIN
-        auto result = message_map_.find(topic);
-        if (result == message_map_.end()) {
+        auto innerTopic = SEND_RECV_PREFIX + topic;
+        auto result = send_recv_message_map_.find(innerTopic);
+        if (result == send_recv_message_map_.end()) {
             CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
         }
 
         auto message = (GMessagePtr<TImpl>)(result->second);
         CGRAPH_ASSERT_NOT_NULL(message);
 
-        message->sub(value);
+        message->recv(value);
         CGRAPH_FUNCTION_END
     }
 
@@ -99,17 +104,119 @@ public:
      */
     template<typename TImpl,
             std::enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CStatus pubTopicValue(const std::string& topic, const TImpl& value) {
+    CStatus sendTopicValue(const std::string& topic, const TImpl& value) {
         CGRAPH_FUNCTION_BEGIN
-        auto result = message_map_.find(topic);
-        if (result == message_map_.end()) {
+        auto innerTopic = SEND_RECV_PREFIX + topic;
+        auto result = send_recv_message_map_.find(innerTopic);
+        if (result == send_recv_message_map_.end()) {
             CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
         }
 
         auto message = static_cast<GMessagePtr<T> >(result->second);
         CGRAPH_ASSERT_NOT_NULL(message);
 
-        message->pub(value);
+        message->send(value);
+        CGRAPH_FUNCTION_END
+    }
+
+    /**
+     * 绑定对应的topic信息，并且获取 conn_id 信息
+     * @tparam TImpl
+     * @param topic
+     * @param size
+     * @return
+     */
+    template<typename TImpl,
+            std::enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
+    CIndex bindTopic(const std::string& topic, CUint size) {
+        CGRAPH_LOCK_GUARD lock(bind_mutex_);
+        auto innerTopic = PUB_SUB_PREFIX + topic;
+        auto message = UAllocator::safeMallocTemplateCObject<GMessage<TImpl>, CUint>(size);
+
+        CIndex connId = (++cur_conn_id_);
+        auto result = pub_sub_message_map_.find(innerTopic);
+        if (result != pub_sub_message_map_.end()) {
+            // 如果之前有的话，则在后面添加一个
+            auto& messageSet = result->second;
+            messageSet.insert((GMessagePtr<T>)message);
+        } else {
+            // 如果是这个topic第一次被绑定，则创建一个对应的set信息
+            std::set<GMessagePtr<T>> messageSet;
+            messageSet.insert((GMessagePtr<T>)message);
+            pub_sub_message_map_[innerTopic] = messageSet;
+        }
+        conn_message_map_[connId] = (GMessagePtr<T>)message;
+        return connId;
+    }
+
+    /**
+     * 开始发送对应topic的信息
+     * @tparam TImpl
+     * @param topic
+     * @param value
+     * @return
+     */
+    template<typename TImpl,
+            std::enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
+    CStatus pubTopicValue(const std::string& topic, const TImpl& value) {
+        CGRAPH_FUNCTION_BEGIN
+        {
+            CGRAPH_LOCK_GUARD lock(pub_mutex_);
+            auto innerTopic = PUB_SUB_PREFIX + topic;
+            auto result = pub_sub_message_map_.find(innerTopic);
+            if (result == pub_sub_message_map_.end()) {
+                CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
+            }
+
+            auto& messageSet = result->second;
+            for (auto msg : messageSet) {
+                msg->send(value);    // 给所有订阅的信息，一次发送消息
+            }
+        }
+        CGRAPH_FUNCTION_END
+    }
+
+    /**
+     * 根据传入的 connId信息，来
+     * @tparam TImpl
+     * @param connId
+     * @param value
+     * @return
+     */
+    template<typename TImpl,
+            std::enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
+    CStatus subTopicValue(CIndex connId, TImpl& value) {
+        CGRAPH_FUNCTION_BEGIN
+        {
+            CGRAPH_LOCK_GUARD lock(sub_mutex_);
+            if (conn_message_map_.end() == conn_message_map_.find(connId)) {
+                CGRAPH_RETURN_ERROR_STATUS("no find [" + std::to_string(connId) + "] connect");
+            }
+
+            auto message = (GMessagePtr<TImpl>)(conn_message_map_[connId]);
+            message->recv(value);
+        }
+        CGRAPH_FUNCTION_END
+    }
+
+    /**
+     * 删除对应的topic信息
+     * @param topic
+     * @return
+     */
+    CStatus dropTopic(const std::string& topic) {
+        CGRAPH_FUNCTION_BEGIN
+        auto innerTopic = PUB_SUB_PREFIX + topic;
+        auto result = pub_sub_message_map_.find(innerTopic);
+        if (result == pub_sub_message_map_.end()) {
+            CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
+        }
+
+        auto& messageSet = result->second;
+        for (auto msg : messageSet) {
+            CGRAPH_DELETE_PTR(msg)
+        }
+        pub_sub_message_map_.erase(innerTopic);
         CGRAPH_FUNCTION_END
     }
 
@@ -119,10 +226,18 @@ public:
      */
     CStatus clear() override {
         CGRAPH_FUNCTION_BEGIN
-        for (auto& cur : message_map_) {
+        for (auto& cur : send_recv_message_map_) {
             CGRAPH_DELETE_PTR(cur.second)
         }
-        message_map_.clear();
+
+        for (auto& cur : pub_sub_message_map_) {
+            for (auto iter : cur.second) {
+                CGRAPH_DELETE_PTR(iter);
+            }
+        }
+        send_recv_message_map_.clear();
+        pub_sub_message_map_.clear();
+        cur_conn_id_ = 0;
         CGRAPH_FUNCTION_END
     }
 
@@ -145,7 +260,14 @@ protected:
     }
 
 private:
-    std::unordered_map<std::string, GMessagePtr<T> > message_map_;    // 记录 topic 和 message queue 信息
+    std::unordered_map<std::string, GMessagePtr<T>> send_recv_message_map_;    // 记录 topic 和 message queue 信息
+    std::unordered_map<std::string, std::set<GMessagePtr<T>>> pub_sub_message_map_;    // 记录 pub和sub的 message 的信息
+    std::unordered_map<CIndex, GMessagePtr<T>> conn_message_map_;    // 用于根据 index反推message信息
+    CIndex cur_conn_id_ = 0;    // 记录当前的conn信息
+
+    std::mutex bind_mutex_;
+    std::mutex sub_mutex_;
+    std::mutex pub_mutex_;
 
     template<typename U, USingletonType, CBool> friend class USingleton;
 };

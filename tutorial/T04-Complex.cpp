@@ -43,6 +43,7 @@ void tutorial_complex() {
     GPipelineFactory::remove(pipeline);
 }
 
+
 int main () {
     tutorial_complex();
     return 0;

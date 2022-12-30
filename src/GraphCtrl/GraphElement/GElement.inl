@@ -52,7 +52,7 @@ GElementPtr GElement::addGAspect(TParam* param) {
 
 template<typename TAspect, typename ...Args,
         std::enable_if_t<std::is_base_of<GTemplateAspect<Args...>, TAspect>::value, int>>
-GElement* GElement::addGAspect(Args&&... args) {
+GElement* GElement::addGAspect(Args... args) {
     if (!aspect_manager_) {
         aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager)
     }

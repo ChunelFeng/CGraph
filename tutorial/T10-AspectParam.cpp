@@ -45,6 +45,7 @@ void tutorial_aspect_param() {
     GPipelineFactory::clear();
 }
 
+
 int main() {
     tutorial_aspect_param();
     return 0;
