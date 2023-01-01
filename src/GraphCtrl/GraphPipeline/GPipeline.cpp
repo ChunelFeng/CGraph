@@ -103,7 +103,7 @@ GPipelinePtr GPipeline::setGElementRunTtl(CMSec ttl) {
 }
 
 
-GPipelinePtr GPipeline::setEngineType(GEngineType type) {
+GPipelinePtr GPipeline::setGEngineType(GEngineType type) {
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(element_manager_)
 

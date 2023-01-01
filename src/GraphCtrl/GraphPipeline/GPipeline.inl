@@ -50,6 +50,16 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
 }
 
 
+template<typename GFunction, CLevel level>
+CStatus GPipeline::registerGElement(GFunctionPtr *functionRef,
+                                    const GElementPtrSet &dependElements,
+                                    const std::string &name,
+                                    CSize loop) {
+    // 通过模板特化的方式，简化 GFunction 的注册方式
+    return this->registerGElement<GFunction, level>((GElementPtr *)(functionRef), dependElements, name, loop);
+}
+
+
 template<typename TNode, typename ...Args,
         std::enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int>>
 CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,

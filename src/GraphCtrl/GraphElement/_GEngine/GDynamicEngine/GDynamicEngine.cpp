@@ -49,10 +49,13 @@ CStatus GDynamicEngine::run() {
 
 CStatus GDynamicEngine::afterRunCheck() {
     CGRAPH_FUNCTION_BEGIN
+    if (run_element_size_ != total_element_arr_.size()) {
+        CGRAPH_RETURN_ERROR_STATUS("pipeline run element size not match...")
+    }
 
     for (GElementPtr element : total_element_arr_) {
         if (!element->done_) {
-            CGRAPH_RETURN_ERROR_STATUS("pipeline run check failed...");
+            CGRAPH_RETURN_ERROR_STATUS("pipeline run check failed...")
         }
     }
 
@@ -71,6 +74,7 @@ CStatus GDynamicEngine::beforeRun() {
     CGRAPH_FUNCTION_BEGIN
 
     finished_end_size_ = 0;
+    run_element_size_ = 0;
     for (GElementPtr element : total_element_arr_) {
         status += element->beforeRun();
     }
@@ -92,7 +96,8 @@ CStatus GDynamicEngine::process(GElementPtr element) {
 
 CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     element->done_ = true;
-    for(auto cur : element->run_before_) {
+    run_element_size_++;
+    for (auto cur : element->run_before_) {
         if (--cur->left_depend_ <= 0) {
             process(cur);
         }
@@ -106,7 +111,7 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
 
 CVoid GDynamicEngine::wait() {
     CGRAPH_UNIQUE_LOCK lock(lock_);
-    while(finished_end_size_ < total_end_size_) {
+    while (finished_end_size_ < total_end_size_) {
         cv_.wait(lock);
     }
 }

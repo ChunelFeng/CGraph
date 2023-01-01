@@ -93,6 +93,22 @@ public:
                              CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
+     * 注册function类型的内容，模板特化
+     * @tparam GFunction
+     * @tparam level
+     * @param functionRef
+     * @param dependElements
+     * @param name
+     * @param loop
+     * @return
+     */
+    template<typename GFunction, CLevel level = CGRAPH_DEFAULT_ELEMENT_LEVEL>
+    CStatus registerGElement(GFunctionPtr *functionRef,
+                             const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
+                             const std::string &name = CGRAPH_EMPTY,
+                             CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
+
+    /**
      * 在图中注册一个模板Element信息
      * @tparam TNode
      * @tparam Args
@@ -164,7 +180,7 @@ public:
      * @param type
      * @return
      */
-    GPipeline* setEngineType(GEngineType type);
+    GPipeline* setGEngineType(GEngineType type);
 
 protected:
     explicit GPipeline();

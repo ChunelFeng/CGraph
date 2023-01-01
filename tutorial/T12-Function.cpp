@@ -13,9 +13,10 @@ using namespace CGraph;
 
 void tutorial_function() {
     GPipelinePtr pipeline = GPipelineFactory::create();
-    GElementPtr a, b, c_function, d_function = nullptr;
+    GElementPtr a, b = nullptr;
+    GFunctionPtr c_function, d_function = nullptr;    // 申明两个 GFunction 类型的变量
 
-    /** v1.8.3版本之后，推荐使用+=的形式，对status赋值 */
+    /** v1.8.3 版本之后，推荐使用+=的形式，对status赋值 */
     CStatus status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA", 1);
     status += pipeline->registerGElement<MyWriteParamNode>(&b, {a}, "nodeB", 1);
     status += pipeline->registerGElement<GFunction>(&c_function, {b}, "functionC", 1);    // 注册GFunction类型的节点c_function
@@ -27,17 +28,17 @@ void tutorial_function() {
 
     int num = 10;
     const std::string& info = "Hello, CGraph";
-    ((GFunctionPtr)c_function)->setFunction(CFunctionType::RUN, [num, info] {
+    c_function->setFunction(CFunctionType::RUN, [num, info] {
         CGRAPH_ECHO("input num i = [%d], info = [%s]", num, info.c_str());    // 传递pipeline外部参数，并在pipeline内部节点执行时使用
         return CStatus();
     });
 
     /** 通过链式调用的方式，注册多个执行函数 */
-    ((GFunctionPtr)d_function)->setFunction(CFunctionType::INIT, [d_function] {
+    d_function->setFunction(CFunctionType::INIT, [d_function] {
         CGRAPH_ECHO("[%s] do init function ...", d_function->getName().c_str());
         return CStatus();
     })->setFunction(CFunctionType::RUN, [d_function, num] {
-        auto param = d_function->getGParam<MyParam>("param1");     // 在nodeB(MyWriteParamNode)的init阶段生成，正式使用的时候请注意判空逻辑
+        auto param = d_function->getGParamWithNoEmpty<MyParam>("param1");
         param->iCount += num;
         CGRAPH_ECHO("[%s] do run function, iCount = [%d], iValue = [%d] ...",
                     d_function->getName().c_str(), param->iCount, ++param->iValue);

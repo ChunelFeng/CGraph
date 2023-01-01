@@ -71,7 +71,7 @@ CStatus GRegion::addElement(GElementPtr element) {
 }
 
 
-GRegion* GRegion::setEngineType(GEngineType type) {
+GRegion* GRegion::setGEngineType(GEngineType type) {
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(manager_)
 
