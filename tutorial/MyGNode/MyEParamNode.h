@@ -10,8 +10,8 @@
 #define CGRAPH_MYEPARAMNODE_H
 
 #include "../../src/CGraph.h"
-#include "../MyGParam/MyVersionParam.h"
-#include "../MyGParam/MyConnParam.h"
+#include "../MyParams/MyVersionParam.h"
+#include "../MyParams/MyConnParam.h"
 
 class MyEParamNode : public CGraph::GNode {
 public:

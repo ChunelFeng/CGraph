@@ -58,7 +58,7 @@ protected:
      * 判断是否所有element均执行结束了
      * @return
      */
-    CBool isElementsDone();
+    CBool isClusterDone();
 
 
     friend class GElementManager;

@@ -10,7 +10,7 @@
 #define CGRAPH_MYSUBMESSAGENODE_H
 
 #include "../../src/CGraph.h"
-#include "../MyGParam/MyMessageParam.h"
+#include "../MyParams/MyMessageParam.h"
 
 template <typename ...Args>
 class MySubMessageNode : public CGraph::GTemplateNode<Args ...> {
@@ -33,10 +33,9 @@ public:
             return status;
         }
 
-        if (mp.num % 1 == 0) {
-            CGraph::CGRAPH_ECHO("[%s] conn id = [%d], num = [%d], info = [%s]",
-                                this->getName().c_str(), conn_id_, mp.num, mp.info.c_str());
-        }
+        CGraph::CGRAPH_ECHO("[%s] conn id = [%d], num = [%d], info = [%s]",
+                            this->getName().c_str(), conn_id_, mp.num, mp.info.c_str());
+
         return status;
     }
 

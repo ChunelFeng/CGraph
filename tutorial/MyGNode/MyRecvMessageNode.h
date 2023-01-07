@@ -10,7 +10,7 @@
 #define CGRAPH_MYRECVMESSAGENODE_H
 
 #include "../../src/CGraph.h"
-#include "../MyGParam/MyMessageParam.h"
+#include "../MyParams/MyMessageParam.h"
 
 class MyRecvMessageNode : public CGraph::GNode {
 public:

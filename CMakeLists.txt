@@ -48,10 +48,10 @@ set(CGRAPH_TUTORIAL_LIST
 
         # 以下为工具类tutorial
         TU01-ThreadPool
-        # TU02-Lru
-        # TU03-Trie
-        # TU04-Timer
-        # TU05-Distance
+        TU02-Lru
+        TU03-Trie
+        TU04-Timer
+        TU05-Distance
         )
 
 foreach(tut ${CGRAPH_TUTORIAL_LIST})
