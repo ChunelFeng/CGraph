@@ -10,7 +10,7 @@
 #include "MyGNode/MyNode2.h"
 #include "MyGNode/MyWriteParamNode.h"
 #include "MyGAspect/MyConnAspect.h"
-#include "MyGParam/MyConnParam.h"
+#include "MyParams/MyConnParam.h"
 #include "MyGAspect/MyTimerAspect.h"
 #include "MyGAspect/MyPipelineParamAspect.h"
 

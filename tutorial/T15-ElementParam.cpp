@@ -8,7 +8,7 @@
 
 #include "MyGNode/MyNode1.h"
 #include "MyGNode/MyEParamNode.h"
-#include "MyGParam/MyConnParam.h"
+#include "MyParams/MyConnParam.h"
 
 using namespace CGraph;
 
