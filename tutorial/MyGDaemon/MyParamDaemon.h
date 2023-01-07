@@ -10,8 +10,8 @@
 #define CGRAPH_MYPARAMDAEMON_H
 
 #include "../../src/CGraph.h"
-#include "../MyGParam/MyParam.h"
-#include "../MyGParam/MyConnParam.h"
+#include "../MyParams/MyParam.h"
+#include "../MyParams/MyConnParam.h"
 
 class MyParamDaemon : public CGraph::GDaemon {
 public:
