@@ -10,7 +10,7 @@
 #define CGRAPH_MYPIPELINEPARAMASPECT_H
 
 #include "../../src/CGraph.h"
-#include "../MyGParam/MyParam.h"
+#include "../MyParams/MyParam.h"
 
 class MyPipelineParamAspect : public CGraph::GAspect {
 public:
