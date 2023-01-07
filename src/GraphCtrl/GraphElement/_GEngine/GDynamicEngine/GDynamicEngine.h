@@ -71,7 +71,7 @@ private:
     GElementPtrArr front_element_arr_;                          // 没有依赖的元素信息
     CSize total_end_size_ = 0;                                  // 图结束节点数量
     CSize finished_end_size_ = 0;                               // 执行结束节点数量
-    std::atomic<CSize> run_element_size_ = 0;                   // 执行元素的个数，用于后期校验。这里和静态不一样，需要加atomic
+    std::atomic<CSize> run_element_size_;                       // 执行元素的个数，用于后期校验。这里和静态不一样，需要加atomic
 
     std::mutex lock_;
     std::condition_variable cv_;

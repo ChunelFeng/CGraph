@@ -37,9 +37,7 @@ public:
         , priority_(priority) {}
 
     CVoid operator()() {
-        if (likely(impl_)) {
-            impl_->call();
-        }
+        impl_->call();
     }
 
     UTask() = default;

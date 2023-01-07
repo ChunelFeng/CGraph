@@ -46,13 +46,10 @@ T* GParamManager::get(const std::string& key) {
 
 template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
 T* GParamManager::getWithNoEmpty(const std::string& key) {
-    auto result = params_map_.find(key);
-    if (result == params_map_.end()) {
-        CGRAPH_THROW_EXCEPTION("get param [" + key + "] error")
+    auto* param = get<T>(key);
+    if (nullptr == param) {
+        CGRAPH_THROW_EXCEPTION("param [" + key + "] is null")
     }
-
-    auto param = dynamic_cast<T *>(result->second);
-    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param)
     return param;
 }
 

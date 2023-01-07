@@ -11,7 +11,7 @@
 #include "MyGDaemon/MyTemplateDaemon.h"
 #include "MyGNode/MyNode1.h"
 #include "MyGNode/MyWriteParamNode.h"
-#include "MyGParam/MyConnParam.h"
+#include "MyParams/MyConnParam.h"
 
 using namespace CGraph;
 

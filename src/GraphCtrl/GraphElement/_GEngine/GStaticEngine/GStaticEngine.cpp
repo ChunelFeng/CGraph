@@ -171,7 +171,7 @@ CStatus GStaticEngine::afterRunCheck() {
     /* 需要验证每个cluster里的每个内容是否被执行过一次 */
     for (GClusterArrRef clusterArr : para_cluster_arrs_) {
         for (GClusterRef cluster : clusterArr) {
-            if (!cluster.isElementsDone()) {
+            if (!cluster.isClusterDone()) {
                 CGRAPH_RETURN_ERROR_STATUS("pipeline done status check failed...");
             }
         }
