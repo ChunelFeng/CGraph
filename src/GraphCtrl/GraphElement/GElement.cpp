@@ -20,6 +20,15 @@ const std::string& GElement::getSession() const {
 }
 
 
+CStatus GElement::removeGParam(const std::string& key) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(this->param_manager_)
+
+    status = this->param_manager_->remove(key);
+    CGRAPH_FUNCTION_END
+}
+
+
 GElement::GElement() {
     this->session_ = CGRAPH_GENERATE_SESSION;
     this->thread_pool_ = UThreadPoolSingleton::get();
@@ -183,7 +192,10 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                 CGRAPH_RETURN_ERROR_STATUS("get function type error")
         }
     } catch (const CException& ex) {
+        status = doAspect(GAspectType::BEGIN_CRASH);
+        CGRAPH_FUNCTION_CHECK_STATUS
         status = crashed(ex);
+        doAspect(GAspectType::FINISH_CRASH, status);
     }
 
     CGRAPH_FUNCTION_END
@@ -208,9 +220,9 @@ CStatus GElement::crashed(const CException& ex) {
 }
 
 
-int GElement::getThreadNum() {
+CIndex GElement::getThreadNum() {
     if (nullptr == thread_pool_) {
-        return -1;    // 理论不存在的情况
+        return CGRAPH_SECONDARY_THREAD_COMMON_ID;    // 理论不存在的情况
     }
 
     auto tid = (CSize)std::hash<std::thread::id>{}(std::this_thread::get_id());

@@ -48,6 +48,12 @@ public:
     template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
     T* getWithNoEmpty(const std::string& key);
 
+    /**
+     * 删除特定的param信息
+     * @param key
+     * @return
+     */
+    CStatus remove(const std::string& key);
 
 protected:
     explicit GParamManager();

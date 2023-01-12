@@ -50,7 +50,6 @@ protected:
     template<typename T,
             std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
     T* getGParam(const std::string& key) {
-        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)
         return param_manager_->get<T>(key);
     }
 
@@ -70,6 +69,15 @@ protected:
         return param;
     }
 
+    /**
+     * 删除特定的param信息
+     * @param key
+     * @return
+     */
+    CStatus removeGParam(const std::string& key) {
+        CGRAPH_ASSERT_NOT_NULL(param_manager_)
+        return param_manager_->remove(key);
+    }
 
 private:
     GParamManagerPtr param_manager_ = nullptr;    // GParam管理类，必须在pipeline一层创建和销毁。

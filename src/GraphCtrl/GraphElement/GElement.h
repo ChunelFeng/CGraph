@@ -65,6 +65,13 @@ public:
     CStatus createGParam(const std::string& key);
 
     /**
+     * 删除param信息
+     * @param key
+     * @return
+     */
+    CStatus removeGParam(const std::string& key);
+
+    /**
      * 实现添加切面的逻辑
      * @tparam TAspect
      * @tparam TParam
@@ -230,7 +237,7 @@ protected:
      * @return
      * @notice 辅助线程返回-1
      */
-    int getThreadNum();
+    CIndex getThreadNum();
 
     CGRAPH_NO_ALLOWED_COPY(GElement);
 

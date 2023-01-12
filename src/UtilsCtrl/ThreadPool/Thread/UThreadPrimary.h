@@ -16,7 +16,7 @@ CGRAPH_NAMESPACE_BEGIN
 class UThreadPrimary : public UThreadBase {
 protected:
     explicit UThreadPrimary() {
-        index_ = -1;
+        index_ = CGRAPH_SECONDARY_THREAD_COMMON_ID;
         pool_threads_ = nullptr;
         type_ = CGRAPH_THREAD_TYPE_PRIMARY;
     }
@@ -201,7 +201,7 @@ protected:
     }
 
 private:
-    int index_ {-1};                                               // 线程index
+    int index_ {CGRAPH_SECONDARY_THREAD_COMMON_ID};                // 线程index
     UWorkStealingQueue work_stealing_queue_;                       // 内部队列信息
     std::vector<UThreadPrimary *>* pool_threads_;                  // 用于存放线程池中的线程信息
 

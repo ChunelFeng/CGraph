@@ -107,7 +107,7 @@ public:
      * @return
      * @notice 辅助线程返回-1
      */
-    int getThreadNum(CSize tid);
+    CIndex getThreadNum(CSize tid);
 
     /**
      * 释放所有的线程信息

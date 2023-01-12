@@ -42,6 +42,8 @@ public:
                 case GAspectType::FINISH_INIT : aspect->finishInit(curStatus); break;
                 case GAspectType::BEGIN_DESTROY : status = aspect->beginDestroy(); break;
                 case GAspectType::FINISH_DESTROY : aspect->finishDestroy(curStatus); break;
+                case GAspectType::BEGIN_CRASH : status = aspect->beginCrash(); break;
+                case GAspectType::FINISH_CRASH : aspect->finishCrash(curStatus); break;
                 default: status = CStatus("unknown aspect type");    // 超出预期范围，理论不存在的情况
             }
 

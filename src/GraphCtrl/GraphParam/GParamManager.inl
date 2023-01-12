@@ -15,6 +15,7 @@ template<typename T,
         std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
 CStatus GParamManager::create(const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
+    CGRAPH_LOCK_GUARD lock(this->lock_);
     auto result = params_map_.find(key);
     if (result != params_map_.end()) {
         /* 如果是重复创建，则返回ok；非重复创建（类型不同）则返回err */
@@ -22,12 +23,8 @@ CStatus GParamManager::create(const std::string& key) {
         return (typeid(*param).name() == typeid(T).name()) ? CStatus() : CStatus("create param duplicate");
     }
 
-    {
-        CGRAPH_LOCK_GUARD lock(this->lock_);
-        T* ptr = CGRAPH_SAFE_MALLOC_COBJECT(T)
-        params_map_.insert(std::pair<std::string, T*>(key, ptr));
-    }
-
+    T* ptr = CGRAPH_SAFE_MALLOC_COBJECT(T)
+    params_map_.insert(std::pair<std::string, T*>(key, ptr));
     CGRAPH_FUNCTION_END
 }
 
