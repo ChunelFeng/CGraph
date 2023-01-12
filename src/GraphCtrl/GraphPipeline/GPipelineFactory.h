@@ -13,11 +13,11 @@
 #include <mutex>
 
 #include "GPipeline.h"
-#include "../GraphObject.h"
+#include "GPipelineObject.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GPipelineFactory : public GraphObject {
+class GPipelineFactory : public GPipelineObject {
 public:
     /**
      * 创建一个pipeline信息

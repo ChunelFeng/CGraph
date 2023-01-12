@@ -17,17 +17,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class GParamManagerWrapper : public GParamObject {
-protected:
-    /**
-     * 设置统一的参数管理类
-     * @param pm
-     * @return
-     */
-    GParamManagerWrapper* setGParamManager(const GParamManagerPtr pm) {
-        param_manager_ = pm;
-        return this;
-    }
-
+public:
     /**
      * 创建参数信息
      * @tparam T
@@ -50,6 +40,7 @@ protected:
     template<typename T,
             std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
     T* getGParam(const std::string& key) {
+        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)
         return param_manager_->get<T>(key);
     }
 
@@ -62,7 +53,7 @@ protected:
     template<typename T,
             std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
     T* getGParamWithNoEmpty(const std::string& key) {
-        auto* param = param_manager_->get<T>(key);
+        auto* param = getGParam<T>(key);
         if (nullptr == param) {
             CGRAPH_THROW_EXCEPTION("param [" + key + "] is null")
         }
@@ -79,10 +70,23 @@ protected:
         return param_manager_->remove(key);
     }
 
+protected:
+    /**
+    * 设置统一的参数管理类
+    * @param pm
+    * @return
+    */
+    GParamManagerWrapper* setGParamManager(const GParamManagerPtr pm) {
+        param_manager_ = pm;
+        return this;
+    }
+
 private:
-    GParamManagerPtr param_manager_ = nullptr;    // GParam管理类，必须在pipeline一层创建和销毁。
+    // GParam管理类，必须在pipeline一层创建和销毁。在 pipeline 中统一创建和销毁
+    GParamManagerPtr param_manager_ = nullptr;
 
     friend class GElement;
+    friend class GPipeline;
 };
 
 CGRAPH_NAMESPACE_END

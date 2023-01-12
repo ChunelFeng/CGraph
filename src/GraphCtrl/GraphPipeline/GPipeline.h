@@ -13,12 +13,14 @@
 #include <memory>
 #include <list>
 
+#include "GPipelineObject.h"
 #include "../GraphElement/GElementInclude.h"
 #include "../GraphDaemon/GDaemonInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GPipeline : public GraphObject {
+class GPipeline : public GPipelineObject,
+                  public GParamManagerWrapper {
 public:
     /**
      * 初始化pipeline信息
@@ -123,15 +125,6 @@ public:
                              Args... args);
 
     /**
-     * 添加参数，pipeline中所有节点共享此参数
-     * @tparam T
-     * @param key
-     * @return
-     */
-    template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
-    CStatus createGParam(const std::string& key);
-
-    /**
      * 添加切面
      * @tparam T
      * @param elements
@@ -193,7 +186,6 @@ private:
     CBOOL is_init_ = false;                                     // 初始化标志位
     GElementManagerPtr element_manager_;                        // 节点管理类（管理所有注册过的element信息）
     GElementPtrSet element_repository_;                         // 标记创建的所有节点，最终释放使用
-    GParamManagerPtr param_manager_;                            // 参数管理类
     UThreadPoolPtr thread_pool_;                                // 线程池类
     GDaemonManagerPtr daemon_manager_;                          // 守护管理类
 

@@ -135,17 +135,6 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
 }
 
 
-template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
-CStatus GPipeline::createGParam(const std::string& key) {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT(false)
-    CGRAPH_ASSERT_NOT_NULL(param_manager_)
-
-    status = param_manager_->create<T>(key);
-    CGRAPH_FUNCTION_END
-}
-
-
 template<typename TAspect, typename TParam,
         std::enable_if_t<std::is_base_of<GAspect, TAspect>::value, int>,
         std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int>>
