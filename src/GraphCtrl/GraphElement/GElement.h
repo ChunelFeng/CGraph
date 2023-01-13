@@ -35,43 +35,6 @@ public:
     const std::string& getSession() const;
 
     /**
-     * 获取参数信息，如果未找到，则返回nullptr
-     * @tparam T
-     * @param key
-     * @return
-     */
-    template<typename T,
-            std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
-    T* getGParam(const std::string& key);
-
-    /**
-     * 获取参数信息，如果未找到，则返回nullptr
-     * @tparam T
-     * @param key
-     * @return
-     */
-    template<typename T,
-            std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
-    T* getGParamWithNoEmpty(const std::string& key);
-
-    /**
-     * 创建param信息，如果创建成功，则直接返回ok
-     * @tparam T
-     * @param key
-     * @return
-     */
-    template<typename T,
-            std::enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
-    CStatus createGParam(const std::string& key);
-
-    /**
-     * 删除param信息
-     * @param key
-     * @return
-     */
-    CStatus removeGParam(const std::string& key);
-
-    /**
      * 实现添加切面的逻辑
      * @tparam TAspect
      * @tparam TParam
@@ -240,6 +203,8 @@ protected:
     CIndex getThreadNum();
 
     CGRAPH_NO_ALLOWED_COPY(GElement);
+
+    CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
 
 protected:
     CBool done_ { false };                           // 判定被执行结束

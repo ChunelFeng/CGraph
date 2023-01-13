@@ -11,34 +11,6 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T,
-        std::enable_if_t<std::is_base_of<GParam, T>::value, int> >
-CStatus GElement::createGParam(const std::string& key) {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(this->param_manager_)
-
-    status = this->param_manager_->create<T>(key);
-    CGRAPH_FUNCTION_END
-}
-
-
-template<typename T,
-        std::enable_if_t<std::is_base_of<GParam, T>::value, int> >
-T* GElement::getGParam(const std::string& key) {
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(this->param_manager_)
-
-    T* ptr = this->param_manager_->get<T>(key);
-    return ptr;
-}
-
-
-template<typename T,
-        std::enable_if_t<std::is_base_of<GParam, T>::value, int> >
-T* GElement::getGParamWithNoEmpty(const std::string& key) {
-    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(this->param_manager_)
-    return this->param_manager_->getWithNoEmpty<T>(key);
-}
-
 
 template<typename TAspect, typename TParam,
         std::enable_if_t<std::is_base_of<GAspect, TAspect>::value, int>,

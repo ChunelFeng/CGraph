@@ -19,8 +19,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GPipeline : public GPipelineObject,
-                  public GParamManagerWrapper {
+class GPipeline : public GPipelineObject {
 public:
     /**
      * 初始化pipeline信息
@@ -175,6 +174,12 @@ public:
      */
     GPipeline* setGEngineType(GEngineType type);
 
+    /**
+     * 注册GParam 交互类集合
+     * @return
+     */
+    CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
+
 protected:
     explicit GPipeline();
     ~GPipeline() override;
@@ -185,6 +190,7 @@ protected:
 private:
     CBOOL is_init_ = false;                                     // 初始化标志位
     GElementManagerPtr element_manager_;                        // 节点管理类（管理所有注册过的element信息）
+    GParamManagerPtr param_manager_ = nullptr;                  // 参数管理类
     GElementPtrSet element_repository_;                         // 标记创建的所有节点，最终释放使用
     UThreadPoolPtr thread_pool_;                                // 线程池类
     GDaemonManagerPtr daemon_manager_;                          // 守护管理类

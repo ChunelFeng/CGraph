@@ -40,16 +40,6 @@ T* GParamManager::get(const std::string& key) {
     return dynamic_cast<T *>(result->second);
 }
 
-
-template<typename T, std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
-T* GParamManager::getWithNoEmpty(const std::string& key) {
-    auto* param = get<T>(key);
-    if (nullptr == param) {
-        CGRAPH_THROW_EXCEPTION("param [" + key + "] is null")
-    }
-    return param;
-}
-
 CGRAPH_NAMESPACE_END
 
 #endif // CGRAPH_GPARAMMANAGER_INL

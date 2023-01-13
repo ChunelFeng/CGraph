@@ -20,15 +20,6 @@ const std::string& GElement::getSession() const {
 }
 
 
-CStatus GElement::removeGParam(const std::string& key) {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(this->param_manager_)
-
-    status = this->param_manager_->remove(key);
-    CGRAPH_FUNCTION_END
-}
-
-
 GElement::GElement() {
     this->session_ = CGRAPH_GENERATE_SESSION;
     this->thread_pool_ = UThreadPoolSingleton::get();

@@ -15,8 +15,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GAspect : public GAspectObject,
-                public GParamManagerWrapper {
+class GAspect : public GAspectObject {
 public:
     /**
      * init()函数切面开始期间动作

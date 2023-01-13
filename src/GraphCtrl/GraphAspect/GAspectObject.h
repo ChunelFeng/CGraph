@@ -58,6 +58,16 @@ protected:
     }
 
     /**
+     * 设置GParam 参数管理类
+     * @param pm
+     * @return
+     */
+    GAspectObject* setGParamManager(const GParamManagerPtr pm) {
+        param_manager_ = pm;
+        return this;
+    }
+
+    /**
      * GAspect 相关内容，不需要执行run方法
      * @return
      */
@@ -65,9 +75,12 @@ protected:
         CGRAPH_NO_SUPPORT
     }
 
+    CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
+
 private:
     std::string name_;                                        // 切面类名称，跟 element 名称保持相同
     GAspectParamPtr param_ { nullptr };                       // 参数信息
+    GParamManagerPtr param_manager_ { nullptr };              // GParam参数管理类
 
     friend class GAspectManager;
     friend class GElement;

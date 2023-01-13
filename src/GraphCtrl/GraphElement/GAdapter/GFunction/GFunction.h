@@ -34,6 +34,8 @@ public:
         return this;
     }
 
+    CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
+
 protected:
     CStatus init() override {
         return init_function_ ? init_function_() : CStatus();
