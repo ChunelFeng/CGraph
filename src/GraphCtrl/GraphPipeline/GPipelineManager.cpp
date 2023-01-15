@@ -31,15 +31,9 @@ CStatus GPipelineManager::init() {
 CStatus GPipelineManager::run() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(true)
-    GPipelinePtr pipeline = nullptr;    // 记录当前的pipeline信息
-    {
-        CGRAPH_LOCK_GUARD lk(mutex_);
-        if (free_list_.empty()) {
-            CGRAPH_RETURN_ERROR_STATUS("no free pipeline")
-        }
-        pipeline = free_list_.front();
-        free_list_.pop_front();    // 拿到一个，并且计算
-        used_list_.push_back(pipeline);
+    GPipelinePtr pipeline = fetch();
+    if (nullptr == pipeline) {
+        CGRAPH_RETURN_ERROR_STATUS("no free pipeline current")
     }
 
     /**
@@ -47,11 +41,7 @@ CStatus GPipelineManager::run() {
      * 无论如何，执行完成之后，都要将pipeline返回到 free_list 中去
      */
     status = pipeline->run();
-    {
-        CGRAPH_LOCK_GUARD lk(mutex_);
-        used_list_.remove(pipeline);
-        free_list_.push_front(pipeline);    // 最先执行的，放回头部，可能会增加cache触达
-    }
+    status += release(pipeline);
 
     CGRAPH_FUNCTION_END
 }
@@ -134,6 +124,40 @@ CStatus GPipelineManager::remove(GPipelinePtr ptr) {
 
 GPipelineManager::~GPipelineManager() {
     clear();
+}
+
+
+GPipelinePtr GPipelineManager::fetch() {
+    GPipelinePtr pipeline = nullptr;
+    CGRAPH_LOCK_GUARD lk(mutex_);
+    if (free_list_.empty()) {
+        // 如果没有 free的了，则直接返回空了
+        return pipeline;
+    }
+
+    pipeline = free_list_.front();
+    free_list_.pop_front();    // 如果有的话，就fetch出去了
+    used_list_.push_back(pipeline);
+    return pipeline;
+}
+
+
+CStatus GPipelineManager::release(GPipelinePtr ptr) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(ptr)
+    CGRAPH_LOCK_GUARD lk(mutex_);
+    CBool result = std::any_of(used_list_.begin(), used_list_.end(),
+                               [ptr] (GPipelinePtr cur) {
+                                   return (ptr == cur);
+                               });
+    if (!result) {
+        CGRAPH_RETURN_ERROR_STATUS("pipeline is not used")
+    }
+
+    used_list_.remove(ptr);
+    free_list_.push_front(ptr);    // 最先执行的，放回头部，可能会增加cache触达
+
+    CGRAPH_FUNCTION_END
 }
 
 CGRAPH_NAMESPACE_END

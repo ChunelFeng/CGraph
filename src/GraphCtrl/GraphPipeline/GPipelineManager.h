@@ -38,6 +38,19 @@ public:
 
     ~GPipelineManager() override;
 
+    /**
+     * 获取一个可以运行的pipeline信息
+     * 没有可用的话，则返回 nullptr
+     * @return
+     */
+    GPipelinePtr fetch();
+
+    /**
+     * 释放一个pipeline信息，重新放回 free list 中去
+     * @param ptr
+     * @return
+     */
+    CStatus release(GPipelinePtr ptr);
 
 private:
     GPipelinePtrList free_list_;                // 空闲的 pipeline信息
