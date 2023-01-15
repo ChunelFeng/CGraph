@@ -125,8 +125,10 @@ public:
 
     /**
      * 添加切面
-     * @tparam T
+     * @tparam TAspect
+     * @tparam TParam
      * @param elements
+     * @param param
      * @return
      */
     template<typename TAspect, typename TParam = GAspectDefaultParam,
@@ -137,9 +139,10 @@ public:
 
     /**
      * 添加守护
-     * @tparam T
-     * @param ms 设置定时间隔信息，单位是ms
-     * @param param 传入参数信息
+     * @tparam TDaemon
+     * @tparam DParam
+     * @param ms
+     * @param param
      * @return
      */
     template<typename TDaemon, typename DParam = GDaemonDefaultParam,
@@ -188,12 +191,11 @@ protected:
     CGRAPH_NO_ALLOWED_COPY(GPipeline)
 
 private:
-    CBOOL is_init_ = false;                                     // 初始化标志位
-    GElementManagerPtr element_manager_;                        // 节点管理类（管理所有注册过的element信息）
+    GElementManagerPtr element_manager_ = nullptr; ;            // 节点管理类（管理所有注册过的element信息）
     GParamManagerPtr param_manager_ = nullptr;                  // 参数管理类
+    UThreadPoolPtr thread_pool_ = nullptr;                      // 线程池类
+    GDaemonManagerPtr daemon_manager_ = nullptr;                // 守护管理类
     GElementPtrSet element_repository_;                         // 标记创建的所有节点，最终释放使用
-    UThreadPoolPtr thread_pool_;                                // 线程池类
-    GDaemonManagerPtr daemon_manager_;                          // 守护管理类
 
     friend class GPipelineFactory;
     friend class UAllocator;

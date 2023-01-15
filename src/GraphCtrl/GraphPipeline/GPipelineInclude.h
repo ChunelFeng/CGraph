@@ -12,5 +12,6 @@
 
 #include "GPipeline.h"
 #include "GPipelineFactory.h"
+#include "GPipelineManager.h"
 
 #endif //CGRAPH_GPIPELINEINCLUDE_H
