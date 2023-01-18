@@ -43,16 +43,6 @@ protected:
             std::enable_if_t<std::is_base_of<GDaemonParam, DParam>::value, int> = 0>
     GDaemonObject* setDParam(DParam* param);
 
-    /**
-     * 设置GParam 参数管理类
-     * @param pm
-     * @return
-     */
-    GDaemonObject* setGParamManager(const GParamManagerPtr pm) {
-        param_manager_ = pm;
-        return this;
-    }
-
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
 
 private:

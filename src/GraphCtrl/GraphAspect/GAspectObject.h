@@ -58,16 +58,6 @@ protected:
     }
 
     /**
-     * 设置GParam 参数管理类
-     * @param pm
-     * @return
-     */
-    GAspectObject* setGParamManager(const GParamManagerPtr pm) {
-        param_manager_ = pm;
-        return this;
-    }
-
-    /**
      * GAspect 相关内容，不需要执行run方法
      * @return
      */

@@ -208,7 +208,6 @@ protected:
 
 protected:
     CBool done_ { false };                           // 判定被执行结束
-    CBool is_init_ { false };                        // 是否初始化了
     CBool linkable_ { false };                       // 判定是否可以连通计算
     CSize loop_ { 1 };                               // 节点执行次数
     CLevel level_ { 0 };                             // 用于设定init的执行顺序(值小的，优先init，可以为负数)

@@ -17,6 +17,9 @@ CGRAPH_NAMESPACE_BEGIN
 class GraphObject : public CObject {
 public:
     CStatus run() override = 0;
+
+protected:
+    CBool is_init_ = false;    // 判断是否init
 };
 
 CGRAPH_NAMESPACE_END

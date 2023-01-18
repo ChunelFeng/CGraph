@@ -56,7 +56,6 @@ private:
     GPipelinePtrList free_list_;                // 空闲的 pipeline信息
     GPipelinePtrList used_list_;                // 被用的 pipeline信息
     std::mutex mutex_;                          // 控制 free 和 used 之间转移的互斥量
-    CBool is_init_ = false;
 };
 
 CGRAPH_NAMESPACE_END

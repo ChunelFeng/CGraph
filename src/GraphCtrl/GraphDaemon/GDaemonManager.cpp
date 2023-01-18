@@ -18,8 +18,8 @@ GDaemonManager::~GDaemonManager() {
 CStatus GDaemonManager::init() {
     CGRAPH_FUNCTION_BEGIN
     for (auto daemon: daemons_) {
-        status = daemon->init();
-        CGRAPH_FUNCTION_CHECK_STATUS
+        CGRAPH_ASSERT_NOT_NULL(daemon)
+        status += daemon->init();
     }
 
     CGRAPH_FUNCTION_END
@@ -29,8 +29,8 @@ CStatus GDaemonManager::init() {
 CStatus GDaemonManager::destroy() {
     CGRAPH_FUNCTION_BEGIN
     for (auto daemon: daemons_) {
-        status = daemon->destroy();
-        CGRAPH_FUNCTION_CHECK_STATUS
+        CGRAPH_ASSERT_NOT_NULL(daemon)
+        status += daemon->destroy();
     }
 
     CGRAPH_FUNCTION_END
