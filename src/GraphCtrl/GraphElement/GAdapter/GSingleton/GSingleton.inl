@@ -70,10 +70,12 @@ CStatus GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElement
                                       const std::string &name,
                                       CSize loop,
                                       CLevel level,
-                                      GParamManagerPtr paramManager) {
+                                      GParamManagerPtr paramManager,
+                                      GEventManagerPtr eventManager) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
     CGRAPH_ASSERT_NOT_NULL(paramManager)
+    CGRAPH_ASSERT_NOT_NULL(eventManager)
 
     // 这里，内部和外部均需要设定name信息
     this->setName(name)->setLoop(loop)->setLevel(level);
@@ -92,6 +94,7 @@ CStatus GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElement
      * 依赖关系也注册在adapter上
      */
     element->param_manager_ = paramManager;
+    element->event_manager_ = eventManager;
     element->name_ = name;
     CGRAPH_FUNCTION_END
 }

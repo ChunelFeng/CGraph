@@ -17,8 +17,6 @@
 
 #include "GElementDefine.h"
 #include "GElementObject.h"
-#include "../GraphParam/GParamInclude.h"
-#include "../GraphAspect/GAspectInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -170,13 +168,15 @@ protected:
      * @param loop
      * @param level
      * @param paramManager
+     * @paarm eventManager
      * @return
      */
     virtual CStatus setElementInfo(const std::set<GElement *> &dependElements,
                                    const std::string &name,
                                    CSize loop,
                                    CLevel level,
-                                   GParamManagerPtr paramManager);
+                                   GParamManagerPtr paramManager,
+                                   GEventManagerPtr eventManager);
 
     /**
      * 获取当前element内部参数
@@ -202,6 +202,15 @@ protected:
      */
     CIndex getThreadNum();
 
+    /**
+     * 触发一个事件
+     * @param key
+     * @param times
+     * @return
+     * @notice 返回值仅表示是否触发成功，不表示事件是否执行成功
+     */
+    CStatus notify(const std::string& key, CSize times = 1);
+
     CGRAPH_NO_ALLOWED_COPY(GElement);
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
@@ -218,6 +227,7 @@ protected:
     std::atomic<CSize> left_depend_ { 0 };        // 当 left_depend_ 值为0的时候，即可以执行该node信息
     GParamManagerPtr param_manager_ { nullptr };     // 整体流程的参数管理类，所有pipeline中的所有节点共享
     GAspectManagerPtr aspect_manager_ { nullptr };   // 整体流程的切面管理类
+    GEventManagerPtr event_manager_ { nullptr };     // 事件管理类
     UThreadPoolPtr thread_pool_ { nullptr };         // 用于执行的线程池信息
     GElementParamMap local_params_;                  // 用于记录当前element的内部参数
 

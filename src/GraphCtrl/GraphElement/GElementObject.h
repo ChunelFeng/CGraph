@@ -10,6 +10,9 @@
 #define CGRAPH_GELEMENTOBJECT_H
 
 #include "../GraphObject.h"
+#include "../GraphParam/GParamInclude.h"
+#include "../GraphAspect/GAspectInclude.h"
+#include "../GraphEvent/GEventInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

@@ -40,7 +40,9 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
     }
 
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
-    status = (*elementRef)->setElementInfo(dependElements, name, loop, level, this->param_manager_);
+    status = (*elementRef)->setElementInfo(dependElements, name, loop, level,
+                                           this->param_manager_,
+                                           this->event_manager_);
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status = element_manager_->add(dynamic_cast<GElementPtr>(*elementRef));
@@ -73,7 +75,8 @@ CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
     // 以下 name，loop，level 信息，可以由外部设置
     status = (*elementRef)->setElementInfo(dependElements, CGRAPH_EMPTY, CGRAPH_DEFAULT_LOOP_TIMES,
-                                           CGRAPH_DEFAULT_ELEMENT_LEVEL, this->param_manager_);
+                                           CGRAPH_DEFAULT_ELEMENT_LEVEL,
+                                           this->param_manager_, this->event_manager_);
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status = element_manager_->add(dynamic_cast<GElementPtr>(*elementRef));
@@ -88,7 +91,8 @@ template<typename T, CLevel level,
 GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_FUNCTION_BEGIN
     GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T)
-    status = node->setElementInfo(info.dependence_, info.name_, info.loop_, level, this->param_manager_);
+    status = node->setElementInfo(info.dependence_, info.name_, info.loop_, level,
+                                  this->param_manager_, this->event_manager_);
     if (!status.isOK()) {
         CGRAPH_DELETE_PTR(node);
         return nullptr;
@@ -124,7 +128,7 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
     }
 
     status = group->setElementInfo(dependElements, name, loop, level,
-                                   nullptr);    // 注册group信息的时候，不能注册paramManager信息
+                                   nullptr, nullptr);    // 注册group信息的时候，不能注册paramManager信息
     if (unlikely(!status.isOK())) {
         CGRAPH_DELETE_PTR(group)
         return nullptr;
@@ -155,22 +159,22 @@ GPipelinePtr GPipeline::addGAspect(const GElementPtrSet& elements, TParam* param
 }
 
 
-template<typename TDaemon, typename DParam,
+template<typename TDaemon, typename TParam,
         std::enable_if_t<std::is_base_of<GDaemon, TDaemon>::value, int>,
-        std::enable_if_t<std::is_base_of<GDaemonParam, DParam>::value, int>>
-GPipeline* GPipeline::addGDaemon(CMSec ms, DParam* param) {
+        std::enable_if_t<std::is_base_of<GDaemonParam, TParam>::value, int>>
+GPipeline* GPipeline::addGDaemon(CMSec ms, TParam* param) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(daemon_manager_)
 
     GDaemonPtr daemon = CGRAPH_SAFE_MALLOC_COBJECT(TDaemon)
-    daemon->setDParam<DParam>(param)
+    daemon->setDParam<TParam>(param)
             ->setInterval(ms);
     daemon->setGParamManager(this->param_manager_);
     status = daemon_manager_->add(daemon);
 
-    return status.isOK() ? this : nullptr;
+    CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL
 }
 
 
@@ -186,7 +190,22 @@ GPipeline* GPipeline::addGDaemon(CMSec ms, Args... args) {
     daemon->setGParamManager(this->param_manager_);
     status = daemon_manager_->add(daemon);
 
-    return status.isOK() ? this : nullptr;
+    CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL
+}
+
+
+template<typename TEvent, typename TParam,
+        std::enable_if_t<std::is_base_of<GEvent, TEvent>::value, int>,
+        std::enable_if_t<std::is_base_of<GEventParam, TParam>::value, int>>
+GPipeline* GPipeline::addGEvent(const std::string& key, TParam* param) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(event_manager_)
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)
+
+    event_manager_->param_manager_ = this->param_manager_;
+    status = event_manager_->createWithParam<TEvent, TParam>(key, param);
+    CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL
 }
 
 CGRAPH_NAMESPACE_END

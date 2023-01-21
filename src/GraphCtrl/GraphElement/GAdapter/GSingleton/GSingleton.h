@@ -29,13 +29,15 @@ protected:
      * @param loop
      * @param level
      * @param paramManager
+     * @param eventManager
      * @return
      */
     CStatus setElementInfo(const std::set<GElementPtr> &dependElements,
                            const std::string &name,
                            CSize loop,
                            CLevel level,
-                           GParamManagerPtr paramManager) override;
+                           GParamManagerPtr paramManager,
+                           GEventManagerPtr eventManager) override;
 
 private:
     static USingleton<T, USingletonType::HUNGRY> s_singleton_;     // 单例自身

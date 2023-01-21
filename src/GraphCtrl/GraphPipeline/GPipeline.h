@@ -1,7 +1,7 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: Graphic.h
+@File: GPipeline.h
 @Time: 2021/6/2 10:15 下午
 @Desc: 
 ***************************/
@@ -16,6 +16,7 @@
 #include "GPipelineObject.h"
 #include "../GraphElement/GElementInclude.h"
 #include "../GraphDaemon/GDaemonInclude.h"
+#include "../GraphEvent/GEventInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -140,15 +141,15 @@ public:
     /**
      * 添加守护
      * @tparam TDaemon
-     * @tparam DParam
+     * @tparam TParam
      * @param ms
      * @param param
      * @return
      */
-    template<typename TDaemon, typename DParam = GDaemonDefaultParam,
+    template<typename TDaemon, typename TParam = GDaemonDefaultParam,
             std::enable_if_t<std::is_base_of<GDaemon, TDaemon>::value, int> = 0,
-            std::enable_if_t<std::is_base_of<GDaemonParam, DParam>::value, int> = 0>
-    GPipeline* addGDaemon(CMSec ms, DParam* param = nullptr);
+            std::enable_if_t<std::is_base_of<GDaemonParam, TParam>::value, int> = 0>
+    GPipeline* addGDaemon(CMSec ms, TParam* param = nullptr);
 
     /**
      * 添加模板类型守护
@@ -161,6 +162,19 @@ public:
     template<typename TDaemon, typename ...Args,
             std::enable_if_t<std::is_base_of<GTemplateDaemon<Args...>, TDaemon>::value, int> = 0>
     GPipeline* addGDaemon(CMSec ms, Args... args);
+
+    /**
+     * 添加一个事件
+     * @tparam TEvent
+     * @tparam TParam
+     * @param key
+     * @param param
+     * @return
+     */
+    template<typename TEvent, typename TParam = GEventDefaultParam,
+            std::enable_if_t<std::is_base_of<GEvent, TEvent>::value, int> = 0,
+            std::enable_if_t<std::is_base_of<GEventParam, TParam>::value, int> = 0>
+    GPipeline* addGEvent(const std::string& key, TParam* param = nullptr);
 
     /**
      * 设置执行的最大时间周期，单位为毫秒
@@ -193,8 +207,9 @@ protected:
 private:
     GElementManagerPtr element_manager_ = nullptr; ;            // 节点管理类（管理所有注册过的element信息）
     GParamManagerPtr param_manager_ = nullptr;                  // 参数管理类
-    UThreadPoolPtr thread_pool_ = nullptr;                      // 线程池类
     GDaemonManagerPtr daemon_manager_ = nullptr;                // 守护管理类
+    GEventManagerPtr event_manager_ = nullptr;                  // 事件管理类
+    UThreadPoolPtr thread_pool_ = nullptr;                      // 线程池类
     GElementPtrSet element_repository_;                         // 标记创建的所有节点，最终释放使用
 
     friend class GPipelineFactory;

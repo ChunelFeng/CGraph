@@ -54,6 +54,7 @@ const static CIndex CGRAPH_SECONDARY_THREAD_COMMON_ID = -1;                     
 static const int CGRAPH_DEFAULT_TASK_STRATEGY = -1;                                         // 默认线程调度策略
 static const int CGRAPH_LONG_TIME_TASK_STRATEGY = -101;                                     // 长时间任务调度策略
 static const int CGRAPH_REGION_TASK_STRATEGY = -102;                                        // region的调度策略
+static const int CGRAPH_EVENT_TASK_STRATEGY = -103;                                         // event的调度策略
 
 /**
  * 以下为线程池配置信息

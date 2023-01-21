@@ -10,7 +10,7 @@ message("* * * * * * * * * * * * * * * * * * * * * * * * * * * * *")
 
 cmake_minimum_required(VERSION 3.5.0)
 
-project(CGraph VERSION 2.2.3)
+project(CGraph VERSION 2.3.0)
 
 # CGraph推荐使用C++17或以上版本。支持无缝切换C++14版本，仅有个别功能功能的弱化和剪裁。暂不支持C++11或以下版本
 set(CMAKE_CXX_STANDARD 17)
@@ -45,6 +45,7 @@ set(CGRAPH_TUTORIAL_LIST
         T15-ElementParam
         T16-MessageSendRecv
         T17-MessagePubSub
+        T18-Event
 
         # 以下为工具类tutorial
         TU01-ThreadPool

@@ -15,6 +15,7 @@ GPipeline::GPipeline() {
     element_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
     param_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GParamManager)
     daemon_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GDaemonManager)
+    event_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GEventManager)
     is_init_ = false;
 }
 
@@ -23,6 +24,7 @@ GPipeline::~GPipeline() {
     CGRAPH_DELETE_PTR(daemon_manager_)
     CGRAPH_DELETE_PTR(element_manager_)
     CGRAPH_DELETE_PTR(param_manager_)
+    CGRAPH_DELETE_PTR(event_manager_)
 
     // 结束的时候，清空所有创建的节点信息。所有节点信息，仅在这一处释放
     for (GElementPtr element : element_repository_) {
@@ -37,8 +39,10 @@ CStatus GPipeline::init() {
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
     CGRAPH_ASSERT_NOT_NULL(daemon_manager_)
+    CGRAPH_ASSERT_NOT_NULL(event_manager_)
 
     status += param_manager_->init();
+    status += event_manager_->init();
     status += element_manager_->init();
     status += daemon_manager_->init();    // daemon的初始化，需要晚于所有element的初始化
     CGRAPH_FUNCTION_CHECK_STATUS
@@ -69,7 +73,9 @@ CStatus GPipeline::destroy() {
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
     CGRAPH_ASSERT_NOT_NULL(daemon_manager_)
+    CGRAPH_ASSERT_NOT_NULL(event_manager_)
 
+    status += event_manager_->destroy();
     status += daemon_manager_->destroy();
     status += element_manager_->destroy();
     status += param_manager_->destroy();

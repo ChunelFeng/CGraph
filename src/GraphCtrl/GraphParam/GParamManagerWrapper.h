@@ -74,7 +74,7 @@ CGRAPH_NAMESPACE_BEGIN
      * @param pm
      * @return
      */                                                                                 \
-    void* setGParamManager(const GParamManagerPtr pm) {                                 \
+    void* setGParamManager(GParamManagerPtr pm) {                                       \
         this->param_manager_ = pm;                                                      \
         return this;                                                                    \
     }                                                                                   \

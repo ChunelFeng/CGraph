@@ -262,6 +262,10 @@ int main() {
 * 提供`message`发布订阅功能
 * 提供执行引擎切换功能
 
+[2023.01.21 - v2.3.0 - Chunel]
+* 提供`event`(事件)功能
+* 提供`CGraph Intro.xmind`文件，通过脑图的方式，介绍了CGraph的整体逻辑
+
 </details>
 
 ------------
