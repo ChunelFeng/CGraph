@@ -42,7 +42,7 @@ CStatus GDynamicEngine::run() {
 
     asyncRun();
 
-    wait();
+    status = wait();
     CGRAPH_FUNCTION_END
 }
 
@@ -75,6 +75,7 @@ CStatus GDynamicEngine::beforeRun() {
 
     finished_end_size_ = 0;
     run_element_size_ = 0;
+    cur_status_.reset();
     for (GElementPtr element : total_element_arr_) {
         status += element->beforeRun();
     }
@@ -86,8 +87,15 @@ CStatus GDynamicEngine::beforeRun() {
 CStatus GDynamicEngine::process(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
     thread_pool_->commit([this, element] {
-        element->fatProcessor(CFunctionType::RUN);
-        afterElementRun(element);
+        // 如果当前已经是err状态，则不再执行任何逻辑
+        if (likely(!cur_status_.isErr())) {
+            auto curStatus = element->fatProcessor(CFunctionType::RUN);
+            if (unlikely(curStatus.isErr() && cur_status_.isOK())) {
+                // 当且仅当整体状态正常，且当前状态异常的时候，进入赋值逻辑。确保不重复赋值
+                cur_status_ = curStatus;
+            }
+            afterElementRun(element);
+        }
     }, this->schedule_strategy_);
 
     CGRAPH_FUNCTION_END
@@ -103,25 +111,32 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
         }
     }
 
-    if (element->run_before_.empty()) {
-        this->checkFinishState();    // 计算执行结束节点数量
-    }
-}
-
-
-CVoid GDynamicEngine::wait() {
     CGRAPH_UNIQUE_LOCK lock(lock_);
-    while (finished_end_size_ < total_end_size_) {
-        cv_.wait(lock);
-    }
-}
-
-
-CVoid GDynamicEngine::checkFinishState() {
-    CGRAPH_UNIQUE_LOCK lock(lock_);
-    if (++finished_end_size_ >= total_end_size_) {
+    /**
+     * 满足一下条件之一，则通知wait函数停止等待
+     * 1，无后缀节点全部执行完毕
+     * 2，有节点执行状态异常
+     */
+    if ((element->run_before_.empty() && (++finished_end_size_ >= total_end_size_))
+        || cur_status_.isErr()) {
         cv_.notify_one();
     }
+}
+
+
+CStatus GDynamicEngine::wait() {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_UNIQUE_LOCK lock(lock_);
+    cv_.wait(lock,  [this] {
+        /**
+         * 遇到以下条件之一，结束执行：
+         * 1，执行结束
+         * 2，状态异常
+         */
+        return finished_end_size_ >= total_end_size_ || cur_status_.isErr();
+    });
+    status = cur_status_;    // 等待结束后，做赋值
+    CGRAPH_FUNCTION_END
 }
 
 CGRAPH_NAMESPACE_END

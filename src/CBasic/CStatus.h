@@ -12,6 +12,7 @@
 #include <string>
 
 #include "CBasicDefine.h"
+#include "CInfoDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -76,6 +77,14 @@ public:
 
     [[nodiscard]] const std::string& getInfo() const {
         return this->error_info_;
+    }
+
+    /**
+     * 恢复数据
+     */
+    void reset() {
+        error_code_ = STATUS_OK;
+        error_info_ = CGRAPH_EMPTY;
     }
 
     /**

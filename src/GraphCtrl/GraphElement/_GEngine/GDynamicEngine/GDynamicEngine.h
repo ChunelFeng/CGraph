@@ -57,14 +57,7 @@ protected:
      * @param
      * @return
     */
-    CVoid wait();
-
-    /**
-     * 查看是否结束
-     * @param
-     * @return
-    */
-    CVoid checkFinishState();
+    CStatus wait();
 
 private:
     GElementPtrArr total_element_arr_;                          // pipeline中所有的元素信息集合
@@ -72,6 +65,7 @@ private:
     CSize total_end_size_ = 0;                                  // 图结束节点数量
     CSize finished_end_size_ = 0;                               // 执行结束节点数量
     std::atomic<CSize> run_element_size_;                       // 执行元素的个数，用于后期校验。这里和静态不一样，需要加atomic
+    CStatus cur_status_;                                        // 当前全局的状态信息
 
     std::mutex lock_;
     std::condition_variable cv_;
