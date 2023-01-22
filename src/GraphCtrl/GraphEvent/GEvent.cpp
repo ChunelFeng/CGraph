@@ -16,7 +16,7 @@ CStatus GEvent::run() {
 
     // 触发一个事件，放到辅助线程中去，异步执行
     thread_pool_->commit([this] {
-        this->trigger(param_);
+        this->trigger(this->param_);
     }, CGRAPH_EVENT_TASK_STRATEGY);
     CGRAPH_FUNCTION_END
 }

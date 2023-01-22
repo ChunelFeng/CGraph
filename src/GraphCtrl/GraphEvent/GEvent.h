@@ -9,7 +9,6 @@
 #ifndef CGRAPH_GEVENT_H
 #define CGRAPH_GEVENT_H
 
-
 #include <mutex>
 
 #include "GEventObject.h"

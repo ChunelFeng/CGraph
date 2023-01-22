@@ -22,7 +22,7 @@ void tutorial_event() {
     status += pipeline->registerGElement<MyNode1>(&c, {b}, "nodeC");
     status += pipeline->registerGElement<MyEventNode>(&d, {b}, "nodeD");
 
-    // 在pipeline中添加一个事件信息，在node中，通过key("my-print-event")触发
+    // 在pipeline中添加一个事件信息，通过 notify("my-print-event")触发
     pipeline->addGEvent<MyPrintEvent>("my-print-event");
     pipeline->process();
 

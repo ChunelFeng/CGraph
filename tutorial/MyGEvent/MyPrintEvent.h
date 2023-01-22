@@ -20,10 +20,11 @@ public:
      * @return
      */
     CVoid trigger(CGraph::GEventParamPtr param) override {
+        // 休息100ms，标明跟 notify方法是异步的
         CGRAPH_SLEEP_MILLISECOND(100)
         // event 内部，是打通pipeline内部的GParam获取机制的，可以获取GParam信息
-        auto myParam = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(MyParam, "param")
-        CGraph::CGRAPH_ECHO("trigger [%d] times, iValue = [%d]", times_++, myParam->iValue);
+        auto myParam = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(MyParam, "param1")
+        CGraph::CGRAPH_ECHO("----> trigger [%d] times, iValue = [%d]", times_++, myParam->iValue);
     }
 
 private:
