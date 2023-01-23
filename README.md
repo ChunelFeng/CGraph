@@ -44,7 +44,7 @@
   $ make -j8
   ```
 
-* 提供基于`Ubuntu 20.04`的Docker镜像。输入以下指令，即可获取并进入
+* 若本地无法编译，提供基于`Ubuntu 20.04`的Docker镜像。输入以下指令，即可获取并进入
   ```shell
   $ docker pull chunelfeng/cenv                         # 获取docker镜像
   $ docker run -it --name CGraphEnv chunelfeng/cenv     # 开启docker容器，并进入

@@ -20,6 +20,10 @@ protected:
         thread_pool_ = UThreadPoolSingleton::get();
     }
 
+    ~GEventObject() override {
+        CGRAPH_DELETE_PTR(param_)
+    }
+
     CStatus run() override {
         CGRAPH_NO_SUPPORT
     }

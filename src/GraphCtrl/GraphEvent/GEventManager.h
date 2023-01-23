@@ -20,10 +20,6 @@ CGRAPH_NAMESPACE_BEGIN
 class GEventManager : public GEventObject,
                       public GraphManager<GEvent> {
 public:
-    CStatus init() override;
-
-    CStatus destroy() override;
-
     /**
      * 创建一个特定类型的事件，并且通过参数赋值
      * @tparam TEvent
@@ -37,14 +33,18 @@ public:
             std::enable_if_t<std::is_base_of<GEventParam, TEParam>::value, int> = 0>
     CStatus createWithParam(const std::string& key, TEParam* param = nullptr);
 
-    CStatus clear() final;
-
     /**
      * 触发事件
      * @param key
      * @return
      */
     CStatus trigger(const std::string& key);
+
+    CStatus init() override;
+
+    CStatus destroy() override;
+
+    CStatus clear() final;
 
     explicit GEventManager() = default;
 
