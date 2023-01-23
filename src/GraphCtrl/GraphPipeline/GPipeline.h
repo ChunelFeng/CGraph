@@ -205,7 +205,7 @@ protected:
     CGRAPH_NO_ALLOWED_COPY(GPipeline)
 
 private:
-    GElementManagerPtr element_manager_ = nullptr; ;            // 节点管理类（管理所有注册过的element信息）
+    GElementManagerPtr element_manager_ = nullptr;              // 节点管理类（管理所有注册过的element信息）
     GParamManagerPtr param_manager_ = nullptr;                  // 参数管理类
     GDaemonManagerPtr daemon_manager_ = nullptr;                // 守护管理类
     GEventManagerPtr event_manager_ = nullptr;                  // 事件管理类

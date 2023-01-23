@@ -35,6 +35,7 @@ GPipeline::~GPipeline() {
 
 CStatus GPipeline::init() {
     CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(false)    // 必须是非初始化的状态下，才可以初始化。反之同理
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
@@ -54,7 +55,6 @@ CStatus GPipeline::init() {
 
 CStatus GPipeline::run() {
     CGRAPH_FUNCTION_BEGIN
-
     CGRAPH_ASSERT_INIT(true)
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
@@ -70,6 +70,7 @@ CStatus GPipeline::run() {
 CStatus GPipeline::destroy() {
     CGRAPH_FUNCTION_BEGIN
 
+    CGRAPH_ASSERT_INIT(true)
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
     CGRAPH_ASSERT_NOT_NULL(daemon_manager_)
@@ -79,6 +80,9 @@ CStatus GPipeline::destroy() {
     status += daemon_manager_->destroy();
     status += element_manager_->destroy();
     status += param_manager_->destroy();
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    is_init_ = false;
     CGRAPH_FUNCTION_END
 }
 

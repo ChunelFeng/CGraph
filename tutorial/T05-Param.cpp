@@ -26,14 +26,14 @@ void tutorial_param() {
         return;    // 使用时，请对所有CGraph接口的返回值做判定。本例子中省略
     }
 
-    status = pipeline->init();
+    status += pipeline->init();
 
     for (int i = 0; i < 3; i++) {
-        status = pipeline->run();
+        status += pipeline->run();
         std::cout << "[CGraph] tutorial_param, loop : " << i + 1 << ", and run status = " << status.getCode() << std::endl;
     }
 
-    status = pipeline->destroy();
+    status += pipeline->destroy();
     GPipelineFactory::remove(pipeline);
 }
 

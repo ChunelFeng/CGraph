@@ -86,16 +86,19 @@ CStatus GDynamicEngine::beforeRun() {
 
 CStatus GDynamicEngine::process(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
+    if (unlikely(cur_status_.isErr())) {
+        // 如果当前整体状态异常，直接返回，不执行了
+        CGRAPH_RETURN_ERROR_STATUS("current status error")
+    }
+
     thread_pool_->commit([this, element] {
         // 如果当前已经是err状态，则不再执行任何逻辑
-        if (likely(!cur_status_.isErr())) {
-            auto curStatus = element->fatProcessor(CFunctionType::RUN);
-            if (unlikely(curStatus.isErr() && cur_status_.isOK())) {
-                // 当且仅当整体状态正常，且当前状态异常的时候，进入赋值逻辑。确保不重复赋值
-                cur_status_ = curStatus;
-            }
-            afterElementRun(element);
+        auto curStatus = element->fatProcessor(CFunctionType::RUN);
+        if (unlikely(curStatus.isNotOK() && cur_status_.isNotErr())) {
+            // 当且仅当整体状正常，且当前状态异常的时候，进入赋值逻辑。确保不重复赋值
+            cur_status_ = curStatus;
         }
+        afterElementRun(element);
     }, this->schedule_strategy_);
 
     CGRAPH_FUNCTION_END
@@ -133,7 +136,7 @@ CStatus GDynamicEngine::wait() {
          * 1，执行结束
          * 2，状态异常
          */
-        return finished_end_size_ >= total_end_size_ || cur_status_.isErr();
+        return (finished_end_size_ >= total_end_size_) || cur_status_.isErr();
     });
     status = cur_status_;    // 等待结束后，做赋值
     CGRAPH_FUNCTION_END

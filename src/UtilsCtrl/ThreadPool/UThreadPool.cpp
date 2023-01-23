@@ -61,7 +61,7 @@ CStatus UThreadPool::init() {
         status += ptr->init();
 
         // 记录线程和匹配id信息
-        thread_record_map_.insert(std::pair<CSize, int>((CSize)std::hash<std::thread::id>{}(ptr->thread_.get_id()), i));
+        thread_record_map_[(CSize)std::hash<std::thread::id>{}(ptr->thread_.get_id())] = i;
         primary_threads_.emplace_back(ptr);
     }
     CGRAPH_FUNCTION_CHECK_STATUS
