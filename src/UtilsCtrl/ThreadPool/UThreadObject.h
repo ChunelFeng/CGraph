@@ -14,7 +14,6 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class UThreadObject : public UtilsObject {
-
 protected:
     /**
      * 部分thread中的算子，可以不实现run方法

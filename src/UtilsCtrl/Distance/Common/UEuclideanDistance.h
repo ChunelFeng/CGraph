@@ -1,13 +1,13 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: UDistanceEuclidean.h
-@Time: 2022/4/2 00:36
-@Desc: 欧氏距离计算方式
+@File: UEuclideanDistance.h
+@Time: 2023/1/25 23:17
+@Desc: 
 ***************************/
 
-#ifndef CGRAPH_UDISTANCEEUCLIDEAN_H
-#define CGRAPH_UDISTANCEEUCLIDEAN_H
+#ifndef CGRAPH_UEUCLIDEANDISTANCE_H
+#define CGRAPH_UEUCLIDEANDISTANCE_H
 
 #include <cmath>
 
@@ -16,7 +16,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 template<typename TSrc, typename TRes = TSrc, const CBool needSqrt = true>    // 默认给出的值，是开平方后的值
-class UDistanceEuclidean : public UDistance<TSrc, TRes> {
+class UEuclideanDistance : public UDistance<TSrc, TRes> {
 public:
     CStatus calc(const TSrc* v1, const TSrc* v2, CSize dim1, CSize dim2, TRes& result, CVoidPtr ext) override {
         CGRAPH_FUNCTION_BEGIN
@@ -45,4 +45,4 @@ public:
 
 CGRAPH_NAMESPACE_END
 
-#endif //CGRAPH_UDISTANCEEUCLIDEAN_H
+#endif //CGRAPH_UEUCLIDEANDISTANCE_H

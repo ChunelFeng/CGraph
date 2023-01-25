@@ -13,7 +13,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T, CLevel level, std::enable_if_t<std::is_base_of<GElement, T>::value, int>>
+template<typename T, CLevel level, c_enable_if_t<std::is_base_of<GElement, T>::value, int>>
 CStatus GPipeline::registerGElement(GElementPtr *elementRef,
                                     const GElementPtrSet &dependElements,
                                     const std::string &name,
@@ -63,7 +63,7 @@ CStatus GPipeline::registerGElement(GFunctionPtr *functionRef,
 
 
 template<typename TNode, typename ...Args,
-        std::enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int>>
+        c_enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int>>
 CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,
                                     const GElementPtrSet &dependElements,
                                     Args... args) {
@@ -87,7 +87,7 @@ CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,
 
 
 template<typename T, CLevel level,
-        std::enable_if_t<std::is_base_of<GNode, T>::value, int>>
+        c_enable_if_t<std::is_base_of<GNode, T>::value, int>>
 GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_FUNCTION_BEGIN
     GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T)
@@ -104,7 +104,7 @@ GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
 
 
 template<typename T, CLevel level,
-        std::enable_if_t<std::is_base_of<GGroup, T>::value, int>>
+        c_enable_if_t<std::is_base_of<GGroup, T>::value, int>>
 GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
                                   const GElementPtrSet &dependElements,
                                   const std::string &name,
@@ -140,8 +140,8 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
 
 
 template<typename TAspect, typename TParam,
-        std::enable_if_t<std::is_base_of<GAspect, TAspect>::value, int>,
-        std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int>>
+        c_enable_if_t<std::is_base_of<GAspect, TAspect>::value, int>,
+        c_enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int>>
 GPipelinePtr GPipeline::addGAspect(const GElementPtrSet& elements, TParam* param) {
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
 
@@ -160,8 +160,8 @@ GPipelinePtr GPipeline::addGAspect(const GElementPtrSet& elements, TParam* param
 
 
 template<typename TDaemon, typename TParam,
-        std::enable_if_t<std::is_base_of<GDaemon, TDaemon>::value, int>,
-        std::enable_if_t<std::is_base_of<GDaemonParam, TParam>::value, int>>
+        c_enable_if_t<std::is_base_of<GDaemon, TDaemon>::value, int>,
+        c_enable_if_t<std::is_base_of<GDaemonParam, TParam>::value, int>>
 GPipeline* GPipeline::addGDaemon(CMSec ms, TParam* param) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
@@ -179,7 +179,7 @@ GPipeline* GPipeline::addGDaemon(CMSec ms, TParam* param) {
 
 
 template<typename TDaemon, typename ...Args,
-        std::enable_if_t<std::is_base_of<GTemplateDaemon<Args...>, TDaemon>::value, int>>
+        c_enable_if_t<std::is_base_of<GTemplateDaemon<Args...>, TDaemon>::value, int>>
 GPipeline* GPipeline::addGDaemon(CMSec ms, Args... args) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
@@ -195,8 +195,8 @@ GPipeline* GPipeline::addGDaemon(CMSec ms, Args... args) {
 
 
 template<typename TEvent, typename TParam,
-        std::enable_if_t<std::is_base_of<GEvent, TEvent>::value, int>,
-        std::enable_if_t<std::is_base_of<GEventParam, TParam>::value, int>>
+        c_enable_if_t<std::is_base_of<GEvent, TEvent>::value, int>,
+        c_enable_if_t<std::is_base_of<GEventParam, TParam>::value, int>>
 GPipeline* GPipeline::addGEvent(const std::string& key, TParam* param) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)

@@ -13,8 +13,8 @@ CGRAPH_NAMESPACE_BEGIN
 
 
 template<typename TAspect, typename TParam,
-        std::enable_if_t<std::is_base_of<GAspect, TAspect>::value, int>,
-        std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int> >
+        c_enable_if_t<std::is_base_of<GAspect, TAspect>::value, int>,
+        c_enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int> >
 GElementPtr GElement::addGAspect(TParam* param) {
     if (!aspect_manager_) {
         /** 采用懒加载的方式执行，这里不会有并发问题，故不需要采用单例模式了 */
@@ -31,7 +31,7 @@ GElementPtr GElement::addGAspect(TParam* param) {
 
 
 template<typename TAspect, typename ...Args,
-        std::enable_if_t<std::is_base_of<GTemplateAspect<Args...>, TAspect>::value, int>>
+        c_enable_if_t<std::is_base_of<GTemplateAspect<Args...>, TAspect>::value, int>>
 GElement* GElement::addGAspect(Args... args) {
     if (!aspect_manager_) {
         aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager)
@@ -46,7 +46,7 @@ GElement* GElement::addGAspect(Args... args) {
 
 
 template<typename T,
-        std::enable_if_t<std::is_base_of<GElementParam, T>::value, int> >
+        c_enable_if_t<std::is_base_of<GElementParam, T>::value, int> >
 GElementPtr GElement::addEParam(const std::string& key, T* param) {
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param)
@@ -63,7 +63,7 @@ GElementPtr GElement::addEParam(const std::string& key, T* param) {
 
 
 template<typename T,
-        std::enable_if_t<std::is_base_of<GElementParam, T>::value, int> >
+        c_enable_if_t<std::is_base_of<GElementParam, T>::value, int> >
 T* GElement::getEParam(const std::string& key) {
     auto iter = local_params_.find(key);
     return dynamic_cast<T *>((iter != local_params_.end()) ? iter->second : nullptr);

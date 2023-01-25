@@ -18,7 +18,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 template<typename TSrc, typename TRes, typename UDist,
         const CBool needCheck = false,
-        std::enable_if_t<std::is_base_of<UDistance<TSrc, TRes>, UDist>::value, int> = 0>
+        c_enable_if_t<std::is_base_of<UDistance<TSrc, TRes>, UDist>::value, int> = 0>
 class UDistanceCalculator : public UDistanceObject {
 public:
     /**

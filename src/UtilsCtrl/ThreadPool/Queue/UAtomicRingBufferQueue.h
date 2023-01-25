@@ -63,7 +63,7 @@ public:
                 push_cv_.wait(lk, [this] { return !isFull(); });
             }
 
-            ring_buffer_queue_[tail_] = std::move(std::make_unique<TImpl>(value));
+            ring_buffer_queue_[tail_] = std::move(c_make_unique<TImpl>(value));
             tail_ = (tail_ + 1) % capacity_;
         }
         pop_cv_.notify_one();

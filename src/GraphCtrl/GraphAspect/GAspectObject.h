@@ -36,7 +36,7 @@ public:
      * @return
      */
     template <typename T,
-              std::enable_if_t<std::is_base_of<GAspectParam, T>::value, int> = 0>
+              c_enable_if_t<std::is_base_of<GAspectParam, T>::value, int> = 0>
     T* getAParam();
 
     /**
@@ -44,7 +44,7 @@ public:
      * @param param
      */
     template <typename T,
-              std::enable_if_t<std::is_base_of<GAspectParam, T>::value, int> = 0>
+              c_enable_if_t<std::is_base_of<GAspectParam, T>::value, int> = 0>
     GAspectObject* setAParam(T* param);
 
 protected:

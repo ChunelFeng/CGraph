@@ -29,11 +29,9 @@
 
 
 ## 二. 编译说明
-* 本工程支持MacOS、Linux和Windows系统，无任何第三方依赖。推荐使用C++17（默认）或以上版本，向下兼容C++14版本，不支持C++11或以下版本
+* 本工程支持MacOS、Linux和Windows系统，无任何第三方依赖。默认使用C++11版本，已支持几乎所有功能。推荐使用C++17(或以上)版本，以获取极个别附加功能的支持，和更优的性能
 
-* 使用`CLion`作为IDE的开发者，或使用`Visual Studio 17`(或以上版本)作为IDE的开发者，打开`CMakeLists.txt`文件作为工程，即可编译通过
-
-* 使用`Visual Studio 2015`作为IDE的开发者，修改`CMakeLists.txt`文件中的`set(CMAKE_CXX_STANDARD 17)`为`set(CMAKE_CXX_STANDARD 14)`，然后打开`CMakeLists.txt`文件作为工程，即可编译通过
+* 使用`CLion`作为IDE的开发者，或使用`Visual Studio 2013`(或以上版本)作为IDE的开发者，打开`CMakeLists.txt`文件作为工程，即可编译通过
 
 * Linux环境开发者，在命令行模式下，输入以下指令，即可编译通过
   ```shell
@@ -266,6 +264,9 @@ int main() {
 * 提供`event`(事件)功能
 * 提供`CGraph Intro.xmind`文件，通过脑图的方式，介绍了CGraph的整体逻辑
 
+[2023.01.25 - v2.3.1 - Chunel]
+* 提供针对C++11版本的支持，将默认版本修改为C++11版本。感谢 [MirrorYuChen](https://github.com/MirrorYuChen) 提供相关解决方案
+
 </details>
 
 ------------
@@ -285,7 +286,7 @@ int main() {
 * Thanks to the recommendation from [awesome-cpp](https://github.com/fffaraz/awesome-cpp), we all know, it is the most authoritative recommendation list for cpp project in the world
 * Thanks to the recommendation from `Taskflow Group`: [awesome-parallel-computing](https://github.com/taskflow/awesome-parallel-computing), and we always treat [taskflow](https://github.com/taskflow/taskflow) as a role model
 * Thanks to the recommendation from [awesome-workflow-engines](https://github.com/meirwah/awesome-workflow-engines)
-* 感谢 [@yangyuxiang77](https://github.com/yangyuxiang77) [@logerrors](https://github.com/logerrors) [@whenever5225](https://github.com/whenever5225) [@May-Yaha](https://github.com/May-Yaha) [@Codesire-Deng](https://github.com/Codesire-Deng) [@yeshenyong](https://github.com/yeshenyong) 等朋友（以贡献时间先后为顺序）为项目做出的贡献
+* 感谢 [@yangyuxiang77](https://github.com/yangyuxiang77) [@logerrors](https://github.com/logerrors) [@whenever5225](https://github.com/whenever5225) [@May-Yaha](https://github.com/May-Yaha) [@Codesire-Deng](https://github.com/Codesire-Deng) [@yeshenyong](https://github.com/yeshenyong) [@MirrorYuChen](https://github.com/MirrorYuChen) 等朋友（以贡献时间先后为顺序）为项目做出的贡献
 * 感谢所有为`CGraph`项目提出的意见和建议的朋友，在此不一一提及。随时欢迎大家加入，一起共建
 
 </details>

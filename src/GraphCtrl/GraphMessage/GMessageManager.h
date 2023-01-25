@@ -20,7 +20,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 template<typename T = GMessageParam,
-        std::enable_if_t<std::is_base_of<GMessageParam, T>::value, int> = 0>
+        c_enable_if_t<std::is_base_of<GMessageParam, T>::value, int> = 0>
 class GMessageManager : public GMessageObject,
                         public GraphManager<GMessage<T> > {
 public:
@@ -32,7 +32,7 @@ public:
      * @return
      */
     template<typename TImpl,
-            std::enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CStatus createTopic(const std::string& topic, CUint size) {
         CGRAPH_FUNCTION_BEGIN
 
@@ -79,7 +79,7 @@ public:
      * @return
      */
     template<typename TImpl,
-            std::enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CStatus recvTopicValue(const std::string& topic, TImpl& value) {
         CGRAPH_FUNCTION_BEGIN
         auto innerTopic = SEND_RECV_PREFIX + topic;
@@ -103,7 +103,7 @@ public:
      * @return
      */
     template<typename TImpl,
-            std::enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CStatus sendTopicValue(const std::string& topic, const TImpl& value) {
         CGRAPH_FUNCTION_BEGIN
         auto innerTopic = SEND_RECV_PREFIX + topic;
@@ -127,7 +127,7 @@ public:
      * @return
      */
     template<typename TImpl,
-            std::enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CIndex bindTopic(const std::string& topic, CUint size) {
         CGRAPH_LOCK_GUARD lock(bind_mutex_);
         auto innerTopic = PUB_SUB_PREFIX + topic;
@@ -157,7 +157,7 @@ public:
      * @return
      */
     template<typename TImpl,
-            std::enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CStatus pubTopicValue(const std::string& topic, const TImpl& value) {
         CGRAPH_FUNCTION_BEGIN
         {
@@ -184,7 +184,7 @@ public:
      * @return
      */
     template<typename TImpl,
-            std::enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CStatus subTopicValue(CIndex connId, TImpl& value) {
         CGRAPH_FUNCTION_BEGIN
         {

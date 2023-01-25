@@ -1,20 +1,20 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: UDistanceCosine.h
-@Time: 2022/4/3 00:33
-@Desc: cosine距离
+@File: UCosineDistance.h
+@Time: 2023/1/25 23:17
+@Desc: 
 ***************************/
 
-#ifndef CGRAPH_UDISTANCECOSINE_H
-#define CGRAPH_UDISTANCECOSINE_H
+#ifndef CGRAPH_UCOSINEDISTANCE_H
+#define CGRAPH_UCOSINEDISTANCE_H
 
 #include "../UDistance.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
 template<typename TSrc, typename TRes = TSrc>
-class UDistanceCosine : public UDistance<TSrc, TRes> {
+class UCosineDistance : public UDistance<TSrc, TRes> {
 public:
     CStatus calc(const TSrc* v1, const TSrc* v2, CSize dim1, CSize dim2, TRes& result, CVoidPtr ext) override {
         CGRAPH_FUNCTION_BEGIN
@@ -35,4 +35,5 @@ public:
 
 CGRAPH_NAMESPACE_END
 
-#endif //CGRAPH_UDISTANCECOSINE_H
+
+#endif //CGRAPH_UCOSINEDISTANCE_H

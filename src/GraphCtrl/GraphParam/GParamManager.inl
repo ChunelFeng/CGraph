@@ -12,7 +12,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 template<typename T,
-        std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
+        c_enable_if_t<std::is_base_of<GParam, T>::value, int>>
 CStatus GParamManager::create(const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_LOCK_GUARD lock(this->lock_);
@@ -30,7 +30,7 @@ CStatus GParamManager::create(const std::string& key) {
 
 
 template<typename T,
-        std::enable_if_t<std::is_base_of<GParam, T>::value, int>>
+        c_enable_if_t<std::is_base_of<GParam, T>::value, int>>
 T* GParamManager::get(const std::string& key) {
     auto result = params_map_.find(key);
     if (result == params_map_.end()) {

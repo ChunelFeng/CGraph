@@ -30,7 +30,7 @@ void tutorial_distance() {
 
     DistResType result = 0.0;
     // 计算欧氏距离
-    UDistanceCalculator<DistSrcType, DistResType, UDistanceEuclidean<DistSrcType, DistResType> > eucDist;
+    UDistanceCalculator<DistSrcType, DistResType, UEuclideanDistance<DistSrcType, DistResType> > eucDist;
     eucDist.calculate(vec1, vec2, result);
     std::cout << "UDistanceEuclidean distance result is : " << result << std::endl;
 

@@ -55,7 +55,7 @@ public:
      * @return
      */
     template<typename T, CLevel level = CGRAPH_DEFAULT_ELEMENT_LEVEL,
-            std::enable_if_t<std::is_base_of<GNode, T>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<GNode, T>::value, int> = 0>
     GNodePtr createGNode(const GNodeInfo &info);
 
     /**
@@ -69,7 +69,7 @@ public:
      * @return
      */
     template<typename T, CLevel level = CGRAPH_DEFAULT_ELEMENT_LEVEL,
-            std::enable_if_t<std::is_base_of<GGroup, T>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<GGroup, T>::value, int> = 0>
     GGroupPtr createGGroup(const GElementPtrArr &elements,
                            const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                            const std::string &name = CGRAPH_EMPTY,
@@ -88,7 +88,7 @@ public:
      * @return
      */
     template<typename T, CLevel level = CGRAPH_DEFAULT_ELEMENT_LEVEL,
-            std::enable_if_t<std::is_base_of<GElement, T>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<GElement, T>::value, int> = 0>
     CStatus registerGElement(GElementPtr *elementRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = CGRAPH_EMPTY,
@@ -119,7 +119,7 @@ public:
      * @return
      */
     template<typename TNode, typename ...Args,
-            std::enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int> = 0>
     CStatus registerGElement(GTemplateNodePtr<Args ...> *elementRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              Args... args);
@@ -133,8 +133,8 @@ public:
      * @return
      */
     template<typename TAspect, typename TParam = GAspectDefaultParam,
-            std::enable_if_t<std::is_base_of<GAspect, TAspect>::value, int> = 0,
-            std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<GAspect, TAspect>::value, int> = 0,
+            c_enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int> = 0>
     GPipeline* addGAspect(const GElementPtrSet& elements = std::initializer_list<GElementPtr>(),
                           TParam* param = nullptr);
 
@@ -147,8 +147,8 @@ public:
      * @return
      */
     template<typename TDaemon, typename TParam = GDaemonDefaultParam,
-            std::enable_if_t<std::is_base_of<GDaemon, TDaemon>::value, int> = 0,
-            std::enable_if_t<std::is_base_of<GDaemonParam, TParam>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<GDaemon, TDaemon>::value, int> = 0,
+            c_enable_if_t<std::is_base_of<GDaemonParam, TParam>::value, int> = 0>
     GPipeline* addGDaemon(CMSec ms, TParam* param = nullptr);
 
     /**
@@ -160,7 +160,7 @@ public:
      * @return
      */
     template<typename TDaemon, typename ...Args,
-            std::enable_if_t<std::is_base_of<GTemplateDaemon<Args...>, TDaemon>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<GTemplateDaemon<Args...>, TDaemon>::value, int> = 0>
     GPipeline* addGDaemon(CMSec ms, Args... args);
 
     /**
@@ -172,8 +172,8 @@ public:
      * @return
      */
     template<typename TEvent, typename TParam = GEventDefaultParam,
-            std::enable_if_t<std::is_base_of<GEvent, TEvent>::value, int> = 0,
-            std::enable_if_t<std::is_base_of<GEventParam, TParam>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<GEvent, TEvent>::value, int> = 0,
+            c_enable_if_t<std::is_base_of<GEventParam, TParam>::value, int> = 0>
     GPipeline* addGEvent(const std::string& key, TParam* param = nullptr);
 
     /**

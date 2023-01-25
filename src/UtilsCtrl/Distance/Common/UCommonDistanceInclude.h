@@ -9,8 +9,7 @@
 #ifndef CGRAPH_UCOMMONDISTANCEINCLUDE_H
 #define CGRAPH_UCOMMONDISTANCEINCLUDE_H
 
-#include "UDistanceCosine.h"
-#include "UDistanceEuclidean.h"
-#include "UDistanceInnerProduct.h"
+#include "UCosineDistance.h"
+#include "UEuclideanDistance.h"
 
 #endif //CGRAPH_UCOMMONDISTANCEINCLUDE_H

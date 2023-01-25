@@ -14,8 +14,8 @@
 CGRAPH_NAMESPACE_BEGIN
 
 template<typename TEvent, typename TEParam,
-        std::enable_if_t<std::is_base_of<GEvent, TEvent>::value, int>,
-        std::enable_if_t<std::is_base_of<GEventParam, TEParam>::value, int>>
+        c_enable_if_t<std::is_base_of<GEvent, TEvent>::value, int>,
+        c_enable_if_t<std::is_base_of<GEventParam, TEParam>::value, int>>
 CStatus GEventManager::createWithParam(const std::string& key, TEParam* param) {
     CGRAPH_FUNCTION_BEGIN
     auto result = events_map_.find(key);

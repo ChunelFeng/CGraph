@@ -29,8 +29,8 @@ public:
      * @return
      */
     template<typename TEvent, typename TEParam = GEventDefaultParam,
-            std::enable_if_t<std::is_base_of<GEvent, TEvent>::value, int> = 0,
-            std::enable_if_t<std::is_base_of<GEventParam, TEParam>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<GEvent, TEvent>::value, int> = 0,
+            c_enable_if_t<std::is_base_of<GEventParam, TEParam>::value, int> = 0>
     CStatus createWithParam(const std::string& key, TEParam* param = nullptr);
 
     /**

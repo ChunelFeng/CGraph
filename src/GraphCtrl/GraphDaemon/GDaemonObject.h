@@ -40,7 +40,7 @@ protected:
      * @return
      */
     template <typename DParam,
-            std::enable_if_t<std::is_base_of<GDaemonParam, DParam>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<GDaemonParam, DParam>::value, int> = 0>
     GDaemonObject* setDParam(DParam* param);
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER

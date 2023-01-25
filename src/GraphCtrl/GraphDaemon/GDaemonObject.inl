@@ -14,7 +14,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 template <typename DParam,
-        std::enable_if_t<std::is_base_of<GDaemonParam, DParam>::value, int>>
+        c_enable_if_t<std::is_base_of<GDaemonParam, DParam>::value, int>>
 GDaemonObjectPtr GDaemonObject::setDParam(DParam* param) {
     if (param) {
         CGRAPH_DELETE_PTR(param_)

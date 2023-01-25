@@ -16,7 +16,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 template<typename T, CUint capacity = CGRAPH_DEFAULT_RINGBUFFER_SIZE,
-        std::enable_if_t<std::is_base_of<GMessageParam, T>::value, int> = 0>
+        c_enable_if_t<std::is_base_of<GMessageParam, T>::value, int> = 0>
 class GMessage : public GMessageObject {
 public:
     explicit GMessage(CUint size = capacity) {
@@ -36,7 +36,7 @@ public:
      * @return
      */
     template<class TImpl,
-            std::enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CVoid send(const TImpl& value) {
         queue_.push(value);
     }
@@ -47,7 +47,7 @@ public:
      * @return
      */
     template<class TImpl,
-            std::enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CVoid recv(TImpl& value) {
         queue_.waitPop(value);
     }

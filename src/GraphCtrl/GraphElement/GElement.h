@@ -40,8 +40,8 @@ public:
      * @return
      */
     template<typename TAspect, typename TParam = GAspectDefaultParam,
-            std::enable_if_t<std::is_base_of<GAspect, TAspect>::value, int> = 0,
-            std::enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<GAspect, TAspect>::value, int> = 0,
+            c_enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int> = 0>
     GElement* addGAspect(TParam* param = nullptr);
 
     /**
@@ -51,7 +51,7 @@ public:
      * @return
      */
     template<typename TAspect, typename ...Args,
-            std::enable_if_t<std::is_base_of<GTemplateAspect<Args...>, TAspect>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<GTemplateAspect<Args...>, TAspect>::value, int> = 0>
     GElement* addGAspect(Args... args);
 
     /**
@@ -62,7 +62,7 @@ public:
      * @return
      */
     template<typename T,
-            std::enable_if_t<std::is_base_of<GElementParam, T>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<GElementParam, T>::value, int> = 0>
     GElement* addEParam(const std::string& key, T* param);
 
     /**
@@ -185,7 +185,7 @@ protected:
      * @return
      */
     template<typename T,
-            std::enable_if_t<std::is_base_of<GElementParam, T>::value, int> = 0>
+            c_enable_if_t<std::is_base_of<GElementParam, T>::value, int> = 0>
     T* getEParam(const std::string& key);
 
     /**

@@ -16,5 +16,6 @@
 #include "CException.h"
 #include "CBasicDefine.h"
 #include "CInfoDefine.h"
+#include "CStdWrapper.h"
 
 #endif //CGRAPH_CBASICINCLUDE_H

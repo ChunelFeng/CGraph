@@ -24,7 +24,7 @@ CGRAPH_NAMESPACE_BEGIN
      * @return
      */                                                                                  \
     template<typename TGParam,                                                           \
-             std::enable_if_t<std::is_base_of<GParam, TGParam>::value, int> = 0>         \
+             c_enable_if_t<std::is_base_of<GParam, TGParam>::value, int> = 0>            \
     CStatus createGParam(const std::string& key) {                                       \
         CGRAPH_ASSERT_NOT_NULL(param_manager_)                                           \
         return param_manager_->create<TGParam>(key);                                     \
@@ -37,7 +37,7 @@ CGRAPH_NAMESPACE_BEGIN
      * @return
      */                                                                                 \
     template<typename TGParam,                                                          \
-             std::enable_if_t<std::is_base_of<GParam, TGParam>::value, int> = 0>        \
+             c_enable_if_t<std::is_base_of<GParam, TGParam>::value, int> = 0>           \
     TGParam* getGParam(const std::string& key) {                                        \
         CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)                              \
         return param_manager_->get<TGParam>(key);                                       \
@@ -50,7 +50,7 @@ CGRAPH_NAMESPACE_BEGIN
      * @return
      */                                                                                 \
     template<typename TGParam,                                                          \
-             std::enable_if_t<std::is_base_of<GParam, TGParam>::value, int> = 0>        \
+             c_enable_if_t<std::is_base_of<GParam, TGParam>::value, int> = 0>           \
     TGParam* getGParamWithNoEmpty(const std::string& key) {                             \
         auto* param = getGParam<TGParam>(key);                                          \
         if (nullptr == param) {                                                         \
