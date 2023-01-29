@@ -29,9 +29,11 @@
 
 
 ## 二. 编译说明
-* 本工程支持MacOS、Linux和Windows系统，无任何第三方依赖。默认使用C++11版本，已支持几乎所有功能。推荐使用C++17(或以上)版本，以获取极个别附加功能的支持，和更优的性能
+* 本工程支持MacOS、Linux和Windows系统，无任何第三方依赖。默认使用C++17版本，可以无缝切换至C++11/14版本
 
-* 使用`CLion`作为IDE的开发者，或使用`Visual Studio 2013`(或以上版本)作为IDE的开发者，打开`CMakeLists.txt`文件作为工程，即可编译通过
+* 使用`CLion`(推荐)作为IDE的开发者，或使用`Visual Studio 2017`(或以上版本)作为IDE的开发者，打开`CMakeLists.txt`文件作为工程，即可编译通过
+
+* 使用`Visual Studio 2013`(或2015版本)的开发者，将CMakeList.txt中的`set(CMAKE_CXX_STANDARD 17)`修改为11(或14)，重新打开CMakeList.txt文件作为工程，即可编译通过
 
 * Linux环境开发者，在命令行模式下，输入以下指令，即可编译通过
   ```shell
@@ -48,10 +50,11 @@
   $ docker run -it --name CGraphEnv chunelfeng/cenv     # 开启docker容器，并进入
   ```
 
-* 提供online版本的编译调试环境，点击进入页面：[CGraph env online](https://gitpod.io/#/github.com/ChunelFeng/CGraph) ，输入以下指令，即可编译通过，并查看执行结果
+* 提供online版本的编译调试环境，点击进入页面：[CGraph env online](https://gitpod.io/#/github.com/ChunelFeng/CGraph) ，通过github账号登录。进入后，输入以下指令，即可编译通过，并查看执行结果
   ```shell
-  $ ./CGraph-build.sh          # 编译CGraph工程，生成的内容在同级/build/文件夹中
-  $ ./build/T00-HelloCGraph    # 运行第一个实例程序，并且在终端输出 Hello, CGraph.
+  $ sudo apt-get install cmake   # 安装cmake
+  $ ./CGraph-build.sh            # 编译CGraph工程，生成的内容在同级/build/文件夹中
+  $ ./build/T00-HelloCGraph      # 运行第一个实例程序，并且在终端输出 Hello, CGraph.
   ```
 
 ## 三. 使用Demo
