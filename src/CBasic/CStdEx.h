@@ -1,13 +1,13 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: CStdWrapper.h
-@Time: 2023/1/25 22:30
-@Desc: 为了在C++11版本中，兼容一些高版本C++语法
+@File: CStdEx.h
+@Time: 2023/1/31 23:15
+@Desc: 
 ***************************/
 
-#ifndef CGRAPH_CSTDWRAPPER_H
-#define CGRAPH_CSTDWRAPPER_H
+#ifndef CGRAPH_CSTDEX_H
+#define CGRAPH_CSTDEX_H
 
 #include <memory>
 #include <type_traits>
@@ -26,4 +26,4 @@ typename std::unique_ptr<T> c_make_unique(Args&&... args) {
 
 CGRAPH_NAMESPACE_END
 
-#endif //CGRAPH_CSTDWRAPPER_H
+#endif //CGRAPH_CSTDEX_H

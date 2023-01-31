@@ -136,6 +136,7 @@ int main() {
   <br><br>
 * [CGraph 主打歌——《听码农的话》](http://www.chunel.cn/archives/listen-to-coder)
 * [聊聊我写CGraph的这一年](http://www.chunel.cn/archives/cgraph-anniversary-introduce)
+* [从零开始主导一款收录于awesome-cpp的项目，是一种怎样的体验?](http://www.chunel.cn/archives/cgraph-awesome-cpp)
   <br><br>
 * [【B站视频】CGraph 快速引入的方法介绍](https://www.bilibili.com/video/BV1gY4y1x7JT?spm_id_from=333.337)
 
@@ -268,7 +269,7 @@ int main() {
 * 提供`CGraph Intro.xmind`文件，通过脑图的方式，介绍了CGraph的整体逻辑
 
 [2023.01.25 - v2.3.1 - Chunel]
-* 提供针对C++11版本的支持，将默认版本修改为C++11版本。感谢 [MirrorYuChen](https://github.com/MirrorYuChen) 提供相关解决方案
+* 提供针对C++11版本的支持。感谢 [MirrorYuChen](https://github.com/MirrorYuChen) 提供相关解决方案
 
 </details>
 
