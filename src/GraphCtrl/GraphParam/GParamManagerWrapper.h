@@ -10,6 +10,7 @@
 #define CGRAPH_GPARAMMANAGERWRAPPER_H
 
 #include <string>
+#include <vector>
 
 #include "GParam.h"
 #include "GParamManager.h"
@@ -77,6 +78,16 @@ CGRAPH_NAMESPACE_BEGIN
     void* setGParamManager(GParamManagerPtr pm) {                                       \
         this->param_manager_ = pm;                                                      \
         return this;                                                                    \
+    }                                                                                   \
+                                                                                        \
+    /**
+     * 获取所有的keys信息
+     * @param keys
+     * @return
+     */                                                                                 \
+    CStatus getGParamKeys(std::vector<std::string>& keys) {                             \
+        CGRAPH_ASSERT_NOT_NULL(param_manager_)                                          \
+        return param_manager_->getKeys(keys);                                           \
     }                                                                                   \
                                                                                         \
 

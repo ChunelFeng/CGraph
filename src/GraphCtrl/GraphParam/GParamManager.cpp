@@ -69,4 +69,15 @@ CStatus GParamManager::remove(const std::string& key) {
     CGRAPH_FUNCTION_END
 }
 
+
+CStatus GParamManager::getKeys(std::vector<std::string>& keys) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_LOCK_GUARD lock(this->lock_);
+    for (const auto& iter : params_map_) {
+        keys.emplace_back(iter.first);
+    }
+
+    CGRAPH_FUNCTION_END
+}
+
 CGRAPH_NAMESPACE_END

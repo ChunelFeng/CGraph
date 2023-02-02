@@ -25,6 +25,10 @@ CGRAPH_NAMESPACE_BEGIN
 #define CGRAPH_GET_GPARAM_WITH_NO_EMPTY(Type, key)    \
     this->getGParamWithNoEmpty<Type>(key);            \
 
+/** 获取参数的GParam的keys信息 */
+#define CGRAPH_GET_GPARAM_KEYS(keys)                  \
+    this->getGParamKeys(keys);                        \
+
 /** 删除一个参数 */
 #define CGRAPH_DELETE_GPARAM(key)                     \
     this->removeGParam(key);                          \

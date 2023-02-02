@@ -10,6 +10,7 @@
 #define CGRAPH_GPARAMMANAGER_H
 
 #include <unordered_map>
+#include <vector>
 #include <string>
 
 #include "../GraphObject.h"
@@ -45,6 +46,13 @@ public:
      * @return
      */
     CStatus remove(const std::string& key);
+
+    /**
+     * 获取所有的 GParam keys 信息
+     * @param keys
+     * @return
+     */
+    CStatus getKeys(std::vector<std::string>& keys);
 
 protected:
     explicit GParamManager();
