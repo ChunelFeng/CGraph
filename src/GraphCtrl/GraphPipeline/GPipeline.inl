@@ -21,7 +21,7 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
 
-    if constexpr (std::is_base_of<GGroup, T>::value) {
+    if (std::is_base_of<GGroup, T>::value) {
         /**
          * 如果是GGroup类型的信息，则：
          * 1，必须外部创建
@@ -31,7 +31,7 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
             && (*elementRef)->param_manager_ != nullptr) {
             CGRAPH_RETURN_ERROR_STATUS("group register duplicate")
         }
-    } else if constexpr (std::is_base_of<GNode, T>::value || std::is_base_of<GAdapter, T>::value) {
+    } else if (std::is_base_of<GNode, T>::value || std::is_base_of<GAdapter, T>::value) {
         /**
          * 如果不是group信息的话，且属于element（包含node和adapter）
          * 则直接内部创建该信息

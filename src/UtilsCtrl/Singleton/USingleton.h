@@ -20,12 +20,12 @@ template<typename T,
 class USingleton : public UtilsObject {
 public:
     explicit USingleton() {
-        if constexpr (USingletonType::HUNGRY == type || autoInit) {
+        if (USingletonType::HUNGRY == type || autoInit) {
             /* 如果是饥汉模式，则直接构造 */
             create();
         }
 
-        if constexpr(autoInit) {
+        if (autoInit) {
             init();
         }
     }
@@ -39,7 +39,7 @@ public:
      * @return
      */
     T* get() {
-        if constexpr (USingletonType::LAZY == type) {
+        if (USingletonType::LAZY == type) {
             create();
         }
 
@@ -52,7 +52,7 @@ protected:
         CGRAPH_FUNCTION_BEGIN
 
         // 如果传入的是CObject类型的对象的话，则调用其init接口
-        if constexpr (std::is_base_of<CObject, T>::value) {
+        if (std::is_base_of<CObject, T>::value) {
             status = this->get()->init();
         }
         CGRAPH_FUNCTION_END
@@ -60,7 +60,7 @@ protected:
 
     CStatus destroy() override {
         CGRAPH_FUNCTION_BEGIN
-        if constexpr (std::is_base_of<CObject, T>::value) {
+        if (std::is_base_of<CObject, T>::value) {
             status = this->get()->destroy();
         }
         CGRAPH_FUNCTION_END
