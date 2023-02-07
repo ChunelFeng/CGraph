@@ -13,10 +13,24 @@
 
 class MyNode2 : public CGraph::GNode {
 public:
+    // 执行过程中，init 和 destroy 方法，单次执行，可选择性实现
+    // run 方法可以多次执行，且必须实现
+    CStatus init() override {
+        CStatus status;
+        CGraph::CGRAPH_ECHO("[%s], enter MyNode2 init function.", this->getName().c_str());
+        return status;
+    }
+
     CStatus run () override {
         CStatus status;
         CGraph::CGRAPH_ECHO("[%s], enter MyNode2 run function. Sleep for 2 second ... ", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(2)
+        return status;
+    }
+
+    CStatus destroy() override {
+        CStatus status;
+        CGraph::CGRAPH_ECHO("[%s], enter MyNode2 destroy function.", this->getName().c_str());
         return status;
     }
 };

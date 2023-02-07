@@ -14,7 +14,8 @@ ELSEIF(WIN32)
     # windows平台，加入utf-8设置。否则无法通过编译
     add_definitions(/utf-8)
 
-    # 禁止两处warning级别提示
+    # 禁止几处warning级别提示
     add_compile_options(/wd4996)
     add_compile_options(/wd4267)
+    add_compile_options(/wd4018)
 ENDIF()

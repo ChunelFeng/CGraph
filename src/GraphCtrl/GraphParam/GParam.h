@@ -55,6 +55,14 @@ protected:
      */
     virtual CVoid reset() = 0;
 
+    /**
+     * 每次pipeline执行前，会调用一次setup，可以不实现
+     * @return
+     */
+    virtual CStatus setup() {
+        CGRAPH_EMPTY_FUNCTION
+    }
+
     friend class GParamManager;
 };
 

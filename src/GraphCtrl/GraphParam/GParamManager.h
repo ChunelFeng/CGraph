@@ -60,15 +60,15 @@ protected:
     CStatus init() override;
     CStatus destroy() override;
 
-    /**
-     * 清空内部所有参数信息
-     */
     CStatus clear() final;
 
-    /**
-     * 重置内部所有参数信息
-     */
     CStatus reset() override;
+
+    /**
+     * 初始化所有的参数信息
+     * @return
+     */
+    CStatus setup();
 
     CGRAPH_NO_ALLOWED_COPY(GParamManager)
 

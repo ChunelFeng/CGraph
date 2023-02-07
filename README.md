@@ -29,11 +29,16 @@
 
 
 ## 二. 编译说明
-* 本工程支持MacOS、Linux和Windows系统，无任何第三方依赖。默认使用C++17版本，可以无缝切换至C++11/14版本
+* 本工程支持MacOS、Linux和Windows系统，无任何第三方依赖。默认使用C++11版本，推荐使用C++17版本，暂不支持C++11以下的版本
 
-* 使用`CLion`(推荐)作为IDE的开发者，或使用`Visual Studio 2017`(或以上版本)作为IDE的开发者，打开`CMakeLists.txt`文件作为工程，即可编译通过
+* 使用`CLion`(推荐)作为IDE的开发者，打开`CMakeLists.txt`文件作为工程，即可编译通过
 
-* 使用`Visual Studio 2013`(或2015版本)的开发者，将CMakeList.txt中的`set(CMAKE_CXX_STANDARD 17)`修改为11(或14)，重新打开CMakeList.txt文件作为工程，即可编译通过
+* Windows环境中，使用`Visual Studio`(2013版或以上版本)作为IDE的开发者，安装cmake之后，输入以下指令，即可生成`CGraph.sln`文件
+  ```shell
+  $ git clone https://github.com/ChunelFeng/CGraph.git
+  $ cd CGraph
+  $ cmake . -Bbuild    # 在 build 文件夹下，生成对应的CGraph.sln文件
+  ```
 
 * Linux环境开发者，在命令行模式下，输入以下指令，即可编译通过
   ```shell

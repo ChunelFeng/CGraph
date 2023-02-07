@@ -59,6 +59,14 @@ CStatus GPipeline::run() {
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
 
+    /**
+     * 1. 将所有的 GParam 设置为初始值
+     * 2. 执行dag逻辑
+     * 3. 将所有的 GParam 复原
+     */
+    status = param_manager_->setup();
+    CGRAPH_FUNCTION_CHECK_STATUS
+
     status = element_manager_->run();
     CGRAPH_FUNCTION_CHECK_STATUS
 
