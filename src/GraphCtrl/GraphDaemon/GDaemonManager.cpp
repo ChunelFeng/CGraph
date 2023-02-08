@@ -51,6 +51,7 @@ CStatus GDaemonManager::remove(GDaemonPtr daemon) {
     CGRAPH_ASSERT_NOT_NULL(daemon)
 
     daemons_.erase(daemon);
+    CGRAPH_DELETE_PTR(daemon)
     CGRAPH_FUNCTION_END
 }
 
@@ -61,6 +62,7 @@ CStatus GDaemonManager::clear() {
         CGRAPH_DELETE_PTR(daemon)
     }
 
+    daemons_.clear();
     CGRAPH_FUNCTION_END
 }
 
