@@ -39,7 +39,7 @@ void tutorial_complex() {
         return;
     }
 
-    status = pipeline->process();
+    status += pipeline->process();
     GPipelineFactory::remove(pipeline);
 }
 

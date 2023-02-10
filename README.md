@@ -51,12 +51,6 @@
   $ make -j8
   ```
 
-<div style="text-align: center;">
-
-![CGraph Gamecock](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Gamecock.jpg)
-
-</div>
-
 * 若本地无法编译，提供基于`Ubuntu 20.04`的Docker镜像。输入以下指令，即可获取并进入
   ```shell
   $ docker pull chunelfeng/cenv                         # 获取docker镜像
@@ -283,6 +277,9 @@ int main() {
 
 [2023.01.25 - v2.3.1 - Chunel]
 * 提供针对C++11版本的支持。感谢 [MirrorYuChen](https://github.com/MirrorYuChen) 提供相关解决方案
+
+[2023.02.10 - v2.3.2 - Chunel]
+* 优化调度策略，提供调度参数配置接口
 * 提供英文版本readme.md
 
 </details>

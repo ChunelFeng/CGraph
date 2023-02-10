@@ -16,10 +16,6 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GEventObject : public GraphObject {
 protected:
-    explicit GEventObject() {
-        thread_pool_ = UThreadPoolSingleton::get();
-    }
-
     ~GEventObject() override {
         CGRAPH_DELETE_PTR(param_)
     }
@@ -28,8 +24,13 @@ protected:
         CGRAPH_NO_SUPPORT
     }
 
+    virtual GEventObject* setThreadPool(UThreadPoolPtr ptr) {
+        thread_pool_ = ptr;
+        return this;
+    }
+
 protected:
-    UThreadPoolPtr thread_pool_ = nullptr;                   // 线程池
+    UThreadPoolPtr thread_pool_ = nullptr;                   // 线程池类
     GParamManagerPtr param_manager_ = nullptr;               // GParam参数管理类
     GEventParamPtr param_ = nullptr;                         // 事件参数信息
 };

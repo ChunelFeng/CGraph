@@ -46,6 +46,8 @@ public:
 
     CStatus clear() final;
 
+    GEventObject* setThreadPool(UThreadPoolPtr ptr) override;
+
     explicit GEventManager() = default;
 
     ~GEventManager() override;

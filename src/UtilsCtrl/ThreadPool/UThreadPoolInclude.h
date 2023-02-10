@@ -12,7 +12,6 @@
 #include "UThreadObject.h"
 #include "UThreadPool.h"
 #include "UThreadPoolDefine.h"
-#include "UThreadPoolSingleton.h"
 #include "UThreadPoolConfig.h"
 #include "Queue/UQueueInclude.h"
 #include "Task/UTaskInclude.h"

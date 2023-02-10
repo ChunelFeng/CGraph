@@ -35,16 +35,6 @@ protected:
      */
     GNode* setType(const GNodeType& type);
 
-    /**
-     * 异步执行信息，适用于传入静态类函数或者lambda表达式信息
-     * @tparam Func
-     * @tparam Args
-     * @param func
-     * @param args
-     */
-    template<typename Func, typename... Args>
-    static CStatus doDetach(const Func&& func, Args&&... args);
-
 private:
     GNodeType node_type_;                    // 节点类型
 };
@@ -53,7 +43,5 @@ using GNodePtr = GNode *;
 using GNodePtrArr = std::vector<GNodePtr>;
 
 CGRAPH_NAMESPACE_END
-
-#include "GNode.inl"
 
 #endif //CGRAPH_GNODE_H

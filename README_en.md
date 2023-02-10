@@ -24,6 +24,8 @@ At the same time, you can also control the graph conditional judgment, loop or c
 
 You can transfer your params in many scenes. It is also possible to extend the functions of the above elements horizontally by adding `GAspect`, or to enhance the functions of individual nodes by introducing various `GAdapter`.
 
+![CGraph Skeleton](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Skeleton.jpg)
+<br>
 
 ## 2. Compile
 * This project supports MacOS, Linux, and Windows systems without any third-party dependencies. C++11 is default and lowest version, C++17 is recommended.

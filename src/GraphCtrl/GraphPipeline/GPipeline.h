@@ -192,6 +192,13 @@ public:
     GPipeline* setGEngineType(GEngineType type);
 
     /**
+     * 设置线程池相关信息
+     * @param config
+     * @return
+     */
+    GPipeline* setThreadPoolConfig(const UThreadPoolConfig& config);
+
+    /**
      * 注册GParam 交互类集合
      * @return
      */
@@ -200,6 +207,12 @@ public:
 protected:
     explicit GPipeline();
     ~GPipeline() override;
+
+    /**
+     * 初始化调度信息，包括线程池
+     * @return
+     */
+    CStatus initSchedule();
 
     /** 不允许外部赋值和构造 */
     CGRAPH_NO_ALLOWED_COPY(GPipeline)

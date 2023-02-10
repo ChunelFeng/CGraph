@@ -211,6 +211,13 @@ protected:
      */
     CStatus notify(const std::string& key, CSize times = 1);
 
+    /**
+     * 设置线程池信息
+     * @param ptr
+     * @return
+     */
+    GElement* setThreadPool(UThreadPoolPtr ptr);
+
     CGRAPH_NO_ALLOWED_COPY(GElement);
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER

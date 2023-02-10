@@ -30,6 +30,7 @@ CStatus GRegion::init() {
     CGRAPH_ASSERT_NOT_NULL(manager_)
 
     // 在region中，需要专门的调度逻辑
+    this->manager_->setThreadPool(thread_pool_);
     this->manager_->setScheduleStrategy(CGRAPH_REGION_TASK_STRATEGY);
     status = this->manager_->init();
     CGRAPH_FUNCTION_CHECK_STATUS

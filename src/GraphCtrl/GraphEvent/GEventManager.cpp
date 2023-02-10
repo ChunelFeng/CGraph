@@ -59,6 +59,18 @@ CStatus GEventManager::trigger(const std::string& key) {
 }
 
 
+GEventObject* GEventManager::setThreadPool(UThreadPoolPtr ptr) {
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
+    for (auto& iter : events_map_) {
+        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(iter.second)
+        (iter.second)->setThreadPool(ptr);
+    }
+
+    return this;
+}
+
+
 GEventManager::~GEventManager() {
     clear();
 }

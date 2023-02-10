@@ -22,7 +22,6 @@ const std::string& GElement::getSession() const {
 
 GElement::GElement() {
     this->session_ = CGRAPH_GENERATE_SESSION;
-    this->thread_pool_ = UThreadPoolSingleton::get();
 }
 
 
@@ -234,6 +233,14 @@ CStatus GElement::notify(const std::string& key, CSize times) {
     }
 
     CGRAPH_FUNCTION_END
+}
+
+
+GElement* GElement::setThreadPool(UThreadPoolPtr ptr) {
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    this->thread_pool_ = ptr;
+    return this;
 }
 
 CGRAPH_NAMESPACE_END
