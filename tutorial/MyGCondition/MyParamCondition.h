@@ -13,7 +13,6 @@
 #include "../MyParams/MyParam.h"
 
 class MyParamCondition : public CGraph::GCondition {
-
 public:
     /**
      * 在这里主要演示condition中可以通过获取上方参数的形式，

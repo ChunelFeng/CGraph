@@ -52,8 +52,4 @@ private:
     bool conn_status_ { false };                    // 表示连接状态
 };
 
-#include "../../src/CGraph.h"
-
-
-
 #endif //CGRAPH_MYCONNASPECT_H

@@ -20,7 +20,7 @@ protected:
      * GParam相关内容，无法通过run()方法执行
      * @return
      */
-    CStatus run() override {
+    CStatus run() final {
         CGRAPH_NO_SUPPORT
     }
 };

@@ -14,7 +14,6 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class GPassedDefaultParam final : public GPassedParam {
-
 protected:
     /**
      * 针对原生类型的实现

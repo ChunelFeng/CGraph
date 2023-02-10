@@ -8,11 +8,13 @@
 [![awesome-cpp](https://badgen.net/badge/icon/awesome-cpp/purple?icon=awesome&label&color)](https://github.com/fffaraz/awesome-cpp)
 [![HelloGithub](https://badgen.net/badge/icon/HelloGithub/purple?icon=awesome&label&color)](https://github.com/521xueweihan/HelloGitHub/blob/master/content/HelloGitHub70.md)
 
+中文 | [English Readme](README_en.md)
+
 <h1 align="center">
   CGraph 说明文档
 </h1>
 
-><b>CGraph</b> is a cross-platform <b>D</b>irected <b>A</b>cyclic <b>G</b>raph framework based on pure C++ without any 3rd-party.</br></br>
+><b>CGraph</b> is a cross-platform <b>D</b>irected <b>A</b>cyclic <b>G</b>raph framework based on pure C++ without any 3rd-party dependencies.</br></br>
 >You, with it, can build your own operators simply, and describe any running schedules as you need, such as dependence, parallelling, aggregation and so on. Some useful tools and plugins are also provide to improve your project.</br></br>
 >Tutorials and contact information are show as follows. Please get in touch with us for free if you need more about this repository.
 
@@ -48,6 +50,12 @@
   $ cd build
   $ make -j8
   ```
+
+<div style="text-align: center;">
+
+![CGraph Gamecock](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Gamecock.jpg)
+
+</div>
 
 * 若本地无法编译，提供基于`Ubuntu 20.04`的Docker镜像。输入以下指令，即可获取并进入
   ```shell
@@ -275,6 +283,7 @@ int main() {
 
 [2023.01.25 - v2.3.1 - Chunel]
 * 提供针对C++11版本的支持。感谢 [MirrorYuChen](https://github.com/MirrorYuChen) 提供相关解决方案
+* 提供英文版本readme.md
 
 </details>
 
