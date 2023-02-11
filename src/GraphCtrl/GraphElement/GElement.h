@@ -218,6 +218,37 @@ protected:
      */
     GElement* setThreadPool(UThreadPoolPtr ptr);
 
+    /**
+     * graphviz dump 逻辑
+     * @param oss
+     * @return
+    */
+    virtual CVoid dump(std::ostream& oss);
+
+    /**
+     * graphviz dump 边逻辑
+     * @param oss
+     * @param src
+     * @param dst
+     * @param label
+     * @return
+    */
+    CVoid dumpEdge(std::ostream& oss, GElement* src, GElement* dst, const std::string& label="");
+
+    /**
+     * graphviz dump 点逻辑
+     * @param oss
+     * @param element
+    */
+    CVoid dumpNode(std::ostream& oss, GElement* element);
+
+    /**
+     * 区分element 内部类型
+     * @param element
+     * @return
+    */
+    CBool isGroup(GElement* element);
+
     CGRAPH_NO_ALLOWED_COPY(GElement);
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER

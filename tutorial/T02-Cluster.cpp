@@ -30,6 +30,7 @@ void tutorial_cluster () {
     if (!status.isOK()) {
         return;
     }
+    std::cout << pipeline->dump() << std::endl;
 
     /* process函数，相当于 init(),run()*n,destroy()函数，同时调用 */
     status = pipeline->process();

@@ -10,7 +10,9 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-GCluster::GCluster() = default;
+GCluster::GCluster() {
+    element_type_ = (0x0010 << 1) | 0x0010;
+}
 
 
 GCluster::~GCluster() = default;
@@ -114,6 +116,39 @@ CBool GCluster::isClusterDone() {
                        [](GElementPtr element) {
                            return element->done_;
                        });
+}
+
+
+CVoid GCluster::dump(std::ostream& oss) {
+    dumpNode(oss, this);
+    oss << "subgraph ";
+    oss << "cluster_p" << this;
+    oss << " {\nlabel=\"";
+    if (name_.empty()) oss << 'p' << this;
+    else oss << name_;
+    if (this->loop_ > 1) {
+        oss << " loop=" << this->loop_;
+    }
+    oss << "\";\n";
+    oss << 'p' << this << "[shape=point height=0];\n";
+    oss << "color=blue;\n";
+
+    GElementPtr pre = nullptr;
+    for (size_t idx = 0; idx < group_elements_arr_.size(); idx++) {
+        const auto& element = group_elements_arr_[idx];
+        element->dump(oss);
+
+        if (idx != 0) {
+            dumpEdge(oss, pre, element);
+        }
+        pre = element;
+    }
+
+    oss << "}\n";
+
+    for (const auto& node : run_before_) {
+        dumpEdge(oss, this, node);
+    }
 }
 
 CGRAPH_NAMESPACE_END

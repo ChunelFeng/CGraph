@@ -117,6 +117,20 @@ CStatus GPipeline::process(CSize runTimes) {
 }
 
 
+std::string GPipeline::dump() {
+    std::ostringstream oss;
+    oss << "digraph CGraph {\n";
+    oss << "compound=true;\n";
+
+    for (const auto& element : element_manager_->manager_elements_) {
+        element->dump(oss);
+    }
+
+    oss << "}\n";
+    return oss.str();
+}
+
+
 GPipelinePtr GPipeline::setGElementRunTtl(CMSec ttl) {
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(element_manager_)

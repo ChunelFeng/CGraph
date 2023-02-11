@@ -32,6 +32,7 @@ void tutorial_simple() {
 
     /* 图信息初始化，准备开始计算 */
     status += pipeline->init();
+    std::cout << pipeline->dump() << std::endl;
 
     /* 运行流图信息。初始化后，支持多次循环计算 */
     for (int i = 0; i < 3; i++) {

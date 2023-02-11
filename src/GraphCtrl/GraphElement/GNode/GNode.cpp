@@ -12,6 +12,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 GNode::GNode() : GElement() {
     node_type_ = GNodeType::BASIC;
+    element_type_ = 0x0000 << 1;
 }
 
 

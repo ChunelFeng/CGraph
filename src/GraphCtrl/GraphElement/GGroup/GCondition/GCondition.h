@@ -14,6 +14,9 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class GCondition : public GGroup {
+public:
+    explicit GCondition();
+
 protected:
     /**
      * 计算需要返回第n个信息
@@ -28,6 +31,13 @@ protected:
      * @return
      */
     CSize getRange() const;
+
+    /**
+     * graphviz dump 逻辑
+     * @param oss
+     * @return
+    */
+    CVoid dump(std::ostream& oss) final;
 
 private:
     CStatus run() override;

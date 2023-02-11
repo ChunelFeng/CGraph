@@ -243,4 +243,42 @@ GElement* GElement::setThreadPool(UThreadPoolPtr ptr) {
     return this;
 }
 
+
+CVoid GElement::dump(std::ostream& oss) {
+    dumpNode(oss, this);
+
+    for (const auto& node : run_before_) {
+        dumpEdge(oss, this, node);
+    }
+}
+
+
+CVoid GElement::dumpEdge(std::ostream& oss, GElementPtr src, GElementPtr dst, const std::string& label) {
+    if (isGroup(src) && isGroup(dst)) {
+        oss << 'p' << src << " -> p" << dst << label << "[ltail=cluster_p" << src << " lhead=cluster_p" << dst << "];\n";
+    } else if (isGroup(src) && !isGroup(dst)) {
+        oss << 'p' << src << " -> p" << dst << label << "[ltail=cluster_p" << src << "];\n";
+    } else if (!isGroup(src) && isGroup(dst)) {
+        oss << 'p' << src << " -> p" << dst << label << "[lhead=cluster_p" << dst << "];\n";
+    } else {
+        oss << 'p' << src << " -> p" << dst << label << ";\n";
+    }
+}
+
+
+CVoid GElement::dumpNode(std::ostream& oss, GElementPtr element) {
+    oss << 'p' << element << "[label=\"";
+    if (element->getName().empty()) oss << 'p' << this;
+    else oss << element->getName();
+    oss << "\"];\n";
+    if (element->loop_ > 1 && !isGroup(element)) {
+        oss << 'p' << element << " -> p" << element << "[label=\"" << element->loop_ << "\"]" << ";\n";
+    }
+}
+
+
+CBool GElement::isGroup(GElementPtr element) {
+    return 0x0010 & element->element_type_;
+}
+
 CGRAPH_NAMESPACE_END

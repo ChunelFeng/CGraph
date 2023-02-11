@@ -11,6 +11,11 @@
 CGRAPH_NAMESPACE_BEGIN
 
 
+GCondition::GCondition() {
+    element_type_ = (0x0010 << 3) | 0x0010;
+}
+
+
 CStatus GCondition::addElement(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(element)
@@ -41,6 +46,33 @@ CStatus GCondition::run() {
 
 CSize GCondition::getRange() const {
     return group_elements_arr_.size();
+}
+
+
+CVoid GCondition::dump(std::ostream& oss) {
+    dumpNode(oss, this);
+    oss << "subgraph ";
+    oss << "cluster_p" << this;
+    oss << " {\nlabel=\"";
+    if (name_.empty()) oss << 'p' << this;
+    else oss << name_;
+    oss << "\";\n";
+    oss << 'p' << this << "[shape=diamond];\n";
+    oss << "color=blue;\n";
+
+    for (size_t idx = 0; idx < group_elements_arr_.size(); ++idx) {
+        const auto& element = group_elements_arr_[idx];
+        element->dump(oss);
+
+        std::string label = "[label=\"" + std::to_string(idx) + "\"]";
+        dumpEdge(oss, this, element, label);
+    }
+
+    oss << "}\n";
+
+    for (const auto& node : run_before_) {
+        dumpEdge(oss, this, node);
+    }
 }
 
 CGRAPH_NAMESPACE_END
