@@ -282,6 +282,9 @@ int main() {
 * 优化调度策略，提供调度参数配置接口
 * 提供英文版本readme.md
 
+[2023.02.12 - v2.3.3 - [yeshenyong](https://github.com/yeshenyong)]
+* 提供`dump`功能，用于graphviz 可视化图节点
+
 </details>
 
 ------------

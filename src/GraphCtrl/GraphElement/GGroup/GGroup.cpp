@@ -10,6 +10,10 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
+GGroup::GGroup() {
+    element_type_ = 0x0010;
+}
+
 CStatus GGroup::init() {
     CGRAPH_FUNCTION_BEGIN
 
