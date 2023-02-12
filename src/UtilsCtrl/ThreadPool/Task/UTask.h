@@ -24,8 +24,8 @@ class UTask : public UThreadObject {
         virtual ~taskBased() = default;
     };
 
-    // 退化以获得实际类型
-    template<typename F, typename T = typename std::decay<F>::type>
+    
+    template<typename F, typename T = typename std::decay<F>::type> // 退化以获得实际类型
     struct taskDerided : taskBased {
         T func_;
         explicit taskDerided(F&& func) : func_(std::forward<F>(func)) {}
