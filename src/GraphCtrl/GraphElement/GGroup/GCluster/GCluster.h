@@ -60,6 +60,13 @@ protected:
      */
     CBool isClusterDone();
 
+    /**
+     * graphviz dump 逻辑
+     * @param oss
+     * @return
+    */
+    CVoid dump(std::ostream& oss) final;
+
 
     friend class GElementManager;
     friend class GRegion;

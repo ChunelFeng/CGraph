@@ -218,6 +218,36 @@ protected:
      */
     GElement* setThreadPool(UThreadPoolPtr ptr);
 
+    /**
+     * graphviz dump 逻辑
+     * @param oss
+     * @return
+    */
+    virtual CVoid dump(std::ostream& oss);
+
+    /**
+     * graphviz dump 边逻辑
+     * @param oss
+     * @param src
+     * @param dst
+     * @param label
+     * @return
+    */
+    CVoid dumpEdge(std::ostream& oss, GElement* src, GElement* dst, const std::string& label="");
+
+    /**
+     * graphviz dump 点逻辑
+     * @param oss
+    */
+    CVoid dumpElement(std::ostream& oss);
+
+    /**
+     * 区分element 内部类型
+     * @param element
+     * @return
+    */
+    CBool isGroup(GElement* element);
+
     CGRAPH_NO_ALLOWED_COPY(GElement);
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
@@ -237,6 +267,7 @@ protected:
     GEventManagerPtr event_manager_ { nullptr };     // 事件管理类
     UThreadPoolPtr thread_pool_ { nullptr };         // 用于执行的线程池信息
     GElementParamMap local_params_;                  // 用于记录当前element的内部参数
+    CUINT element_type_{ 0x0001 };                   // 用于区分element 内部类型
 
     friend class GNode;
     friend class GCluster;
