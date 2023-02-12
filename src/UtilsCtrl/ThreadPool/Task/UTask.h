@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <memory>
+#include <type_traits>
 
 #include "../UThreadObject.h"
 
@@ -23,10 +24,11 @@ class UTask : public UThreadObject {
         virtual ~taskBased() = default;
     };
 
-    template<typename F>
+    
+    template<typename F, typename T = typename std::decay<F>::type> // 退化以获得实际类型
     struct taskDerided : taskBased {
-        F func_;
-        explicit taskDerided(F&& func) : func_(std::move(func)) {}
+        T func_;
+        explicit taskDerided(F&& func) : func_(std::forward<F>(func)) {}
         CVoid call() override { func_(); }
     };
 
