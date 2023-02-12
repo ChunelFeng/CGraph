@@ -15,6 +15,7 @@ CGRAPH_NAMESPACE_BEGIN
 GRegion::GRegion() : GGroup() {
     manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
     is_init_ = false;
+    element_type_ = (0x0010 << 2) | 0x0010;
 }
 
 
@@ -78,6 +79,32 @@ GRegion* GRegion::setGEngineType(GEngineType type) {
 
     this->manager_->setEngineType(type);
     return this;
+}
+
+
+CVoid GRegion::dump(std::ostream& oss) {
+    dumpElement(oss);
+    oss << "subgraph ";
+    oss << "cluster_p" << this;
+    oss << " {\nlabel=\"";
+    if (name_.empty()) oss << 'p' << this;
+    else oss << name_;
+    if (this->loop_ > 1) {
+        oss << " loop=" << this->loop_;
+    }
+    oss << "\";\n";
+    oss << 'p' << this << "[shape=point height=0];\n";
+    oss << "color=blue;\n";
+
+    for (const auto& element : manager_->manager_elements_) {
+        element->dump(oss);
+    }
+
+    oss << "}\n";
+
+    for (const auto& node : run_before_) {
+        dumpEdge(oss, this, node);
+    }
 }
 
 CGRAPH_NAMESPACE_END

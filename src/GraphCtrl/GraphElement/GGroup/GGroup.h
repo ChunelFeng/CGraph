@@ -21,6 +21,8 @@ CGRAPH_NAMESPACE_BEGIN
 /* 所有节点组合的基类，所有节点组合功能，均继承自此类 */
 class GGroup : public GElement {
 public:
+    explicit GGroup();
+
     /**
      * 向group中，添加element信息
      * @param element

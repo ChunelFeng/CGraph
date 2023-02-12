@@ -12,6 +12,7 @@
 #include <vector>
 #include <memory>
 #include <list>
+#include <sstream>
 
 #include "GPipelineObject.h"
 #include "../GraphElement/GElementInclude.h"
@@ -46,6 +47,13 @@ public:
      * @return
      */
     CStatus process(CSize runTimes = CGRAPH_DEFAULT_LOOP_TIMES);
+
+    /**
+     * 图可视化 graphviz
+     * @param oss
+     * @return
+    */
+    CStatus dump(std::ostream& oss = std::cin);
 
     /**
      * 根据传入的info信息，创建node节点
