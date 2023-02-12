@@ -18,6 +18,10 @@ CGRAPH_NAMESPACE_BEGIN
 template<typename T>
 class GSingleton : public GAdapter {
 protected:
+    explicit GSingleton() {
+        this->element_type_ = GElementType::SINGLETON;
+    }
+
     CStatus init() override;
     CStatus run() override;
     CStatus destroy() override;

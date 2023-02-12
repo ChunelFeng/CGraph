@@ -49,11 +49,12 @@ public:
     CStatus process(CSize runTimes = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
-     * 图可视化 graphviz
+     * 生成图可视化 graphviz 信息
      * @param oss
      * @return
+     * @notice 将输出的内容，复制到 https://dreampuf.github.io/GraphvizOnline/ 中查看效果
     */
-    CStatus dump(std::ostream& oss);
+    CStatus dump(std::ostream& oss = std::cout);
 
     /**
      * 根据传入的info信息，创建node节点

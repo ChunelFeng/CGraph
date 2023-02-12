@@ -22,6 +22,7 @@ const std::string& GElement::getSession() const {
 
 GElement::GElement() {
     this->session_ = CGRAPH_GENERATE_SESSION;
+    element_type_ = GElementType::ELEMENT;
 }
 
 
@@ -254,11 +255,11 @@ CVoid GElement::dump(std::ostream& oss) {
 
 
 CVoid GElement::dumpEdge(std::ostream& oss, GElementPtr src, GElementPtr dst, const std::string& label) {
-    if (isGroup(src) && isGroup(dst)) {
+    if (src->isGroup() && dst->isGroup()) {
         oss << 'p' << src << " -> p" << dst << label << "[ltail=cluster_p" << src << " lhead=cluster_p" << dst << "];\n";
-    } else if (isGroup(src) && !isGroup(dst)) {
+    } else if (src->isGroup() && !dst->isGroup()) {
         oss << 'p' << src << " -> p" << dst << label << "[ltail=cluster_p" << src << "];\n";
-    } else if (!isGroup(src) && isGroup(dst)) {
+    } else if (!src->isGroup() && dst->isGroup()) {
         oss << 'p' << src << " -> p" << dst << label << "[lhead=cluster_p" << dst << "];\n";
     } else {
         oss << 'p' << src << " -> p" << dst << label << ";\n";
@@ -268,17 +269,21 @@ CVoid GElement::dumpEdge(std::ostream& oss, GElementPtr src, GElementPtr dst, co
 
 CVoid GElement::dumpElement(std::ostream& oss) {
     oss << 'p' << this << "[label=\"";
-    if (this->name_.empty()) oss << 'p' << this;
-    else oss << this->name_;
+    if (this->name_.empty()) {
+        oss << 'p' << this;    // 如果没有名字，则通过当前指针位置来代替
+    } else {
+        oss << this->name_;
+    }
+
     oss << "\"];\n";
-    if (this->loop_ > 1 && !isGroup(this)) {
+    if (this->loop_ > 1 && !this->isGroup()) {
         oss << 'p' << this << " -> p" << this << "[label=\"" << this->loop_ << "\"]" << ";\n";
     }
 }
 
 
-CBool GElement::isGroup(GElementPtr element) {
-    return 0x0010 & element->element_type_;
+CBool GElement::isGroup() {
+    return (long(element_type_) ^ long(GElementType::GROUP));
 }
 
 CGRAPH_NAMESPACE_END

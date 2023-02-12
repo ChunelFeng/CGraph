@@ -11,7 +11,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 GCluster::GCluster() {
-    element_type_ = (0x0010 << 1) | 0x0010;
+    element_type_ = GElementType::CLUSTER;
 }
 
 
@@ -134,11 +134,12 @@ CVoid GCluster::dump(std::ostream& oss) {
     oss << "color=blue;\n";
 
     GElementPtr pre = nullptr;
-    for (size_t idx = 0; idx < group_elements_arr_.size(); idx++) {
-        const auto& element = group_elements_arr_[idx];
+    for (size_t i = 0; i < group_elements_arr_.size(); i++) {
+        const auto& element = group_elements_arr_[i];
         element->dump(oss);
 
-        if (idx != 0) {
+        if (0 != i) {
+            // 如果不是开头的位置，则划线关联
             dumpEdge(oss, pre, element);
         }
         pre = element;

@@ -37,6 +37,10 @@ public:
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
 
 protected:
+    explicit GFunction() {
+        this->element_type_ = GElementType::FUNCTION;
+    };
+
     CStatus init() override {
         return init_function_ ? init_function_() : CStatus();
     }

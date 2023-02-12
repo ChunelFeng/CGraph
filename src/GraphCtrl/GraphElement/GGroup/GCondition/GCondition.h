@@ -14,10 +14,9 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class GCondition : public GGroup {
-public:
+protected:
     explicit GCondition();
 
-protected:
     /**
      * 计算需要返回第n个信息
      * 执行最后一个，返回-1即可。

@@ -12,7 +12,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 
 GCondition::GCondition() {
-    element_type_ = (0x0010 << 3) | 0x0010;
+    element_type_ = GElementType::CONDITION;
 }
 
 

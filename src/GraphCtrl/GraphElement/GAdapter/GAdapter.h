@@ -15,7 +15,10 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GAdapter : public GElement {
 protected:
-    explicit GAdapter() = default;
+    explicit GAdapter() {
+        element_type_ = GElementType::ADAPTER;
+    }
+
     ~GAdapter() override = default;
 
     friend class GPipeline;

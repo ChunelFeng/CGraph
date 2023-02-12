@@ -11,7 +11,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 GGroup::GGroup() {
-    element_type_ = 0x0010;
+    element_type_ = GElementType::GROUP;
 }
 
 CStatus GGroup::init() {

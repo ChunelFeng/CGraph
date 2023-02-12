@@ -15,7 +15,7 @@ CGRAPH_NAMESPACE_BEGIN
 GRegion::GRegion() : GGroup() {
     manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
     is_init_ = false;
-    element_type_ = (0x0010 << 2) | 0x0010;
+    element_type_ = GElementType::REGION;
 }
 
 
