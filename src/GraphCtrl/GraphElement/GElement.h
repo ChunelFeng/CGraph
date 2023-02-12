@@ -242,7 +242,7 @@ protected:
     CVoid dumpElement(std::ostream& oss);
 
     /**
-     * 区分element 内部类型
+     * 当前element是否是一个 group逻辑
      * @return
     */
     CBool isGroup();

@@ -256,6 +256,7 @@ CVoid GElement::dump(std::ostream& oss) {
 
 CVoid GElement::dumpEdge(std::ostream& oss, GElementPtr src, GElementPtr dst, const std::string& label) {
     if (src->isGroup() && dst->isGroup()) {
+        // 在group的逻辑中，添加 cluster_ 的信息
         oss << 'p' << src << " -> p" << dst << label << "[ltail=cluster_p" << src << " lhead=cluster_p" << dst << "];\n";
     } else if (src->isGroup() && !dst->isGroup()) {
         oss << 'p' << src << " -> p" << dst << label << "[ltail=cluster_p" << src << "];\n";
@@ -283,7 +284,8 @@ CVoid GElement::dumpElement(std::ostream& oss) {
 
 
 CBool GElement::isGroup() {
-    return (long(element_type_) ^ long(GElementType::GROUP));
+    // 按位与 GROUP有值，表示是 GROUP的逻辑
+    return (long(element_type_) & long(GElementType::GROUP)) > 0;
 }
 
 CGRAPH_NAMESPACE_END
