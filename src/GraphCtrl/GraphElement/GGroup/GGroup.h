@@ -6,7 +6,6 @@
 @Desc: 
 ***************************/
 
-
 #ifndef CGRAPH_GGROUP_H
 #define CGRAPH_GGROUP_H
 
@@ -33,6 +32,21 @@ public:
     CStatus init() override;
 
     CStatus destroy() override;
+
+protected:
+    /**
+     * 生成graphviz中 group对应的label 的开头信息
+     * @param oss
+     * @return
+     */
+    CVoid dumpGroupLabelBegin(std::ostream& oss);
+
+    /**
+     * 生成graphviz中的 group对应的label 的结尾信息
+     * @param oss
+     * @return
+     */
+    CVoid dumpGroupLabelEnd(std::ostream& oss);
 
 protected:
     GElementPtrArr group_elements_arr_;    // 存放 element的数组

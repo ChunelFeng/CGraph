@@ -10,7 +10,6 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-
 GCondition::GCondition() {
     element_type_ = GElementType::CONDITION;
 }
@@ -51,27 +50,22 @@ CSize GCondition::getRange() const {
 
 CVoid GCondition::dump(std::ostream& oss) {
     dumpElement(oss);
-    oss << "subgraph ";
-    oss << "cluster_p" << this;
-    oss << " {\nlabel=\"";
-    if (name_.empty()) oss << 'p' << this;
-    else oss << name_;
-    oss << "\";\n";
+    dumpGroupLabelBegin(oss);
     oss << 'p' << this << "[shape=diamond];\n";
     oss << "color=blue;\n";
 
-    for (size_t idx = 0; idx < group_elements_arr_.size(); ++idx) {
-        const auto& element = group_elements_arr_[idx];
-        element->dump(oss);
+    for (auto i = 0; i < group_elements_arr_.size(); ++i) {
+        const auto& cur = group_elements_arr_[i];
+        cur->dump(oss);
 
-        std::string label = "[label=\"" + std::to_string(idx) + "\"]";
-        dumpEdge(oss, this, element, label);
+        std::string label = "[label=\"" + std::to_string(i) + "\"]";
+        dumpEdge(oss, this, cur, label);
     }
 
-    oss << "}\n";
+    dumpGroupLabelEnd(oss);
 
-    for (const auto& node : run_before_) {
-        dumpEdge(oss, this, node);
+    for (const auto& element : run_before_) {
+        dumpEdge(oss, this, element);
     }
 }
 

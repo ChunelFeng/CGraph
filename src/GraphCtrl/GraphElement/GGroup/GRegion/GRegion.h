@@ -17,6 +17,11 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GRegion : public GGroup {
 public:
+    /**
+     * 设置EngineType信息
+     * @param type
+     * @return
+     */
     GRegion* setGEngineType(GEngineType type);
 
 protected:
@@ -29,11 +34,6 @@ protected:
 
     CStatus addElement(GElementPtr element) final;
 
-    /**
-     * graphviz dump 逻辑
-     * @param oss
-     * @return
-    */
     CVoid dump(std::ostream& oss) final;
 
 private:

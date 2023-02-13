@@ -121,20 +121,12 @@ CBool GCluster::isClusterDone() {
 
 CVoid GCluster::dump(std::ostream& oss) {
     dumpElement(oss);
-    oss << "subgraph ";
-    oss << "cluster_p" << this;
-    oss << " {\nlabel=\"";
-    if (name_.empty()) oss << 'p' << this;
-    else oss << name_;
-    if (this->loop_ > 1) {
-        oss << " loop=" << this->loop_;
-    }
-    oss << "\";\n";
+    dumpGroupLabelBegin(oss);
     oss << 'p' << this << "[shape=point height=0];\n";
     oss << "color=blue;\n";
 
     GElementPtr pre = nullptr;
-    for (size_t i = 0; i < group_elements_arr_.size(); i++) {
+    for (auto i = 0; i < group_elements_arr_.size(); i++) {
         const auto& element = group_elements_arr_[i];
         element->dump(oss);
 
@@ -145,7 +137,7 @@ CVoid GCluster::dump(std::ostream& oss) {
         pre = element;
     }
 
-    oss << "}\n";
+    dumpGroupLabelEnd(oss);
 
     for (const auto& node : run_before_) {
         dumpEdge(oss, this, node);

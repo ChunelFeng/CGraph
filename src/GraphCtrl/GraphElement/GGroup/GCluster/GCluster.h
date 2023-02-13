@@ -26,27 +26,15 @@ public:
 protected:
     CStatus addElement(GElementPtr element) final;
 
-    /** cluster结构在工程中，被用于自动合并和串行流程。禁止外部修改cluster的逻辑结构 */
     CStatus run() final;
 
-    /**
-     * 执行所有的 element 的run方法
-     * @param isMock
-     * @return
-     */
     CStatus process(CBool isMock) final;
 
-    /**
-     * 执行 run 方法之前的操作
-     * @return
-     */
     CStatus beforeRun() final;
 
-    /**
-     * 执行 run 方法之后的操作
-     * @return
-     */
     CStatus afterRun() final;
+
+    CVoid dump(std::ostream& oss) final;
 
     /**
      * 获取element个数信息
@@ -59,13 +47,6 @@ protected:
      * @return
      */
     CBool isClusterDone();
-
-    /**
-     * graphviz dump 逻辑
-     * @param oss
-     * @return
-    */
-    CVoid dump(std::ostream& oss) final;
 
 
     friend class GElementManager;
