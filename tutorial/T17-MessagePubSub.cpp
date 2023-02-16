@@ -13,7 +13,7 @@
 
 using namespace CGraph;
 
-void sub_message() {
+void pub_message() {
     CStatus status;
     GElementPtr node1, pubNode;
     GPipelinePtr pubPipeLine = GPipelineFactory::create();
@@ -26,7 +26,7 @@ void sub_message() {
 }
 
 
-void pub_message() {
+void sub_message() {
     CStatus status;
     GElementPtr node2;
     GTemplateNodePtr<int> subNode;
@@ -45,10 +45,10 @@ void pub_message() {
 
 void tutorial_message_pub_sub() {
     // 一个pipeline pub数据，其他pipeline sub相同的数据内容
-    std::thread pubThd = std::thread(sub_message);
-    std::thread subThd1 = std::thread(pub_message);
-    std::thread subThd2 = std::thread(pub_message);
-    std::thread subThd3 = std::thread(pub_message);
+    std::thread pubThd = std::thread(pub_message);
+    std::thread subThd1 = std::thread(sub_message);
+    std::thread subThd2 = std::thread(sub_message);
+    std::thread subThd3 = std::thread(sub_message);
 
     pubThd.join();
     subThd1.join();

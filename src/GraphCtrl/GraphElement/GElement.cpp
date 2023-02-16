@@ -21,7 +21,7 @@ const std::string& GElement::getSession() const {
 
 
 GElement::GElement() {
-    this->session_ = CGRAPH_GENERATE_SESSION;
+    this->session_ = URandom<>::generateSession();
     element_type_ = GElementType::ELEMENT;
 }
 

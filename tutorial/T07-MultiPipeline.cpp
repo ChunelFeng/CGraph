@@ -71,6 +71,16 @@ void tutorial_multi_pipeline() {
     GPipelinePtr pipeline_2 = GPipelineFactory::create();
     GPipelinePtr pipeline_3 = GPipelineFactory::create();
 
+    /**
+     * 设置个别pipeline的内部threadpool资源信息，用以减少整体资源占用（可选）
+     * 这里主要是为了说明，多个pipeline一起运行的时候，可以通过接口，针对个别pipeline进行调度资源的设置
+     */
+    UThreadPoolConfig config;
+    config.default_thread_size_ = 4;
+    config.monitor_enable_ = false;
+    pipeline_1->setUniqueThreadPoolConfig(config);
+    pipeline_2->setUniqueThreadPoolConfig(config);
+
     std::thread thd1 = std::move(std::thread(tutorial_pipeline_1, pipeline_1));
     std::thread thd2 = std::move(std::thread(tutorial_pipeline_2, pipeline_2));
     std::thread thd3 = std::move(std::thread(tutorial_pipeline_3, pipeline_3));

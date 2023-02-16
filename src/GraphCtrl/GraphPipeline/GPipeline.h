@@ -201,11 +201,11 @@ public:
     GPipeline* setGEngineType(GEngineType type);
 
     /**
-     * 设置线程池相关信息
+     * 设置本pipeline内部线程池相关信息
      * @param config
      * @return
      */
-    GPipeline* setThreadPoolConfig(const UThreadPoolConfig& config);
+    GPipeline* setUniqueThreadPoolConfig(const UThreadPoolConfig& config);
 
     /**
      * 注册GParam 交互类集合

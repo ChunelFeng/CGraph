@@ -28,6 +28,7 @@ public:
      * @param minValue
      * @param maxValue
      * @return
+     * @notice 暂时不支持int类型的随机数生成
      */
     static CStatus generate(std::vector<T>& data, CSize dim,
                             const T& minValue, const T& maxValue) {
@@ -73,6 +74,23 @@ public:
         }
 
         return CStatus();
+    }
+
+    /**
+     * 生成随机session信息
+     * @return
+     */
+    static std::string generateSession() {
+        std::string session;    // 形式是 a-b-c-d，其中 a表示6位随机数字
+        CSize sessionDim = 4;
+        std::vector<CFloat> vec;
+        URandom<CFloat>::generate(vec, sessionDim, 100000, 999999);
+        for (CSize i = 0; i < sessionDim; i++) {
+            session += std::to_string(int(vec[i]));
+            session += '-';
+        }
+        session.pop_back();    // 删除最后一个 - 信息
+        return session;
     }
 };
 

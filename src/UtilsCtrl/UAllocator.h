@@ -9,10 +9,6 @@
 #ifndef CGRAPH_UALLOCATOR_H
 #define CGRAPH_UALLOCATOR_H
 
-#ifdef _GENERATE_SESSION_
-    #include <uuid/uuid.h>
-#endif
-
 #include <mutex>
 #include <memory>
 
@@ -70,25 +66,6 @@ public:
     static std::unique_ptr<T> makeUniqueCObject() {
         return c_make_unique<T>();
     }
-
-
-    /**
-     * 生成唯一标识信息
-     * @return
-     */
-    static std::string generateSession() {
-        #ifdef _GENERATE_SESSION_
-                std::lock_guard<std::mutex> lock{ g_session_mtx };
-                uuid_t uuid;
-                char session[36] = {0};    // 36是特定值
-                uuid_generate(uuid);
-                uuid_unparse(uuid, session);
-
-                return session;
-        #else
-                return CGRAPH_EMPTY;    // 非mac平台，暂时不支持自动生成session信息
-        #endif
-    }
 };
 
 
@@ -97,9 +74,6 @@ public:
 
 #define CGRAPH_MAKE_UNIQUE_COBJECT(Type)                         \
     UAllocator::makeUniqueCObject<Type>();                       \
-
-#define CGRAPH_GENERATE_SESSION                                  \
-    UAllocator::generateSession();                               \
 
 CGRAPH_NAMESPACE_END
 
