@@ -65,7 +65,7 @@ CStatus GDynamicEngine::afterRunCheck() {
 
 CVoid GDynamicEngine::asyncRun() {
     for (const auto& element : front_element_arr_) {
-        process(element);
+        process(element, true);
     }
 }
 
@@ -84,34 +84,49 @@ CStatus GDynamicEngine::beforeRun() {
 }
 
 
-CStatus GDynamicEngine::process(GElementPtr element) {
+CStatus GDynamicEngine::process(GElementPtr element, bool isNewThread) {
     CGRAPH_FUNCTION_BEGIN
     if (unlikely(cur_status_.isErr())) {
         // 如果当前整体状态异常，直接返回，不执行了
         CGRAPH_RETURN_ERROR_STATUS("current status error")
     }
 
-    thread_pool_->commit([this, element] {
-        // 如果当前已经是err状态，则不再执行任何逻辑
-        auto curStatus = element->fatProcessor(CFunctionType::RUN);
-        if (unlikely(curStatus.isNotOK() && cur_status_.isNotErr())) {
-            // 当且仅当整体状正常，且当前状态异常的时候，进入赋值逻辑。确保不重复赋值
-            cur_status_ = curStatus;
-        }
-        afterElementRun(element);
-    }, this->schedule_strategy_);
+    if (isNewThread) {
+        thread_pool_->commit(std::bind(&GDynamicEngine::exec, this, element), this->schedule_strategy_);
+    } else {
+        exec(element);
+    }
 
     CGRAPH_FUNCTION_END
 }
 
 
+CVoid GDynamicEngine::exec(GElementPtr element) {
+    // 如果当前已经是err状态，则不再执行任何逻辑
+    auto curStatus = element->fatProcessor(CFunctionType::RUN);
+    if (unlikely(curStatus.isNotOK() && cur_status_.isNotErr())) {
+        // 当且仅当整体状正常，且当前状态异常的时候，进入赋值逻辑。确保不重复赋值
+        cur_status_ = curStatus;
+    }
+    afterElementRun(element);
+}
+
+
 CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
+    GElementPtr cache_element = nullptr;
     element->done_ = true;
     run_element_size_++;
     for (auto cur : element->run_before_) {
         if (--cur->left_depend_ <= 0) {
-            process(cur);
+            if (cache_element) {
+                process(cur, true);
+            } else {
+                cache_element = cur;
+            }
         }
+    }
+    if (cache_element) {
+        process(cache_element, false);
     }
 
     CGRAPH_UNIQUE_LOCK lock(lock_);

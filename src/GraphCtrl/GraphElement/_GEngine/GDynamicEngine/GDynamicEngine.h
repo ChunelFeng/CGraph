@@ -41,9 +41,17 @@ protected:
     /**
      * element 运行element
      * @param element
+     * @param isNewThread
      * @return
     */
-    CStatus process(GElementPtr element);
+    CStatus process(GElementPtr element, bool isNewThread);
+
+    /**
+     * element 运行
+     * @param element
+     * @return
+    */
+    CVoid exec(GElementPtr element);
 
     /**
      * element 运行完成处理
