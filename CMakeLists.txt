@@ -19,6 +19,8 @@ set(CMAKE_CXX_STANDARD 11)
 include(cmake/CGraph-env-include.cmake)
 
 file(GLOB_RECURSE CGRAPH_SRC_LIST "./src/*.cpp")
+add_library(CGraph OBJECT ${CGRAPH_SRC_LIST})
+
 
 # 如果开启此宏定义，则CGraph执行过程中，不会在控制台打印任何信息
 # add_definitions(-D_CGRAPH_SILENCE_)
@@ -56,5 +58,5 @@ set(CGRAPH_TUTORIAL_LIST
         )
 
 foreach(tut ${CGRAPH_TUTORIAL_LIST})
-    add_executable(${tut} tutorial/${tut}.cpp ${CGRAPH_SRC_LIST})
+    add_executable(${tut} tutorial/${tut}.cpp $<TARGET_OBJECTS:CGraph>)
 endforeach()
