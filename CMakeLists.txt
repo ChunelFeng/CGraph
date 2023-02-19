@@ -24,7 +24,8 @@ file(GLOB_RECURSE CGRAPH_SRC_LIST "./src/*.cpp")
 # add_definitions(-D_CGRAPH_SILENCE_)
 
 # 编译libCGraph动态库
-# add_library(CGraph SHARED ${CGRAPH_SRC_LIST})
+# add_library(CGraphShared SHARED ${CGRAPH_SRC_LIST})
+add_library(CGraphObject OBJECT ${CGRAPH_SRC_LIST})
 
 set(CGRAPH_TUTORIAL_LIST
         T00-HelloCGraph
@@ -56,5 +57,5 @@ set(CGRAPH_TUTORIAL_LIST
         )
 
 foreach(tut ${CGRAPH_TUTORIAL_LIST})
-    add_executable(${tut} tutorial/${tut}.cpp ${CGRAPH_SRC_LIST})
+    add_executable(${tut} tutorial/${tut}.cpp $<TARGET_OBJECTS:CGraphObject>)
 endforeach()
