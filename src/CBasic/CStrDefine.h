@@ -6,8 +6,8 @@
 @Desc: 
 ***************************/
 
-#ifndef CGRAPH_CINFODEFINE_H
-#define CGRAPH_CINFODEFINE_H
+#ifndef CGRAPH_CSTRDEFINE_H
+#define CGRAPH_CSTRDEFINE_H
 
 #include "CBasicDefine.h"
 
@@ -19,4 +19,4 @@ static const char* CGRAPH_FUNCTION_NO_SUPPORT = "function no support";
 
 CGRAPH_NAMESPACE_END
 
-#endif //CGRAPH_CINFODEFINE_H
+#endif //CGRAPH_CSTRDEFINE_H

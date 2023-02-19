@@ -13,7 +13,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 template<typename T,
         c_enable_if_t<std::is_base_of<GParam, T>::value, int>>
-CStatus GParamManager::create(const std::string& key) {
+CStatus GParamManager::create(const std::string& key, CBool backtrace) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_LOCK_GUARD lock(this->lock_);
     auto result = params_map_.find(key);
@@ -24,6 +24,7 @@ CStatus GParamManager::create(const std::string& key) {
     }
 
     T* ptr = CGRAPH_SAFE_MALLOC_COBJECT(T)
+    ((GParamPtr)ptr)->setTracebackEnable(backtrace);
     params_map_.insert(std::pair<std::string, T*>(key, ptr));
     CGRAPH_FUNCTION_END
 }

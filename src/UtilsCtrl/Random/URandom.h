@@ -78,18 +78,19 @@ public:
 
     /**
      * 生成随机session信息
+     * @param key
+     * @param size
      * @return
      */
-    static std::string generateSession() {
-        std::string session;    // 形式是 a-b-c-d，其中 a表示6位随机数字
-        CSize sessionDim = 4;
+    static std::string generateSession(const std::string& key = "object", CSize size = 3) {
+        std::string session;    // 形式是 a-b-c-key，其中 a表示6位随机数字
         std::vector<CFloat> vec;
-        URandom<CFloat>::generate(vec, sessionDim, 100000, 999999);
-        for (CSize i = 0; i < sessionDim; i++) {
+        URandom<CFloat>::generate(vec, size, 100000, 999999);
+        for (CSize i = 0; i < size; i++) {
             session += std::to_string(int(vec[i]));
             session += '-';
         }
-        session.pop_back();    // 删除最后一个 - 信息
+        session += key;
         return session;
     }
 };

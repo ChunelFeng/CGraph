@@ -10,6 +10,7 @@
 #define CGRAPH_GPARAM_H
 
 #include <string>
+#include <set>
 
     #if __cplusplus >= 201703L
 #include <shared_mutex>
@@ -18,7 +19,6 @@
     #endif
 
 #include "GParamObject.h"
-#include "../../UtilsCtrl/UtilsInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -29,6 +29,51 @@ public:
 #else
     std::mutex _param_shared_lock_;
 #endif
+    /**
+     * 设置是否开启backtrace功能，默认关闭
+     * @param enable
+     * @return
+     */
+    GParam* setTracebackEnable(CBool enable) {
+        backtrace_enable_ = enable;
+        return this;
+    }
+
+    /**
+     * 获取参数的调用栈信息
+     * @param backtrace
+     * @return
+     */
+    CStatus getBacktrace(std::set<std::string>& backtrace) {
+        CGRAPH_FUNCTION_BEGIN
+        if (!backtrace_enable_) {
+            CGRAPH_RETURN_ERROR_STATUS("backtrace no enable.");
+        }
+
+        CGRAPH_READ_LOCK lk(_param_shared_lock_);
+        for (const auto& iter : backtrace_) {
+            backtrace.emplace(iter);
+        }
+
+        CGRAPH_FUNCTION_END
+    }
+
+    /**
+     * 添加回溯信息
+     * @param name
+     * @param session
+     * @return
+     */
+    CVoid addBacktrace(const std::string& name, const std::string& session) {
+        if (!backtrace_enable_) {
+            // 如果没有开启，直接返回即可
+            return;
+        }
+
+        // 如果name不为空，则添加name信息。如果name为空，则添加session信息
+        CGRAPH_WRITE_LOCK lk(_param_shared_lock_);
+        backtrace_.insert(name.empty() ? session : name);
+    }
 
     /**
      * 保存参数信息
@@ -62,6 +107,10 @@ protected:
     virtual CStatus setup() {
         CGRAPH_EMPTY_FUNCTION
     }
+
+private:
+    std::set<std::string> backtrace_;        // 记录参数的调用栈信息
+    CBool backtrace_enable_ = false;         // 是否使能backtrace功能
 
     friend class GParamManager;
 };

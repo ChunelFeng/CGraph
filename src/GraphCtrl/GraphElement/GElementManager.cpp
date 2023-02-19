@@ -135,8 +135,8 @@ CStatus GElementManager::initEngine() {
     }
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    engine_->setThreadPool(thread_pool_);
-    status = engine_->setUp(manager_elements_);
+    engine_->thread_pool_ = thread_pool_;
+    status = engine_->setup(manager_elements_);
     CGRAPH_FUNCTION_END
 }
 

@@ -10,7 +10,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-CStatus GStaticEngine::setUp(const GSortedGElementPtrSet& elements) {
+CStatus GStaticEngine::setup(const GSortedGElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
     status = mark(elements);
     CGRAPH_FUNCTION_CHECK_STATUS

@@ -14,8 +14,12 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GDaemonObject : public GraphObject {
+class GDaemonObject : public GraphObject, public CDescInfo {
 protected:
+    explicit GDaemonObject() {
+        session_ = URandom<>::generateSession("daemon");
+    }
+
     ~GDaemonObject() override {
         CGRAPH_DELETE_PTR(param_)
     }

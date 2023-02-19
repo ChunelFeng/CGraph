@@ -10,7 +10,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-CStatus GDynamicEngine::setUp(const GSortedGElementPtrSet& elements) {
+CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
 
     // 给所有的值清空

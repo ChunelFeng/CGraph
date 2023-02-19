@@ -21,24 +21,13 @@ protected:
      * @param elements
      * @return
      */
-    virtual CStatus setUp(const GSortedGElementPtrSet& elements) = 0;
+    virtual CStatus setup(const GSortedGElementPtrSet& elements) = 0;
 
     /**
      * 执行完毕后，确认运行是否正常
      * @return
      */
     virtual CStatus afterRunCheck() = 0;
-
-    /**
-     * 设置线程池信息
-     * @param ptr
-     * @return
-     */
-    GEngine* setThreadPool(UThreadPoolPtr ptr) {
-        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
-        thread_pool_ = ptr;
-        return this;
-    }
 
 protected:
     UThreadPoolPtr thread_pool_ { nullptr };                    // 内部执行的线程池

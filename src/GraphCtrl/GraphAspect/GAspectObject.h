@@ -17,18 +17,14 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GAspectObject : public GraphObject {
+class GAspectObject : public GraphObject, public CDescInfo {
 public:
-    ~GAspectObject() override {
-        CGRAPH_DELETE_PTR(param_)
+    explicit GAspectObject() {
+        session_ = URandom<>::generateSession("aspect");
     }
 
-    /**
-     * 获取name信息
-     * @return
-     */
-    virtual const std::string& getName() {
-        return name_;
+    ~GAspectObject() override {
+        CGRAPH_DELETE_PTR(param_)
     }
 
     /**
@@ -49,15 +45,6 @@ public:
 
 protected:
     /**
-     * 设置名称
-     * @param name
-     */
-    virtual GAspectObject* setName(const std::string& name) {
-        this->name_ = name;
-        return this;
-    }
-
-    /**
      * GAspect 相关内容，不需要执行run方法
      * @return
      */
@@ -68,7 +55,6 @@ protected:
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
 
 private:
-    std::string name_;                                        // 切面类名称，跟 element 名称保持相同
     GAspectParamPtr param_ { nullptr };                       // 参数信息
     GParamManagerPtr param_manager_ { nullptr };              // GParam参数管理类
 

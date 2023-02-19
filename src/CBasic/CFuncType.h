@@ -11,7 +11,7 @@
 
 #include <functional>
 
-#include "CInfoDefine.h"
+#include "CStrDefine.h"
 #include "CValType.h"
 
 CGRAPH_NAMESPACE_BEGIN

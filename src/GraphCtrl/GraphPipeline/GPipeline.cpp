@@ -11,6 +11,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 GPipeline::GPipeline() {
+    session_ = URandom<>::generateSession("pipeline");
     thread_pool_ = UAllocator::safeMallocTemplateCObject<UThreadPool>(false);
     element_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
     param_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GParamManager)

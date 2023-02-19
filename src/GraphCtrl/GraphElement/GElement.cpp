@@ -10,19 +10,9 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-const std::string& GElement::getName() const {
-    return this->name_;
-}
-
-
-const std::string& GElement::getSession() const {
-    return this->session_;
-}
-
-
 GElement::GElement() {
-    this->session_ = URandom<>::generateSession();
     element_type_ = GElementType::ELEMENT;
+    session_ = URandom<>::generateSession("element");
 }
 
 
@@ -61,7 +51,7 @@ GElementPtr GElement::setName(const std::string& name) {
 
     // 设置name信息的时候，顺便给 aspect_manager_ 一起设置了
     if (aspect_manager_) {
-        aspect_manager_->setName(name);
+        aspect_manager_->setName(name_);
     }
     return this;
 }

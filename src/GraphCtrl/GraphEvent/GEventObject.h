@@ -14,8 +14,13 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GEventObject : public GraphObject {
+class GEventObject : public GraphObject,
+                     public CDescInfo {
 protected:
+    explicit GEventObject() {
+        session_ = URandom<>::generateSession("event");
+    }
+
     ~GEventObject() override {
         CGRAPH_DELETE_PTR(param_)
     }

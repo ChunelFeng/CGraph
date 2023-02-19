@@ -21,7 +21,8 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GPipeline : public GPipelineObject {
+class GPipeline : public GPipelineObject,
+                  public CDescInfo {
 public:
     /**
      * 初始化pipeline信息

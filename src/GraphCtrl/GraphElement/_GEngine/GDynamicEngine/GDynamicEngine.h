@@ -18,7 +18,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GDynamicEngine : public GEngine {
 protected:
-    CStatus setUp(const GSortedGElementPtrSet& elements) override;
+    CStatus setup(const GSortedGElementPtrSet& elements) override;
 
     CStatus run() override;
 

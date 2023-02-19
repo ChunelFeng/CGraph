@@ -14,28 +14,31 @@
 CGRAPH_NAMESPACE_BEGIN
 
 /** 创建参数信息 */
-#define CGRAPH_CREATE_GPARAM(Type, key)               \
-    this->createGParam<Type>(key);                    \
+#define CGRAPH_CREATE_GPARAM(Type, key)                              \
+    this->createGParam<Type>(key);                                   \
+
+#define CGRAPH_CREATE_GPARAM_WITH_BACKTRACE(Type, key)               \
+    this->createGParam<Type>(key, true);                             \
 
 /** 获取参数信息 */
-#define CGRAPH_GET_GPARAM(Type, key)                  \
-    this->getGParam<Type>(key);                       \
+#define CGRAPH_GET_GPARAM(Type, key)                                 \
+    this->getGParam<Type>(key);                                      \
 
 /** 获取参数信息，为空则抛出异常 */
-#define CGRAPH_GET_GPARAM_WITH_NO_EMPTY(Type, key)    \
-    this->getGParamWithNoEmpty<Type>(key);            \
+#define CGRAPH_GET_GPARAM_WITH_NO_EMPTY(Type, key)                   \
+    this->getGParamWithNoEmpty<Type>(key);                           \
 
 /** 获取参数的GParam的keys信息 */
-#define CGRAPH_GET_GPARAM_KEYS(keys)                  \
-    this->getGParamKeys(keys);                        \
+#define CGRAPH_GET_GPARAM_KEYS(keys)                                 \
+    this->getGParamKeys(keys);                                       \
 
 /** 删除一个参数 */
-#define CGRAPH_DELETE_GPARAM(key)                     \
-    this->removeGParam(key);                          \
+#define CGRAPH_DELETE_GPARAM(key)                                    \
+    this->removeGParam(key);                                         \
 
 /** 获取element内部参数信息 */
-#define CGRAPH_GET_EPARAM(Type, key)                  \
-    this->getEParam<Type>(key);                       \
+#define CGRAPH_GET_EPARAM(Type, key)                                 \
+    this->getEParam<Type>(key);                                      \
 
 /** 上参数写锁 */
 #define CGRAPH_PARAM_WRITE_CODE_BLOCK(param)                                    \

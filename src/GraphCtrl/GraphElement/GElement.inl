@@ -22,8 +22,8 @@ GElementPtr GElement::addGAspect(TParam* param) {
     }
 
     GAspectPtr aspect = CGRAPH_SAFE_MALLOC_COBJECT(TAspect)
-    aspect->setName(this->getName())
-          ->setAParam<TParam>(param);
+    aspect->setName(this->getName());
+    aspect->setAParam<TParam>(param);
     aspect->setGParamManager(this->param_manager_);
     aspect_manager_->add(aspect);
     return this;

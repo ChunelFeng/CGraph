@@ -26,10 +26,11 @@ public:
      * 创建一个特定类型的参数
      * @tparam T
      * @param key
+     * @param backtrace 是否开启记录调用链路功能
      * @return
      */
     template<typename T, c_enable_if_t<std::is_base_of<GParam, T>::value, int> = 0>
-    CStatus create(const std::string& key);
+    CStatus create(const std::string& key, CBool backtrace = false);
 
     /**
      * 获取一个特定类型的参数

@@ -12,7 +12,7 @@
 #include <string>
 #include <exception>
 
-#include "CInfoDefine.h"
+#include "CStrDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
