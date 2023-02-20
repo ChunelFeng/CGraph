@@ -69,7 +69,6 @@ template <typename T>
 CStatus GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElements,
                                       const std::string &name,
                                       CSize loop,
-                                      CLevel level,
                                       GParamManagerPtr paramManager,
                                       GEventManagerPtr eventManager) {
     CGRAPH_FUNCTION_BEGIN
@@ -78,7 +77,7 @@ CStatus GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElement
     CGRAPH_ASSERT_NOT_NULL(eventManager)
 
     // 这里，内部和外部均需要设定name信息
-    this->setName(name)->setLoop(loop)->setLevel(level);
+    this->setName(name)->setLoop(loop);
     status = this->addDependGElements(dependElements);
     CGRAPH_FUNCTION_CHECK_STATUS
 

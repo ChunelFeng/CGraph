@@ -14,8 +14,10 @@
 CGRAPH_NAMESPACE_BEGIN
 
 static const char* CGRAPH_EMPTY = "";
-static const char* CGRAPH_BASIC_EXCEPTION = "CGraph Exception";
-static const char* CGRAPH_FUNCTION_NO_SUPPORT = "function no support";
+static const char* CGRAPH_DEFAULT = "default";
+static const char* CGRAPH_UNKNOWN = "unknown";
+static const char* CGRAPH_BASIC_EXCEPTION = "CGraph default exception";
+static const char* CGRAPH_FUNCTION_NO_SUPPORT = "CGraph function no support";
 
 CGRAPH_NAMESPACE_END
 

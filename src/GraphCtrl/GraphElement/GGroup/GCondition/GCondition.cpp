@@ -12,6 +12,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 GCondition::GCondition() {
     element_type_ = GElementType::CONDITION;
+    session_ = URandom<>::generateSession(CGRAPH_STR_CONDITION);
 }
 
 

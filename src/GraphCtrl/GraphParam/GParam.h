@@ -29,34 +29,27 @@ public:
 #else
     std::mutex _param_shared_lock_;
 #endif
+
     /**
-     * 设置是否开启backtrace功能，默认关闭
-     * @param enable
+     * 保存参数信息
+     * @param path 位置路径
      * @return
      */
-    GParam* setTracebackEnable(CBool enable) {
-        backtrace_enable_ = enable;
-        return this;
-    }
+    virtual CStatus dump(const std::string& path);
+
+    /**
+     * 加载参数信息
+     * @param path 位置路径
+     * @return
+     */
+    virtual CStatus load(const std::string& path);
 
     /**
      * 获取参数的调用栈信息
      * @param backtrace
      * @return
      */
-    CStatus getBacktrace(std::set<std::string>& backtrace) {
-        CGRAPH_FUNCTION_BEGIN
-        if (!backtrace_enable_) {
-            CGRAPH_RETURN_ERROR_STATUS("backtrace no enable.");
-        }
-
-        CGRAPH_READ_LOCK lk(_param_shared_lock_);
-        for (const auto& iter : backtrace_) {
-            backtrace.emplace(iter);
-        }
-
-        CGRAPH_FUNCTION_END
-    }
+    CStatus getBacktrace(std::set<std::string>& backtrace);
 
     /**
      * 添加回溯信息
@@ -64,34 +57,13 @@ public:
      * @param session
      * @return
      */
-    CVoid addBacktrace(const std::string& name, const std::string& session) {
-        if (!backtrace_enable_) {
-            // 如果没有开启，直接返回即可
-            return;
-        }
-
-        // 如果name不为空，则添加name信息。如果name为空，则添加session信息
-        CGRAPH_WRITE_LOCK lk(_param_shared_lock_);
-        backtrace_.insert(name.empty() ? session : name);
-    }
+    CVoid addBacktrace(const std::string& name, const std::string& session);
 
     /**
-     * 保存参数信息
-     * @param path 位置路径
+     * 获取对应的key信息
      * @return
      */
-    virtual CStatus dump(const std::string& path) {
-        CGRAPH_NO_SUPPORT
-    }
-
-    /**
-     * 加载参数信息
-     * @param path 位置路径
-     * @return
-     */
-    virtual CStatus load(const std::string& path) {
-        CGRAPH_NO_SUPPORT
-    }
+    const std::string& getKey() const;
 
 protected:
     /**
@@ -108,8 +80,10 @@ protected:
         CGRAPH_EMPTY_FUNCTION
     }
 
+
 private:
-    std::set<std::string> backtrace_;        // 记录参数的调用栈信息
+    std::string key_;                        // 对应的key信息
+    std::set<std::string> backtrace_;        // 记录参数的调用栈信息，仅记录get 此参数的地方。不包括 create和remove的地方。
     CBool backtrace_enable_ = false;         // 是否使能backtrace功能
 
     friend class GParamManager;

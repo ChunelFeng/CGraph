@@ -13,7 +13,8 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T, CLevel level, c_enable_if_t<std::is_base_of<GElement, T>::value, int>>
+template<typename T,
+        c_enable_if_t<std::is_base_of<GElement, T>::value, int>>
 CStatus GPipeline::registerGElement(GElementPtr *elementRef,
                                     const GElementPtrSet &dependElements,
                                     const std::string &name,
@@ -40,7 +41,7 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
     }
 
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
-    status = (*elementRef)->setElementInfo(dependElements, name, loop, level,
+    status = (*elementRef)->setElementInfo(dependElements, name, loop,
                                            this->param_manager_,
                                            this->event_manager_);
     CGRAPH_FUNCTION_CHECK_STATUS
@@ -52,13 +53,13 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
 }
 
 
-template<typename GFunction, CLevel level>
+template<typename GFunction>
 CStatus GPipeline::registerGElement(GFunctionPtr *functionRef,
                                     const GElementPtrSet &dependElements,
                                     const std::string &name,
                                     CSize loop) {
     // 通过模板特化的方式，简化 GFunction 的注册方式
-    return this->registerGElement<GFunction, level>((GElementPtr *)(functionRef), dependElements, name, loop);
+    return this->registerGElement<GFunction>((GElementPtr *)(functionRef), dependElements, name, loop);
 }
 
 
@@ -73,9 +74,8 @@ CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,
     // 构建模板node信息
     (*elementRef) = new(std::nothrow) TNode(std::forward<Args &&>(args)...);
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
-    // 以下 name，loop，level 信息，可以由外部设置
+    // 以下 name，loop 信息，可以由外部设置
     status = (*elementRef)->setElementInfo(dependElements, CGRAPH_EMPTY, CGRAPH_DEFAULT_LOOP_TIMES,
-                                           CGRAPH_DEFAULT_ELEMENT_LEVEL,
                                            this->param_manager_, this->event_manager_);
     CGRAPH_FUNCTION_CHECK_STATUS
 
@@ -86,12 +86,12 @@ CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,
 }
 
 
-template<typename T, CLevel level,
+template<typename T,
         c_enable_if_t<std::is_base_of<GNode, T>::value, int>>
 GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_FUNCTION_BEGIN
     GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T)
-    status = node->setElementInfo(info.dependence_, info.name_, info.loop_, level,
+    status = node->setElementInfo(info.dependence_, info.name_, info.loop_,
                                   this->param_manager_, this->event_manager_);
     if (!status.isOK()) {
         CGRAPH_DELETE_PTR(node);
@@ -103,7 +103,7 @@ GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
 }
 
 
-template<typename T, CLevel level,
+template<typename T,
         c_enable_if_t<std::is_base_of<GGroup, T>::value, int>>
 GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
                                   const GElementPtrSet &dependElements,
@@ -127,7 +127,7 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
         group->addElement(element);
     }
 
-    status = group->setElementInfo(dependElements, name, loop, level,
+    status = group->setElementInfo(dependElements, name, loop,
                                    nullptr, nullptr);    // 注册group信息的时候，不能注册paramManager信息
     if (unlikely(!status.isOK())) {
         CGRAPH_DELETE_PTR(group)

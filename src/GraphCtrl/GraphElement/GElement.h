@@ -20,7 +20,8 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GElement : public GElementObject, public CDescInfo {
+class GElement : public GElementObject,
+                 public CDescInfo {
 public:
     /**
      * 实现添加切面的逻辑
@@ -156,7 +157,6 @@ protected:
      * @param dependElements
      * @param name
      * @param loop
-     * @param level
      * @param paramManager
      * @paarm eventManager
      * @return
@@ -164,7 +164,6 @@ protected:
     virtual CStatus setElementInfo(const std::set<GElement *> &dependElements,
                                    const std::string &name,
                                    CSize loop,
-                                   CLevel level,
                                    GParamManagerPtr paramManager,
                                    GEventManagerPtr eventManager);
 
@@ -244,11 +243,11 @@ protected:
 protected:
     CBool done_ { false };                           // 判定被执行结束
     CBool linkable_ { false };                       // 判定是否可以连通计算
-    CSize loop_ { 1 };                               // 元素执行次数
-    CLevel level_ { 0 };                             // 用于设定init的执行顺序(值小的，优先init，可以为负数)
+    CSize loop_ { CGRAPH_DEFAULT_LOOP_TIMES };       // 元素执行次数
+    CLevel level_ { CGRAPH_DEFAULT_ELEMENT_LEVEL };  // 用于设定init的执行顺序(值小的，优先init，可以为负数)
     std::set<GElement *> run_before_;                // 被依赖的节点
     std::set<GElement *> dependence_;                // 依赖的节点信息
-    std::atomic<CSize> left_depend_ { 0 };           // 当 left_depend_ 值为0的时候，即可以执行该element信息
+    std::atomic<CSize> left_depend_ { 0 };        // 当 left_depend_ 值为0的时候，即可以执行该element信息
     GParamManagerPtr param_manager_ { nullptr };     // 整体流程的参数管理类，所有pipeline中的所有element共享
     GAspectManagerPtr aspect_manager_ { nullptr };   // 整体流程的切面管理类
     GEventManagerPtr event_manager_ { nullptr };     // 事件管理类

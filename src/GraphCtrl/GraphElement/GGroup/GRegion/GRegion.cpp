@@ -16,6 +16,7 @@ GRegion::GRegion() : GGroup() {
     manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
     is_init_ = false;
     element_type_ = GElementType::REGION;
+    session_ = URandom<>::generateSession(CGRAPH_STR_REGION);
 }
 
 

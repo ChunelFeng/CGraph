@@ -12,7 +12,6 @@ CGRAPH_NAMESPACE_BEGIN
 
 GElement::GElement() {
     element_type_ = GElementType::ELEMENT;
-    session_ = URandom<>::generateSession("element");
 }
 
 
@@ -108,13 +107,12 @@ CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
 CStatus GElement::setElementInfo(const GElementPtrSet& dependElements,
                                  const std::string& name,
                                  CSize loop,
-                                 CLevel level,
                                  GParamManagerPtr paramManager,
                                  GEventManagerPtr eventManager) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
 
-    this->setName(name)->setLoop(loop)->setLevel(level);
+    this->setName(name)->setLoop(loop);
     param_manager_ = paramManager;
     event_manager_ = eventManager;
     status = this->addDependGElements(dependElements);

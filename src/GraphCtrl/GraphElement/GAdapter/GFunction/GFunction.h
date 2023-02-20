@@ -39,6 +39,7 @@ public:
 protected:
     explicit GFunction() {
         this->element_type_ = GElementType::FUNCTION;
+        session_ = URandom<>::generateSession(CGRAPH_STR_FUNCTION);
     };
 
     CStatus init() override {

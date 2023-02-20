@@ -14,7 +14,8 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GDaemonObject : public GraphObject, public CDescInfo {
+class GDaemonObject : public GraphObject,
+                      public CDescInfo {
 protected:
     explicit GDaemonObject() {
         session_ = URandom<>::generateSession("daemon");
@@ -57,6 +58,8 @@ private:
     CStatus run() final {
         CGRAPH_NO_SUPPORT
     }
+
+    CGRAPH_NO_ALLOWED_COPY(GDaemonObject)
 
     friend class GDaemon;
     friend class GDaemonManager;

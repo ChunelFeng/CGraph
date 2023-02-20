@@ -23,9 +23,10 @@ file(GLOB_RECURSE CGRAPH_SRC_LIST "./src/*.cpp")
 # 如果开启此宏定义，则CGraph执行过程中，不会在控制台打印任何信息
 # add_definitions(-D_CGRAPH_SILENCE_)
 
-# 编译libCGraph动态库
-# add_library(CGraphShared SHARED ${CGRAPH_SRC_LIST})
-add_library(CGraphObject OBJECT ${CGRAPH_SRC_LIST})
+# 以下三选一，本地编译执行，推荐OBJECT方式
+add_library(CGraph OBJECT ${CGRAPH_SRC_LIST})      # 通过代码编译
+# add_library(CGraph SHARED ${CGRAPH_SRC_LIST})    # 编译libCGraph动态库
+# add_library(CGraph STATIC ${CGRAPH_SRC_LIST})    # 编译libCGraph静态库
 
 set(CGRAPH_TUTORIAL_LIST
         T00-HelloCGraph
@@ -57,5 +58,5 @@ set(CGRAPH_TUTORIAL_LIST
         )
 
 foreach(tut ${CGRAPH_TUTORIAL_LIST})
-    add_executable(${tut} tutorial/${tut}.cpp $<TARGET_OBJECTS:CGraphObject>)
+    add_executable(${tut} tutorial/${tut}.cpp $<TARGET_OBJECTS:CGraph>)
 endforeach()

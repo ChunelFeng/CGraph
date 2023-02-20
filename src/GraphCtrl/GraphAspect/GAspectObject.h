@@ -17,7 +17,8 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GAspectObject : public GraphObject, public CDescInfo {
+class GAspectObject : public GraphObject,
+                      public CDescInfo {
 public:
     explicit GAspectObject() {
         session_ = URandom<>::generateSession("aspect");
@@ -51,6 +52,8 @@ protected:
     CStatus run() final {
         CGRAPH_NO_SUPPORT
     }
+
+    CGRAPH_NO_ALLOWED_COPY(GAspectObject)
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
 

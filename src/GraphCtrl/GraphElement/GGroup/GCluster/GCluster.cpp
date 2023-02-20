@@ -12,6 +12,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 GCluster::GCluster() {
     element_type_ = GElementType::CLUSTER;
+    session_ = URandom<>::generateSession(CGRAPH_STR_CLUSTER);
 }
 
 

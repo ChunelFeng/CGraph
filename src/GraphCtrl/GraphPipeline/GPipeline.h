@@ -60,25 +60,23 @@ public:
     /**
      * 根据传入的info信息，创建node节点
      * @tparam T
-     * @tparam level
      * @param info
      * @return
      */
-    template<typename T, CLevel level = CGRAPH_DEFAULT_ELEMENT_LEVEL,
+    template<typename T,
             c_enable_if_t<std::is_base_of<GNode, T>::value, int> = 0>
     GNodePtr createGNode(const GNodeInfo &info);
 
     /**
      * 根据传入的信息，创建Group信息
      * @tparam T
-     * @tparam level
      * @param elements
      * @param dependElements
      * @param name
      * @param loop
      * @return
      */
-    template<typename T, CLevel level = CGRAPH_DEFAULT_ELEMENT_LEVEL,
+    template<typename T,
             c_enable_if_t<std::is_base_of<GGroup, T>::value, int> = 0>
     GGroupPtr createGGroup(const GElementPtrArr &elements,
                            const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
@@ -90,14 +88,13 @@ public:
      * 如果注册的是GNode信息，则内部自动生成
      * 如果注册的是GGroup信息，则需外部提前生成，然后注册进来
      * @tparam T
-     * @tparam level
      * @param elementRef
      * @param dependElements
      * @param name
      * @param loop
      * @return
      */
-    template<typename T, CLevel level = CGRAPH_DEFAULT_ELEMENT_LEVEL,
+    template<typename T,
             c_enable_if_t<std::is_base_of<GElement, T>::value, int> = 0>
     CStatus registerGElement(GElementPtr *elementRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
@@ -107,14 +104,13 @@ public:
     /**
      * 注册function类型的内容，模板特化
      * @tparam GFunction
-     * @tparam level
      * @param functionRef
      * @param dependElements
      * @param name
      * @param loop
      * @return
      */
-    template<typename GFunction, CLevel level = CGRAPH_DEFAULT_ELEMENT_LEVEL>
+    template<typename GFunction>
     CStatus registerGElement(GFunctionPtr *functionRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = CGRAPH_EMPTY,

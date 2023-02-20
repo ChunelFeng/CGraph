@@ -165,7 +165,9 @@ CStatus GStaticEngine::afterRunCheck() {
     CGRAPH_FUNCTION_BEGIN
     /* 验证是否所有的内容均被执行过 */
     if (run_element_size_ != total_element_size_) {
-        CGRAPH_RETURN_ERROR_STATUS("pipeline static run element size check failed...")
+        const std::string& errInfo = "run size = [" + std::to_string(run_element_size_)
+                                      + "], total size = [" + std::to_string(total_element_size_) + "] ...";
+        CGRAPH_RETURN_ERROR_STATUS("pipeline static run element size check failed, " + errInfo)
     }
 
     /* 需要验证每个cluster里的每个内容是否被执行过一次 */

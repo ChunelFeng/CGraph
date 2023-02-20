@@ -24,7 +24,8 @@ CStatus GParamManager::create(const std::string& key, CBool backtrace) {
     }
 
     T* ptr = CGRAPH_SAFE_MALLOC_COBJECT(T)
-    ((GParamPtr)ptr)->setTracebackEnable(backtrace);
+    ((GParamPtr)ptr)->backtrace_enable_ = backtrace;
+    ((GParamPtr)ptr)->key_ = key;
     params_map_.insert(std::pair<std::string, T*>(key, ptr));
     CGRAPH_FUNCTION_END
 }

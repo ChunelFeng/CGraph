@@ -13,6 +13,7 @@ CGRAPH_NAMESPACE_BEGIN
 GNode::GNode() : GElement() {
     node_type_ = GNodeType::BASIC;
     element_type_ = GElementType::NODE;
+    session_ = URandom<>::generateSession(CGRAPH_STR_NODE);
 }
 
 

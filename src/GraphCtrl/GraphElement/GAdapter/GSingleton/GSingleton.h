@@ -19,7 +19,8 @@ template<typename T>
 class GSingleton : public GAdapter {
 protected:
     explicit GSingleton() {
-        this->element_type_ = GElementType::SINGLETON;
+        this->element_type_ = GElementType::SINGLETON;\
+        session_ = URandom<>::generateSession(CGRAPH_STR_SINGLETON);
     }
 
     CStatus init() override;
@@ -31,7 +32,6 @@ protected:
      * @param dependElements
      * @param name
      * @param loop
-     * @param level
      * @param paramManager
      * @param eventManager
      * @return
@@ -39,7 +39,6 @@ protected:
     CStatus setElementInfo(const std::set<GElementPtr> &dependElements,
                            const std::string &name,
                            CSize loop,
-                           CLevel level,
                            GParamManagerPtr paramManager,
                            GEventManagerPtr eventManager) override;
 
