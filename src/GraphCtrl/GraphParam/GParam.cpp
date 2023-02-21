@@ -27,10 +27,11 @@ CStatus GParam::getBacktrace(std::set<std::string>& backtrace) {
         CGRAPH_RETURN_ERROR_STATUS("backtrace no enable.")
     }
 
-    CGRAPH_READ_LOCK lk(_param_shared_lock_);
+    backtrace_lock_.lock();
     for (const auto& iter : backtrace_) {
         backtrace.emplace(iter);
     }
+    backtrace_lock_.unlock();
 
     CGRAPH_FUNCTION_END
 }
@@ -43,8 +44,9 @@ CVoid GParam::addBacktrace(const std::string& name, const std::string& session) 
     }
 
     // 如果name不为空，则添加name信息。如果name为空，则添加session信息
-    CGRAPH_WRITE_LOCK lk(_param_shared_lock_);
+    backtrace_lock_.lock();
     backtrace_.insert(name.empty() ? session : name);
+    backtrace_lock_.unlock();
 }
 
 
