@@ -11,7 +11,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 GPipeline::GPipeline() {
-    session_ = URandom<>::generateSession("pipeline");
+    session_ = URandom<>::generateSession(CGRAPH_STR_PIPELINE);
     thread_pool_ = UAllocator::safeMallocTemplateCObject<UThreadPool>(false);
     element_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
     param_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GParamManager)
@@ -71,10 +71,8 @@ CStatus GPipeline::run() {
     status = param_manager_->setup();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    status = element_manager_->run();
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    param_manager_->reset();
+    status += element_manager_->run();
+    param_manager_->resetWithStatus(status);
     CGRAPH_FUNCTION_END
 }
 

@@ -15,7 +15,7 @@ template<typename T,
         c_enable_if_t<std::is_base_of<GParam, T>::value, int>>
 CStatus GParamManager::create(const std::string& key, CBool backtrace) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_LOCK_GUARD lock(this->lock_);
+    CGRAPH_LOCK_GUARD lock(this->mutex_);
     auto result = params_map_.find(key);
     if (result != params_map_.end()) {
         /* 如果是重复创建，则返回ok；非重复创建（类型不同）则返回err */

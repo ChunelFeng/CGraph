@@ -17,13 +17,6 @@ const static CMSec CGRAPH_DEFAULT_ELEMENT_RUN_TTL = 0;      // 线程超时时�
 const static CSize CGRAPH_DEFAULT_LOOP_TIMES = 1;           // 默认循环次数信息
 const static CLevel CGRAPH_DEFAULT_ELEMENT_LEVEL = 0;       // 默认的element级别，用于控制init函数
 
-static const char* CGRAPH_STR_NODE = "node";
-static const char* CGRAPH_STR_CLUSTER = "cluster";
-static const char* CGRAPH_STR_REGION = "region";
-static const char* CGRAPH_STR_CONDITION = "condition";
-static const char* CGRAPH_STR_FUNCTION = "function";
-static const char* CGRAPH_STR_SINGLETON = "singleton";
-
 enum class GElementType {
     ELEMENT = 0x00000000,                    // 元素
     NODE = 0x00010000,                       // 节点

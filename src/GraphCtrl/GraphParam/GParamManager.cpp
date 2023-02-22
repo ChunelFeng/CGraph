@@ -45,14 +45,12 @@ CStatus GParamManager::clear() {
 }
 
 
-CStatus GParamManager::reset() {
-    CGRAPH_FUNCTION_BEGIN
+CVoid GParamManager::resetWithStatus(const CStatus& curStatus) {
     for (auto cur : params_map_) {
         if (likely(cur.second)) {
-            cur.second->reset();
+            cur.second->reset(curStatus);
         }
     }
-    CGRAPH_FUNCTION_END
 }
 
 
@@ -69,7 +67,7 @@ CStatus GParamManager::setup() {
 
 CStatus GParamManager::remove(const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_LOCK_GUARD lock(this->lock_);    // 创建和销毁的时候，加锁
+    CGRAPH_LOCK_GUARD lock(this->mutex_);    // 创建和销毁的时候，加锁
     auto param = params_map_.find(key);
     if (param == params_map_.end()) {
         CGRAPH_RETURN_ERROR_STATUS("param [" + key + "] no find")
@@ -83,7 +81,7 @@ CStatus GParamManager::remove(const std::string& key) {
 
 CStatus GParamManager::getKeys(std::vector<std::string>& keys) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_LOCK_GUARD lock(this->lock_);
+    CGRAPH_LOCK_GUARD lock(this->mutex_);
     for (const auto& iter : params_map_) {
         keys.emplace_back(iter.first);
     }

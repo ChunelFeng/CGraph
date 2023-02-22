@@ -23,7 +23,8 @@ CStatus GParam::load(const std::string& path) {
 
 CStatus GParam::getBacktrace(std::set<std::string>& backtrace) {
     CGRAPH_FUNCTION_BEGIN
-    if (!backtrace_enable_) {
+    if (likely(!backtrace_enable_)) {
+        // 非问题排查或信息展示场景，更倾向不开启此功能
         CGRAPH_RETURN_ERROR_STATUS("backtrace no enable.")
     }
 
@@ -38,7 +39,7 @@ CStatus GParam::getBacktrace(std::set<std::string>& backtrace) {
 
 
 CVoid GParam::addBacktrace(const std::string& name, const std::string& session) {
-    if (!backtrace_enable_) {
+    if (likely(!backtrace_enable_)) {
         // 如果没有开启，直接返回即可
         return;
     }
@@ -52,6 +53,11 @@ CVoid GParam::addBacktrace(const std::string& name, const std::string& session) 
 
 const std::string& GParam::getKey() const {
     return key_;
+}
+
+
+CStatus GParam::setup() {
+    CGRAPH_EMPTY_FUNCTION
 }
 
 CGRAPH_NAMESPACE_END

@@ -11,6 +11,7 @@
 
 #include "../CBasic/CBasicInclude.h"
 #include "../UtilsCtrl/UtilsInclude.h"
+#include "GraphDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

@@ -2,10 +2,10 @@
 set_project("CGraph")
 
 -- set project version
-set_version("2.3.2")
+set_version("2.3.4")
 
--- set language: c++17
-set_languages("c++17")
+-- set language: c++11
+set_languages("c++11")
 
 -- set features on different platform
 if is_plat("macosx") then

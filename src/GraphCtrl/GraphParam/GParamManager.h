@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
+#include <mutex>
 
 #include "../GraphObject.h"
 #include "../GraphManager.h"
@@ -63,19 +64,24 @@ protected:
 
     CStatus clear() final;
 
-    CStatus reset() override;
-
     /**
      * 初始化所有的参数信息
      * @return
      */
     CStatus setup();
 
+    /**
+     * 重置所有的GParam信息
+     * @param curStatus
+     * @return
+     */
+    CVoid resetWithStatus(const CStatus& curStatus);
+
     CGRAPH_NO_ALLOWED_COPY(GParamManager)
 
 private:
     std::unordered_map<std::string, GParamPtr> params_map_;           // 记录param信息的hash表
-    std::mutex lock_;                                                 // 创建param的时候上锁
+    std::mutex mutex_;                                                // 创建param的时候上锁
 
     friend class GPipeline;
     friend class UAllocator;

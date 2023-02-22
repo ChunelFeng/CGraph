@@ -67,18 +67,18 @@ public:
 
 protected:
     /**
-     * 每次pipeline执行结束，会调用一次reset
-     * @return
-     */
-    virtual CVoid reset() = 0;
-
-    /**
      * 每次pipeline执行前，会调用一次setup，可以不实现
      * @return
      */
-    virtual CStatus setup() {
-        CGRAPH_EMPTY_FUNCTION
-    }
+    virtual CStatus setup();
+
+    /**
+     * 每次pipeline执行结束，会调用一次reset
+     * @param curStatus 本次pipeline执行的状态
+     * @return
+     * @notice 为丰富功能，v2.3.4 版本中添加了curStatus作为入参，不兼容之前逻辑。造成的困扰，表示抱歉
+     */
+    virtual CVoid reset(const CStatus& curStatus) = 0;
 
 
 private:

@@ -62,11 +62,7 @@ static const int CGRAPH_EVENT_TASK_STRATEGY = -103;                             
 static const int CGRAPH_DEFAULT_THREAD_SIZE = 8;                                            // 默认主线程个数
 static const int CGRAPH_SECONDARY_THREAD_SIZE = 0;                                          // 默认开启辅助线程个数
 static const int CGRAPH_MAX_THREAD_SIZE = (CGRAPH_DEFAULT_THREAD_SIZE * 2) + 1;             // 最大线程个数
-    #ifndef _WIN32
 static const int CGRAPH_MAX_TASK_STEAL_RANGE = 2;                                           // 盗取机制相邻范围
-    #else
-static const int CGRAPH_MAX_TASK_STEAL_RANGE = 0;                                           // windows平台暂不支持任务盗取功能
-    #endif
 static const bool CGRAPH_BATCH_TASK_ENABLE = false;                                         // 是否开启批量任务功能
 static const int CGRAPH_MAX_LOCAL_BATCH_SIZE = 2;                                           // 批量执行本地任务最大值
 static const int CGRAPH_MAX_POOL_BATCH_SIZE = 2;                                            // 批量执行通用任务最大值
