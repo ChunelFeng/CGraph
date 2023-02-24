@@ -44,7 +44,7 @@ CGRAPH_NAMESPACE_BEGIN
         CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)                              \
         auto param = param_manager_->get<TGParam>(key);                                 \
         if (nullptr != param) {                                                         \
-            param->addBacktrace(this->name_, this->session_);                           \
+            param->addBacktrace(name_.empty() ? session_ : name_);                      \
         }                                                                               \
         return param;                                                                   \
     }                                                                                   \

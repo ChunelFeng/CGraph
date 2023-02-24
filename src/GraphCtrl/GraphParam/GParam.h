@@ -31,20 +31,6 @@ public:
 #endif
 
     /**
-     * 保存参数信息
-     * @param path 位置路径
-     * @return
-     */
-    virtual CStatus dump(const std::string& path);
-
-    /**
-     * 加载参数信息
-     * @param path 位置路径
-     * @return
-     */
-    virtual CStatus load(const std::string& path);
-
-    /**
      * 获取参数的调用栈信息
      * @param backtrace
      * @return
@@ -52,12 +38,17 @@ public:
     CStatus getBacktrace(std::set<std::string>& backtrace);
 
     /**
-     * 添加回溯信息
-     * @param name
-     * @param session
+     * 添加trace信息
+     * @param trace
      * @return
      */
-    CVoid addBacktrace(const std::string& name, const std::string& session);
+    CVoid addBacktrace(const std::string& trace);
+
+    /**
+     * 清空trace信息
+     * @return
+     */
+    CVoid cleanBacktrace();
 
     /**
      * 获取对应的key信息
@@ -85,7 +76,7 @@ private:
     std::string key_;                        // 对应的key信息
     std::set<std::string> backtrace_;        // 记录参数的调用栈信息，仅记录get 此参数的地方。不包括 create和remove的地方。
     CBool backtrace_enable_ = false;         // 是否使能backtrace功能
-    USpinLock backtrace_lock_;               // 针对backtrace的
+    USpinLock backtrace_lock_;               // 针对backtrace的自旋锁
 
     friend class GParamManager;
 };

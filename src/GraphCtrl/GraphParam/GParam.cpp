@@ -10,17 +10,6 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-
-CStatus GParam::dump(const std::string& path) {
-    CGRAPH_NO_SUPPORT
-}
-
-
-CStatus GParam::load(const std::string& path) {
-    CGRAPH_NO_SUPPORT
-}
-
-
 CStatus GParam::getBacktrace(std::set<std::string>& backtrace) {
     CGRAPH_FUNCTION_BEGIN
     if (likely(!backtrace_enable_)) {
@@ -38,7 +27,7 @@ CStatus GParam::getBacktrace(std::set<std::string>& backtrace) {
 }
 
 
-CVoid GParam::addBacktrace(const std::string& name, const std::string& session) {
+CVoid GParam::addBacktrace(const std::string& trace) {
     if (likely(!backtrace_enable_)) {
         // 如果没有开启，直接返回即可
         return;
@@ -46,7 +35,18 @@ CVoid GParam::addBacktrace(const std::string& name, const std::string& session) 
 
     // 如果name不为空，则添加name信息。如果name为空，则添加session信息
     backtrace_lock_.lock();
-    backtrace_.insert(name.empty() ? session : name);
+    backtrace_.insert(trace);
+    backtrace_lock_.unlock();
+}
+
+
+CVoid GParam::cleanBacktrace() {
+    if (!backtrace_enable_) {
+        return;
+    }
+
+    backtrace_lock_.lock();
+    backtrace_.clear();
     backtrace_lock_.unlock();
 }
 

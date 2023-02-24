@@ -20,6 +20,8 @@ class GDaemon : public GDaemonObject {
 protected:
     /**
      * 后台执行函数，间隔interval时间后，执行一次
+     * @param param
+     * @return
      */
     virtual CVoid daemonTask(GDaemonParamPtr param) = 0;
 
