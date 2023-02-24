@@ -28,35 +28,5 @@ add_library(CGraph OBJECT ${CGRAPH_SRC_LIST})      # 通过代码编译
 # add_library(CGraph SHARED ${CGRAPH_SRC_LIST})    # 编译libCGraph动态库
 # add_library(CGraph STATIC ${CGRAPH_SRC_LIST})    # 编译libCGraph静态库
 
-set(CGRAPH_TUTORIAL_LIST
-        T00-HelloCGraph
-        T01-Simple
-        T02-Cluster
-        T03-Region
-        T04-Complex
-        T05-Param
-        T06-Condition
-        T07-MultiPipeline
-        T08-Template
-        T09-Aspect
-        T10-AspectParam
-        T11-Singleton    # T11-Singleton only support for C++17 or upper version
-        T12-Function
-        T13-Daemon
-        T14-Hold
-        T15-ElementParam
-        T16-MessageSendRecv
-        T17-MessagePubSub
-        T18-Event
-
-        # 以下为工具类tutorial
-        TU01-ThreadPool
-        TU02-Lru
-        TU03-Trie
-        TU04-Timer
-        TU05-Distance
-        )
-
-foreach(tut ${CGRAPH_TUTORIAL_LIST})
-    add_executable(${tut} tutorial/${tut}.cpp $<TARGET_OBJECTS:CGraph>)
-endforeach()
+# 加入 tutorial中的可执行的例子
+add_subdirectory(tutorial)
