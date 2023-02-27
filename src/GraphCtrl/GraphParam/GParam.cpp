@@ -10,7 +10,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-CStatus GParam::getBacktrace(std::set<std::string>& backtrace) {
+CStatus GParam::getBacktrace(std::vector<std::string>& trace) {
     CGRAPH_FUNCTION_BEGIN
     if (likely(!backtrace_enable_)) {
         // 非问题排查或信息展示场景，更倾向不开启此功能
@@ -18,9 +18,7 @@ CStatus GParam::getBacktrace(std::set<std::string>& backtrace) {
     }
 
     backtrace_lock_.lock();
-    for (const auto& iter : backtrace_) {
-        backtrace.emplace(iter);
-    }
+    backtrace_.getUniqueArray(trace);
     backtrace_lock_.unlock();
 
     CGRAPH_FUNCTION_END
@@ -35,7 +33,7 @@ CVoid GParam::addBacktrace(const std::string& trace) {
 
     // 如果name不为空，则添加name信息。如果name为空，则添加session信息
     backtrace_lock_.lock();
-    backtrace_.insert(trace);
+    backtrace_.uniqueAdd(trace);
     backtrace_lock_.unlock();
 }
 

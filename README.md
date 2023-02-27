@@ -59,9 +59,9 @@
 
 * 提供online版本的编译调试环境，点击进入页面：[CGraph env online](https://gitpod.io/#/github.com/ChunelFeng/CGraph) ，通过github账号登录。进入后，输入以下指令，即可编译通过，并查看执行结果
   ```shell
-  $ sudo apt-get install cmake   # 安装cmake
-  $ ./CGraph-build.sh            # 编译CGraph工程，生成的内容在同级/build/文件夹中
-  $ ./build/T00-HelloCGraph      # 运行第一个实例程序，并且在终端输出 Hello, CGraph.
+  $ sudo apt-get install cmake             # 安装cmake
+  $ ./CGraph-build.sh                      # 编译CGraph工程，生成的内容在同级/build/文件夹中
+  $ ./build/tutorial/T00-HelloCGraph       # 运行第一个实例程序，并且在终端输出 Hello, CGraph.
   ```
 
 ## 三. 使用Demo
@@ -74,18 +74,17 @@ class MyNode1 : public CGraph::GNode {
 public:
     CStatus run () override {
         CStatus status;
-        CGraph::CGRAPH_ECHO("[%s], enter MyNode1 run function. Sleep for 1 second ... ", this->getName().c_str());
+        CGraph::CGRAPH_ECHO("[%s], Sleep for 1 second ...", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(1)
         return status;
     }
 };
 
-
 class MyNode2 : public CGraph::GNode {
 public:
     CStatus run () override {
         CStatus status;
-        CGraph::CGRAPH_ECHO("[%s], enter MyNode2 run function. Sleep for 2 second ... ", this->getName().c_str());
+        CGraph::CGRAPH_ECHO("[%s], Sleep for 2 second ...", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(2)
         return status;
     }

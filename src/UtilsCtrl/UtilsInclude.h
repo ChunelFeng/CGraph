@@ -18,5 +18,6 @@
 #include "Timer/UTimer.h"
 #include "Distance/UDistanceInclude.h"
 #include "Random/URandom.h"
+#include "SerialUniqueArray/USerialUniqueArray.h"
 
 #endif //CGRAPH_UTILSINCLUDE_H
