@@ -129,9 +129,9 @@ CStatus GElementManager::initEngine() {
     CGRAPH_DELETE_PTR(engine_)
 
     switch (engine_type_) {
-        case GEngineType::STATIC : engine_ = CGRAPH_SAFE_MALLOC_COBJECT(GStaticEngine); break;
-        case GEngineType::DYNAMIC : engine_ = CGRAPH_SAFE_MALLOC_COBJECT(GDynamicEngine); break;
-        default: status = CStatus("unknown running module");
+        case GEngineType::STATIC : engine_ = CGRAPH_SAFE_MALLOC_COBJECT(GStaticEngine) break;
+        case GEngineType::DYNAMIC : engine_ = CGRAPH_SAFE_MALLOC_COBJECT(GDynamicEngine) break;
+        default: status = CStatus("unknown engine type");
     }
     CGRAPH_FUNCTION_CHECK_STATUS
 

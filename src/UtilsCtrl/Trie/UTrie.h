@@ -44,9 +44,36 @@ public:
     void eraser(const std::string& path);
 
 protected:
+    /**
+     * 查询信息
+     * @param node
+     * @param path
+     * @param index
+     * @return
+     */
     bool innerFind(UTrieNodePtr node, const std::string& path, int index);
+
+    /**
+     * 插入信息
+     * @param node
+     * @param path
+     * @param index
+     */
     void innerInsert(UTrieNodePtr node, const std::string& path, int index);
+
+    /**
+     * 清空所有节点
+     * @param node
+     */
     void innerClear(UTrieNodePtr node);
+
+    /**
+     * 删除特定节点
+     * @param node
+     * @param path
+     * @param index
+     * @param isErased
+     */
     void innerEraser(UTrieNodePtr node, const std::string& path, int index, bool& isErased);
 
 private:

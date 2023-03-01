@@ -11,15 +11,13 @@
 
 #include "../GAdapter.h"
 
-#if __cplusplus >= 201703L
-
 CGRAPH_NAMESPACE_BEGIN
 
 template<typename T>
 class GSingleton : public GAdapter {
 protected:
     explicit GSingleton() {
-        this->element_type_ = GElementType::SINGLETON;\
+        this->element_type_ = GElementType::SINGLETON;
         session_ = URandom<>::generateSession(CGRAPH_STR_SINGLETON);
     }
 
@@ -43,8 +41,8 @@ protected:
                            GEventManagerPtr eventManager) override;
 
 private:
-    static USingleton<T, USingletonType::HUNGRY> s_singleton_;     // 单例自身
-    static std::atomic<CBool> s_is_init_;                          // 标志是否被初始化过
+    static USingleton<T> s_singleton_;                    // 单例
+    static std::atomic<CBool> s_is_init_;                 // 标志是否被初始化过
 
     friend class GPipeline;
 };
@@ -57,6 +55,3 @@ CGRAPH_NAMESPACE_END
 #include "GSingleton.inl"
 
 #endif //CGRAPH_GSINGLETON_H
-
-#endif // __cplusplus >= 201703L
-

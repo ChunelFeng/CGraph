@@ -27,8 +27,8 @@ public:
     CVoid uniqueAdd(const T& val) {
         // 如果没有，就插入array中
         if (inner_set_.find(val) == inner_set_.end()) {
-            inner_array_.push_back(val);
             inner_set_.insert(val);
+            inner_array_.push_back(val);
         }
     }
 

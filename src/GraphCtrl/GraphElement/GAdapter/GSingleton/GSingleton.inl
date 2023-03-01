@@ -8,15 +8,13 @@
 
 #include "GSingleton.h"
 
-#if __cplusplus >= 201703L
-
 CGRAPH_NAMESPACE_BEGIN
 
 template <typename T>
-USingleton<T, USingletonType::HUNGRY> GSingleton<T>::s_singleton_;
+USingleton<T> GSingleton<T>::s_singleton_;
 
 template <typename T>
-std::atomic<CBool> GSingleton<T>::s_is_init_ = false;
+std::atomic<CBool> GSingleton<T>::s_is_init_(false);
 
 
 template <typename T>
@@ -99,5 +97,3 @@ CStatus GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElement
 }
 
 CGRAPH_NAMESPACE_END
-
-#endif  //__cplusplus >= 201703L

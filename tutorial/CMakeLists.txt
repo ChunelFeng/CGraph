@@ -12,7 +12,7 @@ set(CGRAPH_TUTORIAL_LIST
         T08-Template
         T09-Aspect
         T10-AspectParam
-        T11-Singleton    # T11-Singleton only support for C++17 or upper version
+        T11-Singleton
         T12-Function
         T13-Daemon
         T14-Hold

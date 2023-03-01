@@ -161,8 +161,8 @@ protected:
      * @paarm eventManager
      * @return
      */
-    virtual CStatus setElementInfo(const std::set<GElement *> &dependElements,
-                                   const std::string &name,
+    virtual CStatus setElementInfo(const std::set<GElement *>& dependElements,
+                                   const std::string& name,
                                    CSize loop,
                                    GParamManagerPtr paramManager,
                                    GEventManagerPtr eventManager);
