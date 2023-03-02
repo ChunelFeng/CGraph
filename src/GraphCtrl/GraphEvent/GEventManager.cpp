@@ -45,7 +45,7 @@ CStatus GEventManager::clear() {
 }
 
 
-CStatus GEventManager::trigger(const std::string& key) {
+CStatus GEventManager::trigger(const std::string &key, GEventType type) {
     CGRAPH_FUNCTION_BEGIN
     auto result = events_map_.find(key);
     if (events_map_.end() == result) {
@@ -54,7 +54,7 @@ CStatus GEventManager::trigger(const std::string& key) {
 
     auto event = result->second;
     CGRAPH_ASSERT_NOT_NULL(event)
-    status = event->run();    // 这里实际上是异步执行的
+    status = event->process(type);
     CGRAPH_FUNCTION_END
 }
 

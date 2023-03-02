@@ -36,9 +36,10 @@ public:
     /**
      * 触发事件
      * @param key
+     * @param type
      * @return
      */
-    CStatus trigger(const std::string& key);
+    CStatus trigger(const std::string &key, GEventType type);
 
     CStatus init() override;
 
@@ -67,6 +68,5 @@ using GEventManagerPtr = GEventManager *;
 CGRAPH_NAMESPACE_END
 
 #include "GEventManager.inl"
-
 
 #endif //CGRAPH_GEVENTMANAGER_H

@@ -21,12 +21,11 @@ public:
          * 从打印结果可以看出，after event send 这条信息，提前执行
          * 执行的时候，和pipeline公用同一个线程池资源
          */
-        notify("my-print-event");
+        notify("my-print-event", GEventType::ASYNC);
 
         CGraph::CGRAPH_ECHO("[%s], after event notify", this->getName().c_str());
         return status;
     }
 };
-
 
 #endif //CGRAPH_MYEVENTNODE_H

@@ -287,7 +287,8 @@ int main() {
 
 [2023.02.22 - v2.3.4 - Chunel]
 * 优化Windows系统下调度机制
-* 优化参数机制
+* 优化`param`机制
+* 优化`event`机制
 
 </details>
 

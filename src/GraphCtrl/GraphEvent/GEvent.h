@@ -12,6 +12,7 @@
 #include <mutex>
 
 #include "GEventObject.h"
+#include "GEventDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -24,7 +25,12 @@ protected:
      */
     virtual CVoid trigger(GEventParamPtr param) = 0;
 
-    CStatus run() final;
+    /**
+     * 处理信号事件
+     * @param type
+     * @return
+     */
+    CStatus process(GEventType type);
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
 

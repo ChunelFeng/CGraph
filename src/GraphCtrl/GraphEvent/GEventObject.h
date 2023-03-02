@@ -25,7 +25,7 @@ protected:
         CGRAPH_DELETE_PTR(param_)
     }
 
-    CStatus run() override {
+    CStatus run() final {
         CGRAPH_NO_SUPPORT
     }
 

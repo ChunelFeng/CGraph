@@ -194,11 +194,11 @@ protected:
     /**
      * 触发一个事件
      * @param key
-     * @param times
+     * @param type
      * @return
      * @notice 返回值仅表示是否触发成功，不表示事件是否执行成功
      */
-    CStatus notify(const std::string& key, CSize times = 1);
+    CStatus notify(const std::string& key, GEventType type);
 
     /**
      * 设置线程池信息

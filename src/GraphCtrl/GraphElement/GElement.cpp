@@ -211,16 +211,12 @@ CIndex GElement::getThreadNum() {
 }
 
 
-CStatus GElement::notify(const std::string& key, CSize times) {
+CStatus GElement::notify(const std::string& key, GEventType type) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(event_manager_)
     CGRAPH_ASSERT_INIT(true)
 
-    for (CSize i = 0; i < times; i++) {
-        status = event_manager_->trigger(key);
-        CGRAPH_FUNCTION_CHECK_STATUS
-    }
-
+    status = event_manager_->trigger(key, type);
     CGRAPH_FUNCTION_END
 }
 
