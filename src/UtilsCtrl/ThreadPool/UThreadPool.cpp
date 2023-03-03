@@ -135,9 +135,13 @@ CStatus UThreadPool::destroy() {
 
     // primary 线程是普通指针，需要delete
     for (auto &pt : primary_threads_) {
-        status += pt->destroy();
+        status += pt->destroy();        
+    }
+
+	for (auto &pt : primary_threads_) {        
         CGRAPH_DELETE_PTR(pt)
     }
+
     CGRAPH_FUNCTION_CHECK_STATUS
     primary_threads_.clear();
 
