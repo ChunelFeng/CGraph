@@ -137,12 +137,18 @@ CStatus UThreadPool::destroy() {
     for (auto &pt : primary_threads_) {
         status += pt->destroy();        
     }
+    CGRAPH_FUNCTION_CHECK_STATUS
 
-	for (auto &pt : primary_threads_) {        
+    /**
+     * 这里之所以 destroy和 delete分开两个循环执行，
+     * 是因为当前线程被delete后，还可能存在未被delete的主线程，来steal当前线程的任务
+     * 在windows环境下，可能出现问题。
+     * destroy 和 delete 分开之后，不会出现此问题。
+     * 感谢 Ryan大佬(https://github.com/ryanhuang) 提供的帮助
+     */
+    for (auto &pt : primary_threads_) {
         CGRAPH_DELETE_PTR(pt)
     }
-
-    CGRAPH_FUNCTION_CHECK_STATUS
     primary_threads_.clear();
 
     // secondary 线程是智能指针，不需要delete

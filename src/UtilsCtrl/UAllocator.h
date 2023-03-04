@@ -16,8 +16,6 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-static std::mutex g_session_mtx;
-
 /**
  * 仅用于生成CObject类型的类
  */
