@@ -30,7 +30,7 @@ CStatus GStaticEngine::mark(const GSortedGElementPtrSet& elements) {
      * 2，当前节点依赖的节点，只有一个后继
      * 3，当前节点的依赖的后继，仍是当前节点
      */
-    for (GElement* element : elements) {
+    for (GElementPtr element : elements) {
         if (1 == element->dependence_.size()
             && 1 == (*element->dependence_.begin())->run_before_.size()
             && (*(element->dependence_.begin()))->run_before_.find(element) != (*(element->dependence_.begin()))->run_before_.end()) {

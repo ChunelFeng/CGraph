@@ -65,7 +65,7 @@ CStatus GParamManager::setup() {
 }
 
 
-CStatus GParamManager::remove(const std::string& key) {
+CStatus GParamManager::removeByKey(const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_LOCK_GUARD lock(this->mutex_);    // 创建和销毁的时候，加锁
     auto param = params_map_.find(key);

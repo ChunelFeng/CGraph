@@ -47,7 +47,7 @@ public:
      * @param key
      * @return
      */
-    CStatus remove(const std::string& key);
+    CStatus removeByKey(const std::string& key);
 
     /**
      * 获取所有的 GParam keys 信息

@@ -72,7 +72,7 @@ CGRAPH_NAMESPACE_BEGIN
      */                                                                                 \
     CStatus removeGParam(const std::string& key) {                                      \
         CGRAPH_ASSERT_NOT_NULL(param_manager_)                                          \
-        return param_manager_->remove(key);                                             \
+        return param_manager_->removeByKey(key);                                        \
     }                                                                                   \
                                                                                         \
     /**
