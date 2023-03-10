@@ -42,13 +42,17 @@ public:
      * @return
      */
     CBool tryPop(T& value) {
-        CGRAPH_LOCK_GUARD lk(mutex_);
-        if (queue_.empty()) {
-            return false;
+        CBool result = false;
+        if (mutex_.try_lock()) {
+            if (!queue_.empty()) {
+                value = std::move(*queue_.front());
+                queue_.pop();
+                result = true;
+            }
+            mutex_.unlock();
         }
-        value = std::move(*queue_.front());
-        queue_.pop();
-        return true;
+
+        return result;
     }
 
 
@@ -59,17 +63,17 @@ public:
      * @return
      */
     CBool tryPop(std::vector<T>& values, int maxPoolBatchSize) {
-        CGRAPH_LOCK_GUARD lk(mutex_);
-        if (queue_.empty() || maxPoolBatchSize <= 0) {
-            return false;
+        CBool result = false;
+        if (mutex_.try_lock()) {
+            while (!queue_.empty() && maxPoolBatchSize-- > 0) {
+                values.emplace_back(std::move(*queue_.front()));
+                queue_.pop();
+                result = true;
+            }
+            mutex_.unlock();
         }
 
-        while (!queue_.empty() && maxPoolBatchSize--) {
-            values.emplace_back(std::move(*queue_.front()));
-            queue_.pop();
-        }
-
-        return true;
+        return result;
     }
 
 
