@@ -10,7 +10,6 @@
 #define CGRAPH_GPARAM_H
 
 #include <string>
-#include <set>
 
     #if __cplusplus >= 201703L
 #include <shared_mutex>

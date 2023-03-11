@@ -71,7 +71,7 @@ class MyNode1 : public CGraph::GNode {
 public:
     CStatus run () override {
         CStatus status;
-        CGraph::CGRAPH_ECHO("[%s], enter MyNode1 run function. Sleep for 1 second ... ", this->getName().c_str());
+        printf("[%s], Sleep for 1 second ... \n", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(1)
         return status;
     }
@@ -82,7 +82,7 @@ class MyNode2 : public CGraph::GNode {
 public:
     CStatus run () override {
         CStatus status;
-        CGraph::CGRAPH_ECHO("[%s], enter MyNode2 run function. Sleep for 2 second ... ", this->getName().c_str());
+        printf("[%s], Sleep for 1 second ... \n", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(2)
         return status;
     }
