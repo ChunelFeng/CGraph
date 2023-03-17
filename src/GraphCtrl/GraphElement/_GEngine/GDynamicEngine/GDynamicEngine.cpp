@@ -65,7 +65,7 @@ CStatus GDynamicEngine::afterRunCheck() {
 
 CVoid GDynamicEngine::asyncRun() {
     for (const auto& element : front_element_arr_) {
-        process(element);
+        process(element, element == front_element_arr_.back());
     }
 }
 
@@ -84,22 +84,27 @@ CStatus GDynamicEngine::beforeRun() {
 }
 
 
-CStatus GDynamicEngine::process(GElementPtr element) {
+CStatus GDynamicEngine::process(GElementPtr element, CBool affinity) {
     CGRAPH_FUNCTION_BEGIN
     if (unlikely(cur_status_.isErr())) {
         // 如果当前整体状态异常，直接返回，不执行了
         CGRAPH_RETURN_ERROR_STATUS("current status error")
     }
 
-    thread_pool_->commit([this, element] {
-        // 如果当前已经是err状态，则不再执行任何逻辑
+    const auto& exec = [this, element] {
         auto curStatus = element->fatProcessor(CFunctionType::RUN);
         if (unlikely(curStatus.isNotOK() && cur_status_.isNotErr())) {
             // 当且仅当整体状正常，且当前状态异常的时候，进入赋值逻辑。确保不重复赋值
             cur_status_ = curStatus;
         }
         afterElementRun(element);
-    }, this->schedule_strategy_);
+    };
+
+    if (affinity) {
+        exec();    // 如果 affinity=true，表示用当前的线程，执行这个逻辑。以便增加亲和性
+    } else {
+        thread_pool_->commit(exec, this->schedule_strategy_);
+    }
 
     CGRAPH_FUNCTION_END
 }
@@ -108,10 +113,16 @@ CStatus GDynamicEngine::process(GElementPtr element) {
 CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     element->done_ = true;
     run_element_size_++;
+
+    std::vector<GElementPtr> ready;    // 表示可以执行的列表信息
     for (auto cur : element->run_before_) {
         if (--cur->left_depend_ <= 0) {
-            process(cur);
+            ready.emplace_back(cur);
         }
+    }
+
+    for (auto& cur : ready) {
+        process(cur, cur == ready.back());
     }
 
     CGRAPH_UNIQUE_LOCK lock(lock_);
