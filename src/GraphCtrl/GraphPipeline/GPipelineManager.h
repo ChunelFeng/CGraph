@@ -34,7 +34,7 @@ public:
 
     CStatus remove(GPipelinePtr ptr) override;
 
-    [[nodiscard]] CSize getSize() const override;
+    CSize getSize() const override;
 
     ~GPipelineManager() override;
 
