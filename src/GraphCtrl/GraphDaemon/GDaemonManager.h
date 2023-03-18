@@ -33,7 +33,7 @@ protected:
 
     CStatus clear() final;
 
-    [[nodiscard]] CSize getSize() const override;
+    CSize getSize() const override;
 
     friend class GPipeline;
     friend class UAllocator;

@@ -116,7 +116,7 @@ CStatus GPipelineManager::remove(GPipelinePtr ptr) {
 }
 
 
-[[nodiscard]] CSize GPipelineManager::getSize() const {
+CSize GPipelineManager::getSize() const {
     CSize size = free_list_.size() + used_list_.size();
     return size;
 }

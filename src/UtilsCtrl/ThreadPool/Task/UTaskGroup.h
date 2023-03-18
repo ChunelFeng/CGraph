@@ -66,7 +66,7 @@ public:
      * 获取最大超时时间信息
      * @return
      */
-    [[nodiscard]] CMSec getTtl() const {
+    CMSec getTtl() const {
         return this->ttl_;
     }
 
@@ -81,7 +81,7 @@ public:
      * 获取任务组大小
      * @return
      */
-    [[nodiscard]] CSize getSize() const {
+    CSize getSize() const {
         auto size = task_arr_.size();
         return size;
     }

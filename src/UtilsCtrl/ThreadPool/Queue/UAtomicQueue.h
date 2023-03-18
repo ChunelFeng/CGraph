@@ -119,7 +119,7 @@ public:
      * 判定队列是否为空
      * @return
      */
-    [[nodiscard]] CBool empty() {
+    CBool empty() {
         CGRAPH_LOCK_GUARD lk(mutex_);
         return queue_.empty();
     }
