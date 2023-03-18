@@ -41,9 +41,10 @@ protected:
     /**
      * element 运行element
      * @param element
+     * @param affinity 是否本地执行
      * @return
     */
-    CStatus process(GElementPtr element);
+    CStatus process(GElementPtr element, CBool affinity);
 
     /**
      * element 运行完成处理
