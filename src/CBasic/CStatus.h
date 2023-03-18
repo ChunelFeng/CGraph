@@ -78,11 +78,11 @@ public:
         error_info_ = info;
     }
 
-    int getCode() const {
+    [[nodiscard]] int getCode() const {
         return this->error_code_;
     }
 
-    const std::string& getInfo() const {
+    [[nodiscard]] const std::string& getInfo() const {
         return this->error_info_;
     }
 
@@ -98,7 +98,7 @@ public:
      * 判断当前状态是否可行
      * @return
      */
-    bool isOK() const {
+    [[nodiscard]] bool isOK() const {
         return STATUS_OK == error_code_;
     }
 
@@ -106,7 +106,7 @@ public:
      * 判断当前状态是否可行
      * @return
      */
-    bool isErr() const {
+    [[nodiscard]] bool isErr() const {
         return error_code_ < STATUS_OK;    // 约定异常信息，均为负值
     }
 
@@ -114,7 +114,7 @@ public:
      * 判断当前状态是否有异常
      * @return
      */
-    bool isNotErr() const {
+    [[nodiscard]] bool isNotErr() const {
         return error_code_ >= STATUS_OK;
     }
 
@@ -122,7 +122,7 @@ public:
      * 判断当前状态，不是ok的（包含error 和 warning）
      * @return
      */
-    bool isNotOK() const {
+    [[nodiscard]] bool isNotOK() const {
         return error_code_ != STATUS_OK;
     }
 

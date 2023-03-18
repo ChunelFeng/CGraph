@@ -46,7 +46,7 @@ public:
      * 获取容量信息
      * @return
      */
-    CUint getCapacity() const {
+    [[nodiscard]] CUint getCapacity() const {
         return capacity_;
     }
 
