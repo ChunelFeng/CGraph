@@ -41,7 +41,7 @@ public:
         }
 
         CGraph::CGRAPH_ECHO("enter hold path, iValue = [%d]", param->iValue);
-        return param->iValue < 5;    // 当iCount值小于3的时候，此节点会持续执行
+        return param->iValue < 5;    // 当iCount值小于5的时候，此节点会持续执行
     }
 };
 

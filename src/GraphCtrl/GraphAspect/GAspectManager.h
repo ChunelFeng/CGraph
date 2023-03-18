@@ -84,7 +84,7 @@ public:
      * 获取切面个数信息
      * @return
      */
-    [[nodiscard]] CSize getSize() const override {
+    CSize getSize() const override {
         auto size = aspect_arr_.size();
         return size;
     }

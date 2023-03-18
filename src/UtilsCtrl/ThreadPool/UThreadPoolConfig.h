@@ -40,7 +40,7 @@ protected:
      * 计算可盗取的范围，盗取范围不能超过默认线程数-1
      * @return
      */
-    [[nodiscard]] int calcStealRange() const {
+    int calcStealRange() const {
         int range = std::min(this->max_task_steal_range_, this->default_thread_size_ - 1);
         return range;
     }
@@ -51,7 +51,7 @@ protected:
      * 开启条件：开关批量开启，并且 未开启非公平锁
      * @return
      */
-    [[nodiscard]] bool calcBatchTaskRatio() const {
+    bool calcBatchTaskRatio() const {
         bool ratio = (this->batch_task_enable_) && (!this->fair_lock_enable_);
         return ratio;
     }
