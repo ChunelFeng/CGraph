@@ -77,7 +77,7 @@ protected:
      * 获取大小信息
      * @return
      */
-    [[nodiscard]] virtual CSize getSize() const {
+    virtual CSize getSize() const {
         return 0;
     }
 

@@ -127,13 +127,13 @@ protected:
      * 可执行的条件为：自身未被执行且依赖节点全部被执行
      * @return
      */
-    [[nodiscard]] CBool isRunnable() const;
+    CBool isRunnable() const;
 
     /**
      * 判定node是否可以和前面节点一起执行
      * @return
      */
-    [[nodiscard]] CBool isLinkable() const;
+    CBool isLinkable() const;
 
     /**
      * 线程池中的运行函数，依次执行beforeRun，run和afterRun方法，

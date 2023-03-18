@@ -29,7 +29,7 @@ protected:
      * 获取设置的延时信息
      * @return
      */
-    [[nodiscard]] CMSec getInterval() const;
+    CMSec getInterval() const;
 
 private:
     CStatus init() final;

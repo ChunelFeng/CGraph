@@ -56,7 +56,7 @@ public:
      * 获取容量大小
      * @return
      */
-    [[nodiscard]] CUint getCapacity() const {
+    CUint getCapacity() const {
         return queue_.getCapacity();
     }
 
