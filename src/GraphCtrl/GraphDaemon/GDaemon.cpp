@@ -26,7 +26,7 @@ CStatus GDaemon::destroy() {
 }
 
 
-CMSec GDaemon::getInterval() const {
+[[nodiscard]] CMSec GDaemon::getInterval() const {
     return interval_;
 }
 

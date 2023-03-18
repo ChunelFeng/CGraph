@@ -26,7 +26,7 @@ public:
      * 获取异常信息
      * @return
      */
-    const char* what() const noexcept override {
+    [[nodiscard]] const char* what() const noexcept override {
         return info_.c_str();
     }
 

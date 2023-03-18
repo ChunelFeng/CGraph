@@ -172,7 +172,7 @@ private:
      * @param policy
      * @return
      */
-    static int calcPolicy(int policy) {
+    [[nodiscard]] static int calcPolicy(int policy) {
         return (CGRAPH_THREAD_SCHED_OTHER == policy
                 || CGRAPH_THREAD_SCHED_RR == policy
                 || CGRAPH_THREAD_SCHED_FIFO == policy)
@@ -186,7 +186,7 @@ private:
      * @param priority
      * @return
      */
-    static int calcPriority(int priority) {
+    [[nodiscard]] static int calcPriority(int priority) {
         return (priority >= CGRAPH_THREAD_MIN_PRIORITY
                 && priority <= CGRAPH_THREAD_MAX_PRIORITY)
                ? priority : CGRAPH_THREAD_MIN_PRIORITY;
