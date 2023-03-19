@@ -48,12 +48,6 @@ You can transfer your params in many scenes. It is also possible to extend the f
   $ make -j8
   ```
 
-* If you want to build it in docker, image based on `Ubuntu 20.04` is provided.
-  ```shell
-  $ docker pull chunelfeng/cenv
-  $ docker run -it --name CGraphEnv chunelfeng/cenv
-  ```
-
 * Compile online, enter [CGraph env online](https://gitpod.io/#/github.com/ChunelFeng/CGraph), log in with your Github id, enter commands as flowers to compile and run your first tutorial.
   ```shell
   $ sudo apt-get install cmake

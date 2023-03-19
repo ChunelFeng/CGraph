@@ -1,13 +1,13 @@
 FROM ubuntu:18.04
-MAINTAINER woodx<woodx9@163.com>
+LABEL maintainer=woodx<woodx9@163.com>
 
-ENV MYPATH /home/CGraph
-WORKDIR $MYPATH
+ENV CGRAPH_PATH /home/CGraph
+WORKDIR $CGRAPH_PATH
 
-RUN apt -y update
-RUN apt -y install cmake
-RUN apt -y install make
-RUN apt -y install g++
+RUN apt-get -y upgrade
+RUN apt-get -y update
+RUN apt-get -y install cmake
+RUN apt-get -y install make
+RUN apt-get -y install g++
 
 CMD /bin/sh -c "/bin/bash"
-
