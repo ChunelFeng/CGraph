@@ -138,6 +138,7 @@ int main() {
 * [CGraph 主打歌——《听码农的话》](http://www.chunel.cn/archives/listen-to-coder)
 * [聊聊我写CGraph的这一年](http://www.chunel.cn/archives/cgraph-anniversary-introduce)
 * [从零开始主导一款收录于awesome-cpp的项目，是一种怎样的体验?](http://www.chunel.cn/archives/cgraph-awesome-cpp)
+* [炸裂！CGraph性能全面超越taskflow之后，作者却说他更想...](http://www.chunel.cn/archives/cgraph-compare-taskflow-v1)
   <br><br>
 * [【B站视频】CGraph 快速引入的方法介绍](https://www.bilibili.com/video/BV1gY4y1x7JT?spm_id_from=333.337)
 
