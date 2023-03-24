@@ -141,7 +141,6 @@ protected:
 
 private:
     CBool is_init_ { false };                                                       // 是否初始化
-    CBool is_monitor_ { true };                                                     // 是否需要监控
     CInt cur_index_ = 0;                                                            // 记录放入的线程数
     CULong input_task_num_ = 0;                                                     // 放入的任务的个数
     UAtomicQueue<UTask> task_queue_;                                                // 用于存放普通任务

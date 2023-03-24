@@ -22,7 +22,7 @@ CStatus GStaticEngine::setup(const GSortedGElementPtrSet& elements) {
 
 CStatus GStaticEngine::mark(const GSortedGElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
-    total_element_size_ = elements.size();    // 仅赋值一次，不会改变了
+    total_element_size_ = (CUint)elements.size();    // 仅赋值一次，不会改变了
 
     /**
      * 认定图可以连通的判定条件：
@@ -77,7 +77,7 @@ CStatus GStaticEngine::analyse(const GSortedGElementPtrSet& elements) {
             status = cluster.process(true);    // 不执行run方法的process
             CGRAPH_FUNCTION_CHECK_STATUS
         }
-        run_element_size_ += runnableClusterArr.size();
+        run_element_size_ += (CUint)runnableClusterArr.size();
 
         GElementPtrSet duplications;
         for (GClusterRef cluster : runnableClusterArr) {
