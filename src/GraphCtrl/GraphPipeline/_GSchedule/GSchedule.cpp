@@ -38,7 +38,6 @@ CStatus GSchedule::destroy() {
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
     if (GScheduleType::UNIQUE == type_) {
         status = thread_pool_->destroy();
-        CGRAPH_FUNCTION_CHECK_STATUS
     }
 
     CGRAPH_FUNCTION_END
@@ -64,6 +63,13 @@ CStatus GSchedule::makeShared(UThreadPoolPtr tp) {
     // 默认是 unique的，设置了之后就是 shared的了
     type_ = GScheduleType::SHARED;
     CGRAPH_FUNCTION_END
+}
+
+
+GSchedule::~GSchedule() {
+    if (GScheduleType::UNIQUE == type_) {
+        CGRAPH_DELETE_PTR(thread_pool_)
+    }
 }
 
 CGRAPH_NAMESPACE_END

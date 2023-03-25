@@ -29,6 +29,8 @@ protected:
 
     CStatus destroy() override;
 
+    ~GSchedule() override;
+
 private:
     UThreadPoolPtr thread_pool_ = nullptr;          // 线程池类
     UThreadPoolConfig config_;                      // 线程池的配置信息
