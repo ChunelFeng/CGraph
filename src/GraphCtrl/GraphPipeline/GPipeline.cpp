@@ -12,7 +12,6 @@ CGRAPH_NAMESPACE_BEGIN
 
 GPipeline::GPipeline() {
     session_ = URandom<>::generateSession(CGRAPH_STR_PIPELINE);
-    thread_pool_ = UAllocator::safeMallocTemplateCObject<UThreadPool>(false);
     element_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
     param_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GParamManager)
     daemon_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GDaemonManager)
@@ -25,7 +24,6 @@ GPipeline::~GPipeline() {
     CGRAPH_DELETE_PTR(element_manager_)
     CGRAPH_DELETE_PTR(param_manager_)
     CGRAPH_DELETE_PTR(event_manager_)
-    CGRAPH_DELETE_PTR(thread_pool_)
 
     // 结束的时候，清空所有创建的节点信息。所有节点信息，仅在这一处释放
     for (GElementPtr element : element_repository_) {
@@ -37,7 +35,6 @@ GPipeline::~GPipeline() {
 CStatus GPipeline::init() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)    // 必须是非初始化的状态下，才可以初始化。反之同理
-    CGRAPH_ASSERT_NOT_NULL(thread_pool_)
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
     CGRAPH_ASSERT_NOT_NULL(daemon_manager_)
@@ -93,7 +90,7 @@ CStatus GPipeline::destroy() {
     CGRAPH_FUNCTION_CHECK_STATUS
 
     // 结束单个线程池信息
-    status += thread_pool_->destroy();
+    status += schedule_.destroy();
     CGRAPH_FUNCTION_CHECK_STATUS
 
     is_init_ = false;
@@ -155,28 +152,40 @@ GPipelinePtr GPipeline::setGEngineType(GEngineType type) {
 GPipelinePtr GPipeline::setUniqueThreadPoolConfig(const UThreadPoolConfig& config) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(thread_pool_)
-    status = thread_pool_->setConfig(config);
+
+    /**
+     * 实际是将信息传递给 schedule中，如果是unique的话，就使用这个参数
+     * 如果是 shared的话，其实配置是无效的
+     */
+    schedule_.config_ = config;
     CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL
+}
+
+
+GPipeline* GPipeline::setSharedThreadPool(UThreadPoolPtr ptr) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+
+    return (nullptr == schedule_.setSharedThreadPool(ptr)) ? nullptr : this;
 }
 
 
 CStatus GPipeline::initSchedule() {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(thread_pool_)
     CGRAPH_ASSERT_NOT_NULL(event_manager_)
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
 
-    status += thread_pool_->init();
+    status = schedule_.init();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    event_manager_->setThreadPool(thread_pool_);
-    element_manager_->setThreadPool(thread_pool_);
+    event_manager_->setThreadPool(schedule_.thread_pool_);
+    element_manager_->setThreadPool(schedule_.thread_pool_);
 
     // 设置所有的element 中的thread_pool
     for (auto& iter : this->element_repository_) {
         CGRAPH_ASSERT_NOT_NULL(iter)
-        iter->setThreadPool(thread_pool_);
+        iter->setThreadPool(schedule_.thread_pool_);
     }
 
     CGRAPH_FUNCTION_END

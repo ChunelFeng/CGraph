@@ -10,23 +10,51 @@ message("* * * * * * * * * * * * * * * * * * * * * * * * * * * * *")
 
 cmake_minimum_required(VERSION 3.5.0)
 
-project(CGraph VERSION 2.3.4)
+project(CGraph VERSION 2.4.0)
 
 # CGraph默认使用C++11版本，推荐使用C++17版本。暂不支持C++11以下版本
 set(CMAKE_CXX_STANDARD 11)
 
-# add CGraph environment info
-include(cmake/CGraph-env-include.cmake)
-
-file(GLOB_RECURSE CGRAPH_SRC_LIST "./src/*.cpp")
-
 # 如果开启此宏定义，则CGraph执行过程中，不会在控制台打印任何信息
 # add_definitions(-D_CGRAPH_SILENCE_)
 
-# 以下三选一，本地编译执行，推荐OBJECT方式
-add_library(CGraph OBJECT ${CGRAPH_SRC_LIST})      # 通过代码编译
-# add_library(CGraph SHARED ${CGRAPH_SRC_LIST})    # 编译libCGraph动态库
-# add_library(CGraph STATIC ${CGRAPH_SRC_LIST})    # 编译libCGraph静态库
+# 对应tutorial中的内容
+set(CGRAPH_TUTORIAL_LIST
+        T00-HelloCGraph
+        T01-Simple
+        T02-Cluster
+        T03-Region
+        T04-Complex
+        T05-Param
+        T06-Condition
+        T07-MultiPipeline
+        T08-Template
+        T09-Aspect
+        T10-AspectParam
+        T11-Singleton
+        T12-Function
+        T13-Daemon
+        T14-Hold
+        T15-ElementParam
+        T16-MessageSendRecv
+        T17-MessagePubSub
+        T18-Event
 
-# 加入 tutorial中的可执行的例子
-add_subdirectory(tutorial)
+        # 以下为工具类tutorial
+        TU01-ThreadPool
+        TU02-Lru
+        TU03-Trie
+        TU04-Timer
+        TU05-Distance
+        )
+
+# add CGraph environment info
+include(cmake/CGraph-env-include.cmake)
+
+foreach(tut ${CGRAPH_TUTORIAL_LIST})
+    add_executable(${tut}
+            # 在自己的工程中引入CGraph功能，仅需引入 CGraph-env-include.cmake 后，加入这一句话即可
+            $<TARGET_OBJECTS:CGraph>
+            tutorial/${tut}.cpp
+            )
+endforeach()

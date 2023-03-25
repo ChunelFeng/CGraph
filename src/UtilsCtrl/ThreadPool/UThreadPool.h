@@ -115,6 +115,12 @@ public:
      */
     CStatus destroy() final;
 
+    /**
+     * 判断线程池是否已经初始化了
+     * @return
+     */
+    CBool isInit() const;
+
 
 protected:
     /**

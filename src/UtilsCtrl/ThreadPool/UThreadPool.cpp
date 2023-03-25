@@ -15,12 +15,6 @@ UThreadPool::UThreadPool(CBool autoInit, const UThreadPoolConfig& config) noexce
     is_init_ = false;
     input_task_num_ = 0;
     this->setConfig(config);    // setConfig 函数，用在 is_init_ 设定之后
-    /**
-     * CGraph 本身支持跨平台运行
-     * 如果在windows平台上，通过Visual Studio(2017版本或以下) 版本，将 UThreadPool 类封装程.dll文件时，遇到无法启动的问题
-     * 请参考此链接：https://github.com/ChunelFeng/CGraph/issues/17
-     */
-    monitor_thread_ = std::move(std::thread(&UThreadPool::monitor, this));
     if (autoInit) {
         this->init();
     }
@@ -52,6 +46,7 @@ CStatus UThreadPool::init() {
         CGRAPH_FUNCTION_END
     }
 
+    monitor_thread_ = std::move(std::thread(&UThreadPool::monitor, this));
     thread_record_map_.clear();
     primary_threads_.reserve(config_.default_thread_size_);
     for (int i = 0; i < config_.default_thread_size_; i++) {
@@ -160,6 +155,11 @@ CStatus UThreadPool::destroy() {
     is_init_ = false;
 
     CGRAPH_FUNCTION_END
+}
+
+
+CBool UThreadPool::isInit() const {
+    return is_init_;
 }
 
 

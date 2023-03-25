@@ -15,6 +15,7 @@
 #include <sstream>
 
 #include "GPipelineObject.h"
+#include "_GSchedule/GScheduleInclude.h"
 #include "../GraphElement/GElementInclude.h"
 #include "../GraphDaemon/GDaemonInclude.h"
 #include "../GraphEvent/GEventInclude.h"
@@ -205,6 +206,13 @@ public:
     GPipeline* setUniqueThreadPoolConfig(const UThreadPoolConfig& config);
 
     /**
+     * 设置共享的线程池
+     * @param ptr
+     * @return
+     */
+    GPipeline* setSharedThreadPool(UThreadPoolPtr ptr);
+
+    /**
      * 注册GParam 交互类集合
      * @return
      */
@@ -228,7 +236,8 @@ private:
     GParamManagerPtr param_manager_ = nullptr;                  // 参数管理类
     GDaemonManagerPtr daemon_manager_ = nullptr;                // 守护管理类
     GEventManagerPtr event_manager_ = nullptr;                  // 事件管理类
-    UThreadPoolPtr thread_pool_ = nullptr;                      // 线程池类
+
+    GSchedule schedule_;                                        // 调度管理类
     GElementPtrSet element_repository_;                         // 标记创建的所有节点，最终释放使用
 
     friend class GPipelineFactory;
