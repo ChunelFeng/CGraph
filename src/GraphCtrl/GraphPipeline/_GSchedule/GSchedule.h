@@ -17,11 +17,11 @@ CGRAPH_NAMESPACE_BEGIN
 class GSchedule : public GraphObject {
 protected:
     /**
-     * 设置线程池内容
+     * 将调度资源修改为 shared 模式
      * @param tp
      * @return
      */
-    GSchedule* setSharedThreadPool(UThreadPoolPtr tp);
+    CStatus makeShared(UThreadPoolPtr tp);
 
     CStatus init() override;
 

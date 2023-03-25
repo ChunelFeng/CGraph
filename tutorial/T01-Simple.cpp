@@ -30,6 +30,13 @@ void tutorial_simple() {
         return;    // 使用时，请对所有CGraph接口的返回值做判定。今后tutorial例子中省略该操作。
     }
 
+    /**
+    UThreadPoolConfig config;    // （可选）推荐根据自己设定的dag逻辑，来配置调度信息
+    config.default_thread_size_ = 2;    // 设定默认线程数。更多配置，请参考 UThreadPoolDefine.h 中的描述
+    config.monitor_enable_ = false;
+    pipeline->setUniqueThreadPoolConfig(config);
+    */
+
     /* 图信息初始化，准备开始计算 */
     status += pipeline->init();
 

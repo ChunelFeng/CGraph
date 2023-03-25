@@ -34,8 +34,8 @@ void tutorial_pipeline_2(GPipelinePtr pipeline_2) {
     GElementPtr node2A, node2B, node2C = nullptr;
 
     pipeline_2->registerGElement<MyNode2>(&node2A, {}, "node2A");
-    pipeline_2->registerGElement<MyNode2>(&node2B, {}, "node2B");
-    pipeline_2->registerGElement<MyNode2>(&node2C, {}, "node2C");
+    pipeline_2->registerGElement<MyNode2>(&node2B, {node2A}, "node2B");
+    pipeline_2->registerGElement<MyNode2>(&node2C, {node2A}, "node2C");
 
     pipeline_2->process(3);
 }
@@ -63,24 +63,32 @@ void tutorial_pipeline_3(GPipelinePtr pipeline_3) {
 
 
 void tutorial_multi_pipeline() {
-    /**
-     * 通过多线程，同时构造3个pipeline，并执行
-     * CGraph底层，pipeline参数系统和执行逻辑相互独立，线程池资源共享
-     */
     GPipelinePtr pipeline_1 = GPipelineFactory::create();
     GPipelinePtr pipeline_2 = GPipelineFactory::create();
     GPipelinePtr pipeline_3 = GPipelineFactory::create();
 
     /**
-     * 设置个别pipeline的内部threadpool资源信息，用以减少整体资源占用（可选）
+     * 设置个别pipeline的内部 thread pool 资源信息，用以减少整体资源占用（可选）
      * 这里主要是为了说明，多个pipeline一起运行的时候，可以通过接口，针对个别pipeline进行调度资源的设置
      */
     UThreadPoolConfig config;
     config.default_thread_size_ = 4;
+    config.max_thread_size_ = 4;
     config.monitor_enable_ = false;
-    pipeline_1->setUniqueThreadPoolConfig(config);
-    pipeline_2->setUniqueThreadPoolConfig(config);
+    UThreadPool pool(true, config);    // 开辟一个4个线程的线程池，直接 init，并且参数设置为 config
 
+    /**
+     * 本例中，pipeline1 和 pipeline2 的并发逻辑相对简单
+     * 通过如下接口，将这两个pipeline中的调度资源，修改为同一个线程池。
+     * ps：注意，必须在 pipeline init之前，先init传入的线程池
+     */
+    pipeline_1->setSharedThreadPool(&pool);
+    pipeline_2->setSharedThreadPool(&pool);
+
+    /**
+     * 经过上述的设置，pipeline1 和 pipeline2 共享同一个线程池，去调度其中的dag逻辑
+     * pipeline3 没有设定，故使用自带的默认线程池完成自己的调度逻辑
+     */
     std::thread thd1 = std::move(std::thread(tutorial_pipeline_1, pipeline_1));
     std::thread thd2 = std::move(std::thread(tutorial_pipeline_2, pipeline_2));
     std::thread thd3 = std::move(std::thread(tutorial_pipeline_3, pipeline_3));

@@ -167,7 +167,8 @@ GPipeline* GPipeline::setSharedThreadPool(UThreadPoolPtr ptr) {
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
 
-    return (nullptr == schedule_.setSharedThreadPool(ptr)) ? nullptr : this;
+    status = schedule_.makeShared(ptr);
+    CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL
 }
 
 

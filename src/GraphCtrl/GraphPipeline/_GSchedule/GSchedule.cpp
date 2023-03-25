@@ -50,11 +50,12 @@ CStatus GSchedule::run() {
 }
 
 
-GSchedule* GSchedule::setSharedThreadPool(UThreadPoolPtr tp) {
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(tp)
+CStatus GSchedule::makeShared(UThreadPoolPtr tp) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(tp)
     if (GScheduleType::SHARED == type_) {
         // 如果已经设置过了，就无法再设置了，防止异常情况出现
-        return nullptr;
+        CGRAPH_RETURN_ERROR_STATUS("cannot set schedule again.")
     }
 
     CGRAPH_DELETE_PTR(this->thread_pool_)
@@ -62,7 +63,7 @@ GSchedule* GSchedule::setSharedThreadPool(UThreadPoolPtr tp) {
 
     // 默认是 unique的，设置了之后就是 shared的了
     type_ = GScheduleType::SHARED;
-    return this;
+    CGRAPH_FUNCTION_END
 }
 
 CGRAPH_NAMESPACE_END
