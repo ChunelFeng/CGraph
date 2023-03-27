@@ -39,7 +39,14 @@
   ```shell
   $ git clone https://github.com/ChunelFeng/CGraph.git
   $ cd CGraph
-  $ cmake . -Bbuild    # 在 build 文件夹下，生成对应的CGraph.sln文件
+  $ cmake . -Bbuild    # 在 build 文件夹下，生成对应的 CGraph.sln 文件
+  ```
+
+* MacOS环境中，使用`Xcode`作为IDE的开发者，安装cmake之后，输入以下指令，即可生成`CGraph.xcodeproj`文件
+  ```shell
+  $ git clone https://github.com/ChunelFeng/CGraph.git
+  $ cd CGraph
+  $ cmake .. -G Xcode    # 在 build 文件夹下，生成对应的 CGraph.xcodeproj 文件
   ```
 
 * Linux环境开发者，在命令行模式下，输入以下指令，即可编译通过
@@ -106,7 +113,7 @@ int main() {
     }
 
     /* 执行流图框架 */
-    status = pipeline->process();
+    pipeline->process();
     GPipelineFactory::remove(pipeline);
 
     return 0;

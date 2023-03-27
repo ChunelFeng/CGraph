@@ -33,6 +33,11 @@ void tutorial_param() {
         std::cout << "[CGraph] tutorial_param, loop : " << i + 1 << ", and run status = " << status.getCode() << std::endl;
     }
 
+    /**
+    auto param = pipeline->getGParam<MyParam>("param1");    // 可以获取pipeline内部的参数内容。但是需要考虑param的setup()和reset()的时机
+    std::cout << "[CGraph] get param from pipeline, iCount = " << param->iCount << std::endl;
+    */
+
     status += pipeline->destroy();
     GPipelineFactory::remove(pipeline);
 }
@@ -42,4 +47,3 @@ int main() {
     tutorial_param();
     return 0;
 }
-
