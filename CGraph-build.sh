@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -rf build
+
 cmake . -Bbuild
 cd build || { ! echo "enter build failed"; exit 1; }
 make -j8

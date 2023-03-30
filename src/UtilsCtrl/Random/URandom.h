@@ -63,14 +63,13 @@ public:
         data.clear();
         data.reserve(height);
         std::vector<T> arr;
-        arr.reserve(column);
 
         for (CSize i = 0; i < height; i++) {
-            arr.clear();
+            arr.reserve(column);
             for (CSize j = 0; j < column; j++) {
                 arr.emplace_back(urd(eng));
             }
-            data.emplace_back(arr);
+            data.emplace_back(std::move(arr));
         }
 
         return CStatus();
