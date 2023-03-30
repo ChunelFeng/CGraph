@@ -27,7 +27,7 @@ protected:
 
     CStatus run() override;
 
-    CStatus destroy() override;
+    CStatus destroy() final;
 
     ~GSchedule() override;
 
