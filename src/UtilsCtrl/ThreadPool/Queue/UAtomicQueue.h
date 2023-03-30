@@ -109,8 +109,15 @@ public:
      */
     CVoid push(T&& value) {
         std::unique_ptr<T> task(c_make_unique<T>(std::move(value)));
-        CGRAPH_LOCK_GUARD lk(mutex_);
-        queue_.push(std::move(task));
+        while (true) {
+            if (mutex_.try_lock()) {
+                queue_.push(std::move(task));
+                mutex_.unlock();
+                break;
+            } else {
+                std::this_thread::yield();
+            }
+        }
         cv_.notify_one();
     }
 

@@ -293,7 +293,7 @@ int main() {
 * 优化Windows系统下调度机制
 * 优化`param`机制和`event`机制
 
-[2023.03.25 - v2.4.0 - [@woodx](https://github.com/woodx9), Chunel]
+[2023.03.25 - v2.4.0 - [woodx](https://github.com/woodx9), Chunel]
 * 提供可运行的docker环境，和构建docker环境的dockerfile文件
 * 提供pipeline调度资源管控机制
 * 优化调度性能
