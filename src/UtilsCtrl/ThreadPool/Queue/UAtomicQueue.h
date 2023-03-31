@@ -108,7 +108,8 @@ public:
      * @param value
      */
     CVoid push(T&& value) {
-        std::unique_ptr<T> task(c_make_unique<T>(std::move(value)));
+        std::unique_ptr<typename std::remove_reference<T>::type>     \
+                task(c_make_unique<typename std::remove_reference<T>::type>(std::forward<T>(value)));
         while (true) {
             if (mutex_.try_lock()) {
                 queue_.push(std::move(task));

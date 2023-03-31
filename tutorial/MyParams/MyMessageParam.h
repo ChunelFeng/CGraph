@@ -12,7 +12,7 @@
 #include "../../src/CGraph.h"
 
 struct MyMessageParam : public CGraph::GMessageParam {
-    int num;
+    int num = 0;
     std::string info;
 
     MyMessageParam& operator=(const MyMessageParam& param) {

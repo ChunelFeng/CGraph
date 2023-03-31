@@ -76,11 +76,12 @@ public:
      * @tparam TImpl
      * @param topic
      * @param value
+     * @param timeout
      * @return
      */
     template<typename TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CStatus recvTopicValue(const std::string& topic, TImpl& value) {
+    CStatus recvTopicValue(const std::string& topic, TImpl& value, CMSec timeout = CGRAPH_MAX_BLOCK_TTL) {
         CGRAPH_FUNCTION_BEGIN
         auto innerTopic = SEND_RECV_PREFIX + topic;
         auto result = send_recv_message_map_.find(innerTopic);
@@ -91,7 +92,7 @@ public:
         auto message = (GMessagePtr<TImpl>)(result->second);
         CGRAPH_ASSERT_NOT_NULL(message);
 
-        message->recv(value);
+        status = message->recv(value, timeout);
         CGRAPH_FUNCTION_END
     }
 
@@ -181,11 +182,12 @@ public:
      * @tparam TImpl
      * @param connId
      * @param value
+     * @param timeout
      * @return
      */
     template<typename TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CStatus subTopicValue(CIndex connId, TImpl& value) {
+    CStatus subTopicValue(CIndex connId, TImpl& value, CMSec timeout = CGRAPH_MAX_BLOCK_TTL) {
         CGRAPH_FUNCTION_BEGIN
         {
             CGRAPH_LOCK_GUARD lock(sub_mutex_);
@@ -194,7 +196,7 @@ public:
             }
 
             auto message = (GMessagePtr<TImpl>)(conn_message_map_[connId]);
-            message->recv(value);
+            status = message->recv(value, timeout);
         }
         CGRAPH_FUNCTION_END
     }

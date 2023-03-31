@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <atomic>
+#include <chrono>
 
 #include "UQueueObject.h"
 
@@ -72,14 +73,19 @@ public:
     /**
      * 等待弹出信息
      * @param value
+     * @param timeout
      * @return
      */
     template<class TImpl = T>
-    CVoid waitPop(TImpl& value) {
+    CStatus waitPopWithTimeout(TImpl& value, CMSec timeout) {
+        CGRAPH_FUNCTION_BEGIN
         {
             CGRAPH_UNIQUE_LOCK lk(mutex_);
-            if (isEmpty()) {
-                pop_cv_.wait(lk, [this] { return !isEmpty(); });
+            if (isEmpty()
+                && !pop_cv_.wait_for(lk, std::chrono::milliseconds(timeout),
+                                     [this] { return !isEmpty(); })) {
+                // 如果timeout的时间内，等不到消息，则返回错误信息
+                CGRAPH_RETURN_ERROR_STATUS("receive message timeout.")
             }
 
             value = (*ring_buffer_queue_[head_]);
@@ -87,6 +93,7 @@ public:
             head_ = (head_ + 1) % capacity_;
         }
         push_cv_.notify_one();
+        CGRAPH_FUNCTION_END
     }
 
     /**

@@ -44,12 +44,13 @@ public:
     /**
      * 获取参数
      * @param value
+     * @param timeout
      * @return
      */
     template<class TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CVoid recv(TImpl& value) {
-        queue_.waitPop(value);
+    CStatus recv(TImpl& value, CMSec timeout) {
+        return queue_.waitPopWithTimeout(value, timeout);
     }
 
     /**

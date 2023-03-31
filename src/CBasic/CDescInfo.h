@@ -57,6 +57,8 @@ public:
         return this;
     }
 
+    virtual ~CDescInfo() = default;
+
 protected:
     std::string name_;                               // 名字
     std::string session_;                            // 唯一id信息

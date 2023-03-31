@@ -65,7 +65,7 @@ public:
     template<typename FunctionType>
     auto commit(const FunctionType& func,
                 CIndex index = CGRAPH_DEFAULT_TASK_STRATEGY)
-    -> std::future<typename std::result_of<FunctionType()>::type>;
+    -> std::future<decltype(std::declval<FunctionType>()())>;
 
     /**
      * 根据优先级，执行任务
@@ -78,7 +78,7 @@ public:
     template<typename FunctionType>
     auto commitWithPriority(const FunctionType& func,
                             int priority)
-    -> std::future<typename std::result_of<FunctionType()>::type>;
+    -> std::future<decltype(std::declval<FunctionType>()())>;;
 
     /**
      * 执行任务组信息

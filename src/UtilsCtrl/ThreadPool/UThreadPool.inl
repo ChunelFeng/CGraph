@@ -15,7 +15,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 template<typename FunctionType>
 auto UThreadPool::commit(const FunctionType& func, CIndex index)
--> std::future<typename std::result_of<FunctionType()>::type> {
+-> std::future<decltype(std::declval<FunctionType>()())> {
     using ResultType = typename std::result_of<FunctionType()>::type;
 
     std::packaged_task<ResultType()> task(func);
@@ -43,7 +43,7 @@ auto UThreadPool::commit(const FunctionType& func, CIndex index)
 
 template<typename FunctionType>
 auto UThreadPool::commitWithPriority(const FunctionType& func, int priority)
--> std::future<typename std::result_of<FunctionType()>::type> {
+-> std::future<decltype(std::declval<FunctionType>()())> {
     using ResultType = typename std::result_of<FunctionType()>::type;
 
     std::packaged_task<ResultType()> task(func);
