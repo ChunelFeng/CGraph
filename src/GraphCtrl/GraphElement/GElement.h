@@ -262,6 +262,7 @@ protected:
     friend class GElementManager;
     friend class GGroup;
     friend class GPipeline;
+    friend class GPipelinePy;
     friend class GElementSorter;
     friend class GStaticEngine;
     friend class GDynamicEngine;

@@ -6,7 +6,6 @@
 @Desc: 
 ***************************/
 
-
 #ifndef CGRAPH_GPIPELINEINCLUDE_H
 #define CGRAPH_GPIPELINEINCLUDE_H
 
