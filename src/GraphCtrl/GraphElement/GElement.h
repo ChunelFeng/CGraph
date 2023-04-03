@@ -262,11 +262,11 @@ protected:
     friend class GElementManager;
     friend class GGroup;
     friend class GPipeline;
-    friend class GPipelinePy;
     friend class GElementSorter;
     friend class GStaticEngine;
     friend class GDynamicEngine;
     template<typename T> friend class GSingleton;
+    friend class PyoGPipeline;
 };
 
 using GElementPtr = GElement *;

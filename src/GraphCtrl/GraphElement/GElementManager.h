@@ -91,9 +91,9 @@ private:
     UThreadPoolPtr thread_pool_ = nullptr;                      // 线程池
 
     friend class GPipeline;
-    friend class GPipelinePy;
     friend class GRegion;
     friend class UAllocator;
+    friend class PyoGPipeline;
 };
 
 using GElementManagerPtr = GElementManager *;
