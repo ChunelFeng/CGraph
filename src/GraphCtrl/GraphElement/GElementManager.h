@@ -93,7 +93,7 @@ private:
     friend class GPipeline;
     friend class GRegion;
     friend class UAllocator;
-    friend class PyoGPipeline;
+    friend class GPipelinePy;
 };
 
 using GElementManagerPtr = GElementManager *;

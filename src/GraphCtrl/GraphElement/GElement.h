@@ -266,7 +266,7 @@ protected:
     friend class GStaticEngine;
     friend class GDynamicEngine;
     template<typename T> friend class GSingleton;
-    friend class PyoGPipeline;
+    friend class GPipelinePy;
 };
 
 using GElementPtr = GElement *;

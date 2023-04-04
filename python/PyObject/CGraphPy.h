@@ -1,15 +1,15 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: PyCGraphInclude.h
+@File: CGraphPy.h
 @Time: 2023/4/3 22:30
 @Desc: 
 ***************************/
 
-#ifndef CGRAPH_PYOINCLUDE_H
-#define CGRAPH_PYOINCLUDE_H
+#ifndef CGRAPH_CGRAPHPY_H
+#define CGRAPH_CGRAPHPY_H
 
 #include "../../src/CGraph.h"
-#include "PyoGPipeline.h"
+#include "GPipelinePy.h"
 
-#endif //CGRAPH_PYOINCLUDE_H
+#endif //CGRAPH_CGRAPHPY_H

@@ -1,19 +1,19 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: PyoGPipeline.h
+@File: GPipelinePy.h
 @Time: 2023/4/2 22:41
 @Desc: 
 ***************************/
 
-#ifndef CGRAPH_PYOGPIPELINE_H
-#define CGRAPH_PYOGPIPELINE_H
+#ifndef CGRAPH_GPIPELINEPY_H
+#define CGRAPH_GPIPELINEPY_H
 
-#include "../../src/GraphCtrl/GraphPipeline/GPipeline.h"
+#include "../../src/CGraph.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-class PyoGPipeline : public GPipeline {
+class GPipelinePy : public GPipeline {
 public:
     /**
      * 注册一个节点信息
@@ -45,4 +45,4 @@ public:
 
 CGRAPH_NAMESPACE_END
 
-#endif //CGRAPH_PYOGPIPELINE_H
+#endif //CGRAPH_GPIPELINEPY_H
