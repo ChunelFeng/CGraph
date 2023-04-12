@@ -9,7 +9,7 @@ file(GLOB_RECURSE CGRAPH_PROJECT_SRC_LIST "${CGRAPH_PROJECT_ROOT_DIR}/src/*.cpp"
 
 IF(APPLE)
     # 非mac平台，暂时不支持自动生成session信息
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64 -O2 \
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64 \
         -finline-functions -Wno-deprecated-declarations -Wno-c++17-extensions")
     add_definitions(-D_ENABLE_LIKELY_)
 ELSEIF(UNIX)

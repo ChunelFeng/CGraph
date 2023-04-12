@@ -31,7 +31,6 @@ struct UThreadPoolConfig : public UThreadObject {
     int secondary_thread_priority_ = CGRAPH_SECONDARY_THREAD_PRIORITY;
     bool bind_cpu_enable_ = CGRAPH_BIND_CPU_ENABLE;
     bool batch_task_enable_ = CGRAPH_BATCH_TASK_ENABLE;
-    bool fair_lock_enable_ = CGRAPH_FAIR_LOCK_ENABLE;
     bool monitor_enable_ = CGRAPH_MONITOR_ENABLE;
 
 
@@ -43,17 +42,6 @@ protected:
     int calcStealRange() const {
         int range = std::min(this->max_task_steal_range_, this->default_thread_size_ - 1);
         return range;
-    }
-
-
-    /**
-     * 计算是否开启批量任务
-     * 开启条件：开关批量开启，并且 未开启非公平锁
-     * @return
-     */
-    bool calcBatchTaskRatio() const {
-        bool ratio = (this->batch_task_enable_) && (!this->fair_lock_enable_);
-        return ratio;
     }
 
     friend class UThreadPrimary;

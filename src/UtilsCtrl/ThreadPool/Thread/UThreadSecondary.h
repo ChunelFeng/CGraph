@@ -61,26 +61,13 @@ protected:
     CStatus run() override {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
-        CGRAPH_ASSERT_NOT_NULL(config_)
 
-        if (config_->calcBatchTaskRatio()) {
-            while (done_) {
-                processTasks();    // 批量任务获取执行接口
-            }
-        } else {
-            while (done_) {
-                processTask();    // 单个任务获取执行接口
-            }
-        }
-
+        status = loopProcess();
         CGRAPH_FUNCTION_END
     }
 
 
-    /**
-     * 任务执行函数，从线程池的任务队列中获取信息
-     */
-    CVoid processTask() {
+    CVoid processTask() override {
         UTask task;
         if (popPoolTask(task)) {
             runTask(task);
@@ -90,10 +77,7 @@ protected:
     }
 
 
-    /**
-     * 批量执行n个任务
-     */
-    CVoid processTasks() {
+    CVoid processTasks() override {
         UTaskArr tasks;
         if (popPoolTask(tasks)) {
             runTasks(tasks);

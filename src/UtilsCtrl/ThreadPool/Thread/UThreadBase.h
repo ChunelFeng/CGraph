@@ -118,6 +118,40 @@ protected:
         total_task_num_ = 0;
     }
 
+    /**
+     * 执行单个消息
+     * @return
+     */
+    virtual CVoid processTask() = 0;
+
+
+    /**
+     * 获取批量执行task信息
+     */
+    virtual CVoid processTasks() = 0;
+
+
+    /**
+     * 循环处理任务
+     * @return
+     */
+    CStatus loopProcess() {
+        CGRAPH_FUNCTION_BEGIN
+        CGRAPH_ASSERT_NOT_NULL(config_)
+
+        if (config_->batch_task_enable_) {
+            while (done_) {
+                processTasks();    // 批量任务获取执行接口
+            }
+        } else {
+            while (done_) {
+                processTask();    // 单个任务获取执行接口
+            }
+        }
+
+        CGRAPH_FUNCTION_END
+    }
+
 
     /**
     * 设置线程优先级，仅针对非windows平台使用

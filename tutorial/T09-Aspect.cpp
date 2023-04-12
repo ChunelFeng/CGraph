@@ -19,7 +19,7 @@ void tutorial_aspect() {
 
     GElementPtr a, b_region, c = nullptr;
     b_region = pipeline->createGGroup<GRegion>({
-        pipeline->createGNode<MyNode1>(GNodeInfo({},"nodeB1", 1)),
+        pipeline->createGNode<MyNode1>(GNodeInfo({}, "nodeB1", 1)),
         pipeline->createGNode<MyNode2>(GNodeInfo({}, "nodeB2", 2))
     });
 

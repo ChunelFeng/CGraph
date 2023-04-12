@@ -164,10 +164,6 @@ CBool UThreadPool::isInit() const {
 
 
 CIndex UThreadPool::dispatch(CIndex origIndex) {
-    if (unlikely(config_.fair_lock_enable_)) {
-        return CGRAPH_DEFAULT_TASK_STRATEGY;    // 如果开启fair lock，则全部写入 pool的queue中，依次执行
-    }
-
     CIndex realIndex = 0;
     if (CGRAPH_DEFAULT_TASK_STRATEGY == origIndex) {
         /**

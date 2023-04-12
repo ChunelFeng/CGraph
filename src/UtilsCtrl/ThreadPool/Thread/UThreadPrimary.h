@@ -67,7 +67,6 @@ protected:
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
         CGRAPH_ASSERT_NOT_NULL(pool_threads_)
-        CGRAPH_ASSERT_NOT_NULL(config_)
 
         /**
          * 线程池中任何一个primary线程为null都不可以执行
@@ -81,25 +80,12 @@ protected:
             CGRAPH_RETURN_ERROR_STATUS("primary thread is null")
         }
 
-        if (config_->calcBatchTaskRatio()) {
-            while (done_) {
-                processTasks();    // 批量任务获取执行接口
-            }
-        } else {
-            while (done_) {
-                processTask();    // 单个任务获取执行接口
-            }
-        }
-
+        status = loopProcess();
         CGRAPH_FUNCTION_END
     }
 
 
-    /**
-     * 获取并执行任务
-     * @return
-     */
-    CVoid processTask() {
+    CVoid processTask() override {
         UTask task;
         if (popTask(task) || popPoolTask(task) || stealTask(task)) {
             runTask(task);
@@ -109,10 +95,7 @@ protected:
     }
 
 
-    /**
-     * 获取批量执行task信息
-     */
-    CVoid processTasks() {
+    CVoid processTasks() override {
         UTaskArr tasks;
         if (popTask(tasks) || popPoolTask(tasks) || stealTask(tasks)) {
             // 尝试从主线程中获取/盗取批量task，如果成功，则依次执行
@@ -201,7 +184,7 @@ protected:
     }
 
 private:
-    int index_ {CGRAPH_SECONDARY_THREAD_COMMON_ID};                // 线程index
+    int index_;                                                    // 线程index
     UWorkStealingQueue work_stealing_queue_;                       // 内部队列信息
     std::vector<UThreadPrimary *>* pool_threads_;                  // 用于存放线程池中的线程信息
 
