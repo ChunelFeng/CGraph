@@ -29,6 +29,10 @@
 ![CGraph Skeleton](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Skeleton.jpg)
 <br>
 
+详细功能介绍和用法，请参考 **推荐阅读** 中的文章内容。项目相关视频在B站持续更新中，欢迎观看交流和一键三连：<br>
+* [【B站视频】CGraph 入门篇](https://space.bilibili.com/308187544/channel/seriesdetail?sid=3209600)<br>
+* [【B站视频】CGraph 功能篇](https://space.bilibili.com/308187544/channel/seriesdetail?sid=3209605)<br>
+
 
 ## 二. 编译说明
 * 本工程支持MacOS、Linux和Windows系统，无任何第三方依赖。默认使用C++11版本，推荐使用C++17版本，暂不支持C++11以下的版本
@@ -148,7 +152,6 @@ int main() {
 * [从零开始主导一款收录于awesome-cpp的项目，是一种怎样的体验?](http://www.chunel.cn/archives/cgraph-awesome-cpp)
 * [炸裂！CGraph性能全面超越taskflow之后，作者却说他更想...](http://www.chunel.cn/archives/cgraph-compare-taskflow-v1)
   <br><br>
-* [【B站视频】CGraph 快速引入的方法介绍](https://www.bilibili.com/video/BV1gY4y1x7JT?spm_id_from=333.337)
 
 ## 五. 关联项目
 
