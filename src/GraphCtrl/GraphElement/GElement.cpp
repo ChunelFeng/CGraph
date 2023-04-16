@@ -18,7 +18,7 @@ GElement::GElement() {
 GElement::~GElement() {
     CGRAPH_DELETE_PTR(aspect_manager_)
     for (auto& param : local_params_) {
-        CGRAPH_DELETE_PTR(param.second)   // 依次删除本地的参数信息
+        CGRAPH_DELETE_PTR(param.second)    // 依次删除本地的参数信息
     }
 }
 
@@ -68,6 +68,14 @@ GElement* GElement::setLevel(CLevel level) {
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
 
     this->level_ = level;
+    return this;
+}
+
+
+GElement* GElement::setVisible(CBool visible) {
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+
+    this->visible_ = visible;
     return this;
 }
 
@@ -135,6 +143,14 @@ CStatus GElement::doAspect(const GAspectType& aspectType, const CStatus& curStat
 
 CStatus GElement::fatProcessor(const CFunctionType& type) {
     CGRAPH_FUNCTION_BEGIN
+
+    if (unlikely(!visible_)) {
+        /**
+         * 如果当前的 element 因为被remove等原因，变成 不可见的状态
+         * 则不运行。但不是实际删除当前节点信息
+         */
+        CGRAPH_FUNCTION_END
+    }
 
     try {
         switch (type) {
