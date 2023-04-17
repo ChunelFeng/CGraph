@@ -30,8 +30,8 @@
 <br>
 
 详细功能介绍和用法，请参考 **推荐阅读** 中的文章内容。项目相关视频在B站持续更新中，欢迎观看交流和一键三连：<br>
-* [【B站视频】CGraph 入门篇](https://space.bilibili.com/308187544/channel/seriesdetail?sid=3209600)<br>
-* [【B站视频】CGraph 功能篇](https://space.bilibili.com/308187544/channel/seriesdetail?sid=3209605)<br>
+* [【B站视频】CGraph 入门篇](https://www.bilibili.com/video/BV1mk4y1v7XJ) <br>
+* [【B站视频】CGraph 功能篇](https://www.bilibili.com/video/BV1CN411w7XB) <br>
 
 
 ## 二. 编译说明
