@@ -242,6 +242,7 @@ private:
 
     friend class GPipelineFactory;
     friend class UAllocator;
+    friend class GPipelinePy;
 };
 
 using GPipelinePtr = GPipeline *;

@@ -86,7 +86,7 @@ public:
     GElement* setLevel(CLevel level);
 
     /**
-     * 设置
+     * 设置visible信息。当 visible = false 的时候，算子实际不执行
      * @param visible
      * @return
      */
@@ -276,6 +276,7 @@ private:
     friend class GStaticEngine;
     friend class GDynamicEngine;
     template<typename T> friend class GSingleton;
+    friend class GPipelinePy;
 };
 
 using GElementPtr = GElement *;
