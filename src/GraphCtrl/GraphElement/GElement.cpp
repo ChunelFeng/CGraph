@@ -80,6 +80,14 @@ GElement* GElement::setVisible(CBool visible) {
 }
 
 
+GElement* GElement::setBindingIndex(CIndex index) {
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+
+    this->binding_index_ = index;
+    return this;
+}
+
+
 CBool GElement::isRunnable() const {
     return 0 >= this->left_depend_ && !this->done_;
 }
@@ -286,6 +294,11 @@ CVoid GElement::dumpElement(std::ostream& oss) {
 CBool GElement::isGroup() {
     // 按位与 GROUP有值，表示是 GROUP的逻辑
     return (long(element_type_) & long(GElementType::GROUP)) > 0;
+}
+
+
+CIndex GElement::getBindingIndex() {
+    return this->binding_index_;
 }
 
 CGRAPH_NAMESPACE_END

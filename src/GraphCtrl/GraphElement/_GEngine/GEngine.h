@@ -29,6 +29,22 @@ protected:
      */
     virtual CStatus afterRunCheck() = 0;
 
+    /**
+     * 计算出来最终计算的index值
+     * @param element
+     * @return
+     */
+    CIndex calcIndex(GElementPtr element) {
+        /**
+         * 如果没有设定绑定线程的话，就用默认调度策略
+         * 否则的话，会走绑定的thread。
+         * 如果设定的 binding_index_ >= thread 总数，会在 threadpool 层做统一判定
+         */
+        auto bindingIndex = element->getBindingIndex();
+        return CGRAPH_DEFAULT_BINDING_INDEX == bindingIndex
+               ? schedule_strategy_ : bindingIndex;
+    }
+
 protected:
     UThreadPoolPtr thread_pool_ { nullptr };                    // 内部执行的线程池
     CUint total_element_size_ = 0;                              // 总的element的数量

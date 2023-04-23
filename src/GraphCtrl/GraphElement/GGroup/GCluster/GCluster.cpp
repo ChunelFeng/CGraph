@@ -111,12 +111,23 @@ CSize GCluster::getElementNum() {
 }
 
 
-CBool GCluster::isClusterDone() {
+CBool GCluster::isDone() {
     /* 所有的element均被执行过，则提示true */
     return std::all_of(group_elements_arr_.begin(), group_elements_arr_.end(),
                        [](GElementPtr element) {
                            return element->done_;
                        });
+}
+
+
+CIndex GCluster::getBindingIndex() {
+    if (group_elements_arr_.empty()) {
+        // 防止未注入的情况发生
+        return CGRAPH_DEFAULT_BINDING_INDEX;
+    }
+
+    // 实际就是返回第一个元素的 binding index 值
+    return group_elements_arr_[0]->getBindingIndex();
 }
 
 

@@ -46,7 +46,13 @@ protected:
      * 判断是否所有element均执行结束了
      * @return
      */
-    CBool isClusterDone();
+    CBool isDone();
+
+    /**
+     * 获取绑定信息
+     * @return
+     */
+    CIndex getBindingIndex() override;
 
 
     friend class GElementManager;

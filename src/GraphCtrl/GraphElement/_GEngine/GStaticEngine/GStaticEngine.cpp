@@ -26,14 +26,16 @@ CStatus GStaticEngine::mark(const GSortedGElementPtrSet& elements) {
 
     /**
      * 认定图可以连通的判定条件：
-     * 1，当前节点仅有一个依赖
-     * 2，当前节点依赖的节点，只有一个后继
-     * 3，当前节点的依赖的后继，仍是当前节点
+     * 1，当前元素仅有一个依赖
+     * 2，当前元素依赖的节点，只有一个后继
+     * 3，当前元素的依赖的后继，仍是当前节点
+     * 4，前后元素绑定机制是一样的
      */
     for (GElementPtr element : elements) {
         if (1 == element->dependence_.size()
             && 1 == (*element->dependence_.begin())->run_before_.size()
-            && (*(element->dependence_.begin()))->run_before_.find(element) != (*(element->dependence_.begin()))->run_before_.end()) {
+            && (*(element->dependence_.begin()))->run_before_.find(element) != (*(element->dependence_.begin()))->run_before_.end()
+            && element->getBindingIndex() == (*(element->dependence_.begin()))->getBindingIndex()) {
             element->linkable_ = true;
         }
     }
@@ -131,7 +133,7 @@ CStatus GStaticEngine::run() {
         for (GClusterRef cluster : clusterArr) {
             futures.emplace_back(thread_pool_->commit([&cluster] {
                 return cluster.process(false);
-            }, this->schedule_strategy_));
+            }, calcIndex(&cluster)));
 
             run_element_size_ += cluster.getElementNum();
             curClusterTtl.emplace_back(cluster.getElementNum() * element_run_ttl_);
@@ -173,7 +175,7 @@ CStatus GStaticEngine::afterRunCheck() {
     /* 需要验证每个cluster里的每个内容是否被执行过一次 */
     for (GClusterArrRef clusterArr : para_cluster_arrs_) {
         for (GClusterRef cluster : clusterArr) {
-            if (!cluster.isClusterDone()) {
+            if (!cluster.isDone()) {
                 CGRAPH_RETURN_ERROR_STATUS("pipeline done status check failed...");
             }
         }

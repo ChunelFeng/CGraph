@@ -92,6 +92,14 @@ public:
      */
     GElement* setVisible(CBool visible);
 
+    /**
+     * 设定绑定的线程id
+     * @param index，需要绑定的 thread id 信息
+     * @return
+     * @notice 若不了解调度机制，不建议使用本接口，或仅针对 GNode 类型数据使用。否则可能导致运行时阻塞
+     */
+    GElement* setBindingIndex(CIndex index);
+
 protected:
     /**
      * 构造函数
@@ -229,7 +237,7 @@ protected:
      * @param label
      * @return
     */
-    CVoid dumpEdge(std::ostream& oss, GElement* src, GElement* dst, const std::string& label="");
+    CVoid dumpEdge(std::ostream& oss, GElement* src, GElement* dst, const std::string& label=CGRAPH_EMPTY);
 
     /**
      * graphviz dump 点逻辑
@@ -242,6 +250,12 @@ protected:
      * @return
     */
     CBool isGroup();
+
+    /**
+     * 获取绑定线程id信息
+     * @return
+     */
+    virtual CIndex getBindingIndex();
 
     CGRAPH_NO_ALLOWED_COPY(GElement);
 
@@ -257,6 +271,7 @@ private:
     CBool visible_ { true };                         // 判断可见的，如果被删除的话，则认为是不可见的
     CSize loop_ { CGRAPH_DEFAULT_LOOP_TIMES };       // 元素执行次数
     CLevel level_ { CGRAPH_DEFAULT_ELEMENT_LEVEL };  // 用于设定init的执行顺序(值小的，优先init，可以为负数)
+    CIndex binding_index_ { CGRAPH_DEFAULT_BINDING_INDEX };    // 用于设定绑定线程id
     std::atomic<CSize> left_depend_ { 0 };        // 当 left_depend_ 值为0的时候，即可以执行该element信息
     std::set<GElement *> run_before_;                // 被依赖的节点
     std::set<GElement *> dependence_;                // 依赖的节点信息
@@ -273,6 +288,7 @@ private:
     friend class GGroup;
     friend class GPipeline;
     friend class GElementSorter;
+    friend class GEngine;
     friend class GStaticEngine;
     friend class GDynamicEngine;
     template<typename T> friend class GSingleton;

@@ -100,10 +100,10 @@ CStatus GDynamicEngine::process(GElementPtr element, CBool affinity) {
         afterElementRun(element);
     };
 
-    if (affinity) {
+    if (affinity && (CGRAPH_DEFAULT_BINDING_INDEX == element->getBindingIndex())) {
         exec();    // 如果 affinity=true，表示用当前的线程，执行这个逻辑。以便增加亲和性
     } else {
-        thread_pool_->commit(exec, this->schedule_strategy_);
+        thread_pool_->commit(exec, calcIndex(element));
     }
 
     CGRAPH_FUNCTION_END
