@@ -21,14 +21,6 @@ protected:
     explicit GNode();
 
     /**
-     * 执行批量任务
-     * @param tasks
-     * @param ttl，单位是ms
-     * @return
-     */
-    CStatus doParallel(const UTaskGroup& tasks, CMSec ttl = CGRAPH_MAX_BLOCK_TTL);
-
-    /**
      * 设置节点类型
      * @param type
      * @return

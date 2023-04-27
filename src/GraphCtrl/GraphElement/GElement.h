@@ -204,7 +204,7 @@ protected:
      * @return
      * @notice 辅助线程返回-1
      */
-    CIndex getThreadNum();
+    CIndex getThreadIndex();
 
     /**
      * 触发一个事件
@@ -280,7 +280,6 @@ private:
     GEventManagerPtr event_manager_ { nullptr };     // 事件管理类
     UThreadPoolPtr thread_pool_ { nullptr };         // 用于执行的线程池信息
 
-    friend class GNode;
     friend class GCluster;
     friend class GRegion;
     friend class GCondition;
@@ -292,7 +291,6 @@ private:
     friend class GStaticEngine;
     friend class GDynamicEngine;
     template<typename T> friend class GSingleton;
-    friend class GPipelinePy;
 };
 
 using GElementPtr = GElement *;

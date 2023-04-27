@@ -225,7 +225,7 @@ CStatus GElement::crashed(const CException& ex) {
 }
 
 
-CIndex GElement::getThreadNum() {
+CIndex GElement::getThreadIndex() {
     if (nullptr == thread_pool_) {
         return CGRAPH_SECONDARY_THREAD_COMMON_ID;    // 理论不存在的情况
     }

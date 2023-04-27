@@ -58,4 +58,8 @@ CStatus GParam::setup() {
     CGRAPH_EMPTY_FUNCTION
 }
 
+
+CVoid GParam::reset(const CStatus& curStatus) {
+}
+
 CGRAPH_NAMESPACE_END
