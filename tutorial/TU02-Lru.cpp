@@ -20,8 +20,18 @@ void tutorial_lru() {
     lru.put(4, "four");    // 此时，key=1的节点，已经被在缓存中删除了
     lru.put(5, "five");
 
-    std::string val = lru.get(4);
-    CGRAPH_ECHO("value is : [%s]", val.c_str());
+    std::string val;
+    if (lru.get(5, val)) {
+        CGRAPH_ECHO("value is : [%s]", val.c_str());
+    } else {
+        CGRAPH_ECHO("not get value");
+    }
+
+    if (lru.get(6, val)) {
+        CGRAPH_ECHO("value is : [%s]", val.c_str());
+    } else {
+        CGRAPH_ECHO("not get value");
+    }
 }
 
 

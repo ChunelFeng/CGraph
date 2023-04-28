@@ -60,15 +60,15 @@ public:
      * @param key
      * @return
      */
-    V get(const K& key) {
-        V result;
+    bool get(const K& key, V& value) {
         auto cur = cache_.find(key);
         if (cur != cache_.end()) {
-            result = cur->second->value_;
-            put(key, result);
+            value = cur->second->value_;
+            put(key, value);
+            return true;
         }
 
-        return result;
+        return false;
     }
 
     /**
