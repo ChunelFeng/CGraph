@@ -11,8 +11,7 @@
 using namespace CGraph;
 
 void tutorial_lru() {
-    ULru<int, std::string> lru;
-    lru.setCapacity(3);    // 设置容量信息
+    ULru<int, std::string, 3> lru;
 
     lru.put(1, "one");
     lru.put(2, "two");
@@ -21,16 +20,19 @@ void tutorial_lru() {
     lru.put(5, "five");
 
     std::string val;
-    if (lru.get(5, val)) {
-        CGRAPH_ECHO("value is : [%s]", val.c_str());
+    int key = 5;
+    // 返回值的 true的情况下，表示获取成功。否则表示未获取到 value 的值
+    if (lru.get(key, val)) {
+        CGRAPH_ECHO("key = %d, value is : [%s]", key, val.c_str());
     } else {
-        CGRAPH_ECHO("not get value");
+        CGRAPH_ECHO("[%d] no get value", key);
     }
 
-    if (lru.get(6, val)) {
-        CGRAPH_ECHO("value is : [%s]", val.c_str());
+    key = 6;
+    if (lru.get(key, val)) {
+        CGRAPH_ECHO("key = %d, value is : [%s]", key, val.c_str());
     } else {
-        CGRAPH_ECHO("not get value");
+        CGRAPH_ECHO("[%d] no get value", key);
     }
 }
 
