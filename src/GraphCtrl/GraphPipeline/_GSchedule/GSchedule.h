@@ -23,6 +23,12 @@ protected:
      */
     CStatus makeShared(UThreadPoolPtr tp);
 
+    /**
+     * 获取线程池信息
+     * @return
+     */
+    UThreadPoolPtr getThreadPool();
+
     CStatus init() override;
 
     CStatus run() override;
@@ -32,7 +38,8 @@ protected:
     ~GSchedule() override;
 
 private:
-    UThreadPoolPtr thread_pool_ = nullptr;          // 线程池类
+    UThreadPoolPtr unique_tp_ = nullptr;            // 内部独占的线程池
+    UThreadPoolPtr shared_tp_ = nullptr;            // 外部输入的线程池
     UThreadPoolConfig config_;                      // 线程池的配置信息
     GScheduleType type_ = GScheduleType::UNIQUE;    // 调度类型
 

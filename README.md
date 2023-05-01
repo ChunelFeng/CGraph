@@ -157,6 +157,9 @@ int main() {
 
 * [GraphANNS](https://github.com/whenever5225/GraphANNS) : Graph-based Approximate Nearest Neighbor Search Working off CGraph
 * [CThreadPool](https://github.com/ChunelFeng/CThreadPool) : 一个简单好用、功能强大、性能优异、跨平台的C++线程池
+* [taskflow](https://github.com/taskflow/taskflow) : A General-purpose Parallel and Heterogeneous Task Programming System
+* [awesome-cpp](https://github.com/fffaraz/awesome-cpp) : A curated list of awesome C++ (or C) frameworks, libraries, resources, and shiny things. Inspired by awesome-... stuff.
+* [awesome-workflow-engines](https://github.com/meirwah/awesome-workflow-engines) : A curated list of awesome open source workflow engines
 
 ------------
 <details>
@@ -320,7 +323,7 @@ int main() {
 * Thanks to the recommendation from [awesome-cpp](https://github.com/fffaraz/awesome-cpp), we all know, it is the most authoritative recommendation list for cpp project in the world
 * Thanks to the recommendation from `Taskflow Group`: [awesome-parallel-computing](https://github.com/taskflow/awesome-parallel-computing), and we always treat [taskflow](https://github.com/taskflow/taskflow) as a role model
 * Thanks to the recommendation from [awesome-workflow-engines](https://github.com/meirwah/awesome-workflow-engines)
-* 感谢 [@yangyuxiang77](https://github.com/yangyuxiang77) [@logerrors](https://github.com/logerrors) [@whenever5225](https://github.com/whenever5225) [@May-Yaha](https://github.com/May-Yaha) [@Codesire-Deng](https://github.com/Codesire-Deng) [@yeshenyong](https://github.com/yeshenyong) [@MirrorYuChen](https://github.com/MirrorYuChen) [@HanYa](https://github.com/CodingHanYa) [@Ryan](https://github.com/ryanhuang) [@ATX735](https://github.com/ATX735) [@woodx](https://github.com/woodx9) 等朋友（以贡献时间先后为序）为项目做出的贡献
+* 感谢 [@yangyuxiang77](https://github.com/yangyuxiang77) [@logerrors](https://github.com/logerrors) [@whenever5225](https://github.com/whenever5225) [@May-Yaha](https://github.com/May-Yaha) [@Codesire-Deng](https://github.com/Codesire-Deng) [@yeshenyong](https://github.com/yeshenyong) [@MirrorYuChen](https://github.com/MirrorYuChen) [@HanYa](https://github.com/CodingHanYa) [@Ryan](https://github.com/ryanhuang) [@ATX735](https://github.com/ATX735) [@woodx](https://github.com/woodx9) [@jianengxi](https://github.com/greent2008) 等朋友（以贡献时间先后为序）为项目做出的贡献
 * 感谢所有为`CGraph`项目提出的意见和建议的朋友，在此不一一提及。随时欢迎大家加入，一起共建
 
 </details>

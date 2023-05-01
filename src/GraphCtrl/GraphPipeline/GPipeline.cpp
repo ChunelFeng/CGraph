@@ -180,13 +180,14 @@ CStatus GPipeline::initSchedule() {
     status = schedule_.init();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    event_manager_->setThreadPool(schedule_.thread_pool_);
-    element_manager_->setThreadPool(schedule_.thread_pool_);
+    auto tp = schedule_.getThreadPool();
+    event_manager_->setThreadPool(tp);
+    element_manager_->setThreadPool(tp);
 
     // 设置所有的element 中的thread_pool
     for (auto& iter : this->element_repository_) {
         CGRAPH_ASSERT_NOT_NULL(iter)
-        iter->setThreadPool(schedule_.thread_pool_);
+        iter->setThreadPool(tp);
     }
 
     CGRAPH_FUNCTION_END
