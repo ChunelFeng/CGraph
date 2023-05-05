@@ -197,10 +197,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                 CGRAPH_RETURN_ERROR_STATUS("get function type error")
         }
     } catch (const CException& ex) {
-        status = doAspect(GAspectType::BEGIN_CRASH);
-        CGRAPH_FUNCTION_CHECK_STATUS
         status = crashed(ex);
-        doAspect(GAspectType::FINISH_CRASH, status);
     }
 
     CGRAPH_FUNCTION_END
@@ -218,10 +215,9 @@ CBool GElement::isHold() {
 
 CStatus GElement::crashed(const CException& ex) {
     /**
-     * 默认直接抛出异常的
-     * 如果需要处理的话，可以通过覆写此函数来
+     * 默认直接返回
      */
-    CGRAPH_THROW_EXCEPTION(ex.what())
+    return CStatus(STATUS_CRASH, ex.what());
 }
 
 

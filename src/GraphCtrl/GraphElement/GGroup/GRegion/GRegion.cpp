@@ -13,8 +13,9 @@
 CGRAPH_NAMESPACE_BEGIN
 
 GRegion::GRegion() : GGroup() {
-    manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
     is_init_ = false;
+    manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
+    setGEngineType(GEngineType::STATIC);    // region默认使用静态方式调度
     element_type_ = GElementType::REGION;
     session_ = URandom<>::generateSession(CGRAPH_STR_REGION);
 }

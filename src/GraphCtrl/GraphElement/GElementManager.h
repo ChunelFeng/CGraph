@@ -78,16 +78,12 @@ protected:
      * @param ptr
      * @return
      */
-    GElementManager* setThreadPool(UThreadPoolPtr ptr) {
-        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
-        this->thread_pool_ = ptr;
-        return this;
-    }
+    GElementManager* setThreadPool(UThreadPoolPtr ptr);
 
 private:
     GSortedGElementPtrSet manager_elements_;                    // 保存节点信息的内容
     GEnginePtr engine_ = nullptr;                               // 执行引擎
-    GEngineType engine_type_ = GEngineType::STATIC;             // 引擎执行方式
+    GEngineType engine_type_ = GEngineType::DYNAMIC;            // 引擎执行方式
     UThreadPoolPtr thread_pool_ = nullptr;                      // 线程池
 
     friend class GPipeline;

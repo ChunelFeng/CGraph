@@ -93,7 +93,7 @@ CStatus GDynamicEngine::process(GElementPtr element, CBool affinity) {
 
     const auto& exec = [this, element] {
         auto curStatus = element->fatProcessor(CFunctionType::RUN);
-        if (unlikely(curStatus.isNotOK() && cur_status_.isNotErr())) {
+        if (unlikely(curStatus.isErr())) {
             // 当且仅当整体状正常，且当前状态异常的时候，进入赋值逻辑。确保不重复赋值
             cur_status_ = curStatus;
         }

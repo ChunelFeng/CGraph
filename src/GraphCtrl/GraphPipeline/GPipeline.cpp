@@ -68,7 +68,7 @@ CStatus GPipeline::run() {
     status = param_manager_->setup();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    status += element_manager_->run();
+    status = element_manager_->run();
     param_manager_->resetWithStatus(status);
     CGRAPH_FUNCTION_END
 }
@@ -90,7 +90,7 @@ CStatus GPipeline::destroy() {
     CGRAPH_FUNCTION_CHECK_STATUS
 
     // 结束单个线程池信息
-    status += schedule_.destroy();
+    status = schedule_.destroy();
     CGRAPH_FUNCTION_CHECK_STATUS
 
     is_init_ = false;

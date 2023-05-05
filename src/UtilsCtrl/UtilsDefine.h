@@ -47,6 +47,7 @@ CGRAPH_NAMESPACE_BEGIN
 static std::mutex g_check_status_mtx;
 #define CGRAPH_FUNCTION_CHECK_STATUS                                                         \
     if (unlikely(status.isErr())) {                                                          \
+        if (status.isCrash()) { throw CException(status.getInfo()); }                        \
         std::lock_guard<std::mutex> lock{ g_check_status_mtx };                              \
         CGRAPH_ECHO("%s | %s | line = [%d], errorCode = [%d], errorInfo = [%s].",            \
             __FILE__, __FUNCTION__, __LINE__, status.getCode(), status.getInfo().c_str());   \

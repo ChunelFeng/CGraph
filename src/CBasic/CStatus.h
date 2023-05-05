@@ -19,12 +19,12 @@ CGRAPH_NAMESPACE_BEGIN
 /**
  * 说明：
  * 返回值为0，表示正常逻辑
- * 返回值为正整数，表示warning逻辑，程序仍会继续执行
  * 返回值为负整数，表示error逻辑，程序终止执行
  * 自定义返回值，请务必遵守以上约定
  */
 static const int STATUS_OK = 0;                                 /** 正常流程返回值 */
 static const int STATUS_ERR = -1;                               /** 异常流程返回值 */
+static const int STATUS_CRASH = -996;                           /** 异常流程返回值 */
 static const char* STATUS_ERROR_INFO_CONNECTOR = " && ";        /** 多异常信息连接符号 */
 
 class CSTATUS {
@@ -78,10 +78,18 @@ public:
         error_info_ = info;
     }
 
+    /**
+     * 获取异常值信息
+     * @return
+     */
     int getCode() const {
         return this->error_code_;
     }
 
+    /**
+     * 获取异常信息
+     * @return
+     */
     const std::string& getInfo() const {
         return this->error_info_;
     }
@@ -111,23 +119,15 @@ public:
     }
 
     /**
-     * 判断当前状态是否有异常
+     * 判断当前状态是否是崩溃了
      * @return
      */
-    bool isNotErr() const {
-        return error_code_ >= STATUS_OK;
-    }
-
-    /**
-     * 判断当前状态，不是ok的（包含error 和 warning）
-     * @return
-     */
-    bool isNotOK() const {
-        return error_code_ != STATUS_OK;
+    bool isCrash() const {
+        return STATUS_CRASH == error_code_;
     }
 
 private:
-    int error_code_ { STATUS_OK };                   // 错误码信息
+    int error_code_ = STATUS_OK;                     // 错误码信息
     std::string error_info_;                         // 错误信息描述
 };
 
