@@ -49,19 +49,13 @@ CStatus GSchedule::run() {
 }
 
 
-CStatus GSchedule::makeShared(UThreadPoolPtr tp) {
+CStatus GSchedule::makeType(UThreadPoolPtr tp) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(tp)
-    if (GScheduleType::SHARED == type_) {
-        // 如果已经设置过了，就无法再设置了，防止异常情况出现
-        CGRAPH_RETURN_ERROR_STATUS("cannot set schedule again.")
-    }
-
     CGRAPH_DELETE_PTR(this->unique_tp_)
     shared_tp_ = tp;    // 用外部传入的线程池，来代替内部原有的线程池
 
-    // 默认是 unique的，设置了之后就是 shared的了
-    type_ = GScheduleType::SHARED;
+    // 如果是nullptr的话，就当做是恢复使用默认本地线程池
+    type_ = (nullptr == tp) ? GScheduleType::UNIQUE : GScheduleType::SHARED;
     CGRAPH_FUNCTION_END
 }
 

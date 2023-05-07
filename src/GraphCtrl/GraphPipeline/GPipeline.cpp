@@ -164,10 +164,9 @@ GPipelinePtr GPipeline::setUniqueThreadPoolConfig(const UThreadPoolConfig& confi
 
 GPipeline* GPipeline::setSharedThreadPool(UThreadPoolPtr ptr) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
 
-    status = schedule_.makeShared(ptr);
+    status = schedule_.makeType(ptr);
     CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL
 }
 

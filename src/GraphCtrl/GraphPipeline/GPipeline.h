@@ -209,6 +209,7 @@ public:
      * 设置共享的线程池
      * @param ptr
      * @return
+     * @notice 如果传入 nullptr 的话，则默认使用本地独占线程池
      */
     GPipeline* setSharedThreadPool(UThreadPoolPtr ptr);
 
