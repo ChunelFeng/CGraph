@@ -7,6 +7,7 @@
 ***************************/
 
 #include "GElementManager.h"
+#include "_GOptimizer/GOptimizerInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -145,6 +146,20 @@ GElementManagerPtr GElementManager::setThreadPool(UThreadPoolPtr ptr) {
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
     this->thread_pool_ = ptr;
     return this;
+}
+
+
+CStatus GElementManager::calcMaxParaSize(CSize& size) {
+    CGRAPH_FUNCTION_BEGIN
+    GMaxParaOptimizer op;
+    if (op.match(manager_elements_)) {
+        size = op.getMaxParaSize(manager_elements_);
+    } else {
+        // 遇到不可以解析的情况，将size赋值为0，告知上游
+        size = 0;
+        status.setStatus("cannot calculate max parallel size within groups");
+    }
+    CGRAPH_FUNCTION_END
 }
 
 CGRAPH_NAMESPACE_END

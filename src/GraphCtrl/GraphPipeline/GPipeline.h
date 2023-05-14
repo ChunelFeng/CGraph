@@ -214,6 +214,14 @@ public:
     GPipeline* setSharedThreadPool(UThreadPoolPtr ptr);
 
     /**
+     * 获取最大并发度
+     * @param size
+     * @return
+     * @notice 暂时仅支持dag中所有内容均为 node的情况下计算。返回的值，是理论最大线程数，不是最优值
+     */
+    CStatus calcMaxPara(CSize& size);
+
+    /**
      * 注册GParam 交互类集合
      * @return
      */

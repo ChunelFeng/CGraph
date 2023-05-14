@@ -100,6 +100,12 @@ public:
      */
     GElement* setBindingIndex(CIndex index);
 
+    /**
+     * 当前element是否是一个 group逻辑
+     * @return
+    */
+    CBool isGroup();
+
 protected:
     /**
      * 构造函数
@@ -246,12 +252,6 @@ protected:
     CVoid dumpElement(std::ostream& oss);
 
     /**
-     * 当前element是否是一个 group逻辑
-     * @return
-    */
-    CBool isGroup();
-
-    /**
      * 获取绑定线程id信息
      * @return
      */
@@ -290,6 +290,7 @@ private:
     friend class GEngine;
     friend class GStaticEngine;
     friend class GDynamicEngine;
+    friend class GMaxParaOptimizer;
     template<typename T> friend class GSingleton;
 };
 

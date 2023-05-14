@@ -9,11 +9,11 @@
 #ifndef CGRAPH_GENGINEOBJECT_H
 #define CGRAPH_GENGINEOBJECT_H
 
-#include "../../GraphObject.h"
+#include "../GElementObject.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GEngineObject : public GraphObject {
+class GEngineObject : public GElementObject {
 };
 
 CGRAPH_NAMESPACE_END

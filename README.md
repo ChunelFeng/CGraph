@@ -67,7 +67,7 @@
   ```shell
   $ sudo apt-get install cmake             # 安装cmake
   $ ./CGraph-build.sh                      # 编译CGraph工程，生成的内容在同级/build/文件夹中
-  $ ./build/tutorial/T00-HelloCGraph       # 运行第一个实例程序，并且在终端输出 Hello, CGraph.
+  $ ./build/T00-HelloCGraph                # 运行第一个实例程序，并且在终端输出 Hello, CGraph.
   ```
 
 ## 三. 使用Demo
@@ -301,12 +301,13 @@ int main() {
 
 [2023.03.25 - v2.4.0 - [woodx](https://github.com/woodx9), Chunel]
 * 提供可运行的docker环境，和构建docker环境的dockerfile文件
-* 提供pipeline调度资源管控机制
+* 提供`pipeline`调度资源管控机制
 * 优化调度性能
 
 [2023.05.05 - v2.4.1 - Chunel]
 * 提供线程绑定执行功能
-* 更新pipeline调度机制，默认为动态执行
+* 更新`pipeline`调度机制，默认为动态执行
+* 提供`pipeline`最大并发度获取方法。感谢 [Hanano-Yuuki](https://github.com/Hanano-Yuuki) 提供相关解决方案
 
 </details>
 

@@ -171,6 +171,15 @@ GPipeline* GPipeline::setSharedThreadPool(UThreadPoolPtr ptr) {
 }
 
 
+CStatus GPipeline::calcMaxPara(CSize& size) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(element_manager_)
+
+    status = element_manager_->calcMaxParaSize(size);
+    CGRAPH_FUNCTION_END
+}
+
+
 CStatus GPipeline::initSchedule() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(event_manager_)

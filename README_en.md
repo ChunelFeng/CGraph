@@ -60,7 +60,7 @@ You can transfer your params in many scenes. It is also possible to extend the f
   ```shell
   $ sudo apt-get install cmake
   $ ./CGraph-build.sh
-  $ ./build/tutorial/T00-HelloCGraph
+  $ ./build/T00-HelloCGraph
   ```
 
 ## 3. Demo

@@ -80,6 +80,13 @@ protected:
      */
     GElementManager* setThreadPool(UThreadPoolPtr ptr);
 
+    /**
+     * 获取最大的并发数
+     * @param size
+     * @return
+     */
+    CStatus calcMaxParaSize(CSize& size);
+
 private:
     GSortedGElementPtrSet manager_elements_;                    // 保存节点信息的内容
     GEnginePtr engine_ = nullptr;                               // 执行引擎
