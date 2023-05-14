@@ -55,10 +55,10 @@ protected:
      */
     CVoid collectPaths(const GSortedGElementPtrSet& elements,
                        std::vector<std::vector<GElementPtr>>& paths) {
-        for (auto& cur : elements) {
+        for (auto& ele : elements) {
             std::vector<GElementPtr> curPath;
-            if (cur->dependence_.empty()) {
-                collect(cur, curPath, paths);
+            if (ele->dependence_.empty()) {
+                collect(ele, curPath, paths);
             }
         }
     }
@@ -70,7 +70,7 @@ protected:
      * @param paths
      * @return
      */
-    CVoid collect(const GElementPtr element,
+    CVoid collect(GElementPtr element,
                   std::vector<GElementPtr>& curPath,
                   std::vector<std::vector<GElementPtr>>& paths) {
         curPath.emplace_back(element);
@@ -115,10 +115,10 @@ protected:
     CSize calcMaxCliqueSize(const std::vector<std::vector<int>>& graph) {
         CSize eleSize = graph.size();
         CSize maxCliqueSize = 0;    // 最大团size
-        std::vector<int> curClique;    // 当前团
+        std::vector<CSize> curClique;    // 当前团
         std::vector<bool> visited(eleSize, false);    // 标记第n个，是否被用到过
 
-        std::function<void(int)> backtrack = [&](CSize depth) {
+        std::function<void(CSize)> backtrack = [&](CSize depth) {
             for (CSize i = 0; i < eleSize; i++) {
                 if (visited[i]) {
                     continue;    // 如果已经访问过了，则继续
@@ -131,7 +131,7 @@ protected:
 
                 if (std::all_of(curClique.begin(), curClique.end(), [&](const int j) {
                     // 如果跟当前团的node，均为连接状态，则标记为可以进入当前团中
-                    return graph[j][i] == 1;
+                    return 1 == graph[j][i];
                 })) {
                     curClique.push_back(i);
                     visited[i] = true;

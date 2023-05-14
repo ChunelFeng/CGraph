@@ -151,6 +151,7 @@ int main() {
 * [聊聊我写CGraph的这一年](http://www.chunel.cn/archives/cgraph-anniversary-introduce)
 * [从零开始主导一款收录于awesome-cpp的项目，是一种怎样的体验?](http://www.chunel.cn/archives/cgraph-awesome-cpp)
 * [炸裂！CGraph性能全面超越taskflow之后，作者却说他更想...](http://www.chunel.cn/archives/cgraph-compare-taskflow-v1)
+* [以图优图：CGraph中计算dag最大并发度思路总结](http://www.chunel.cn/archives/cgraph-max-para-size)
   <br><br>
 
 ## 五. 关联项目
@@ -328,7 +329,7 @@ int main() {
 * Thanks to the recommendation from [awesome-cpp](https://github.com/fffaraz/awesome-cpp), we all know, it is the most authoritative recommendation list for cpp project in the world
 * Thanks to the recommendation from `Taskflow Group`: [awesome-parallel-computing](https://github.com/taskflow/awesome-parallel-computing), and we always treat [taskflow](https://github.com/taskflow/taskflow) as a role model
 * Thanks to the recommendation from [awesome-workflow-engines](https://github.com/meirwah/awesome-workflow-engines)
-* 感谢 [@yangyuxiang77](https://github.com/yangyuxiang77) [@logerrors](https://github.com/logerrors) [@whenever5225](https://github.com/whenever5225) [@May-Yaha](https://github.com/May-Yaha) [@Codesire-Deng](https://github.com/Codesire-Deng) [@yeshenyong](https://github.com/yeshenyong) [@MirrorYuChen](https://github.com/MirrorYuChen) [@HanYa](https://github.com/CodingHanYa) [@Ryan](https://github.com/ryanhuang) [@ATX735](https://github.com/ATX735) [@woodx](https://github.com/woodx9) [@jianengxi](https://github.com/greent2008) 等朋友（以贡献时间先后为序）为项目做出的贡献
+* 感谢 [@yangyuxiang77](https://github.com/yangyuxiang77) [@logerrors](https://github.com/logerrors) [@whenever5225](https://github.com/whenever5225) [@May-Yaha](https://github.com/May-Yaha) [@Codesire-Deng](https://github.com/Codesire-Deng) [@yeshenyong](https://github.com/yeshenyong) [@MirrorYuChen](https://github.com/MirrorYuChen) [@HanYa](https://github.com/CodingHanYa) [@Ryan](https://github.com/ryanhuang) [@ATX735](https://github.com/ATX735) [@woodx](https://github.com/woodx9) [@jianengxi](https://github.com/greent2008) [@Hanano-Yuuki](https://github.com/Hanano-Yuuki) 等朋友（以贡献时间先后为序）为项目做出的贡献
 * 感谢所有为`CGraph`项目提出的意见和建议的朋友，在此不一一提及。随时欢迎大家加入，一起共建
 
 </details>
