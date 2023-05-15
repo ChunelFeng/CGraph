@@ -81,7 +81,7 @@ public:
      * @param size
      * @return
      */
-    static std::string generateSession(const std::string& key = "object", CSize size = 3) {
+    static std::string generateSession(const std::string& key = CGRAPH_UNKNOWN, CSize size = 3) {
         std::string session;    // 形式是 a-b-c-key，其中 a表示6位随机数字
         std::vector<CFloat> vec;
         URandom<CFloat>::generate(vec, size, 100000, 999999);

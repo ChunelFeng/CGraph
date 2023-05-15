@@ -21,7 +21,7 @@ class GAspectObject : public GraphObject,
                       public CDescInfo {
 public:
     explicit GAspectObject() {
-        session_ = URandom<>::generateSession("aspect");
+        session_ = URandom<>::generateSession(CGRAPH_STR_ASPECT);
     }
 
     ~GAspectObject() override {

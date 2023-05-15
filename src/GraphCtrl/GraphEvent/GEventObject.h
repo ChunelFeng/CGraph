@@ -18,7 +18,7 @@ class GEventObject : public GraphObject,
                      public CDescInfo {
 protected:
     explicit GEventObject() {
-        session_ = URandom<>::generateSession("event");
+        session_ = URandom<>::generateSession(CGRAPH_STR_EVENT);
     }
 
     ~GEventObject() override {

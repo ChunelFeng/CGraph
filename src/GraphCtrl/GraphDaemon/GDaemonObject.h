@@ -18,7 +18,7 @@ class GDaemonObject : public GraphObject,
                       public CDescInfo {
 protected:
     explicit GDaemonObject() {
-        session_ = URandom<>::generateSession("daemon");
+        session_ = URandom<>::generateSession(CGRAPH_STR_DAEMON);
     }
 
     ~GDaemonObject() override {

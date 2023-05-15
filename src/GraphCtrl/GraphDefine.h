@@ -20,6 +20,9 @@ static const char* CGRAPH_STR_REGION = "region";
 static const char* CGRAPH_STR_CONDITION = "condition";
 static const char* CGRAPH_STR_FUNCTION = "function";
 static const char* CGRAPH_STR_SINGLETON = "singleton";
+static const char* CGRAPH_STR_DAEMON = "daemon";
+static const char* CGRAPH_STR_ASPECT = "aspect";
+static const char* CGRAPH_STR_EVENT = "event";
 
 CGRAPH_NAMESPACE_END
 
