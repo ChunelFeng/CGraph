@@ -116,11 +116,9 @@ protected:
         CSize eleSize = graph.size();
         CSize maxCliqueSize = 0;    // 最大团size
         std::vector<CSize> curClique;    // 当前团
-        std::vector<bool> visited(eleSize, false);    // 标记第n个，是否被用到过
 
-        std::function<void(CSize)> backtrack = [&](CSize depth) {
-            for (CSize i = 0; i < eleSize; i++) {
-                if (visited[i]) { continue; }    // 如果已经访问过了，则继续
+        std::function<void(CSize, CSize)> backtrack = [&](CSize start, CSize depth) {
+            for (CSize i = start; i < eleSize; i++) {
                 if (depth + eleSize - i <= maxCliqueSize) { return; }    // 剪枝策略：剩余的元素数量，已经不足以超过 max 值了
 
                 if (std::all_of(curClique.begin(), curClique.end(), [&](const int j) {
@@ -128,9 +126,7 @@ protected:
                     return 1 == graph[j][i];
                 })) {
                     curClique.push_back(i);
-                    visited[i] = true;
-                    backtrack(depth + 1);    // depth 表示，团里已有元素的个数
-                    visited[i] = false;
+                    backtrack(i + 1, depth + 1);    // depth 表示，团里已有元素的个数
                     curClique.pop_back();
                 }
             }
@@ -138,7 +134,7 @@ protected:
             maxCliqueSize = std::max(curClique.size(), maxCliqueSize);
         };
 
-        backtrack(0);    // 从第0层开始遍历
+        backtrack(0, 0);    // 从第0层开始遍历
         return maxCliqueSize;
     }
 
