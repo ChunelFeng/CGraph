@@ -92,11 +92,11 @@ protected:
      * @param graph
      * @return
      */
-    CVoid buildReverseGraph(const GSortedGElementPtrSet& elements,
-                            const std::vector<std::vector<GElementPtr>>& paths,
-                            std::vector<std::vector<int>>& graph) {
+    static CVoid buildReverseGraph(const GSortedGElementPtrSet& elements,
+                                   const std::vector<std::vector<GElementPtr>>& paths,
+                                   std::vector<std::vector<int>>& graph) {
         for (auto& path : paths) {
-            for (int i = 0; i < path.size()-1; i++) {
+            for (int i = 0; i < path.size() - 1; i++) {
                 int height = getIndex(elements, path[i]);
                 for (int j = i + 1; j < path.size(); j++) {
                     int column = getIndex(elements, path[j]);
@@ -112,7 +112,7 @@ protected:
      * @param graph
      * @return
      */
-    CSize calcMaxCliqueSize(const std::vector<std::vector<int>>& graph) {
+    static CSize calcMaxCliqueSize(const std::vector<std::vector<int>>& graph) {
         CSize eleSize = graph.size();
         CSize maxCliqueSize = 0;    // 最大团size
         std::vector<CSize> curClique;    // 当前团
@@ -120,14 +120,8 @@ protected:
 
         std::function<void(CSize)> backtrack = [&](CSize depth) {
             for (CSize i = 0; i < eleSize; i++) {
-                if (visited[i]) {
-                    continue;    // 如果已经访问过了，则继续
-                }
-
-                if (depth + eleSize - i <= maxCliqueSize) {
-                    // 剪枝策略：剩余的元素数量，已经不足以超过 max 值了
-                    return;
-                }
+                if (visited[i]) { continue; }    // 如果已经访问过了，则继续
+                if (depth + eleSize - i <= maxCliqueSize) { return; }    // 剪枝策略：剩余的元素数量，已经不足以超过 max 值了
 
                 if (std::all_of(curClique.begin(), curClique.end(), [&](const int j) {
                     // 如果跟当前团的node，均为连接状态，则标记为可以进入当前团中

@@ -22,7 +22,6 @@ class GAspectObject : public GraphObject,
                       public CDescInfo {
 public:
     explicit GAspectObject() {
-        is_init_ = true;    // 没有init状态的，默认为true版本
         session_ = URandom<>::generateSession(CGRAPH_STR_ASPECT);
     }
 

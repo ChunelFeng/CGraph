@@ -19,7 +19,6 @@ class GDaemonObject : public GraphObject,
                       public CDescInfo {
 protected:
     explicit GDaemonObject() {
-        is_init_ = true;    // 默认都是初始化了的
         session_ = URandom<>::generateSession(CGRAPH_STR_DAEMON);
     }
 

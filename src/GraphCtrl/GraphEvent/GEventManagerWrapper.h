@@ -35,7 +35,6 @@ CGRAPH_NAMESPACE_BEGIN
     CStatus notify(const std::string& key, GEventType type) {                           \
         CGRAPH_FUNCTION_BEGIN                                                           \
         CGRAPH_ASSERT_NOT_NULL(this->event_manager_)                                    \
-        CGRAPH_ASSERT_INIT(true)                                                        \
         status = this->event_manager_->trigger(key, type);                              \
         CGRAPH_FUNCTION_END                                                             \
     }                                                                                   \
