@@ -11,6 +11,7 @@
 
 #include "../GraphObject.h"
 #include "../GraphParam/GParamInclude.h"
+#include "../GraphEvent/GEventInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -18,6 +19,7 @@ class GDaemonObject : public GraphObject,
                       public CDescInfo {
 protected:
     explicit GDaemonObject() {
+        is_init_ = true;    // 默认都是初始化了的
         session_ = URandom<>::generateSession(CGRAPH_STR_DAEMON);
     }
 
@@ -50,6 +52,8 @@ protected:
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
 
+    CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER
+
 private:
     /**
      * 所有Daemon均不执行run方法
@@ -66,9 +70,10 @@ private:
     friend class GPipeline;
 
 private:
-    GParamManagerPtr param_manager_ { nullptr };               // GParam参数管理类
+    GParamManagerPtr param_manager_ = nullptr;                 // GParam参数管理类
+    GEventManagerPtr event_manager_ = nullptr;                 // 事件管理类
     GDaemonParamPtr param_ = nullptr;                          // 用于存储daemon对象
-    CMSec interval_ = 0;
+    CMSec interval_ = 0;                                       // 执行间隔时间
 };
 
 using GDaemonObjectPtr = GDaemonObject *;

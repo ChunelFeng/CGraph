@@ -213,15 +213,6 @@ protected:
     CIndex getThreadIndex();
 
     /**
-     * 触发一个事件
-     * @param key
-     * @param type
-     * @return
-     * @notice 返回值仅表示是否触发成功，不表示事件是否执行成功
-     */
-    CStatus notify(const std::string& key, GEventType type);
-
-    /**
      * 设置线程池信息
      * @param ptr
      * @return
@@ -261,6 +252,8 @@ protected:
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
 
+    CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER
+
 protected:
     GParamManagerPtr param_manager_ { nullptr };     // 整体流程的参数管理类，所有pipeline中的所有element共享
     GElementType element_type_;                      // 用于区分element 内部类型
@@ -272,7 +265,7 @@ private:
     CSize loop_ { CGRAPH_DEFAULT_LOOP_TIMES };       // 元素执行次数
     CLevel level_ { CGRAPH_DEFAULT_ELEMENT_LEVEL };  // 用于设定init的执行顺序(值小的，优先init，可以为负数)
     CIndex binding_index_ { CGRAPH_DEFAULT_BINDING_INDEX };    // 用于设定绑定线程id
-    std::atomic<CSize> left_depend_ { 0 };        // 当 left_depend_ 值为0的时候，即可以执行该element信息
+    std::atomic<CSize> left_depend_ { 0 };           // 当 left_depend_ 值为0的时候，即可以执行该element信息
     std::set<GElement *> run_before_;                // 被依赖的节点
     std::set<GElement *> dependence_;                // 依赖的节点信息
     GElementParamMap local_params_;                  // 用于记录当前element的内部参数

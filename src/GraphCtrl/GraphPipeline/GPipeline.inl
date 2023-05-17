@@ -172,6 +172,7 @@ GPipeline* GPipeline::addGDaemon(CMSec ms, TParam* param) {
     daemon->setDParam<TParam>(param)
             ->setInterval(ms);
     daemon->setGParamManager(this->param_manager_);
+    daemon->setGEventManager(this->event_manager_);
     status = daemon_manager_->add(daemon);
 
     CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL
@@ -188,6 +189,7 @@ GPipeline* GPipeline::addGDaemon(CMSec ms, Args... args) {
     auto daemon = UAllocator::safeMallocTemplateCObject<TDaemon>(std::forward<Args>(args)...);
     daemon->setInterval(ms);
     daemon->setGParamManager(this->param_manager_);
+    daemon->setGEventManager(this->event_manager_);
     status = daemon_manager_->add(daemon);
 
     CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL

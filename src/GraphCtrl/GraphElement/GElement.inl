@@ -25,6 +25,7 @@ GElementPtr GElement::addGAspect(TParam* param) {
     aspect->setName(this->getName());
     aspect->setAParam<TParam>(param);
     aspect->setGParamManager(this->param_manager_);
+    aspect->setGEventManager(this->event_manager_);
     aspect_manager_->add(aspect);
     return this;
 }
@@ -40,6 +41,7 @@ GElement* GElement::addGAspect(Args... args) {
     auto aspect = UAllocator::safeMallocTemplateCObject<TAspect>(std::forward<Args>(args)...);
     aspect->setName(this->getName());
     aspect->setGParamManager(this->param_manager_);
+    aspect->setGEventManager(this->event_manager_);
     aspect_manager_->add(aspect);
     return this;
 }

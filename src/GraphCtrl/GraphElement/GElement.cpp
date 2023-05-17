@@ -231,16 +231,6 @@ CIndex GElement::getThreadIndex() {
 }
 
 
-CStatus GElement::notify(const std::string& key, GEventType type) {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(event_manager_)
-    CGRAPH_ASSERT_INIT(true)
-
-    status = event_manager_->trigger(key, type);
-    CGRAPH_FUNCTION_END
-}
-
-
 GElement* GElement::setThreadPool(UThreadPoolPtr ptr) {
     CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)

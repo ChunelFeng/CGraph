@@ -14,6 +14,7 @@
 #include "GAspectDefine.h"
 #include "../GraphObject.h"
 #include "../GraphParam/GParamInclude.h"
+#include "../GraphEvent/GEventInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -21,6 +22,7 @@ class GAspectObject : public GraphObject,
                       public CDescInfo {
 public:
     explicit GAspectObject() {
+        is_init_ = true;    // 没有init状态的，默认为true版本
         session_ = URandom<>::generateSession(CGRAPH_STR_ASPECT);
     }
 
@@ -57,9 +59,12 @@ protected:
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
 
+    CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER
+
 private:
     GAspectParamPtr param_ { nullptr };                       // 参数信息
     GParamManagerPtr param_manager_ { nullptr };              // GParam参数管理类
+    GEventManagerPtr event_manager_ { nullptr };              // 事件管理类
 
     friend class GAspectManager;
     friend class GElement;

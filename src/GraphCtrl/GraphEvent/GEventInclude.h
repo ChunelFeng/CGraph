@@ -11,5 +11,6 @@
 
 #include "GEvent.h"
 #include "GEventManager.h"
+#include "GEventManagerWrapper.h"
 
 #endif //CGRAPH_GEVENTINCLUDE_H
