@@ -38,7 +38,7 @@ tutorial_list = {
         "TU01-ThreadPool",
         "TU02-Lru",
         "TU03-Trie",
-        "TU04-Timer"
+        "TU04-Timer",
         "TU05-Distance"
 }
 
