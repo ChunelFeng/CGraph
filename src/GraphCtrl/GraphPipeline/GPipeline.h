@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: GPipeline.h
 @Time: 2021/6/2 10:15 下午
-@Desc: 
+@Desc:
 ***************************/
 
 #ifndef CGRAPH_GPIPELINE_H
@@ -128,7 +128,7 @@ public:
     template<typename TNode, typename ...Args,
             c_enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int> = 0>
     CStatus registerGElement(GTemplateNodePtr<Args ...> *elementRef,
-                             const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
+                             const GElementPtrSet &dependElements,
                              Args... args);
 
     /**

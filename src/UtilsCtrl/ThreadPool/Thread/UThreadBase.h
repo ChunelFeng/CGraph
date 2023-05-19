@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: UThreadBase.h
 @Time: 2021/7/2 11:24 下午
-@Desc: 
+@Desc:
 ***************************/
 
 #ifndef CGRAPH_UTHREADBASE_H
@@ -181,7 +181,7 @@ protected:
      * 设置线程亲和性，仅针对linux系统
      */
     CVoid setAffinity(int index) {
-#ifdef __linux__
+#if defined(__linux__) && !defined(__ANDROID__)
         if (!config_->bind_cpu_enable_ || CGRAPH_CPU_NUM == 0 || index < 0) {
             return;
         }
