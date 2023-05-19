@@ -265,9 +265,10 @@ private:
     CSize loop_ { CGRAPH_DEFAULT_LOOP_TIMES };       // 元素执行次数
     CLevel level_ { CGRAPH_DEFAULT_ELEMENT_LEVEL };  // 用于设定init的执行顺序(值小的，优先init，可以为负数)
     CIndex binding_index_ { CGRAPH_DEFAULT_BINDING_INDEX };    // 用于设定绑定线程id
-    std::atomic<CSize> left_depend_ { 0 };           // 当 left_depend_ 值为0的时候，即可以执行该element信息
+    std::atomic<CSize> left_depend_ { 0 };        // 当 left_depend_ 值为0的时候，即可以执行该element信息
     std::set<GElement *> run_before_;                // 被依赖的节点
     std::set<GElement *> dependence_;                // 依赖的节点信息
+    GElement* belong_ { nullptr };                   // 从属的element 信息，如为nullptr，则表示从属于 pipeline
     GElementParamMap local_params_;                  // 用于记录当前element的内部参数
     GAspectManagerPtr aspect_manager_ { nullptr };   // 整体流程的切面管理类
     GEventManagerPtr event_manager_ { nullptr };     // 事件管理类

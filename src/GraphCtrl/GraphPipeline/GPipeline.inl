@@ -90,6 +90,8 @@ template<typename T,
         c_enable_if_t<std::is_base_of<GNode, T>::value, int>>
 GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+
     GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T)
     status = node->setElementInfo(info.dependence_, info.name_, info.loop_,
                                   this->param_manager_, this->event_manager_);
@@ -110,6 +112,7 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
                                   const std::string &name,
                                   CSize loop) {
     CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
 
     // 如果不是所有的都非空，则创建失败
     if (std::any_of(elements.begin(), elements.end(),
@@ -125,6 +128,7 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
     GGroupPtr group = CGRAPH_SAFE_MALLOC_COBJECT(T)
     for (GElementPtr element : elements) {
         group->addElement(element);
+        element->belong_ = group;    // 从属于这个group的信息
     }
 
     status = group->setElementInfo(dependElements, name, loop,
@@ -143,6 +147,7 @@ template<typename TAspect, typename TParam,
         c_enable_if_t<std::is_base_of<GAspect, TAspect>::value, int>,
         c_enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int>>
 GPipelinePtr GPipeline::addGAspect(const GElementPtrSet& elements, TParam* param) {
+    CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
 
     const GElementPtrSet& curElements = elements.empty() ? element_repository_ : elements;
@@ -155,7 +160,7 @@ GPipelinePtr GPipeline::addGAspect(const GElementPtrSet& elements, TParam* param
         element->addGAspect<TAspect, TParam>(param);
     }
 
-    return this;
+    CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL
 }
 
 
