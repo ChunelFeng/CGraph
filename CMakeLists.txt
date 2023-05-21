@@ -39,6 +39,7 @@ set(CGRAPH_TUTORIAL_LIST
         T16-MessageSendRecv
         T17-MessagePubSub
         T18-Event
+        T19-Cancel
 
         # 以下为工具类tutorial
         TU01-ThreadPool

@@ -163,7 +163,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
     try {
         switch (type) {
             case CFunctionType::RUN: {
-                for (CSize i = 0; i < this->loop_ && !cancel_; i++) {
+                for (CSize i = 0; i < this->loop_ && !cancel_.load(); i++) {
                     /** 执行带切面的run方法 */
                     status = doAspect(GAspectType::BEGIN_RUN);
                     CGRAPH_FUNCTION_CHECK_STATUS

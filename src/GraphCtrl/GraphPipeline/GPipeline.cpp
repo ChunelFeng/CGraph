@@ -135,7 +135,7 @@ CStatus GPipeline::cancel() {
     CGRAPH_FUNCTION_BEGIN
     // 将所有的信息，设置为cancel的状态，停止执行
     for (auto cur : element_repository_) {
-        cur->cancel_ = true;
+        cur->cancel_.store(true);
     }
 
     CGRAPH_FUNCTION_END
@@ -233,7 +233,7 @@ CStatus GPipeline::initSchedule() {
 
 CVoid GPipeline::prepare() {
     if (element_repository_.empty()
-        || !(*element_repository_.begin())->cancel_) {
+        || !(*element_repository_.begin())->cancel_.load()) {
         /**
          * 有一个cancel 状态是 false，则表示全部为 false。进而不需要处理了
          * 普遍情况，应该是直接返回的。
@@ -243,7 +243,7 @@ CVoid GPipeline::prepare() {
     }
 
     for (auto* cur : element_repository_) {
-        cur->cancel_ = false;
+        cur->cancel_.store(false);
     }
 }
 
