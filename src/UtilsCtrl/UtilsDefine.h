@@ -71,8 +71,15 @@ static std::mutex g_check_status_mtx;
         return nullptr;                                       \
     }                                                         \
 
-#define CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL               \
-    return status.isOK() ? this : nullptr;                    \
+
+#define CGRAPH_ASSERT_INIT_THROW_ERROR(isInit)                                  \
+    if (unlikely((isInit) != is_init_)) {                                       \
+        CGRAPH_THROW_EXCEPTION("init status is not suitable")                   \
+    }                                                                           \
+
+
+#define CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL                                 \
+    return status.isOK() ? this : nullptr;                                      \
 
 
 #define CGRAPH_SLEEP_MILLISECOND(ms)                                            \

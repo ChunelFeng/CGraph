@@ -12,6 +12,7 @@
 #include <vector>
 #include <memory>
 #include <list>
+#include <thread>
 #include <sstream>
 
 #include "GPipelineObject.h"
@@ -49,6 +50,12 @@ public:
      * @return
      */
     CStatus process(CSize runTimes = CGRAPH_DEFAULT_LOOP_TIMES);
+
+    /**
+     * 异步执行pipeline信息
+     * @return
+     */
+    std::future<CStatus> runAsync();
 
     /**
      * 生成图可视化 graphviz 信息

@@ -161,24 +161,21 @@ public:
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CStatus pubTopicValue(const std::string& topic, const TImpl& value) {
         CGRAPH_FUNCTION_BEGIN
-        {
-            CGRAPH_LOCK_GUARD lock(pub_mutex_);
-            auto innerTopic = PUB_SUB_PREFIX + topic;
-            auto result = pub_sub_message_map_.find(innerTopic);
-            if (result == pub_sub_message_map_.end()) {
-                CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
-            }
+        auto innerTopic = PUB_SUB_PREFIX + topic;
+        auto result = pub_sub_message_map_.find(innerTopic);
+        if (result == pub_sub_message_map_.end()) {
+            CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
+        }
 
-            auto& messageSet = result->second;
-            for (auto msg : messageSet) {
-                msg->send(value);    // 给所有订阅的信息，一次发送消息
-            }
+        auto& messageSet = result->second;
+        for (auto msg : messageSet) {
+            msg->send(value);    // 给所有订阅的信息，一次发送消息
         }
         CGRAPH_FUNCTION_END
     }
 
     /**
-     * 根据传入的 connId信息，来
+     * 根据传入的 connId信息，来获取对应的message信息
      * @tparam TImpl
      * @param connId
      * @param value
@@ -189,15 +186,12 @@ public:
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CStatus subTopicValue(CIndex connId, TImpl& value, CMSec timeout = CGRAPH_MAX_BLOCK_TTL) {
         CGRAPH_FUNCTION_BEGIN
-        {
-            CGRAPH_LOCK_GUARD lock(sub_mutex_);
-            if (conn_message_map_.end() == conn_message_map_.find(connId)) {
-                CGRAPH_RETURN_ERROR_STATUS("no find [" + std::to_string(connId) + "] connect");
-            }
-
-            auto message = (GMessagePtr<TImpl>)(conn_message_map_[connId]);
-            status = message->recv(value, timeout);
+        if (conn_message_map_.end() == conn_message_map_.find(connId)) {
+            CGRAPH_RETURN_ERROR_STATUS("no find [" + std::to_string(connId) + "] connect");
         }
+
+        auto message = (GMessagePtr<TImpl>)(conn_message_map_[connId]);
+        status = message->recv(value, timeout);
         CGRAPH_FUNCTION_END
     }
 
@@ -268,8 +262,6 @@ private:
     CIndex cur_conn_id_ = 0;    // 记录当前的conn信息
 
     std::mutex bind_mutex_;
-    std::mutex sub_mutex_;
-    std::mutex pub_mutex_;
 
     template<typename U, USingletonType, CBool> friend class USingleton;
 };

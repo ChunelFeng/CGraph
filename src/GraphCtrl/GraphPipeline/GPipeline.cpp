@@ -89,7 +89,6 @@ CStatus GPipeline::destroy() {
     status += param_manager_->destroy();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    // 结束单个线程池信息
     status = schedule_.destroy();
     CGRAPH_FUNCTION_CHECK_STATUS
 
@@ -110,6 +109,23 @@ CStatus GPipeline::process(CSize runTimes) {
 
     status = destroy();
     CGRAPH_FUNCTION_END
+}
+
+
+std::future<CStatus> GPipeline::runAsync() {
+    /**
+     * 1. 确定是否已经初始化
+     * 2. 确定线程资源是ok的（理论上，初始化后，就一定会有值）
+     * 3. 异步的执行 run() 方法，并且返回执行结果的 future 信息
+     */
+    CGRAPH_ASSERT_INIT_THROW_ERROR(is_init_)
+
+    auto tp = schedule_.getThreadPool();
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(tp)
+
+    return tp->commit([this] {
+        return run();
+    }, CGRAPH_PIPELINE_TASK_STRATEGY);
 }
 
 
