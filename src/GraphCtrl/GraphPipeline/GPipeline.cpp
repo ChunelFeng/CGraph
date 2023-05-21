@@ -61,10 +61,12 @@ CStatus GPipeline::run() {
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
 
     /**
-     * 1. 将所有的 GParam 设置为初始值
-     * 2. 执行dag逻辑
-     * 3. 将所有的 GParam 复原
+     * 1. 做执行前的准备
+     * 2. 将所有的 GParam 设置为初始值
+     * 3. 执行dag逻辑
+     * 4. 将所有的 GParam 复原
      */
+    this->prepare();
     status = param_manager_->setup();
     CGRAPH_FUNCTION_CHECK_STATUS
 
@@ -112,7 +114,7 @@ CStatus GPipeline::process(CSize runTimes) {
 }
 
 
-std::future<CStatus> GPipeline::runAsync() {
+std::future<CStatus> GPipeline::asyncRun() {
     /**
      * 1. 确定是否已经初始化
      * 2. 确定线程资源是ok的（理论上，初始化后，就一定会有值）
@@ -126,6 +128,17 @@ std::future<CStatus> GPipeline::runAsync() {
     return tp->commit([this] {
         return run();
     }, CGRAPH_PIPELINE_TASK_STRATEGY);
+}
+
+
+CStatus GPipeline::cancel() {
+    CGRAPH_FUNCTION_BEGIN
+    // 将所有的信息，设置为cancel的状态，停止执行
+    for (auto cur : element_repository_) {
+        cur->cancel_ = true;
+    }
+
+    CGRAPH_FUNCTION_END
 }
 
 
@@ -209,13 +222,29 @@ CStatus GPipeline::initSchedule() {
     element_manager_->setThreadPool(tp);
 
     // 设置所有的element 中的thread_pool
-    for (auto& iter : this->element_repository_) {
-        CGRAPH_ASSERT_NOT_NULL(iter)
-        iter->setThreadPool(tp);
+    for (auto& cur : this->element_repository_) {
+        CGRAPH_ASSERT_NOT_NULL(cur)
+        cur->setThreadPool(tp);
     }
 
     CGRAPH_FUNCTION_END
 }
 
+
+CVoid GPipeline::prepare() {
+    if (element_repository_.empty()
+        || !(*element_repository_.begin())->cancel_) {
+        /**
+         * 有一个cancel 状态是 false，则表示全部为 false。进而不需要处理了
+         * 普遍情况，应该是直接返回的。
+         * 只有当上一次执行，被外部强制cancel的情况下，才会进入下方循环中的赋值逻辑
+         */
+        return;
+    }
+
+    for (auto* cur : element_repository_) {
+        cur->cancel_ = false;
+    }
+}
 
 CGRAPH_NAMESPACE_END

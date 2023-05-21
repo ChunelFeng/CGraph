@@ -308,7 +308,7 @@ int main() {
 [2023.05.05 - v2.4.1 - Chunel]
 * 提供线程绑定执行功能
 * 提供`pipeline`最大并发度获取方法。感谢 [Hanano-Yuuki](https://github.com/Hanano-Yuuki) 提供相关解决方案
-* 提供`pipeline`异步执行功能
+* 提供`pipeline`异步执行功能和执行时退出功能
 
 </details>
 

@@ -163,7 +163,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
     try {
         switch (type) {
             case CFunctionType::RUN: {
-                for (CSize i = 0; i < this->loop_; i++) {
+                for (CSize i = 0; i < this->loop_ && !cancel_; i++) {
                     /** 执行带切面的run方法 */
                     status = doAspect(GAspectType::BEGIN_RUN);
                     CGRAPH_FUNCTION_CHECK_STATUS
@@ -173,6 +173,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                          * 如果状态是ok的，并且被条件hold住，则循环执行
                          * 默认所有element的isHold条件均为false，即不hold，即执行一次
                          * 可以根据需求，对任意element类型，添加特定的isHold条件
+                         * 并且没有被退出
                          * */
                     } while (status.isOK() && this->isHold());
                     doAspect(GAspectType::FINISH_RUN, status);

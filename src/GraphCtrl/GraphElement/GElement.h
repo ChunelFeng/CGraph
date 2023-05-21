@@ -262,6 +262,7 @@ private:
     CBool done_ { false };                           // 判定被执行结束
     CBool linkable_ { false };                       // 判定是否可以连通计算
     CBool visible_ { true };                         // 判断可见的，如果被删除的话，则认为是不可见的
+    CBool cancel_ { false };                         // 是否被外部强制停止（多用于异步执行状态）
     CSize loop_ { CGRAPH_DEFAULT_LOOP_TIMES };       // 元素执行次数
     CLevel level_ { CGRAPH_DEFAULT_ELEMENT_LEVEL };  // 用于设定init的执行顺序(值小的，优先init，可以为负数)
     CIndex binding_index_ { CGRAPH_DEFAULT_BINDING_INDEX };    // 用于设定绑定线程id

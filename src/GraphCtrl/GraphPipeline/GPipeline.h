@@ -55,7 +55,13 @@ public:
      * 异步执行pipeline信息
      * @return
      */
-    std::future<CStatus> runAsync();
+    std::future<CStatus> asyncRun();
+
+    /**
+     * 停止执行流程，多用于异步执行流程中
+     * @return
+     */
+    CStatus cancel();
 
     /**
      * 生成图可视化 graphviz 信息
@@ -248,6 +254,12 @@ protected:
      * @return
      */
     CStatus initSchedule();
+
+    /**
+     * 准备执行流程
+     * @return
+     */
+    CVoid prepare();
 
     /** 不允许外部赋值和构造 */
     CGRAPH_NO_ALLOWED_COPY(GPipeline)
