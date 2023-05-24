@@ -24,11 +24,17 @@ public:
     GCluster& operator=(const GCluster& cluster);
 
 protected:
+    /**
+     * 线程池中的运行函数，依次执行beforeRun，run和afterRun方法，
+     * 其中有任何返回值问题，则直接返回
+     * @param isMock 是否真实执行run方法。默认执行的
+     * @return
+     */
+    CStatus process(CBool isMock);
+
     CStatus addElement(GElementPtr element) final;
 
     CStatus run() final;
-
-    CStatus process(CBool isMock) final;
 
     CStatus beforeRun() final;
 

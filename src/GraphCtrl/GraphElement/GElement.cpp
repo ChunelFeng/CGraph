@@ -98,11 +98,6 @@ CBool GElement::isLinkable() const {
 }
 
 
-CStatus GElement::process(bool isMock) {
-    CGRAPH_NO_SUPPORT
-}
-
-
 CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
     for (GElementPtr cur: elements) {
@@ -286,6 +281,17 @@ CBool GElement::isGroup() {
 
 CIndex GElement::getBindingIndex() {
     return this->binding_index_;
+}
+
+
+CStatus GElement::buildRelation(GElementRelation& relation) {
+    CGRAPH_FUNCTION_BEGIN
+
+    relation.predecessors_ = this->dependence_;    // 前驱
+    relation.successors_ = this->run_before_;    // 后继
+    relation.belong_ = this->belong_;    // 从属信息
+
+    CGRAPH_FUNCTION_END
 }
 
 CGRAPH_NAMESPACE_END

@@ -27,10 +27,6 @@ public:
     CBool operator()(GElementPtr a, GElementPtr b) const {
         return (a->level_ == b->level_) ? (a < b) : (a->level_ < b->level_);
     }
-
-    CStatus run() override {
-        CGRAPH_NO_SUPPORT
-    }
 };
 
 using GSortedGElementPtrSet = std::set<GElementPtr, GElementSorter>;

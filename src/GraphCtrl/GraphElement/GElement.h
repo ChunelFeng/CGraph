@@ -17,6 +17,7 @@
 
 #include "GElementDefine.h"
 #include "GElementObject.h"
+#include "GElementRelation.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -157,14 +158,6 @@ protected:
     CBool isLinkable() const;
 
     /**
-     * 线程池中的运行函数，依次执行beforeRun，run和afterRun方法，
-     * 其中有任何返回值问题，则直接返回
-     * @param isMock 是否真实执行run方法。默认执行的
-     * @return
-     */
-    virtual CStatus process(bool isMock);
-
-    /**
      * 执行切面逻辑
      * @param aspectType
      * @param curStatus
@@ -245,8 +238,16 @@ protected:
     /**
      * 获取绑定线程id信息
      * @return
+     * @notice 不同的group类型，获取 binding index 的方式不同
      */
     virtual CIndex getBindingIndex();
+
+    /**
+     * 获取当前节点的相关关系信息，包含前驱、后继、从属关系
+     * @param relation
+     * @return
+     */
+    CStatus buildRelation(GElementRelation& relation);
 
     CGRAPH_NO_ALLOWED_COPY(GElement);
 
@@ -255,7 +256,6 @@ protected:
     CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER
 
 protected:
-    GParamManagerPtr param_manager_ { nullptr };     // 整体流程的参数管理类，所有pipeline中的所有element共享
     GElementType element_type_;                      // 用于区分element 内部类型
 
 private:
@@ -267,12 +267,13 @@ private:
     CLevel level_ { CGRAPH_DEFAULT_ELEMENT_LEVEL };  // 用于设定init的执行顺序(值小的，优先init，可以为负数)
     CIndex binding_index_ { CGRAPH_DEFAULT_BINDING_INDEX };    // 用于设定绑定线程id
     std::atomic<CSize> left_depend_ { 0 };        // 当 left_depend_ 值为0的时候，即可以执行该element信息
-    std::set<GElement *> run_before_;                // 被依赖的节点
-    std::set<GElement *> dependence_;                // 依赖的节点信息
+    std::set<GElement *> run_before_;                // 被依赖的节点（后继）
+    std::set<GElement *> dependence_;                // 依赖的节点信息（前驱）
     GElement* belong_ { nullptr };                   // 从属的element 信息，如为nullptr，则表示从属于 pipeline
     GElementParamMap local_params_;                  // 用于记录当前element的内部参数
     GAspectManagerPtr aspect_manager_ { nullptr };   // 整体流程的切面管理类
     GEventManagerPtr event_manager_ { nullptr };     // 事件管理类
+    GParamManagerPtr param_manager_ { nullptr };     // 整体流程的参数管理类，所有pipeline中的所有element共享
     UThreadPoolPtr thread_pool_ { nullptr };         // 用于执行的线程池信息
 
     friend class GCluster;
@@ -282,6 +283,7 @@ private:
     friend class GGroup;
     friend class GPipeline;
     friend class GElementSorter;
+    friend class GFunction;
     friend class GEngine;
     friend class GStaticEngine;
     friend class GDynamicEngine;
