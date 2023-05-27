@@ -120,7 +120,7 @@ std::future<CStatus> GPipeline::asyncRun() {
      * 2. 确定线程资源是ok的（理论上，初始化后，就一定会有值）
      * 3. 异步的执行 run() 方法，并且返回执行结果的 future 信息
      */
-    CGRAPH_ASSERT_INIT_THROW_ERROR(is_init_)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(true)
 
     auto tp = schedule_.getThreadPool();
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(tp)
