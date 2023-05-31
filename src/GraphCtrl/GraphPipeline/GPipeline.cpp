@@ -125,9 +125,18 @@ std::future<CStatus> GPipeline::asyncRun() {
     auto tp = schedule_.getThreadPool();
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(tp)
 
-    return tp->commit([this] {
+    return tp->commitWithPriority([this] {
         return run();
-    }, CGRAPH_PIPELINE_TASK_STRATEGY);
+    }, 0);
+}
+
+
+std::future<CStatus> GPipeline::asyncProcess(CSize runTimes) {
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+
+    return std::async(std::launch::async, [runTimes, this] {
+        return process(runTimes);
+    });
 }
 
 

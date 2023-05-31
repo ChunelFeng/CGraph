@@ -52,10 +52,17 @@ public:
     CStatus process(CSize runTimes = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
-     * 异步执行pipeline信息
+     * 异步执行pipeline的run流程
      * @return
      */
     std::future<CStatus> asyncRun();
+
+    /**
+     * 异步执行pipeline的全部流程
+     * @param runTimes
+     * @return
+     */
+    std::future<CStatus> asyncProcess(CSize runTimes);
 
     /**
      * 停止执行流程，多用于异步执行流程中

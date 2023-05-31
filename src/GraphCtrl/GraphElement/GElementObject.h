@@ -17,11 +17,6 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class GElementObject : public GraphObject {
-
-protected:
-    CStatus run() override {
-        CGRAPH_NO_SUPPORT
-    }
 };
 
 CGRAPH_NAMESPACE_END
