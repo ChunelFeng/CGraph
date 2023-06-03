@@ -19,9 +19,9 @@ CStatus GEvent::process(GEventType type) {
             break;
         case GEventType::ASYNC:    // 异步触发
             CGRAPH_ASSERT_NOT_NULL(this->thread_pool_)
-            thread_pool_->commit([this] {
+            thread_pool_->commitWithPriority([this] {
                 this->trigger(this->param_);
-            }, CGRAPH_EVENT_TASK_STRATEGY);
+            }, CGRAPH_DEFAULT_PRIORITY);
             break;
         default:
             CGRAPH_RETURN_ERROR_STATUS("unknown event type")

@@ -50,12 +50,11 @@ static const int CGRAPH_THREAD_MAX_PRIORITY = 99;                               
 static const CMSec CGRAPH_MAX_BLOCK_TTL = 3999999999;                                       // 最大阻塞时间，单位为ms
 static const CUint CGRAPH_DEFAULT_RINGBUFFER_SIZE = 1024;                                   // 默认环形队列的大小
 static const CIndex CGRAPH_SECONDARY_THREAD_COMMON_ID = -1;                                 // 辅助线程统一id标识
+static const CInt CGRAPH_DEFAULT_PRIORITY = 0;                                              // 默认优先级
 
 static const int CGRAPH_DEFAULT_TASK_STRATEGY = -1;                                         // 默认线程调度策略
 static const int CGRAPH_LONG_TIME_TASK_STRATEGY = -101;                                     // 长时间任务调度策略
 static const int CGRAPH_REGION_TASK_STRATEGY = -102;                                        // region的调度策略
-static const int CGRAPH_EVENT_TASK_STRATEGY = -103;                                         // event的调度策略
-static const int CGRAPH_PIPELINE_TASK_STRATEGY = -104;                                      // pipeline的调度策略
 
 /**
  * 以下为线程池配置信息
@@ -71,7 +70,7 @@ static const int CGRAPH_MAX_STEAL_BATCH_SIZE = 2;                               
 static const int CGRAPH_SECONDARY_THREAD_TTL = 10;                                          // 辅助线程ttl，单位为s
 static const bool CGRAPH_MONITOR_ENABLE = false;                                            // 是否开启监控程序（如果不开启，辅助线程策略将失效）
 static const int CGRAPH_MONITOR_SPAN = 5;                                                   // 监控线程执行间隔，单位为s
-static const bool CGRAPH_BIND_CPU_ENABLE = true;                                            // 是否开启绑定cpu模式（仅针对主线程）
+static const bool CGRAPH_BIND_CPU_ENABLE = false;                                           // 是否开启绑定cpu模式（仅针对主线程）
 static const int CGRAPH_PRIMARY_THREAD_POLICY = CGRAPH_THREAD_SCHED_OTHER;                  // 主线程调度策略
 static const int CGRAPH_SECONDARY_THREAD_POLICY = CGRAPH_THREAD_SCHED_OTHER;                // 辅助线程调度策略
 static const int CGRAPH_PRIMARY_THREAD_PRIORITY = CGRAPH_THREAD_MIN_PRIORITY;               // 主线程调度优先级（取值范围0~99）

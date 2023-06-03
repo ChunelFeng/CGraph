@@ -127,7 +127,7 @@ std::future<CStatus> GPipeline::asyncRun() {
 
     return tp->commitWithPriority([this] {
         return run();
-    }, 0);
+    }, CGRAPH_DEFAULT_PRIORITY);
 }
 
 

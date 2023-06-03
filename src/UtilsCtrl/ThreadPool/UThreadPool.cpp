@@ -187,6 +187,10 @@ CStatus UThreadPool::createSecondaryThread(CInt size) {
 
     int leftSize = (int)(config_.max_thread_size_ - config_.default_thread_size_ - secondary_threads_.size());
     int realSize = std::min(size, leftSize);    // 使用 realSize 来确保所有的线程数量之和，不会超过设定max值
+    if (realSize <= 0) {
+        CGRAPH_RETURN_ERROR_STATUS("cannot create more thread")
+    }
+
     for (int i = 0; i < realSize; i++) {
         auto ptr = CGRAPH_MAKE_UNIQUE_COBJECT(UThreadSecondary)
         ptr->setThreadPoolInfo(&task_queue_, &priority_task_queue_, &config_);
