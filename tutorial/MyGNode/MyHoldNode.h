@@ -34,6 +34,7 @@ public:
         /**
          * 针对当前场景，添加 hold逻辑
          * 当 hold逻辑被满足的时候，会重复执行当前节点，直到返回false为止
+         * 也可以用isHold机制，实现算子内部自己的状态机机制
          */
         auto param = CGRAPH_GET_GPARAM(MyParam, HOLD_PARAM_NAME)
         if (nullptr == param) {
