@@ -27,6 +27,14 @@ protected:
      */
     GNode* setType(const GNodeType& type);
 
+    /**
+     * 并发执行所有的task信息
+     * @param tasks
+     * @param ttl
+     * @return
+     */
+    CStatus doParallel(const UTaskGroup& tasks, CMSec ttl = CGRAPH_MAX_BLOCK_TTL);
+
 private:
     GNodeType node_type_;                    // 节点类型
 };

@@ -141,7 +141,7 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
 CStatus GDynamicEngine::wait() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_UNIQUE_LOCK lock(lock_);
-    cv_.wait(lock,  [this] {
+    cv_.wait(lock, [this] {
         /**
          * 遇到以下条件之一，结束执行：
          * 1，执行结束

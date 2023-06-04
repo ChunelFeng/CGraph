@@ -27,6 +27,7 @@ public:
 
     /**
      * 销毁一个pipeline信息
+     * @param pipeline
      * @return
      */
     static CStatus remove(GPipelinePtr pipeline);

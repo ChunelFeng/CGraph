@@ -276,6 +276,7 @@ private:
     GParamManagerPtr param_manager_ { nullptr };     // 整体流程的参数管理类，所有pipeline中的所有element共享
     UThreadPoolPtr thread_pool_ { nullptr };         // 用于执行的线程池信息
 
+    friend class GNode;
     friend class GCluster;
     friend class GRegion;
     friend class GCondition;

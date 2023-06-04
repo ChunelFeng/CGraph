@@ -22,4 +22,14 @@ GNode* GNode::setType(const GNodeType& type) {
     return this;
 }
 
+
+CStatus GNode::doParallel(const UTaskGroup& tasks, CMSec ttl) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(true)
+    CGRAPH_ASSERT_NOT_NULL(thread_pool_)
+
+    status = thread_pool_->submit(tasks, ttl);
+    CGRAPH_FUNCTION_END
+}
+
 CGRAPH_NAMESPACE_END
