@@ -23,7 +23,7 @@ GNode* GNode::setType(const GNodeType& type) {
 }
 
 
-CStatus GNode::doParallel(const UTaskGroup& tasks, CMSec ttl) {
+CStatus GNode::spawn(const UTaskGroup& tasks, CMSec ttl) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(true)
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
