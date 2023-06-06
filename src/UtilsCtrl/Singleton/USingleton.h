@@ -93,6 +93,8 @@ protected:
 private:
     T* handle_ { nullptr };
     std::mutex lock_;
+    
+    CGRAPH_NO_ALLOWED_COPY(USingleton);
 };
 
 CGRAPH_NAMESPACE_END
