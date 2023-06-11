@@ -11,6 +11,7 @@
 
 #include "DAnnDefine.h"
 #include "DAnnNode.h"
+#include "DAnnTemplateNode.h"
 #include "DAnnParam.h"
 
 #endif //CGRAPH_DANNINCLUDE_H

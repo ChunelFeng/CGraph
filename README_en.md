@@ -58,7 +58,7 @@ You can transfer your params in many scenes. It is also possible to extend the f
 
 * Compile online, enter [CGraph env online](https://gitpod.io/#/github.com/ChunelFeng/CGraph), log in with your Github id, enter commands as flowers to compile and run your first tutorial.
   ```shell
-  $ sudo apt-get install cmake
+  $ sudo apt-get install cmake -y
   $ ./CGraph-build.sh
   $ ./build/T00-HelloCGraph
   ```

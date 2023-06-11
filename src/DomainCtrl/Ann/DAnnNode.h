@@ -87,7 +87,7 @@ protected:
      * 分拆执行函数
      * @return
      */
-    CStatus run() final;
+    CStatus run() override;
 
 private:
     typedef	CStatus (DAnnNode::*DAnnNodeFuncPtr)();
