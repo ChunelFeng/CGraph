@@ -310,6 +310,9 @@ int main() {
 * 提供`pipeline`最大并发度获取方法。感谢 [Hanano-Yuuki](https://github.com/Hanano-Yuuki) 提供相关解决方案
 * 提供`pipeline`异步执行功能和执行时退出功能
 
+[2023.06.17 - v2.4.2 - Chunel]
+* 提供`MultiLinearCondition`(串行条件)和`MultiParallelCondition`(并行条件)功能
+
 </details>
 
 ------------

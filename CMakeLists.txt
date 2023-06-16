@@ -8,9 +8,9 @@ message("*  \\____/   \\____/   /_/     \\__,_/   / .___/ /_/ /_/   *")
 message("*                                    /_/ by Chunel Feng *")
 message("* * * * * * * * * * * * * * * * * * * * * * * * * * * * *")
 
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.2.5)
 
-project(CGraph VERSION 2.4.1)
+project(CGraph VERSION 2.4.2)
 
 # CGraph默认使用C++11版本，推荐使用C++17版本。暂不支持C++11以下版本
 set(CMAKE_CXX_STANDARD 11)

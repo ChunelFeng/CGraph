@@ -13,6 +13,6 @@
 #include "GGroup.h"
 #include "GCluster/GCluster.h"
 #include "GRegion/GRegion.h"
-#include "GCondition/GCondition.h"
+#include "GCondition/GConditionInclude.h"
 
 #endif //CGRAPH_GGROUPINCLUDE_H

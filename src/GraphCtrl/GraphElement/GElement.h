@@ -104,7 +104,7 @@ public:
     /**
      * 当前element是否是一个 group逻辑
      * @return
-    */
+     */
     CBool isGroup();
 
 protected:
@@ -138,9 +138,17 @@ protected:
     virtual CBool isHold();
 
     /**
+     * 用于在Multi*Condition中被判定，是否可以执行。
+     * @return
+     * @notice 默认返回false，不执行
+     */
+    virtual CBool isMatch();
+
+    /**
      * 崩溃流程处理
      * @param ex
      * @return
+     * @notice 可以自行覆写crashed方法，但不推荐。如果需要复写的话，返回值需要填写 STATUS_CRASH，否则可能出现执行异常
      */
     virtual CStatus crashed(const CException& ex);
 
@@ -280,6 +288,8 @@ private:
     friend class GCluster;
     friend class GRegion;
     friend class GCondition;
+    friend class GMultiLinearCondition;
+    friend class GMultiParallelCondition;
     friend class GElementManager;
     friend class GGroup;
     friend class GPipeline;
