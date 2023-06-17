@@ -21,6 +21,8 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
+enum class GMultiConditionType;
+
 class GElement : public GElementObject,
                  public CDescInfo {
 public:
@@ -263,9 +265,6 @@ protected:
 
     CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER
 
-protected:
-    GElementType element_type_;                      // 用于区分element 内部类型
-
 private:
     CBool done_ { false };                           // 判定被执行结束
     CBool linkable_ { false };                       // 判定是否可以连通计算
@@ -277,6 +276,7 @@ private:
     std::atomic<CSize> left_depend_ { 0 };        // 当 left_depend_ 值为0的时候，即可以执行该element信息
     std::set<GElement *> run_before_;                // 被依赖的节点（后继）
     std::set<GElement *> dependence_;                // 依赖的节点信息（前驱）
+    GElementType element_type_;                      // 用于区分element 内部类型
     GElement* belong_ { nullptr };                   // 从属的element 信息，如为nullptr，则表示从属于 pipeline
     GElementParamMap local_params_;                  // 用于记录当前element的内部参数
     GAspectManagerPtr aspect_manager_ { nullptr };   // 整体流程的切面管理类
@@ -288,11 +288,10 @@ private:
     friend class GCluster;
     friend class GRegion;
     friend class GCondition;
-    friend class GMultiLinearCondition;
-    friend class GMultiParallelCondition;
     friend class GElementManager;
     friend class GGroup;
     friend class GPipeline;
+    friend class GAdapter;
     friend class GElementSorter;
     friend class GFunction;
     friend class GEngine;
@@ -300,6 +299,7 @@ private:
     friend class GDynamicEngine;
     friend class GMaxParaOptimizer;
     template<typename T> friend class GSingleton;
+    template<GMultiConditionType> friend class GMultiCondition;
 };
 
 using GElementPtr = GElement *;

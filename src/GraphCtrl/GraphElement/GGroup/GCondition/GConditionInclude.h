@@ -10,7 +10,6 @@
 #define CGRAPH_GCONDITIONINCLUDE_H
 
 #include "GCondition.h"
-#include "GMultiLinearCondition.h"
-#include "GMultiParallelCondition.h"
+#include "GMultiCondition.h"
 
 #endif //CGRAPH_GCONDITIONINCLUDE_H
