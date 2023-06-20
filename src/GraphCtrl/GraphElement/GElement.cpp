@@ -212,7 +212,7 @@ CBool GElement::isHold() {
 CBool GElement::isMatch() {
     /**
      * 默认仅返回false
-     * 主要面对写入 Multi*Condition 的时候，做判断当前element是否被执行
+     * 主要面对写入 MultiCondition 的时候，做判断当前element是否被执行
      */
     return false;
 }

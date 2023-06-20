@@ -140,7 +140,7 @@ protected:
     virtual CBool isHold();
 
     /**
-     * 用于在Multi*Condition中被判定，是否可以执行。
+     * 用于在MultiCondition中被判定，是否可以执行。
      * @return
      * @notice 默认返回false，不执行
      */
@@ -261,10 +261,6 @@ protected:
 
     CGRAPH_NO_ALLOWED_COPY(GElement);
 
-    CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
-
-    CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER
-
 private:
     CBool done_ { false };                           // 判定被执行结束
     CBool linkable_ { false };                       // 判定是否可以连通计算
@@ -280,8 +276,6 @@ private:
     GElement* belong_ { nullptr };                   // 从属的element 信息，如为nullptr，则表示从属于 pipeline
     GElementParamMap local_params_;                  // 用于记录当前element的内部参数
     GAspectManagerPtr aspect_manager_ { nullptr };   // 整体流程的切面管理类
-    GEventManagerPtr event_manager_ { nullptr };     // 事件管理类
-    GParamManagerPtr param_manager_ { nullptr };     // 整体流程的参数管理类，所有pipeline中的所有element共享
     UThreadPoolPtr thread_pool_ { nullptr };         // 用于执行的线程池信息
 
     friend class GNode;
@@ -300,6 +294,9 @@ private:
     friend class GMaxParaOptimizer;
     template<typename T> friend class GSingleton;
     template<GMultiConditionType> friend class GMultiCondition;
+
+    CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER_WITH_MEMBER
+    CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER_WITH_MEMBER
 };
 
 using GElementPtr = GElement *;

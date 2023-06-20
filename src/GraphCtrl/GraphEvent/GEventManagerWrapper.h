@@ -40,6 +40,14 @@ CGRAPH_NAMESPACE_BEGIN
     }                                                                                   \
                                                                                         \
 
+
+#define CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER_WITH_MEMBER                               \
+private:                                                                                \
+    GEventManagerPtr event_manager_ = nullptr;                                          \
+protected:                                                                              \
+    CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER                                               \
+                                                                                        \
+
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GEVENTMANAGERWRAPPER_H

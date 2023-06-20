@@ -96,6 +96,14 @@ CGRAPH_NAMESPACE_BEGIN
     }                                                                                   \
                                                                                         \
 
+
+#define CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER_WITH_MEMBER                               \
+private:                                                                                \
+    GParamManagerPtr param_manager_ = nullptr;                                          \
+protected:                                                                              \
+    CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER                                               \
+                                                                                        \
+
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GPARAMMANAGERWRAPPER_H
