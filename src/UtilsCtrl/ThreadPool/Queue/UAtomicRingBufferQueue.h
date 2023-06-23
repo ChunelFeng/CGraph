@@ -88,8 +88,7 @@ public:
                 CGRAPH_RETURN_ERROR_STATUS("receive message timeout.")
             }
 
-            value = (*ring_buffer_queue_[head_]);
-            *ring_buffer_queue_[head_] = {};
+            value = std::move((*ring_buffer_queue_[head_]));
             head_ = (head_ + 1) % capacity_;
         }
         push_cv_.notify_one();

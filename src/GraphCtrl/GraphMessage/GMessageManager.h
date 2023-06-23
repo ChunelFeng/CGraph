@@ -220,7 +220,7 @@ public:
      * 清空数据
      * @return
      */
-    CStatus clear() override {
+    CStatus clear() final {
         CGRAPH_FUNCTION_BEGIN
         for (auto& cur : send_recv_message_map_) {
             CGRAPH_DELETE_PTR(cur.second)
