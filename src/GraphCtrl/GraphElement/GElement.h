@@ -302,6 +302,7 @@ private:
     friend class GStaticEngine;
     friend class GDynamicEngine;
     friend class GMaxParaOptimizer;
+    friend class GElementRepository;
     template<typename T> friend class GSingleton;
     template<GMultiConditionType> friend class GMultiCondition;
 

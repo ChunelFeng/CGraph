@@ -20,15 +20,11 @@ GPipeline::GPipeline() {
 
 
 GPipeline::~GPipeline() {
+    // 结束的时候，会自动释放所有的element信息
     CGRAPH_DELETE_PTR(daemon_manager_)
     CGRAPH_DELETE_PTR(element_manager_)
     CGRAPH_DELETE_PTR(param_manager_)
     CGRAPH_DELETE_PTR(event_manager_)
-
-    // 结束的时候，清空所有创建的节点信息。所有节点信息，仅在这一处释放
-    for (GElementPtr element : element_repository_) {
-        CGRAPH_DELETE_PTR(element)
-    }
 }
 
 
@@ -61,13 +57,13 @@ CStatus GPipeline::run() {
     CGRAPH_ASSERT_NOT_NULL(param_manager_)
 
     /**
-     * 1. 做执行前的准备
+     * 1. 将所有 GElement 的状态设定为 NORMAL
      * 2. 将所有的 GParam 设置为初始值
      * 3. 执行dag逻辑
      * 4. 将所有的 GParam 复原
      */
-    this->prepare();
-    status = param_manager_->setup();
+    status += repository_.setup();
+    status += param_manager_->setup();
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status = element_manager_->run();
@@ -141,18 +137,21 @@ std::future<CStatus> GPipeline::asyncProcess(CSize runTimes) {
 
 
 CStatus GPipeline::cancel() {
-    return pushAllState(GElementState::CANCEL);
+    CGRAPH_ASSERT_INIT(true)
+    return repository_.pushAllState(GElementState::CANCEL);
 }
 
 
 CStatus GPipeline::yield() {
-    return pushAllState(GElementState::YIELD);
+    CGRAPH_ASSERT_INIT(true)
+    return repository_.pushAllState(GElementState::YIELD);
 }
 
 
 CStatus GPipeline::resume() {
     // 直接恢复正常状态好了
-    return pushAllState(GElementState::NORMAL);
+    CGRAPH_ASSERT_INIT(true)
+    return repository_.pushAllState(GElementState::NORMAL);
 }
 
 
@@ -233,39 +232,11 @@ CStatus GPipeline::initSchedule() {
 
     auto tp = schedule_.getThreadPool();
     event_manager_->setThreadPool(tp);
+    // 这里设置线程池，是为了将tp信息，传递给内部的engine类
     element_manager_->setThreadPool(tp);
 
     // 设置所有的element 中的thread_pool
-    for (auto& cur : this->element_repository_) {
-        CGRAPH_ASSERT_NOT_NULL(cur)
-        cur->setThreadPool(tp);
-    }
-
-    CGRAPH_FUNCTION_END
-}
-
-
-CVoid GPipeline::prepare() {
-    if (element_repository_.empty()
-        || GElementState::NORMAL != (*element_repository_.begin())->cur_state_.load()) {
-        return;
-    }
-
-    pushAllState(GElementState::NORMAL);
-}
-
-
-CStatus GPipeline::pushAllState(GElementState state) {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT(true)
-
-    for (auto cur : element_repository_) {
-        cur->cur_state_.store(state);
-        if (GElementState::YIELD != state) {
-            // 目前仅非yield状态，需要切换的。如果一直处于 yield状态，是不需要被通知的
-            cur->yield_cv_.notify_one();
-        }
-    }
+    repository_.setThreadPool(tp);
 
     CGRAPH_FUNCTION_END
 }

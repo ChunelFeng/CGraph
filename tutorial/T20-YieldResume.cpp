@@ -30,7 +30,7 @@ void tutorial_yield_resume() {
     auto result = pipeline->asyncRun();
     CGRAPH_SLEEP_MILLISECOND(2600)
 
-    CGRAPH_ECHO("pipeline async run, YIELD after 2600ms.");
+    CGRAPH_ECHO("pipeline async run, YIELD.");
     status += pipeline->yield();    // 暂停执行，保留当前pipeline内部所有参数信息和状态信息
 
     CGRAPH_SLEEP_MILLISECOND(7200)

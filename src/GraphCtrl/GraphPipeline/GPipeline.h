@@ -71,13 +71,13 @@ public:
     CStatus cancel();
 
      /**
-      * 暂停当前pipeline的执行
+      * 暂停当前pipeline的执行，多用于异步执行流程中
       * @return
       */
      CStatus yield();
 
      /**
-      * 恢复当前pipeline的执行
+      * 恢复当前pipeline的执行，多用于异步执行流程中
       * @return
       */
      CStatus resume();
@@ -274,19 +274,6 @@ protected:
      */
     CStatus initSchedule();
 
-    /**
-     * 准备执行流程
-     * @return
-     */
-    CVoid prepare();
-
-    /**
-     * 设置所有内部的element状态
-     * @param state
-     * @return
-     */
-    CStatus pushAllState(GElementState state);
-
     /** 不允许外部赋值和构造 */
     CGRAPH_NO_ALLOWED_COPY(GPipeline)
 
@@ -297,7 +284,7 @@ private:
     GEventManagerPtr event_manager_ = nullptr;                  // 事件管理类
 
     GSchedule schedule_;                                        // 调度管理类
-    GElementPtrSet element_repository_;                         // 标记创建的所有节点，最终释放使用
+    GElementRepository repository_;                             // 记录创建的所有element的仓库
 
     friend class GPipelineFactory;
     friend class UAllocator;

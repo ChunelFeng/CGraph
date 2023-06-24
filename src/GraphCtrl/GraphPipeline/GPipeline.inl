@@ -48,7 +48,7 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
 
     status = element_manager_->add(dynamic_cast<GElementPtr>(*elementRef));
     CGRAPH_FUNCTION_CHECK_STATUS
-    element_repository_.insert(*elementRef);
+    repository_.insert(*elementRef);
     CGRAPH_FUNCTION_END
 }
 
@@ -81,7 +81,7 @@ CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,
 
     status = element_manager_->add(dynamic_cast<GElementPtr>(*elementRef));
     CGRAPH_FUNCTION_CHECK_STATUS
-    element_repository_.insert(*elementRef);
+    repository_.insert(*elementRef);
     CGRAPH_FUNCTION_END
 }
 
@@ -100,7 +100,7 @@ GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
         return nullptr;
     }
 
-    element_repository_.insert(node);
+    repository_.insert(node);
     return node;
 }
 
@@ -138,7 +138,7 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
         return nullptr;
     }
 
-    this->element_repository_.insert(group);
+    this->repository_.insert(group);
     return group;
 }
 
@@ -150,14 +150,14 @@ GPipelinePtr GPipeline::addGAspect(const GElementPtrSet& elements, TParam* param
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
 
-    const GElementPtrSet& curElements = elements.empty() ? element_repository_ : elements;
+    // 如果传入的是空的话，则默认将所有的element添加aspect信息
+    const GElementPtrSet& curElements = elements.empty()
+                                        ? repository_.elements_
+                                        : elements;
     for (GElementPtr element : curElements) {
-        // 如果传入的为空，或者不是当前pipeline中的element，则不处理
-        if (nullptr == element || (element_repository_.find(element) == element_repository_.end())) {
-            continue;
+        if (repository_.find(element)) {
+            element->addGAspect<TAspect, TParam>(param);
         }
-
-        element->addGAspect<TAspect, TParam>(param);
     }
 
     CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL
