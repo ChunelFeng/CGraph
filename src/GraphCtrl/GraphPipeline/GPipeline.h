@@ -70,6 +70,18 @@ public:
      */
     CStatus cancel();
 
+     /**
+      * 暂停当前pipeline的执行
+      * @return
+      */
+     CStatus yield();
+
+     /**
+      * 恢复当前pipeline的执行
+      * @return
+      */
+     CStatus resume();
+
     /**
      * 生成图可视化 graphviz 信息
      * @param oss
@@ -267,6 +279,13 @@ protected:
      * @return
      */
     CVoid prepare();
+
+    /**
+     * 设置所有内部的element状态
+     * @param state
+     * @return
+     */
+    CStatus pushAllState(GElementState state);
 
     /** 不允许外部赋值和构造 */
     CGRAPH_NO_ALLOWED_COPY(GPipeline)

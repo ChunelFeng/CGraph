@@ -158,19 +158,20 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
     try {
         switch (type) {
             case CFunctionType::RUN: {
-                for (CSize i = 0; i < this->loop_ && !cancel_.load(); i++) {
+                for (CSize i = 0; i < this->loop_ && GElementState::CANCEL != cur_state_.load(); i++) {
                     /** 执行带切面的run方法 */
                     status = doAspect(GAspectType::BEGIN_RUN);
                     CGRAPH_FUNCTION_CHECK_STATUS
                     do {
                         status = run();
                         /**
-                         * 如果状态是ok的，并且被条件hold住，则循环执行
+                         * 在run结束之后，首先需要判断一下是否进入yield状态了。
+                         * 接下来，如果状态是ok的，并且被条件hold住，则循环执行
                          * 默认所有element的isHold条件均为false，即不hold，即执行一次
                          * 可以根据需求，对任意element类型，添加特定的isHold条件
                          * 并且没有被退出
                          * */
-                    } while (status.isOK() && this->isHold());
+                    } while (checkYield(), status.isOK() && this->isHold());
                     doAspect(GAspectType::FINISH_RUN, status);
                 }
                 break;
@@ -276,6 +277,14 @@ CVoid GElement::dumpElement(std::ostream& oss) {
     if (this->loop_ > 1 && !this->isGroup()) {
         oss << 'p' << this << " -> p" << this << "[label=\"" << this->loop_ << "\"]" << ";\n";
     }
+}
+
+
+CVoid GElement::checkYield() {
+    std::unique_lock<std::mutex> lk(yield_mutex_);
+    this->yield_cv_.wait(lk, [this] {
+        return GElementState::YIELD != cur_state_;
+    });
 }
 
 

@@ -31,6 +31,14 @@ enum class GElementType {
     SINGLETON = 0x00040002,                  // 单例
 };
 
+
+enum class GElementState {
+    CREATE = 0x0000,                          // 创建状态（暂未init的情况）
+    NORMAL = 0x1000,                          // 正常执行状态
+    CANCEL = 0x1001,                          // 取消状态
+    YIELD = 0x1002,                           // 暂停状态
+};
+
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GELEMENTDEFINE_H

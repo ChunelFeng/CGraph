@@ -16,10 +16,10 @@ CGRAPH_NAMESPACE_BEGIN
 
 template<GMultiConditionType type>
 class GMultiCondition : public GCondition {
-public:
+private:
     explicit GMultiCondition();
 
-    CStatus run() override;
+    CStatus run() final;
 
     /**
      * 串行执行
@@ -33,7 +33,6 @@ public:
      */
     CStatus parallelRun();
 
-private:
     CIndex choose() final;
 
     friend class GPipeline;

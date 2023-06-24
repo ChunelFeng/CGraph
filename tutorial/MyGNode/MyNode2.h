@@ -17,7 +17,7 @@ public:
     // run 方法可以多次执行，且必须实现
     CStatus init() override {
         CStatus status;
-        CGraph::CGRAPH_ECHO("[%s], enter MyNode2 init function.", this->getName().c_str());
+        CGraph::CGRAPH_ECHO("[INIT] [%s], enter MyNode2 init function.", this->getName().c_str());
         return status;
     }
 
@@ -30,7 +30,7 @@ public:
 
     CStatus destroy() override {
         CStatus status;
-        CGraph::CGRAPH_ECHO("[%s], enter MyNode2 destroy function.", this->getName().c_str());
+        CGraph::CGRAPH_ECHO("[DESTROY] [%s], enter MyNode2 destroy function.", this->getName().c_str());
         return status;
     }
 };

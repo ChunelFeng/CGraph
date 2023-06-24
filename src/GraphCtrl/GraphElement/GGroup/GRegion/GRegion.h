@@ -32,6 +32,7 @@ protected:
     CStatus run() final;
     CStatus destroy() final;
 
+private:
     CStatus addElement(GElementPtr element) final;
 
     CVoid dump(std::ostream& oss) final;

@@ -31,9 +31,9 @@ protected:
      */
     CSize getRange() const;
 
+private:
     CVoid dump(std::ostream& oss) final;
 
-private:
     CStatus run() override;
 
     CStatus addElement(GElementPtr element) override;

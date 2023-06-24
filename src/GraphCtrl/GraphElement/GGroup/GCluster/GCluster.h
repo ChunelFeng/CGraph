@@ -25,6 +25,19 @@ public:
 
 protected:
     /**
+     * 获取element个数信息
+     * @return
+     */
+    CSize getElementNum();
+
+    /**
+     * 获取绑定信息
+     * @return
+     */
+    CIndex getBindingIndex() override;
+
+private:
+    /**
      * 线程池中的运行函数，依次执行beforeRun，run和afterRun方法，
      * 其中有任何返回值问题，则直接返回
      * @param isMock 是否真实执行run方法。默认执行的
@@ -32,9 +45,9 @@ protected:
      */
     CStatus process(CBool isMock);
 
-    CStatus addElement(GElementPtr element) final;
-
     CStatus run() final;
+
+    CStatus addElement(GElementPtr element) final;
 
     CStatus beforeRun() final;
 
@@ -43,23 +56,10 @@ protected:
     CVoid dump(std::ostream& oss) final;
 
     /**
-     * 获取element个数信息
-     * @return
-     */
-    CSize getElementNum();
-
-    /**
      * 判断是否所有element均执行结束了
      * @return
      */
     CBool isDone();
-
-    /**
-     * 获取绑定信息
-     * @return
-     */
-    CIndex getBindingIndex() override;
-
 
     friend class GElementManager;
     friend class GRegion;

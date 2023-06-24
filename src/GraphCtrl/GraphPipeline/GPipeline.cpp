@@ -141,13 +141,18 @@ std::future<CStatus> GPipeline::asyncProcess(CSize runTimes) {
 
 
 CStatus GPipeline::cancel() {
-    CGRAPH_FUNCTION_BEGIN
-    // 将所有的信息，设置为cancel的状态，停止执行
-    for (auto cur : element_repository_) {
-        cur->cancel_.store(true);
-    }
+    return pushAllState(GElementState::CANCEL);
+}
 
-    CGRAPH_FUNCTION_END
+
+CStatus GPipeline::yield() {
+    return pushAllState(GElementState::YIELD);
+}
+
+
+CStatus GPipeline::resume() {
+    // 直接恢复正常状态好了
+    return pushAllState(GElementState::NORMAL);
 }
 
 
@@ -200,7 +205,7 @@ GPipelinePtr GPipeline::setUniqueThreadPoolConfig(const UThreadPoolConfig& confi
 }
 
 
-GPipeline* GPipeline::setSharedThreadPool(UThreadPoolPtr ptr) {
+GPipelinePtr GPipeline::setSharedThreadPool(UThreadPoolPtr ptr) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
 
@@ -242,18 +247,27 @@ CStatus GPipeline::initSchedule() {
 
 CVoid GPipeline::prepare() {
     if (element_repository_.empty()
-        || !(*element_repository_.begin())->cancel_.load()) {
-        /**
-         * 有一个cancel 状态是 false，则表示全部为 false。进而不需要处理了
-         * 普遍情况，应该是直接返回的。
-         * 只有当上一次执行，被外部强制cancel的情况下，才会进入下方循环中的赋值逻辑
-         */
+        || GElementState::NORMAL != (*element_repository_.begin())->cur_state_.load()) {
         return;
     }
 
-    for (auto* cur : element_repository_) {
-        cur->cancel_.store(false);
+    pushAllState(GElementState::NORMAL);
+}
+
+
+CStatus GPipeline::pushAllState(GElementState state) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(true)
+
+    for (auto cur : element_repository_) {
+        cur->cur_state_.store(state);
+        if (GElementState::YIELD != state) {
+            // 目前仅非yield状态，需要切换的。如果一直处于 yield状态，是不需要被通知的
+            cur->yield_cv_.notify_one();
+        }
     }
+
+    CGRAPH_FUNCTION_END
 }
 
 CGRAPH_NAMESPACE_END

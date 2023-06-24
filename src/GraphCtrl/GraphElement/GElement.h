@@ -121,18 +121,6 @@ protected:
     ~GElement() override;
 
     /**
-     * run方法执行之前的执行函数
-     * @return
-     */
-    virtual CStatus beforeRun();
-
-    /**
-     * run方法执行之后的执行函数
-     * @return
-     */
-    virtual CStatus afterRun();
-
-    /**
      * 是否持续进行
      * 默认为false，表示执行且仅执行一次
      * @return
@@ -153,6 +141,52 @@ protected:
      * @notice 可以自行覆写crashed方法，但不推荐。如果需要复写的话，返回值需要填写 STATUS_CRASH，否则可能出现执行异常
      */
     virtual CStatus crashed(const CException& ex);
+
+    /**
+     * 获取当前element内部参数
+     * @tparam T
+     * @param key
+     * @return
+     */
+    template<typename T,
+            c_enable_if_t<std::is_base_of<GElementParam, T>::value, int> = 0>
+    T* getEParam(const std::string& key);
+
+    /**
+     * 获取执行线程对应的信息
+     * @return
+     * @notice 辅助线程返回-1
+     */
+    CIndex getThreadIndex();
+
+    /**
+     * 获取绑定线程id信息
+     * @return
+     * @notice 不同的group类型，获取 binding index 的方式不同
+     */
+    virtual CIndex getBindingIndex();
+
+    /**
+     * 获取当前节点的相关关系信息，包含前驱、后继、从属关系
+     * @param relation
+     * @return
+     */
+    CStatus buildRelation(GElementRelation& relation);
+
+    CGRAPH_NO_ALLOWED_COPY(GElement);
+
+private:
+    /**
+     * run方法执行之前的执行函数
+     * @return
+     */
+    virtual CStatus beforeRun();
+
+    /**
+     * run方法执行之后的执行函数
+     * @return
+     */
+    virtual CStatus afterRun();
 
     /**
      * 判定element是否可以运行
@@ -192,28 +226,11 @@ protected:
                                    GEventManagerPtr eventManager);
 
     /**
-     * 获取当前element内部参数
-     * @tparam T
-     * @param key
-     * @return
-     */
-    template<typename T,
-            c_enable_if_t<std::is_base_of<GElementParam, T>::value, int> = 0>
-    T* getEParam(const std::string& key);
-
-    /**
      * 包含切面相关功能的函数，fat取自fatjar的意思
      * @param type
      * @return
      */
     CStatus fatProcessor(const CFunctionType& type);
-
-    /**
-     * 获取执行线程对应的信息
-     * @return
-     * @notice 辅助线程返回-1
-     */
-    CIndex getThreadIndex();
 
     /**
      * 设置线程池信息
@@ -246,26 +263,15 @@ protected:
     CVoid dumpElement(std::ostream& oss);
 
     /**
-     * 获取绑定线程id信息
-     * @return
-     * @notice 不同的group类型，获取 binding index 的方式不同
-     */
-    virtual CIndex getBindingIndex();
-
-    /**
-     * 获取当前节点的相关关系信息，包含前驱、后继、从属关系
-     * @param relation
+     * 判断是否进入 yield状态。如果是的话，则等待恢复。未进入yield状态，则继续运行
      * @return
      */
-    CStatus buildRelation(GElementRelation& relation);
-
-    CGRAPH_NO_ALLOWED_COPY(GElement);
+    inline CVoid checkYield();
 
 private:
     CBool done_ { false };                           // 判定被执行结束
     CBool linkable_ { false };                       // 判定是否可以连通计算
     CBool visible_ { true };                         // 判断可见的，如果被删除的话，则认为是不可见的
-    std::atomic<CBool> cancel_ { false };         // 是否被外部强制停止（多用于异步执行状态）
     CSize loop_ { CGRAPH_DEFAULT_LOOP_TIMES };       // 元素执行次数
     CLevel level_ { CGRAPH_DEFAULT_ELEMENT_LEVEL };  // 用于设定init的执行顺序(值小的，优先init，可以为负数)
     CIndex binding_index_ { CGRAPH_DEFAULT_BINDING_INDEX };    // 用于设定绑定线程id
@@ -277,6 +283,10 @@ private:
     GElementParamMap local_params_;                  // 用于记录当前element的内部参数
     GAspectManagerPtr aspect_manager_ { nullptr };   // 整体流程的切面管理类
     UThreadPoolPtr thread_pool_ { nullptr };         // 用于执行的线程池信息
+    std::atomic<GElementState> cur_state_ { GElementState::CREATE };    // 当前执行状态
+
+    std::mutex yield_mutex_;                         // 控制停止执行的锁
+    std::condition_variable yield_cv_;               // 控制停止执行的条件变量
 
     friend class GNode;
     friend class GCluster;

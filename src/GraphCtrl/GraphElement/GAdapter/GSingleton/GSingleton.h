@@ -15,7 +15,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 template<typename T>
 class GSingleton : public GAdapter {
-protected:
+private:
     explicit GSingleton() {
         this->element_type_ = GElementType::SINGLETON;
         session_ = URandom<>::generateSession(CGRAPH_STR_SINGLETON);

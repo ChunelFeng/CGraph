@@ -40,6 +40,7 @@ set(CGRAPH_TUTORIAL_LIST
         T17-MessagePubSub
         T18-Event
         T19-Cancel
+        T20-YieldResume
 
         # 以下为工具类tutorial
         TU01-ThreadPool

@@ -312,6 +312,7 @@ int main() {
 
 [2023.06.17 - v2.4.2 - Chunel]
 * 提供`MultiCondition`(多条件)功能
+* 提供了`pipeline`暂停执行和恢复执行功能
 
 </details>
 

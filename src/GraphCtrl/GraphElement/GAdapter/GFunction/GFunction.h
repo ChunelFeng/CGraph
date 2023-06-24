@@ -37,7 +37,7 @@ public:
     // 针对GFunction，是需要写成public的，否则在外部的 lambda中，无法获取
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
 
-protected:
+private:
     explicit GFunction() {
         this->element_type_ = GElementType::FUNCTION;
         session_ = URandom<>::generateSession(CGRAPH_STR_FUNCTION);
