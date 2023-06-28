@@ -72,9 +72,9 @@ protected:
 
 
 private:
+    CBool backtrace_enable_ = false;                             // 是否使能backtrace功能
     std::string key_;                                            // 对应的key信息
     USerialUniqueArray<std::string> backtrace_;                  // 记录参数的调用栈信息，仅记录get 此参数的地方。不包括 create和remove的地方。
-    CBool backtrace_enable_ = false;                             // 是否使能backtrace功能
     USpinLock backtrace_lock_;                                   // 针对backtrace的自旋锁
 
     friend class GParamManager;
