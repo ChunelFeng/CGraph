@@ -9,6 +9,8 @@
 #ifndef CGRAPH_GFUNCTION_H
 #define CGRAPH_GFUNCTION_H
 
+#include "../GAdapter.h"
+
 CGRAPH_NAMESPACE_BEGIN
 
 class GFunction : public GAdapter {
@@ -20,40 +22,21 @@ public:
      * @return
      */
     GFunction* setFunction(const CFunctionType& type,
-                           CGRAPH_CSTATUS_CONST_FUNCTION_REF func) {
-        CGRAPH_ASSERT_INIT_RETURN_NULL(false)
-        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(func)
-
-        switch (type) {
-            case CFunctionType::INIT: init_function_ = func; break;
-            case CFunctionType::RUN: run_function_ = func; break;
-            case CFunctionType::DESTROY: destroy_function_ = func; break;
-            default: return nullptr;     // 不可能出现的情况
-        }
-
-        return this;
-    }
+                           CGRAPH_CSTATUS_CONST_FUNCTION_REF func);
 
     // 针对GFunction，是需要写成public的，否则在外部的 lambda中，无法获取
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
 
+    CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER
+
 private:
-    explicit GFunction() {
-        this->element_type_ = GElementType::FUNCTION;
-        session_ = URandom<>::generateSession(CGRAPH_STR_FUNCTION);
-    };
+    explicit GFunction();
 
-    CStatus init() override {
-        return init_function_ ? init_function_() : CStatus();
-    }
+    CStatus init() override;
 
-    CStatus run() override {
-        return run_function_ ? run_function_() : CStatus();
-    }
+    CStatus run() override;
 
-    CStatus destroy() override {
-        return destroy_function_ ? destroy_function_() : CStatus();
-    }
+    CStatus destroy() override;
 
 private:
     CGRAPH_CSTATUS_FUNCTION init_function_ = nullptr;
