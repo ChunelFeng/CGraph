@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYNODE1_H
 #define CGRAPH_MYNODE1_H
 
-#include "../../src/CGraph.h"
+#include <CGraph/CGraph>
 
 class MyNode1 : public CGraph::GNode {
 public:

@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYCONNASPECT_H
 #define CGRAPH_MYCONNASPECT_H
 
-#include "../../src/CGraph.h"
+#include <CGraph/CGraph>
 #include "../MyParams/MyConnParam.h"
 
 class MyConnAspect : public CGraph::GAspect {

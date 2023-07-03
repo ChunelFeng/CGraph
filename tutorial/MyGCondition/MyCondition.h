@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYCONDITION_H
 #define CGRAPH_MYCONDITION_H
 
-#include "../../src/CGraph.h"
+#include <CGraph/CGraph>
 
 class MyCondition : public CGraph::GCondition {
 public:

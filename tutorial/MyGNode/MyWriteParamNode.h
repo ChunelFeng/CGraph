@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYWRITEPARAMNODE_H
 #define CGRAPH_MYWRITEPARAMNODE_H
 
-#include "../../src/CGraph.h"
+#include <CGraph/CGraph>
 #include "../MyParams/MyParam.h"
 
 class MyWriteParamNode : public CGraph::GNode {

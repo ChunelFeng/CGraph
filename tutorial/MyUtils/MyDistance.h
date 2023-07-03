@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYDISTANCE_H
 #define CGRAPH_MYDISTANCE_H
 
-#include "../../src/CGraph.h"
+#include <CGraph/CGraph>
 
 template<typename TSrc, typename TRes>    // 自定义距离类型
 class MyDistance : public CGraph::UDistance<TSrc, TRes> {

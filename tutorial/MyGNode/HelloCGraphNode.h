@@ -9,7 +9,7 @@
 #ifndef CGRAPH_HELLOCGRAPHNODE_H
 #define CGRAPH_HELLOCGRAPHNODE_H
 
-#include "../../src/CGraph.h"
+#include <CGraph/CGraph>
 
 class HelloCGraphNode : public CGraph::GNode {
 public:

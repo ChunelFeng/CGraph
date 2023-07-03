@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYREADPARAMNODE_H
 #define CGRAPH_MYREADPARAMNODE_H
 
-#include "../../src/CGraph.h"
+#include <CGraph/CGraph>
 #include "../MyParams/MyParam.h"
 
 class MyReadParamNode : public CGraph::GNode {

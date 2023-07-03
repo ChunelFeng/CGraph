@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYSHOWADDRESSNODE_H
 #define CGRAPH_MYSHOWADDRESSNODE_H
 
-#include "../../src/CGraph.h"
+#include <CGraph/CGraph>
 #include "../MyParams/MyParam.h"
 
 class MyShowAddressNode : public CGraph::GNode {

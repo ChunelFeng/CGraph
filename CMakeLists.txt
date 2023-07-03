@@ -59,4 +59,8 @@ foreach(tut ${CGRAPH_TUTORIAL_LIST})
             $<TARGET_OBJECTS:CGraph>
             tutorial/${tut}.cpp
             )
+            target_include_directories(${tut}
+            PUBLIC
+            $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+            )
 endforeach()
