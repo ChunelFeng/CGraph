@@ -222,6 +222,27 @@ CStatus GPipeline::calcMaxPara(CSize& size) {
 }
 
 
+CStatus GPipeline::makeSerial() {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(false)
+    CGRAPH_ASSERT_NOT_NULL(element_manager_)
+
+    if (schedule_.type_ != GScheduleType::UNIQUE) {
+        CGRAPH_RETURN_ERROR_STATUS("cannot set serial config without UNIQUE schedule")
+    }
+
+    if (!element_manager_->checkSerializable()) {
+        CGRAPH_RETURN_ERROR_STATUS("cannot set serial config for this pipeline")
+    }
+
+    UThreadPoolConfig config;
+    config.default_thread_size_ = 0;    // 设置之后，不再开辟线程池，直接通过主线程执行pipeline的逻辑
+    config.max_thread_size_ = 0;
+    schedule_.config_ = config;
+    CGRAPH_FUNCTION_END
+}
+
+
 CStatus GPipeline::initSchedule() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(event_manager_)

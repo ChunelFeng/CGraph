@@ -309,4 +309,9 @@ CStatus GElement::buildRelation(GElementRelation& relation) {
     CGRAPH_FUNCTION_END
 }
 
+
+CBool GElement::isSerializable() {
+    return true;
+}
+
 CGRAPH_NAMESPACE_END

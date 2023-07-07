@@ -37,6 +37,8 @@ private:
 
     CVoid dump(std::ostream& oss) final;
 
+    CBool isSerializable() final;
+
 private:
     GElementManagerPtr manager_ = nullptr;    // region 内部通过 manager来管理其中的 element 信息
 

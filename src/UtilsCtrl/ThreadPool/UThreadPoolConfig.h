@@ -33,7 +33,6 @@ struct UThreadPoolConfig : public UThreadObject {
     bool batch_task_enable_ = CGRAPH_BATCH_TASK_ENABLE;
     bool monitor_enable_ = CGRAPH_MONITOR_ENABLE;
 
-
 protected:
     /**
      * 计算可盗取的范围，盗取范围不能超过默认线程数-1

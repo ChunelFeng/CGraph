@@ -259,6 +259,13 @@ public:
     CStatus calcMaxPara(CSize& size);
 
     /**
+     * 将符合串行执行条件的pipeline，设定为串行执行的模式。可以大幅度提升运行性能。
+     * @return
+     * @notice 如果pipeline不可以设定的话，通过返回值提示对应信息
+     */
+    CStatus makeSerial();
+
+    /**
      * 注册GParam 交互类集合
      * @return
      */

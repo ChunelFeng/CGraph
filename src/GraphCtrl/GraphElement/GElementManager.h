@@ -16,7 +16,8 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GElementManager : public GElementObject, public GraphManager<GElement> {
+class GElementManager : public GElementObject,
+                        public GraphManager<GElement> {
 protected:
     explicit GElementManager();
     ~GElementManager() override;
@@ -86,6 +87,12 @@ protected:
      * @return
      */
     CStatus calcMaxParaSize(CSize& size);
+
+    /**
+     * 查看是否可以串行执行
+     * @return
+     */
+    CBool checkSerializable();
 
 private:
     GSortedGElementPtrSet manager_elements_;                    // 保存节点信息的内容

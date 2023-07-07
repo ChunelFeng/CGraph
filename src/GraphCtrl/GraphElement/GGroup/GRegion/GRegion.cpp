@@ -100,4 +100,13 @@ CVoid GRegion::dump(std::ostream& oss) {
     }
 }
 
+
+CBool GRegion::isSerializable() {
+    if (nullptr == manager_) {
+        return false;
+    }
+
+    return manager_->checkSerializable();
+}
+
 CGRAPH_NAMESPACE_END

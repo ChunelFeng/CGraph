@@ -85,4 +85,11 @@ CIndex GMultiCondition<type>::choose() {
     return 0;
 }
 
+
+template<GMultiConditionType type>
+CBool GMultiCondition<type>::isSerializable() {
+    // 只有当其中的元素不超过1个的时候，才可以串行
+    return group_elements_arr_.size() <= 1;
+}
+
 CGRAPH_NAMESPACE_END

@@ -268,6 +268,12 @@ private:
      */
     inline CVoid checkYield();
 
+    /**
+     * 判断当前元素，是否可以线性执行。默认返回true
+     * @return
+     */
+    virtual CBool isSerializable();
+
 private:
     CBool done_ { false };                           // 判定被执行结束
     CBool linkable_ { false };                       // 判定是否可以连通计算
@@ -313,7 +319,6 @@ private:
 using GElementPtr = GElement *;
 using GElementPtrArr = std::vector<GElementPtr>;
 using GElementPtrSet = std::set<GElementPtr>;
-using GElementPtrSetRef = GElementPtrSet &;
 
 CGRAPH_NAMESPACE_END
 

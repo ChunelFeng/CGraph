@@ -97,9 +97,10 @@ protected:
                                    std::vector<std::vector<int>>& graph) {
         for (auto& path : paths) {
             for (int i = 0; i < path.size() - 1; i++) {
-                int height = getIndex(elements, path[i]);
+                // 这里的 find是一定能找到的。因为path的数据，是从elements中记录的
+                int height = (int)std::distance(elements.begin(), elements.find(path[i]));
                 for (int j = i + 1; j < path.size(); j++) {
-                    int column = getIndex(elements, path[j]);
+                    int column = (int)std::distance(elements.begin(), elements.find(path[j]));
                     graph[height][column] = 0;
                     graph[column][height] = 0;    // 因为需要记录的是补图，所以将默认值设置为1，符合条件的设置为0
                 }
@@ -134,24 +135,8 @@ protected:
             maxCliqueSize = std::max(curClique.size(), maxCliqueSize);
         };
 
-        backtrack(0, 0);    // 从第0层开始遍历
+        backtrack(0, 0);
         return maxCliqueSize;
-    }
-
-    /**
-     * 获取 element 在set中的具体位置
-     * @param elements
-     * @param ptr
-     * @return
-     * @notice 内部函数，且 ptr 是从 elements里遍历出来的，故不存在找不到的情况。即：不会返回-1，肯定返回一个正确的值
-     */
-    static CIndex getIndex(const GSortedGElementPtrSet& elements, GElementPtr ptr) {
-        CIndex index = -1;
-        auto it = elements.find(ptr);
-        if (it != elements.end()) {
-            index = std::distance(elements.begin(), it);
-        }
-        return index;
     }
 
     friend class GElementManager;

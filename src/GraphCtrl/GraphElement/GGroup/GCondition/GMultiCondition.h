@@ -35,6 +35,8 @@ private:
 
     CIndex choose() final;
 
+    CBool isSerializable() override;
+
     friend class GPipeline;
     friend class UAllocator;
 };
