@@ -16,20 +16,17 @@ ELSEIF(UNIX)
     # linux平台，加入多线程内容
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -pthread -Wno-format-overflow")
     add_definitions(-D_ENABLE_LIKELY_)
-ELSEIF(MINGW)
-    MESSAGE("[notice] do not support MinGW now, please set compiler info in CGraph/cmake/CGraph-env-include.cmake")
-    # 由于平台限制，暂不支持MINGW直接编译。请手动设置如下 CMAKE_C_COMPILER 和 CMAKE_CXX_COMPILER信息
-    # set(CMAKE_C_COMPILER "my_path_to/mingw/bin/gcc")
-    # set(CMAKE_CXX_COMPILER "my_path_to/mingw/bin/g++")
 ELSEIF(WIN32)
-    # windows平台，加入utf-8设置。否则无法通过编译
-    # 直接Download ZIP文件，导致无法编译通过问题的解决方法，参考：https://github.com/ChunelFeng/CGraph/issues/12
-    add_definitions(/utf-8)
+    IF(MSVC)
+        # windows平台，加入utf-8设置。否则无法通过编译
+        # 直接Download ZIP文件，导致无法编译通过问题的解决方法，参考：https://github.com/ChunelFeng/CGraph/issues/12
+        add_definitions(/utf-8)
 
-    # 禁止几处warning级别提示
-    add_compile_options(/wd4996)
-    add_compile_options(/wd4267)
-    add_compile_options(/wd4018)
+        # 禁止几处warning级别提示
+        add_compile_options(/wd4996)
+        add_compile_options(/wd4267)
+        add_compile_options(/wd4018)
+    ENDIF()
 ENDIF()
 
 # 以下三选一，本地编译执行，推荐OBJECT方式
