@@ -16,9 +16,6 @@ GCluster::GCluster() {
 }
 
 
-GCluster::~GCluster() = default;
-
-
 GCluster::GCluster(const GCluster& cluster) {
     this->group_elements_arr_ = cluster.group_elements_arr_;
 }

@@ -18,6 +18,8 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GDynamicEngine : public GEngine {
 protected:
+    explicit GDynamicEngine() = default;
+
     CStatus setup(const GSortedGElementPtrSet& elements) override;
 
     CStatus run() override;
@@ -65,11 +67,13 @@ private:
     GElementPtrArr front_element_arr_;                          // 没有依赖的元素信息
     CSize total_end_size_ = 0;                                  // 图结束节点数量
     CSize finished_end_size_ = 0;                               // 执行结束节点数量
-    std::atomic<CSize> run_element_size_;                       // 执行元素的个数，用于后期校验。这里和静态不一样，需要加atomic
+    std::atomic<CSize> run_element_size_ {0};                   // 执行元素的个数，用于后期校验。这里和静态不一样，需要加atomic
     CStatus cur_status_;                                        // 当前全局的状态信息
 
     std::mutex lock_;
     std::condition_variable cv_;
+
+    friend class UAllocator;
 };
 
 CGRAPH_NAMESPACE_END

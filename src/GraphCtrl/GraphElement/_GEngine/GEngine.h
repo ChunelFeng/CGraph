@@ -16,6 +16,8 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GEngine : public GEngineObject {
 protected:
+    explicit GEngine() = default;
+
     /**
      * 将所有注册进入 pipeline的内容，进行分析和解构
      * @param elements
@@ -44,6 +46,7 @@ protected:
         return CGRAPH_DEFAULT_BINDING_INDEX == bindingIndex
                ? schedule_strategy_ : bindingIndex;
     }
+
 
 protected:
     UThreadPoolPtr thread_pool_ { nullptr };                    // 内部执行的线程池

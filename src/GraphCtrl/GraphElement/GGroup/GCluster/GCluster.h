@@ -18,12 +18,12 @@ CGRAPH_NAMESPACE_BEGIN
 class GCluster : public GGroup {
 public:
     /** 涉及到与线程池的联动，cluster类无法将构造函数申明成protected类型 */
-    explicit GCluster();
-    ~GCluster() override;
     GCluster(const GCluster& cluster);
     GCluster& operator=(const GCluster& cluster);
 
 protected:
+    explicit GCluster();
+
     /**
      * 获取element个数信息
      * @return
@@ -61,11 +61,10 @@ private:
      */
     CBool isDone();
 
-    friend class GElementManager;
-    friend class GRegion;
     friend class GPipeline;
     friend class GStaticEngine;
     friend class GDynamicEngine;
+    friend class UAllocator;
 };
 
 using GClusterPtr = GCluster *;

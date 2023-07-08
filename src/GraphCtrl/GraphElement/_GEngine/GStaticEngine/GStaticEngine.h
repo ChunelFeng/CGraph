@@ -16,6 +16,8 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GStaticEngine : public GEngine {
 protected:
+    explicit GStaticEngine() = default;
+
     CStatus setup(const GSortedGElementPtrSet& elements) override;
 
     CStatus run() override;
@@ -39,6 +41,8 @@ protected:
 private:
     ParaWorkedClusterArrs para_cluster_arrs_;        // 可以并行的cluster数组
     CUint run_element_size_ = 0;                     // 当前已经执行的element的数量
+
+    friend class UAllocator;
 };
 
 CGRAPH_NAMESPACE_END

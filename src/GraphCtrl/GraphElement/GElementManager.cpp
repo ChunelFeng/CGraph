@@ -168,6 +168,10 @@ CStatus GElementManager::calcMaxParaSize(CSize& size) {
 
 
 CBool GElementManager::checkSerializable() {
+    if (engine_type_ != GEngineType::DYNAMIC) {
+        return false;    // 目前仅支持动态引擎的执行方式
+    }
+
     /**
      * 判定思路：
      * 1. 内部的element，均为可串行执行的
