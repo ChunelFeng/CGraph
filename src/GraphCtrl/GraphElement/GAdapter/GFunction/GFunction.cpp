@@ -12,7 +12,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 GFunctionPtr GFunction::setFunction(const CFunctionType& type,
                                     CGRAPH_CSTATUS_CONST_FUNCTION_REF func) {
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(func)
 
     switch (type) {

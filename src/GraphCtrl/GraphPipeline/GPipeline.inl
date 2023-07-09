@@ -90,7 +90,7 @@ template<typename T,
         c_enable_if_t<std::is_base_of<GNode, T>::value, int>>
 GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T)
     status = node->setElementInfo(info.dependence_, info.name_, info.loop_,
@@ -112,7 +112,7 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
                                   const std::string &name,
                                   CSize loop) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     // 如果不是所有的都非空，则创建失败
     if (std::any_of(elements.begin(), elements.end(),
@@ -148,7 +148,7 @@ template<typename TAspect, typename TParam,
         c_enable_if_t<std::is_base_of<GAspectParam, TParam>::value, int>>
 GPipelinePtr GPipeline::addGAspect(const GElementPtrSet& elements, TParam* param) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     // 如果传入的是空的话，则默认将所有的element添加aspect信息
     const GElementPtrSet& curElements = elements.empty()
@@ -169,7 +169,7 @@ template<typename TDaemon, typename TParam,
         c_enable_if_t<std::is_base_of<GDaemonParam, TParam>::value, int>>
 GPipeline* GPipeline::addGDaemon(CMSec ms, TParam* param) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_, daemon_manager_)
 
     GDaemonPtr daemon = CGRAPH_SAFE_MALLOC_COBJECT(TDaemon)
@@ -187,7 +187,7 @@ template<typename TDaemon, typename ...Args,
         c_enable_if_t<std::is_base_of<GTemplateDaemon<Args...>, TDaemon>::value, int>>
 GPipeline* GPipeline::addGDaemon(CMSec ms, Args... args) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_, daemon_manager_)
 
     auto daemon = UAllocator::safeMallocTemplateCObject<TDaemon>(std::forward<Args>(args)...);
@@ -205,7 +205,7 @@ template<typename TEvent, typename TParam,
         c_enable_if_t<std::is_base_of<GEventParam, TParam>::value, int>>
 GPipeline* GPipeline::addGEvent(const std::string& key, TParam* param) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_, event_manager_)
 
     event_manager_->param_manager_ = this->param_manager_;

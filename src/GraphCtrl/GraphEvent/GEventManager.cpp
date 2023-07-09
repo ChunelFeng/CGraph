@@ -60,7 +60,7 @@ CStatus GEventManager::trigger(const std::string &key, GEventType type) {
 
 
 GEventObject* GEventManager::setThreadPool(UThreadPoolPtr ptr) {
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr)
     for (auto& iter : events_map_) {
         CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(iter.second)

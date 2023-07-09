@@ -45,7 +45,7 @@ CStatus GElement::afterRun() {
 
 
 GElementPtr GElement::setName(const std::string& name) {
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     this->name_ = name.empty() ? this->session_ : name;
 
     // 设置name信息的时候，顺便给 aspect_manager_ 一起设置了
@@ -57,7 +57,7 @@ GElementPtr GElement::setName(const std::string& name) {
 
 
 GElement* GElement::setLoop(CSize loop) {
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     this->loop_ = loop;
     return this;
@@ -65,7 +65,7 @@ GElement* GElement::setLoop(CSize loop) {
 
 
 GElement* GElement::setLevel(CLevel level) {
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     this->level_ = level;
     return this;
@@ -73,7 +73,7 @@ GElement* GElement::setLevel(CLevel level) {
 
 
 GElement* GElement::setVisible(CBool visible) {
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     this->visible_ = visible;
     return this;
@@ -81,7 +81,7 @@ GElement* GElement::setVisible(CBool visible) {
 
 
 GElement* GElement::setBindingIndex(CIndex index) {
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     this->binding_index_ = index;
     return this;
@@ -236,7 +236,7 @@ CIndex GElement::getThreadIndex() {
 
 GElement* GElement::setThreadPool(UThreadPoolPtr ptr) {
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr)
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     this->thread_pool_ = ptr;
     return this;
 }

@@ -165,7 +165,7 @@ CStatus GPipeline::dump(std::ostream& oss) {
 
 
 GPipelinePtr GPipeline::setGElementRunTtl(CMSec ttl) {
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element_manager_, element_manager_->engine_)
 
     // 在element_manager中区执行信息了，所以ttl放到
@@ -175,7 +175,7 @@ GPipelinePtr GPipeline::setGElementRunTtl(CMSec ttl) {
 
 
 GPipelinePtr GPipeline::setGEngineType(GEngineType type) {
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element_manager_)
 
     element_manager_->setEngineType(type);
@@ -185,7 +185,7 @@ GPipelinePtr GPipeline::setGEngineType(GEngineType type) {
 
 GPipelinePtr GPipeline::setUniqueThreadPoolConfig(const UThreadPoolConfig& config) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     /**
      * 实际是将信息传递给 schedule中，如果是unique的话，就使用这个参数
@@ -198,7 +198,7 @@ GPipelinePtr GPipeline::setUniqueThreadPoolConfig(const UThreadPoolConfig& confi
 
 GPipelinePtr GPipeline::setSharedThreadPool(UThreadPoolPtr ptr) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     status = schedule_.makeType(ptr);
     CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL

@@ -50,7 +50,7 @@ GElement* GElement::addGAspect(Args... args) {
 template<typename T,
         c_enable_if_t<std::is_base_of<GElementParam, T>::value, int> >
 GElementPtr GElement::addEParam(const std::string& key, T* param) {
-    CGRAPH_ASSERT_INIT_RETURN_NULL(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param)
     if (local_params_.end() != local_params_.find(key)) {
         // 如果重复同名key信息，则删除原先的内容

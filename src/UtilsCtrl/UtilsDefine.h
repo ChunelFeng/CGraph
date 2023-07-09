@@ -45,7 +45,7 @@ CStatus _ASSERT_NOT_NULL(T t, Args... args) {
 template<typename T>
 CVoid _ASSERT_NOT_NULL_THROW_EXCEPTION(T t) {
     if (nullptr == t) {
-        CGRAPH_THROW_EXCEPTION("input ptr is null")
+        CGRAPH_THROW_EXCEPTION("[CException] input is null")
     }
 }
 
@@ -91,15 +91,9 @@ static std::mutex g_check_status_mtx;
         return CStatus("init status is not suitable");        \
     }                                                         \
 
-#define CGRAPH_ASSERT_INIT_RETURN_NULL(isInit)                \
-    if (unlikely((isInit) != is_init_)) {                     \
-        return nullptr;                                       \
-    }                                                         \
-
-
 #define CGRAPH_ASSERT_INIT_THROW_ERROR(isInit)                                  \
     if (unlikely((isInit) != is_init_)) {                                       \
-        CGRAPH_THROW_EXCEPTION("init status is not suitable")                   \
+        CGRAPH_THROW_EXCEPTION("[CException] init status is not suitable")      \
     }                                                                           \
 
 
