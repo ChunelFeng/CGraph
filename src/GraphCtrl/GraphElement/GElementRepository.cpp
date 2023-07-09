@@ -26,7 +26,7 @@ CBool GElementRepository::find(GElementPtr ptr) {
 
 
 GElementRepositoryPtr GElementRepository::setThreadPool(UThreadPoolPtr ptr) {
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr)
     for (auto& cur : this->elements_) {
         cur->setThreadPool(ptr);
     }

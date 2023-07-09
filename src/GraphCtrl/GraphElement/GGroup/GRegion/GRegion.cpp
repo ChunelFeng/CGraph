@@ -28,8 +28,7 @@ GRegion::~GRegion() {
 CStatus GRegion::init() {
     CGRAPH_FUNCTION_BEGIN
     // 在这里将初始化所有的节点信息，并且实现分析，联通等功能
-    CGRAPH_ASSERT_NOT_NULL(thread_pool_)
-    CGRAPH_ASSERT_NOT_NULL(manager_)
+    CGRAPH_ASSERT_NOT_NULL(thread_pool_, manager_)
 
     // 在region中，需要专门的调度逻辑
     this->manager_->setThreadPool(thread_pool_);
@@ -55,8 +54,7 @@ CStatus GRegion::destroy() {
 CStatus GRegion::run() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(true)
-    CGRAPH_ASSERT_NOT_NULL(thread_pool_)
-    CGRAPH_ASSERT_NOT_NULL(manager_)
+    CGRAPH_ASSERT_NOT_NULL(thread_pool_, manager_)
 
     status = manager_->run();
     CGRAPH_FUNCTION_END
@@ -66,8 +64,7 @@ CStatus GRegion::run() {
 CStatus GRegion::addElement(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
 
-    CGRAPH_ASSERT_NOT_NULL(element)
-    CGRAPH_ASSERT_NOT_NULL(manager_)
+    CGRAPH_ASSERT_NOT_NULL(element, manager_)
 
     manager_->manager_elements_.emplace(element);
     CGRAPH_FUNCTION_END
@@ -76,7 +73,7 @@ CStatus GRegion::addElement(GElementPtr element) {
 
 GRegion* GRegion::setGEngineType(GEngineType type) {
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(manager_)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(manager_)
 
     this->manager_->setEngineType(type);
     return this;

@@ -31,10 +31,7 @@ GPipeline::~GPipeline() {
 CStatus GPipeline::init() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)    // 必须是非初始化的状态下，才可以初始化。反之同理
-    CGRAPH_ASSERT_NOT_NULL(element_manager_)
-    CGRAPH_ASSERT_NOT_NULL(param_manager_)
-    CGRAPH_ASSERT_NOT_NULL(daemon_manager_)
-    CGRAPH_ASSERT_NOT_NULL(event_manager_)
+    CGRAPH_ASSERT_NOT_NULL(element_manager_, param_manager_, daemon_manager_, event_manager_)
 
     status += initSchedule();
     CGRAPH_FUNCTION_CHECK_STATUS
@@ -53,8 +50,7 @@ CStatus GPipeline::init() {
 CStatus GPipeline::run() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(true)
-    CGRAPH_ASSERT_NOT_NULL(element_manager_)
-    CGRAPH_ASSERT_NOT_NULL(param_manager_)
+    CGRAPH_ASSERT_NOT_NULL(element_manager_, param_manager_)
 
     /**
      * 1. 将所有 GElement 的状态设定为 NORMAL
@@ -76,10 +72,7 @@ CStatus GPipeline::destroy() {
     CGRAPH_FUNCTION_BEGIN
 
     CGRAPH_ASSERT_INIT(true)
-    CGRAPH_ASSERT_NOT_NULL(element_manager_)
-    CGRAPH_ASSERT_NOT_NULL(param_manager_)
-    CGRAPH_ASSERT_NOT_NULL(daemon_manager_)
-    CGRAPH_ASSERT_NOT_NULL(event_manager_)
+    CGRAPH_ASSERT_NOT_NULL(element_manager_, param_manager_, daemon_manager_, event_manager_)
 
     status += event_manager_->destroy();
     status += daemon_manager_->destroy();
@@ -173,8 +166,7 @@ CStatus GPipeline::dump(std::ostream& oss) {
 
 GPipelinePtr GPipeline::setGElementRunTtl(CMSec ttl) {
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(element_manager_)
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(element_manager_->engine_)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element_manager_, element_manager_->engine_)
 
     // 在element_manager中区执行信息了，所以ttl放到
     element_manager_->engine_->element_run_ttl_ = ttl;
@@ -184,7 +176,7 @@ GPipelinePtr GPipeline::setGElementRunTtl(CMSec ttl) {
 
 GPipelinePtr GPipeline::setGEngineType(GEngineType type) {
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(element_manager_)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element_manager_)
 
     element_manager_->setEngineType(type);
     return this;
@@ -245,8 +237,7 @@ CStatus GPipeline::makeSerial() {
 
 CStatus GPipeline::initSchedule() {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(event_manager_)
-    CGRAPH_ASSERT_NOT_NULL(element_manager_)
+    CGRAPH_ASSERT_NOT_NULL(event_manager_, element_manager_)
 
     status = schedule_.init();
     CGRAPH_FUNCTION_CHECK_STATUS

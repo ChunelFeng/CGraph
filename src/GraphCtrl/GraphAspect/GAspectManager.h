@@ -71,7 +71,7 @@ public:
      */
     GAspectManager* setName(const std::string& name) override {
         for (GAspectPtr aspect : aspect_arr_) {
-            CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(aspect)
+            CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(aspect)
             aspect->setName(name);
         }
 

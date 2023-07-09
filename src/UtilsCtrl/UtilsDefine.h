@@ -26,21 +26,46 @@ CGRAPH_NAMESPACE_BEGIN
     #define unlikely
 #endif
 
-/* 判断传入的指针信息是否为空 */
-#define CGRAPH_ASSERT_NOT_NULL(ptr)                 \
-    if (unlikely(nullptr == (ptr))) {               \
-        return CStatus("input is nullptr");         \
-    }                                               \
+template<typename T>
+CStatus _ASSERT_NOT_NULL(T t) {
+    return (unlikely(nullptr == t))
+           ? CStatus("input is null")
+           : CStatus();
+}
 
-#define CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)     \
-    if (unlikely(nullptr == (ptr))) {               \
-        return nullptr;                             \
-    }                                               \
-
-#define CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr)     \
-    if (unlikely(nullptr == (ptr))) {               \
-        CGRAPH_THROW_EXCEPTION("input is null")     \
+template<typename T, typename... Args>
+CStatus _ASSERT_NOT_NULL(T t, Args... args) {
+    if (unlikely(t == nullptr)) {
+        return _ASSERT_NOT_NULL(nullptr);
     }
+
+    return _ASSERT_NOT_NULL(args...);
+}
+
+template<typename T>
+CVoid _ASSERT_NOT_NULL_THROW_EXCEPTION(T t) {
+    if (nullptr == t) {
+        CGRAPH_THROW_EXCEPTION("input ptr is null")
+    }
+}
+
+template<typename T, typename... Args>
+CVoid _ASSERT_NOT_NULL_THROW_EXCEPTION(T t, Args... args) {
+    if (unlikely(t == nullptr)) {
+        _ASSERT_NOT_NULL_THROW_EXCEPTION(nullptr);
+    }
+
+    _ASSERT_NOT_NULL_THROW_EXCEPTION(args...);
+}
+
+
+/** 判断传入的多个指针信息，是否为空 */
+#define CGRAPH_ASSERT_NOT_NULL(ptr, ...)                     \
+    _ASSERT_NOT_NULL(ptr, ##__VA_ARGS__);                    \
+
+/** 判断传入的多个指针，是否为空。如果为空，则抛出异常信息 */
+#define CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr, ...)         \
+    _ASSERT_NOT_NULL_THROW_EXCEPTION(ptr, ##__VA_ARGS__);    \
 
 
 /* 判断函数流程是否可以继续 */

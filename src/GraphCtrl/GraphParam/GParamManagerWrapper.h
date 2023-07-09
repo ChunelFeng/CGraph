@@ -41,7 +41,7 @@ CGRAPH_NAMESPACE_BEGIN
     template<typename TGParam,                                                          \
              c_enable_if_t<std::is_base_of<GParam, TGParam>::value, int> = 0>           \
     TGParam* getGParam(const std::string& key) {                                        \
-        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)                              \
+        CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_)                              \
         auto param = param_manager_->get<TGParam>(key);                                 \
         if (nullptr != param) {                                                         \
             param->addBacktrace(name_.empty() ? session_ : name_);                      \

@@ -51,7 +51,7 @@ template<typename T,
         c_enable_if_t<std::is_base_of<GElementParam, T>::value, int> >
 GElementPtr GElement::addEParam(const std::string& key, T* param) {
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param)
     if (local_params_.end() != local_params_.find(key)) {
         // 如果重复同名key信息，则删除原先的内容
         CGRAPH_DELETE_PTR(local_params_[key]);

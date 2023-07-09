@@ -71,8 +71,7 @@ CStatus GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElement
                                       GEventManagerPtr eventManager) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
-    CGRAPH_ASSERT_NOT_NULL(paramManager)
-    CGRAPH_ASSERT_NOT_NULL(eventManager)
+    CGRAPH_ASSERT_NOT_NULL(paramManager, eventManager)
 
     // 这里，内部和外部均需要设定name信息
     this->setName(name)->setLoop(loop);

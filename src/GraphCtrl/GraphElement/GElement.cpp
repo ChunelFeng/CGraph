@@ -235,7 +235,7 @@ CIndex GElement::getThreadIndex() {
 
 
 GElement* GElement::setThreadPool(UThreadPoolPtr ptr) {
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr)
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
     this->thread_pool_ = ptr;
     return this;

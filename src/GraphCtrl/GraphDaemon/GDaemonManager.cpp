@@ -79,7 +79,7 @@ GDaemonManagerPtr GDaemonManager::setInterval(CMSec interval) {
     }
 
     for (auto daemon : daemons_) {
-        CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(daemon)
+        CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(daemon)
         daemon->setInterval(interval);
     }
 

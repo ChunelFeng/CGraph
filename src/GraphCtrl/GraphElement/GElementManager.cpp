@@ -116,7 +116,7 @@ CStatus GElementManager::clear() {
 
 
 GElementManagerPtr GElementManager::setScheduleStrategy(int strategy) {
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(engine_)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(engine_)
 
     engine_->schedule_strategy_ = strategy;
     return this;
@@ -147,7 +147,7 @@ CStatus GElementManager::initEngine() {
 
 
 GElementManagerPtr GElementManager::setThreadPool(UThreadPoolPtr ptr) {
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(ptr)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr)
     this->thread_pool_ = ptr;
     return this;
 }

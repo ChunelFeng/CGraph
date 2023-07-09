@@ -47,9 +47,7 @@ protected:
                               UThreadPoolConfigPtr config) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(false)    // 初始化之前，设置参数
-        CGRAPH_ASSERT_NOT_NULL(poolTaskQueue)
-        CGRAPH_ASSERT_NOT_NULL(poolThreads)
-        CGRAPH_ASSERT_NOT_NULL(config)
+        CGRAPH_ASSERT_NOT_NULL(poolTaskQueue, poolThreads, config)
 
         this->index_ = index;
         this->pool_task_queue_ = poolTaskQueue;

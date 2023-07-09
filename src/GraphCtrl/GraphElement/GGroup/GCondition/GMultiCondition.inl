@@ -88,8 +88,8 @@ CIndex GMultiCondition<type>::choose() {
 
 template<GMultiConditionType type>
 CBool GMultiCondition<type>::isSerializable() {
-    // 只有当其中的元素不超过1个的时候，才可以串行
-    return group_elements_arr_.size() <= 1;
+    // 当其中只有一个元素，或者设定了串行模式的时候，才可以线性执行
+    return group_elements_arr_.size() <= 1 || GMultiConditionType::SERIAL == type;
 }
 
 CGRAPH_NAMESPACE_END

@@ -170,8 +170,7 @@ template<typename TDaemon, typename TParam,
 GPipeline* GPipeline::addGDaemon(CMSec ms, TParam* param) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(daemon_manager_)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_, daemon_manager_)
 
     GDaemonPtr daemon = CGRAPH_SAFE_MALLOC_COBJECT(TDaemon)
     daemon->setDParam<TParam>(param)
@@ -189,8 +188,8 @@ template<typename TDaemon, typename ...Args,
 GPipeline* GPipeline::addGDaemon(CMSec ms, Args... args) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(daemon_manager_)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_, daemon_manager_)
+
     auto daemon = UAllocator::safeMallocTemplateCObject<TDaemon>(std::forward<Args>(args)...);
     daemon->setInterval(ms);
     daemon->setGParamManager(this->param_manager_);
@@ -207,8 +206,7 @@ template<typename TEvent, typename TParam,
 GPipeline* GPipeline::addGEvent(const std::string& key, TParam* param) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_RETURN_NULL(false)
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(event_manager_)
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_manager_)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_, event_manager_)
 
     event_manager_->param_manager_ = this->param_manager_;
     status = event_manager_->createWithParam<TEvent, TParam>(key, param);

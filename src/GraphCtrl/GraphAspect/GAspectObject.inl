@@ -28,7 +28,7 @@ GAspectObjectPtr GAspectObject::setAParam(T* param) {
 template <typename T,
           c_enable_if_t<std::is_base_of<GAspectParam, T>::value, int>>
 T* GAspectObject::getAParam() {
-    CGRAPH_ASSERT_NOT_NULL_RETURN_NULL(param_)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_)
 
     T* param = nullptr;
     if ((typeid(*param_).name() == typeid(T).name())) {
