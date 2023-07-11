@@ -17,21 +17,21 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-#define CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER                                            \
+#define CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER                                           \
     /**
      * 创建param信息，如果创建成功，则直接返回ok
      * @tparam TGParam
      * @param key
      * @param backtrace
      * @return
-     */                                                                                  \
-    template<typename TGParam,                                                           \
-             c_enable_if_t<std::is_base_of<GParam, TGParam>::value, int> = 0>            \
-    CStatus createGParam(const std::string& key, CBool backtrace = false) {              \
-        CGRAPH_ASSERT_NOT_NULL(param_manager_)                                           \
-        return param_manager_->create<TGParam>(key, backtrace);                          \
-    }                                                                                    \
-                                                                                         \
+     */                                                                                 \
+    template<typename TGParam,                                                          \
+             c_enable_if_t<std::is_base_of<GParam, TGParam>::value, int> = 0>           \
+    CStatus createGParam(const std::string& key, CBool backtrace = false) {             \
+        CGRAPH_ASSERT_NOT_NULL(param_manager_)                                          \
+        return param_manager_->create<TGParam>(key, backtrace);                         \
+    }                                                                                   \
+                                                                                        \
     /**
      * 获取参数信息，如果未找到，则返回nullptr
      * @tparam TGParam
@@ -76,16 +76,6 @@ CGRAPH_NAMESPACE_BEGIN
     }                                                                                   \
                                                                                         \
     /**
-     * 设置统一管控参数类
-     * @param pm
-     * @return
-     */                                                                                 \
-    void* setGParamManager(GParamManagerPtr pm) {                                       \
-        this->param_manager_ = pm;                                                      \
-        return this;                                                                    \
-    }                                                                                   \
-                                                                                        \
-    /**
      * 获取所有的keys信息
      * @param keys
      * @return
@@ -93,6 +83,17 @@ CGRAPH_NAMESPACE_BEGIN
     CStatus getGParamKeys(std::vector<std::string>& keys) {                             \
         CGRAPH_ASSERT_NOT_NULL(param_manager_)                                          \
         return param_manager_->getKeys(keys);                                           \
+    }                                                                                   \
+                                                                                        \
+private:                                                                                \
+    /**
+     * 设置统一管控参数类
+     * @param pm
+     * @return
+     */                                                                                 \
+    void* setGParamManager(GParamManagerPtr pm) {                                       \
+        this->param_manager_ = pm;                                                      \
+        return this;                                                                    \
     }                                                                                   \
                                                                                         \
 
