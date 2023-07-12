@@ -42,7 +42,7 @@ public:
                 case GAspectType::FINISH_INIT : aspect->finishInit(curStatus); break;
                 case GAspectType::BEGIN_DESTROY : status = aspect->beginDestroy(); break;
                 case GAspectType::FINISH_DESTROY : aspect->finishDestroy(curStatus); break;
-                default: status = CStatus("unknown aspect type");    // 超出预期范围，理论不存在的情况
+                default: status = CGRAPH_ERROR_STATUS("unknown aspect type");
             }
 
             CGRAPH_FUNCTION_CHECK_STATUS

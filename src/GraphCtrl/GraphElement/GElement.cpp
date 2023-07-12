@@ -220,7 +220,7 @@ CBool GElement::isMatch() {
 
 
 CStatus GElement::crashed(const CException& ex) {
-    return CStatus(STATUS_CRASH, ex.what());
+    return CStatus(STATUS_CRASH, ex.what(), CGRAPH_GET_LOCATE);
 }
 
 

@@ -42,7 +42,7 @@ public:
             // 如果类型和size完全匹配的话，则直接返回创建成功。否则返回错误
             auto curTopic = result->second;
             status = (typeid(*curTopic).name() == typeid(GMessage<TImpl>).name() && curTopic->getCapacity() == size)
-                     ? CStatus() : CStatus("create topic [" + topic + "]  duplicate");
+                     ? CStatus() : CGRAPH_ERROR_STATUS("create topic [" + topic + "]  duplicate");
         } else {
             // 创建一个 topic信息
             auto message = UAllocator::safeMallocTemplateCObject<GMessage<TImpl>, CUint>(size);

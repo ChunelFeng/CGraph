@@ -20,6 +20,7 @@ static const std::string& CGRAPH_DEFAULT = "default";
 static const std::string& CGRAPH_UNKNOWN = "unknown";
 static const std::string& CGRAPH_BASIC_EXCEPTION = "CGraph default exception";
 static const std::string& CGRAPH_FUNCTION_NO_SUPPORT = "CGraph function no support";
+static const std::string& CGRAPH_INPUT_IS_NULL = "input is nullptr";
 
 CGRAPH_NAMESPACE_END
 

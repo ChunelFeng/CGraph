@@ -45,13 +45,22 @@ enum class CFunctionType {
 #define CGRAPH_EMPTY_FUNCTION                                           \
     return CStatus();                                                   \
 
+
+/** 获取当前代码所在的位置信息 */
+#define CGRAPH_GET_LOCATE                                               \
+    (std::string(__FILE__) + " | " + std::string(__FUNCTION__) + " | line = [" + ::std::to_string( __LINE__) + "]")
+
 /** 不支持当前功能 */
 #define CGRAPH_NO_SUPPORT                                               \
-    return CStatus(CGRAPH_FUNCTION_NO_SUPPORT);                         \
+    return CStatus(CGRAPH_FUNCTION_NO_SUPPORT, CGRAPH_GET_LOCATE);      \
+
+/** 生成一个包含异常位置的 CStatus */
+#define CGRAPH_ERROR_STATUS(info)                                       \
+    CStatus(info, CGRAPH_GET_LOCATE)                                    \
 
 /** 返回异常信息和状态 */
 #define CGRAPH_RETURN_ERROR_STATUS(info)                                \
-    return CStatus(info);                                               \
+    return CGRAPH_ERROR_STATUS(info);                                   \
 
 /** 定义为不能赋值和拷贝的对象类型 */
 #define CGRAPH_NO_ALLOWED_COPY(CType)                                   \

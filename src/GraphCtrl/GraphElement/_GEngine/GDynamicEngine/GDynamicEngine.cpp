@@ -75,7 +75,7 @@ CStatus GDynamicEngine::beforeRun() {
 
     finished_end_size_ = 0;
     run_element_size_ = 0;
-    cur_status_.reset();
+    cur_status_ = CStatus();
     for (GElementPtr element : total_element_arr_) {
         status += element->beforeRun();
     }

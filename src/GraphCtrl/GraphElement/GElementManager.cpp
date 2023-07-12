@@ -136,7 +136,7 @@ CStatus GElementManager::initEngine() {
     switch (engine_type_) {
         case GEngineType::STATIC : engine_ = CGRAPH_SAFE_MALLOC_COBJECT(GStaticEngine) break;
         case GEngineType::DYNAMIC : engine_ = CGRAPH_SAFE_MALLOC_COBJECT(GDynamicEngine) break;
-        default: status = CStatus("unknown engine type");
+        default: CGRAPH_RETURN_ERROR_STATUS("unknown engine type")
     }
     CGRAPH_FUNCTION_CHECK_STATUS
 
@@ -161,7 +161,7 @@ CStatus GElementManager::calcMaxParaSize(CSize& size) {
     } else {
         // 遇到不可以解析的情况，将size赋值为0，告知上游
         size = 0;
-        status.setStatus("cannot calculate max parallel size within groups");
+        status = CGRAPH_ERROR_STATUS("cannot calculate max parallel size within groups");
     }
     CGRAPH_FUNCTION_END
 }

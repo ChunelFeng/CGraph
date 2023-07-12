@@ -25,30 +25,37 @@ CGRAPH_NAMESPACE_BEGIN
 static const int STATUS_OK = 0;                                 /** 正常流程返回值 */
 static const int STATUS_ERR = -1;                               /** 异常流程返回值 */
 static const int STATUS_CRASH = -996;                           /** 异常流程返回值 */
+static const int STATUS_MULTI_ERR = -999;                       /** 多个任务错误 */
 static const char* STATUS_ERROR_INFO_CONNECTOR = " && ";        /** 多异常信息连接符号 */
 
 class CSTATUS {
 public:
     explicit CSTATUS() = default;
 
-    explicit CSTATUS(const std::string &errorInfo) {
+    explicit CSTATUS(const std::string &errorInfo,
+                     const std::string &locateInfo = CGRAPH_EMPTY) {
         this->error_code_ = STATUS_ERR;    // 默认的error code信息
         this->error_info_ = errorInfo;
+        this->error_locate_ = locateInfo;
     }
 
-    explicit CSTATUS(int errorCode, const std::string &errorInfo) {
+    explicit CSTATUS(int errorCode, const std::string &errorInfo,
+                     const std::string &locateInfo = CGRAPH_EMPTY) {
         this->error_code_ = errorCode;
         this->error_info_ = errorInfo;
+        this->error_locate_ = locateInfo;
     }
 
     CSTATUS(const CSTATUS &status) {
         this->error_code_ = status.error_code_;
         this->error_info_ = status.error_info_;
+        this->error_locate_ = status.error_locate_;
     }
 
     CSTATUS(const CSTATUS &&status) noexcept {
         this->error_code_ = status.error_code_;
         this->error_info_ = status.error_info_;
+        this->error_locate_ = status.error_locate_;
     }
 
     CSTATUS& operator=(const CSTATUS& status) = default;
@@ -63,19 +70,14 @@ public:
                 : (cur.isOK()
                     ? error_info_
                     : (error_info_ + STATUS_ERROR_INFO_CONNECTOR + cur.error_info_));
-        error_code_ = STATUS_ERR;
+        error_locate_ = this->isOK()
+                      ? cur.error_locate_
+                      : (cur.isOK()
+                         ? error_locate_
+                         : (error_locate_ + STATUS_ERROR_INFO_CONNECTOR + cur.error_locate_));
+        error_code_ = STATUS_MULTI_ERR;    // 多个错误的标志
 
         return (*this);
-    }
-
-    void setStatus(const std::string& info) {
-        error_code_ = STATUS_ERR;
-        error_info_ = info;
-    }
-
-    void setStatus(int code, const std::string& info) {
-        error_code_ = code;
-        error_info_ = info;
     }
 
     /**
@@ -95,11 +97,11 @@ public:
     }
 
     /**
-     * 恢复数据
+     * 获取报错位置
+     * @return
      */
-    void reset() {
-        error_code_ = STATUS_OK;
-        error_info_ = CGRAPH_EMPTY;
+    const std::string& getLocate() const {
+        return this->error_locate_;
     }
 
     /**
@@ -129,6 +131,7 @@ public:
 private:
     int error_code_ = STATUS_OK;                     // 错误码信息
     std::string error_info_;                         // 错误信息描述
+    std::string error_locate_;                       // 错误发生的具体位置，形如：file|function|line
 };
 
 CGRAPH_NAMESPACE_END

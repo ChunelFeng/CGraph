@@ -314,6 +314,9 @@ int main() {
 * 提供`MultiCondition`(多条件)功能
 * 提供了`pipeline`暂停执行和恢复执行功能
 
+[2023.07.12 - v2.4.3 - Chunel]
+* 优化了`CStatus`功能，添加了异常定位信息
+
 </details>
 
 ------------

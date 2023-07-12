@@ -20,7 +20,8 @@ CStatus GParamManager::create(const std::string& key, CBool backtrace) {
     if (result != params_map_.end()) {
         /* 如果是重复创建，则返回ok；非重复创建（类型不同）则返回err */
         auto param = result->second;
-        return (typeid(*param).name() == typeid(T).name()) ? CStatus() : CStatus("create param duplicate");
+        return (typeid(*param).name() == typeid(T).name()) ?
+                CStatus() : CGRAPH_ERROR_STATUS("create [" + key + "] param duplicate");
     }
 
     T* ptr = CGRAPH_SAFE_MALLOC_COBJECT(T)
