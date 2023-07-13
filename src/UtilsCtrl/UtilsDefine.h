@@ -30,7 +30,7 @@ CGRAPH_NAMESPACE_BEGIN
 template<typename T>
 CStatus __ASSERT_NOT_NULL(T t) {
     return (unlikely(nullptr == t))
-           ? CGRAPH_ERROR_STATUS(CGRAPH_INPUT_IS_NULL)
+           ? CErrStatus(CGRAPH_INPUT_IS_NULL)
            : CStatus();
 }
 
@@ -75,7 +75,7 @@ static std::mutex g_check_status_mtx;
     if (unlikely(status.isErr())) {                                                          \
         if (status.isCrash()) { throw CException(status.getInfo()); }                        \
         std::lock_guard<std::mutex> lock{ g_check_status_mtx };                              \
-        CGRAPH_ECHO("[%s], errorCode = [%d], errorInfo = [%s].",                             \
+        CGRAPH_ECHO("%s, errorCode = [%d], errorInfo = [%s].",                               \
             status.getLocate().c_str(), status.getCode(), status.getInfo().c_str());         \
         return status;                                                                       \
     }                                                                                        \

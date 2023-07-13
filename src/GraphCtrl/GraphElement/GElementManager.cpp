@@ -161,7 +161,7 @@ CStatus GElementManager::calcMaxParaSize(CSize& size) {
     } else {
         // 遇到不可以解析的情况，将size赋值为0，告知上游
         size = 0;
-        status = CGRAPH_ERROR_STATUS("cannot calculate max parallel size within groups");
+        status = CErrStatus("cannot calculate max parallel size within groups");
     }
     CGRAPH_FUNCTION_END
 }

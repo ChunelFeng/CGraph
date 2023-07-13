@@ -18,8 +18,13 @@ CGRAPH_NAMESPACE_BEGIN
 
 class CEXCEPTION : public std::exception {
 public:
-    explicit CEXCEPTION(const std::string& info = CGRAPH_EMPTY) {
-        info_ = info.empty() ? CGRAPH_BASIC_EXCEPTION : info;
+    explicit CEXCEPTION(const std::string& info,
+                        const std::string& locate = CGRAPH_EMPTY) {
+        /**
+         * 这里的设计，和CStatus有一个联动
+         * 如果不了解具体情况，不建议做任何修改
+         */
+        exception_info_ = locate + " | " + info;
     }
 
     /**
@@ -27,11 +32,11 @@ public:
      * @return
      */
     const char* what() const noexcept override {
-        return info_.c_str();
+        return exception_info_.c_str();
     }
 
 private:
-    std::string info_;            // 异常状态信息
+    std::string exception_info_;            // 异常状态信息
 };
 
 CGRAPH_NAMESPACE_END

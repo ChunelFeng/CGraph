@@ -25,7 +25,6 @@ CGRAPH_NAMESPACE_BEGIN
 static const int STATUS_OK = 0;                                 /** 正常流程返回值 */
 static const int STATUS_ERR = -1;                               /** 异常流程返回值 */
 static const int STATUS_CRASH = -996;                           /** 异常流程返回值 */
-static const int STATUS_MULTI_ERR = -999;                       /** 多个任务错误 */
 static const char* STATUS_ERROR_INFO_CONNECTOR = " && ";        /** 多异常信息连接符号 */
 
 class CSTATUS {
@@ -75,7 +74,7 @@ public:
                       : (cur.isOK()
                          ? error_locate_
                          : (error_locate_ + STATUS_ERROR_INFO_CONNECTOR + cur.error_locate_));
-        error_code_ = STATUS_MULTI_ERR;    // 多个错误的标志
+        error_code_ = STATUS_ERR;
 
         return (*this);
     }

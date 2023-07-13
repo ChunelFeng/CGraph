@@ -149,9 +149,9 @@ CStatus GStaticEngine::run() {
                 const auto& futStatus = fut.wait_for(std::chrono::milliseconds(curClusterTtl[index]));
                 switch (futStatus) {
                     case std::future_status::ready: status += fut.get(); break;
-                    case std::future_status::timeout: status += CGRAPH_ERROR_STATUS("thread status timeout"); break;
-                    case std::future_status::deferred: status += CGRAPH_ERROR_STATUS("thread status deferred"); break;
-                    default: status += CGRAPH_ERROR_STATUS("thread status unknown");
+                    case std::future_status::timeout: status += CErrStatus("thread status timeout"); break;
+                    case std::future_status::deferred: status += CErrStatus("thread status deferred"); break;
+                    default: status += CErrStatus("thread status unknown");
                 }
             }
             index++;

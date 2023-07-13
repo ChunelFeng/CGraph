@@ -25,14 +25,15 @@ protected:
      */
     virtual CVoid trigger(GEventParamPtr param) = 0;
 
+    CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
+
+private:
     /**
      * 处理信号事件
      * @param type
      * @return
      */
     CStatus process(GEventType type);
-
-    CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
 
     friend class GEventManager;
 };
