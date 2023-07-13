@@ -48,7 +48,7 @@ enum class CFunctionType {
 
 /** 获取当前代码所在的位置信息 */
 #define CGRAPH_GET_LOCATE                                               \
-    (std::string(__FILE_NAME__) + " | " + std::string(__FUNCTION__)     \
+    (std::string(__FILE__) + " | " + std::string(__FUNCTION__)          \
     + " | line = [" + ::std::to_string( __LINE__) + "]")
 
 
