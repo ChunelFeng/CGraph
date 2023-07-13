@@ -117,7 +117,10 @@ CStatus GElementManager::clear() {
 
 GElementManagerPtr GElementManager::setScheduleStrategy(int strategy) {
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(engine_)
-
+    /**
+     * 如果是 region中的 GElementManager，需要在init完成后，进行这一步赋值
+     * 否则会因为 engine_ 为空，而导致崩溃
+     */
     engine_->schedule_strategy_ = strategy;
     return this;
 }

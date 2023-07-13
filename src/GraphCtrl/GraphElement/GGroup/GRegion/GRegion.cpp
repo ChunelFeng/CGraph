@@ -32,9 +32,10 @@ CStatus GRegion::init() {
 
     // 在region中，需要专门的调度逻辑
     this->manager_->setThreadPool(thread_pool_);
-    this->manager_->setScheduleStrategy(CGRAPH_REGION_TASK_STRATEGY);
     status = this->manager_->init();
     CGRAPH_FUNCTION_CHECK_STATUS
+    // 设置调度类型，需要在引擎初始化完成之后
+    this->manager_->setScheduleStrategy(CGRAPH_REGION_TASK_STRATEGY);
 
     is_init_ = true;
     CGRAPH_FUNCTION_END
