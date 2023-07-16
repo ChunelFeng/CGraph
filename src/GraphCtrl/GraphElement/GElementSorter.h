@@ -15,7 +15,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GElementSorter : public GElementObject {
+class GElementSorter : public CStruct {
 public:
     /**
      * 当level不同的时候，level值小的element优先被init和destroy
@@ -26,11 +26,6 @@ public:
      */
     CBool operator()(GElementPtr a, GElementPtr b) const {
         return (a->level_ == b->level_) ? (a < b) : (a->level_ < b->level_);
-    }
-
-private:
-    CStatus run() override {
-        CGRAPH_NO_SUPPORT
     }
 };
 

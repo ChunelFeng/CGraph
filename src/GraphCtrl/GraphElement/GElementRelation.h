@@ -15,16 +15,11 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GElement;
 
-struct GElementRelation : public GElementObject {
+struct GElementRelation : public CStruct {
 public:
     std::set<GElement *> predecessors_;       // 前驱信息
     std::set<GElement *> successors_;         // 后继信息
     GElement* belong_ = nullptr;              // 从属信息。如果从属于group，则为该group的值；如果从属于pipeline，则为nullptr
-
-private:
-    CStatus run() override {
-        CGRAPH_NO_SUPPORT
-    }
 };
 
 CGRAPH_NAMESPACE_END
