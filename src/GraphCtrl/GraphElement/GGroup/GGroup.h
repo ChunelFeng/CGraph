@@ -19,9 +19,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 /* 所有节点组合的基类，所有节点组合功能，均继承自此类 */
 class GGroup : public GElement {
-public:
-    explicit GGroup();
-
+protected:
     /**
      * 向group中，添加element信息
      * @param element
@@ -29,11 +27,6 @@ public:
      */
     virtual CStatus addElement(GElementPtr element) = 0;
 
-    CStatus init() override;
-
-    CStatus destroy() override;
-
-protected:
     /**
      * 生成graphviz中 group对应的label 的开头信息
      * @param oss
@@ -48,8 +41,19 @@ protected:
      */
     CVoid dumpGroupLabelEnd(std::ostream& oss);
 
+    explicit GGroup();
+
+    CStatus init() override;
+
+    CStatus destroy() override;
+
+    CBool isSerializable() override;
+
 protected:
     GElementPtrArr group_elements_arr_;    // 存放 element的数组
+
+    friend class GStaticEngine;
+    friend class GPipeline;
 };
 
 using GGroupPtr = GGroup *;

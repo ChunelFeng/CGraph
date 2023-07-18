@@ -88,8 +88,20 @@ CIndex GMultiCondition<type>::choose() {
 
 template<GMultiConditionType type>
 CBool GMultiCondition<type>::isSerializable() {
-    // 当其中只有一个元素，或者设定了串行模式的时候，才可以线性执行
-    return group_elements_arr_.size() <= 1 || GMultiConditionType::SERIAL == type;
+    if (GMultiConditionType::PARALLEL == type && group_elements_arr_.size() > 1) {
+        /**
+         * 如果是PARALLEL模式的话，并且其中的元素个数大于1，则一定不可以串行执行
+         * PARALLEL模式中，仅有一个元素的情况，和 SERIAL模式的判断方式一样，
+         * 均为判断其中所有的element是否可以并行
+         * 故放在下面的条件中判断了
+         */
+        return false;
+    }
+
+    return std::all_of(group_elements_arr_.begin(), group_elements_arr_.end(),
+                       [](GElementPtr element) {
+        return element->isSerializable();
+    });
 }
 
 CGRAPH_NAMESPACE_END

@@ -32,11 +32,11 @@ public:
 private:
     explicit GFunction();
 
-    CStatus init() override;
+    CStatus init() final;
 
-    CStatus run() override;
+    CStatus run() final;
 
-    CStatus destroy() override;
+    CStatus destroy() final;
 
 private:
     CGRAPH_CSTATUS_FUNCTION init_function_ = nullptr;

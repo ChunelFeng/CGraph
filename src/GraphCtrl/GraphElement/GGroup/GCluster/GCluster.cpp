@@ -112,8 +112,8 @@ CBool GCluster::isDone() {
     /* 所有的element均被执行过，则提示true */
     return std::all_of(group_elements_arr_.begin(), group_elements_arr_.end(),
                        [](GElementPtr element) {
-                           return element->done_;
-                       });
+        return element->done_;
+    });
 }
 
 

@@ -64,4 +64,16 @@ CVoid GGroup::dumpGroupLabelEnd(std::ostream& oss) {
     oss << "}\n";
 }
 
+
+CBool GGroup::isSerializable() {
+    /**
+     * 针对group的情况，应该是所有在其中的element 都是可以串行的，才认定为可串行
+     * 但是在 region和 multiCondition中，有针对性的判断
+     */
+    return std::all_of(group_elements_arr_.begin(), group_elements_arr_.end(),
+                       [](GElementPtr element) {
+        return element->isSerializable();
+    });
+}
+
 CGRAPH_NAMESPACE_END

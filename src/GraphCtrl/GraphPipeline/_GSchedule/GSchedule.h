@@ -15,7 +15,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class GSchedule : public GraphObject {
-protected:
+private:
     /**
      * 设置调度资源模式
      * @param tp
@@ -34,6 +34,8 @@ protected:
     CStatus run() override;
 
     CStatus destroy() final;
+
+    explicit GSchedule() = default;
 
     ~GSchedule() override;
 

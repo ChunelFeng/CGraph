@@ -59,7 +59,7 @@ CVoid GCondition::dump(std::ostream& oss) {
         const auto& cur = group_elements_arr_[i];
         cur->dump(oss);
 
-        std::string label = "[label=\"" + std::to_string(i) + "\"]";
+        const std::string& label = "[label=\"" + std::to_string(i) + "\"]";
         dumpEdge(oss, this, cur, label);
     }
 

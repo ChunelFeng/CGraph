@@ -20,11 +20,10 @@ CGRAPH_NAMESPACE_BEGIN
  * 仅针对类似 bean 数据类型的定义
  */
 class CStruct {
-     /**
-      * 初始化所有字段的值信息
-      * @return
-      */
-public:
+    /**
+     * 初始化所有字段的值信息
+     * @return
+     */
      virtual CStatus setup() {
          CGRAPH_EMPTY_FUNCTION
      }
