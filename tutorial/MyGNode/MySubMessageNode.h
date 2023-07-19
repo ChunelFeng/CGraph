@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYSUBMESSAGENODE_H
 #define CGRAPH_MYSUBMESSAGENODE_H
 
-#include "../../src/CGraph.h"
+#include "CGraph.h"
 #include "../MyParams/MyMessageParam.h"
 
 template <typename ...Args>

@@ -173,8 +173,7 @@ GPipeline* GPipeline::addGDaemon(CMSec ms, TParam* param) {
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_, daemon_manager_)
 
     GDaemonPtr daemon = CGRAPH_SAFE_MALLOC_COBJECT(TDaemon)
-    daemon->setDParam<TParam>(param)
-            ->setInterval(ms);
+    daemon->setDParam<TParam>(param)->setInterval(ms);
     daemon->setGParamManager(this->param_manager_);
     daemon->setGEventManager(this->event_manager_);
     status = daemon_manager_->add(daemon);

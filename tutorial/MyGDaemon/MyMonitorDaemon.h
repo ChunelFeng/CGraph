@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYMONITORDAEMON_H
 #define CGRAPH_MYMONITORDAEMON_H
 
-#include "../../src/CGraph.h"
+#include "CGraph.h"
 
 class MyMonitorDaemon : public CGraph::GDaemon {
 public:

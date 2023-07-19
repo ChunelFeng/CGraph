@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYTRACEASPECT_H
 #define CGRAPH_MYTRACEASPECT_H
 
-#include "../../src/CGraph.h"
+#include "CGraph.h"
 
 class MyTraceAspect : public CGraph::GAspect {
 public:

@@ -27,7 +27,7 @@ using CBool = CGraph::CBOOL;
 using CIndex = CGraph::CINT;            // 表示标识信息，可以为负数
 using CFloat = CGraph::CFLOAT;
 using CDouble = CGraph::CDOUBLE;
-using CConStr = CGraph::CCONSTR;    // 表示 const char*
+using CConStr = CGraph::CCONSTR;        // 表示 const char*
 using CBigBool = CGraph::CBIGBOOL;
 
 using CStatus = CGraph::CSTATUS;

@@ -14,7 +14,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-struct UThreadPoolConfig : public UThreadObject {
+struct UThreadPoolConfig : public CStruct {
     /** 具体值含义，参考UThreadPoolDefine.h文件 */
     int default_thread_size_ = CGRAPH_DEFAULT_THREAD_SIZE;
     int secondary_thread_size_ = CGRAPH_SECONDARY_THREAD_SIZE;

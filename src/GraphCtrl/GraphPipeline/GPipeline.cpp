@@ -229,7 +229,9 @@ CStatus GPipeline::makeSerial() {
 
     UThreadPoolConfig config;
     config.default_thread_size_ = 0;    // 设置之后，不再开辟线程池，直接通过主线程执行pipeline的逻辑
+    config.secondary_thread_size_ = 0;
     config.max_thread_size_ = 0;
+    config.monitor_enable_ = false;
     schedule_.config_ = config;
     CGRAPH_FUNCTION_END
 }
