@@ -28,7 +28,7 @@ private:
      * @param ptr
      * @return
      */
-    CBool find(GElementPtr ptr);
+    CBool find(GElementPtr ptr) const;
 
     /**
      * 给所有的element，设定线程池
@@ -48,14 +48,21 @@ private:
      * @param state
      * @return
      */
-    CStatus pushAllState(GElementState state);
+    CStatus pushAllState(const GElementState& state);
+
+    /**
+     * 用于判断是否是出于退出状态
+     * @return
+     */
+    CBool isCancelState() const;
 
     ~GElementRepository() override;
 
     CStatus run() override;
 
 private:
-    GElementPtrSet elements_;        // 用于记录所有的element信息
+    GElementPtrSet elements_;                                    // 用于记录所有的element信息
+    GElementState cur_state_ = GElementState::CREATE;            // 当前状态信息
 
     friend class GPipeline;
 };

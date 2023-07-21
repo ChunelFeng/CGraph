@@ -17,7 +17,7 @@ CVoid GElementRepository::insert(GElementPtr ptr) {
 }
 
 
-CBool GElementRepository::find(GElementPtr ptr) {
+CBool GElementRepository::find(GElementPtr ptr) const {
     if (nullptr == ptr) {
         return false;
     }
@@ -36,8 +36,8 @@ GElementRepositoryPtr GElementRepository::setThreadPool(UThreadPoolPtr ptr) {
 
 CStatus GElementRepository::setup() {
     CGRAPH_FUNCTION_BEGIN
-    if (elements_.empty()
-        || GElementState::NORMAL != (*elements_.begin())->cur_state_.load()) {
+    // 一旦执行，全部设置为 normal状态
+    if (GElementState::NORMAL == cur_state_) {
         return status;
     }
 
@@ -46,9 +46,10 @@ CStatus GElementRepository::setup() {
 }
 
 
-CStatus GElementRepository::pushAllState(GElementState state) {
+CStatus GElementRepository::pushAllState(const GElementState& state) {
     CGRAPH_FUNCTION_BEGIN
 
+    cur_state_ = state;    // 记录当前的状态信息
     for (auto* cur : elements_) {
         cur->cur_state_.store(state);
         if (GElementState::YIELD != state) {
@@ -57,6 +58,16 @@ CStatus GElementRepository::pushAllState(GElementState state) {
         }
     }
     CGRAPH_FUNCTION_END
+}
+
+
+CBool GElementRepository::isCancelState() const {
+    /**
+     * 因为每次执行的时候，都需要判断一下这个状态是否为 cancel
+     * 且理论上不会出现多线程问题
+     * 故这一层的 cur_state_ 就不设置为atomic类型的了
+     */
+    return GElementState::CANCEL == cur_state_;
 }
 
 

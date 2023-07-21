@@ -93,7 +93,12 @@ CStatus GPipeline::process(CSize runTimes) {
     status = init();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    while (runTimes-- > 0) {
+    while (runTimes-- > 0
+           && !repository_.isCancelState()) {
+        /**
+         * 1. 执行轮数（runTimes）没有结束
+         * 2. 没有进入取消状态
+         */
         status = run();
         CGRAPH_FUNCTION_CHECK_STATUS
     }
@@ -234,6 +239,11 @@ CStatus GPipeline::makeSerial() {
     config.monitor_enable_ = false;
     schedule_.config_ = config;
     CGRAPH_FUNCTION_END
+}
+
+
+GElementState GPipeline::getCurState() const {
+    return repository_.cur_state_;
 }
 
 

@@ -266,6 +266,12 @@ public:
     CStatus makeSerial();
 
     /**
+     * 获取当前的执行状态
+     * @return
+     */
+    GElementState getCurState() const;
+
+    /**
      * 注册GParam 交互类集合
      * @return
      */
