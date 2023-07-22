@@ -22,13 +22,25 @@ GParamManager::~GParamManager() {
 
 CStatus GParamManager::init() {
     CGRAPH_FUNCTION_BEGIN
-    clear();
+    for (auto& param : params_map_) {
+        /**
+         * 一般情况下，是不需要init的。需要注意init 和 setup的执行阶段的信息
+         * init() 是在pipeline init的时候被执行的
+         * setup() 是在pipeline run开始的时候被执行的
+         */
+        status += param.second->init();
+    }
     CGRAPH_FUNCTION_END
 }
 
 
 CStatus GParamManager::destroy() {
     CGRAPH_FUNCTION_BEGIN
+    for (auto& param : params_map_) {
+        status += param.second->destroy();
+    }
+    CGRAPH_FUNCTION_CHECK_STATUS
+
     clear();
     CGRAPH_FUNCTION_END
 }

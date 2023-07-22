@@ -11,6 +11,8 @@
 
 #include <algorithm>
 
+#include "GPipeline.h"
+
 CGRAPH_NAMESPACE_BEGIN
 
 template<typename T,

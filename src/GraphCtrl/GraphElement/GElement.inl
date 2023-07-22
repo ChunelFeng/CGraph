@@ -9,8 +9,9 @@
 #ifndef CGRAPH_GELEMENT_INL
 #define CGRAPH_GELEMENT_INL
 
-CGRAPH_NAMESPACE_BEGIN
+#include "GElement.h"
 
+CGRAPH_NAMESPACE_BEGIN
 
 template<typename TAspect, typename TParam,
         c_enable_if_t<std::is_base_of<GAspect, TAspect>::value, int>,

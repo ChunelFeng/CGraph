@@ -9,7 +9,7 @@
 #ifndef CGRAPH_UDISTANCEOBJECT_H
 #define CGRAPH_UDISTANCEOBJECT_H
 
-#include "../UtilsInclude.h"
+#include "../UtilsObject.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

@@ -9,6 +9,8 @@
 #ifndef CGRAPH_GPARAMMANAGER_INL
 #define CGRAPH_GPARAMMANAGER_INL
 
+#include "GParamManager.h"
+
 CGRAPH_NAMESPACE_BEGIN
 
 template<typename T,

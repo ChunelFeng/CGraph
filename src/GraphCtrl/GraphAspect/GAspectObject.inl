@@ -9,6 +9,8 @@
 #ifndef CGRAPH_GASPECTOBJECT_INL
 #define CGRAPH_GASPECTOBJECT_INL
 
+#include "GAspectObject.h"
+
 CGRAPH_NAMESPACE_BEGIN
 
 template <typename T,
