@@ -298,10 +298,11 @@ private:
     friend class GCluster;
     friend class GRegion;
     friend class GCondition;
-    friend class GElementManager;
+    template<GMultiConditionType> friend class GMultiCondition;
     friend class GGroup;
     friend class GPipeline;
     friend class GAdapter;
+    friend class GElementManager;
     friend class GElementSorter;
     friend class GFunction;
     friend class GEngine;
@@ -310,7 +311,6 @@ private:
     friend class GMaxParaOptimizer;
     friend class GElementRepository;
     template<typename T> friend class GSingleton;
-    template<GMultiConditionType> friend class GMultiCondition;
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER_WITH_MEMBER
     CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER_WITH_MEMBER

@@ -56,6 +56,8 @@ private:
      */
     CBool isCancelState() const;
 
+    CStatus destroy() override;
+
     ~GElementRepository() override;
 
     CStatus run() override;

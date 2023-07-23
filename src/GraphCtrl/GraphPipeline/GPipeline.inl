@@ -31,8 +31,8 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
          * 2，未被注册到其他的pipeline中
          */
         if ((*elementRef) != nullptr
-            && (*elementRef)->param_manager_ != nullptr) {
-            CGRAPH_RETURN_ERROR_STATUS("group register duplicate")
+            && ((GGroupPtr)(*elementRef))->isRegistered()) {
+            CGRAPH_RETURN_ERROR_STATUS("this group register duplicate")
         }
     } else if (std::is_base_of<GNode, T>::value || std::is_base_of<GAdapter, T>::value) {
         /**

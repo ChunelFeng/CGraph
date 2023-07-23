@@ -80,7 +80,8 @@ CStatus GPipeline::destroy() {
     status += param_manager_->destroy();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    status = schedule_.destroy();
+    status += repository_.destroy();
+    status += schedule_.destroy();
     CGRAPH_FUNCTION_CHECK_STATUS
 
     is_init_ = false;

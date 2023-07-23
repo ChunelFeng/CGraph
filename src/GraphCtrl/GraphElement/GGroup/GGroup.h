@@ -27,6 +27,21 @@ protected:
      */
     virtual CStatus addElement(GElementPtr element) = 0;
 
+    CBool isSerializable() override;
+
+    /**
+     * 判断当前group是否已经被注册到特定pipeline中了。避免反复注册的问题
+     * @return
+     */
+    CBool isRegistered();
+
+private:
+    explicit GGroup();
+
+    CStatus init() override;
+
+    CStatus destroy() override;
+
     /**
      * 生成graphviz中 group对应的label 的开头信息
      * @param oss
@@ -41,19 +56,15 @@ protected:
      */
     CVoid dumpGroupLabelEnd(std::ostream& oss);
 
-    explicit GGroup();
-
-    CStatus init() override;
-
-    CStatus destroy() override;
-
-    CBool isSerializable() override;
-
 protected:
     GElementPtrArr group_elements_arr_;    // 存放 element的数组
 
     friend class GStaticEngine;
     friend class GPipeline;
+    friend class GCluster;
+    friend class GRegion;
+    friend class GCondition;
+    template<GMultiConditionType> friend class GMultiCondition;
 };
 
 using GGroupPtr = GGroup *;

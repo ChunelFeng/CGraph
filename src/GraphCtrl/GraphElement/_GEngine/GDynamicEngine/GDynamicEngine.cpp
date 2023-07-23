@@ -50,12 +50,12 @@ CStatus GDynamicEngine::run() {
 CStatus GDynamicEngine::afterRunCheck() {
     CGRAPH_FUNCTION_BEGIN
     if (run_element_size_ != total_element_arr_.size()) {
-        CGRAPH_RETURN_ERROR_STATUS("pipeline run element size not match...")
+        CGRAPH_RETURN_ERROR_STATUS("dynamic engine run element size not match...")
     }
 
     for (GElementPtr element : total_element_arr_) {
         if (!element->done_) {
-            CGRAPH_RETURN_ERROR_STATUS("pipeline run check failed...")
+            CGRAPH_RETURN_ERROR_STATUS("dynamic engine run check failed...")
         }
     }
 

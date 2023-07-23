@@ -76,4 +76,10 @@ CBool GGroup::isSerializable() {
     });
 }
 
+
+CBool GGroup::isRegistered() {
+    // 被注册的过group，这两个manager是不会为空的
+    return (nullptr != param_manager_) && (nullptr != event_manager_);
+}
+
 CGRAPH_NAMESPACE_END

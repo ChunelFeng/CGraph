@@ -169,14 +169,14 @@ CStatus GStaticEngine::afterRunCheck() {
     if (run_element_size_ != total_element_size_) {
         const std::string& errInfo = "run size = [" + std::to_string(run_element_size_)
                                       + "], total size = [" + std::to_string(total_element_size_) + "] ...";
-        CGRAPH_RETURN_ERROR_STATUS("pipeline static run element size check failed, " + errInfo)
+        CGRAPH_RETURN_ERROR_STATUS("static engine run element size check failed, " + errInfo)
     }
 
     /* 需要验证每个cluster里的每个内容是否被执行过一次 */
     for (GClusterArrRef clusterArr : para_cluster_arrs_) {
         for (GClusterRef cluster : clusterArr) {
             if (!cluster.isDone()) {
-                CGRAPH_RETURN_ERROR_STATUS("pipeline done status check failed...");
+                CGRAPH_RETURN_ERROR_STATUS("static engine run done status check failed...");
             }
         }
     }

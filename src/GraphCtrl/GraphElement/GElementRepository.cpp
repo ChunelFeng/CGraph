@@ -11,16 +11,13 @@
 CGRAPH_NAMESPACE_BEGIN
 
 CVoid GElementRepository::insert(GElementPtr ptr) {
-    if (nullptr != ptr) {
-        elements_.insert(ptr);
-    }
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr)
+    elements_.insert(ptr);
 }
 
 
 CBool GElementRepository::find(GElementPtr ptr) const {
-    if (nullptr == ptr) {
-        return false;
-    }
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr)
     return elements_.find(ptr) != elements_.end();
 }
 
@@ -37,10 +34,6 @@ GElementRepositoryPtr GElementRepository::setThreadPool(UThreadPoolPtr ptr) {
 CStatus GElementRepository::setup() {
     CGRAPH_FUNCTION_BEGIN
     // 一旦执行，全部设置为 normal状态
-    if (GElementState::NORMAL == cur_state_) {
-        return status;
-    }
-
     status = pushAllState(GElementState::NORMAL);
     CGRAPH_FUNCTION_END
 }
@@ -48,6 +41,9 @@ CStatus GElementRepository::setup() {
 
 CStatus GElementRepository::pushAllState(const GElementState& state) {
     CGRAPH_FUNCTION_BEGIN
+    if (cur_state_ == state) {
+        return status;    // 避免重复赋值
+    }
 
     cur_state_ = state;    // 记录当前的状态信息
     for (auto* cur : elements_) {
@@ -68,6 +64,19 @@ CBool GElementRepository::isCancelState() const {
      * 故这一层的 cur_state_ 就不设置为atomic类型的了
      */
     return GElementState::CANCEL == cur_state_;
+}
+
+
+CStatus GElementRepository::destroy() {
+    CGRAPH_FUNCTION_BEGIN
+    /**
+     * destroy的时候，恢复create的状态，确保再次轮训的时候正常
+     * 理论上，cancel状态仅会出现在极短的时间段之内，
+     * 当程序 cancel完成之后，就会重新恢复 CREATE的状态
+     * 问题详见: https://github.com/ChunelFeng/CGraph/issues/153
+     */
+    status = pushAllState(GElementState::CREATE);
+    CGRAPH_FUNCTION_END
 }
 
 
