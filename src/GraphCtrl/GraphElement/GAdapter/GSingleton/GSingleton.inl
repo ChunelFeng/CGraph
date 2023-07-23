@@ -13,6 +13,7 @@ CGRAPH_NAMESPACE_BEGIN
 template <typename T>
 USingleton<T> GSingleton<T>::s_singleton_;
 
+
 template <typename T>
 std::atomic<CBool> GSingleton<T>::s_is_init_(false);
 

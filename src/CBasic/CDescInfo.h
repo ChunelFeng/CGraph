@@ -9,6 +9,10 @@
 #ifndef CGRAPH_CDESCINFO_H
 #define CGRAPH_CDESCINFO_H
 
+#include "CBasicDefine.h"
+
+CGRAPH_NAMESPACE_BEGIN
+
 class CDescInfo {
 public:
     /**
@@ -64,5 +68,7 @@ protected:
     std::string session_;                            // 唯一id信息
     std::string description_;                        // 描述信息
 };
+
+CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_CDESCINFO_H

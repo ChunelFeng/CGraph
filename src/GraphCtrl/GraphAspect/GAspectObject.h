@@ -20,7 +20,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GAspectObject : public GraphObject,
                       public CDescInfo {
-public:
+protected:
     explicit GAspectObject() {
         session_ = URandom<>::generateSession(CGRAPH_STR_ASPECT);
     }
@@ -45,7 +45,13 @@ public:
               c_enable_if_t<std::is_base_of<GAspectParam, T>::value, int> = 0>
     GAspectObject* setAParam(T* param);
 
-protected:
+    CGRAPH_NO_ALLOWED_COPY(GAspectObject)
+
+    CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
+
+    CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER
+
+private:
     /**
      * GAspect 相关内容，不需要执行run方法
      * @return
@@ -53,12 +59,6 @@ protected:
     CStatus run() final {
         CGRAPH_NO_SUPPORT
     }
-
-    CGRAPH_NO_ALLOWED_COPY(GAspectObject)
-
-    CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
-
-    CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER
 
 private:
     GAspectParamPtr param_ { nullptr };                       // 参数信息
