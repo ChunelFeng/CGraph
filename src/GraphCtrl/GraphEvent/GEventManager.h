@@ -41,6 +41,7 @@ public:
      */
     CStatus trigger(const std::string &key, GEventType type);
 
+protected:
     CStatus init() override;
 
     CStatus destroy() override;
@@ -53,7 +54,6 @@ public:
 
     ~GEventManager() override;
 
-protected:
     CGRAPH_NO_ALLOWED_COPY(GEventManager)
 
 private:

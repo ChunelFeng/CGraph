@@ -1,13 +1,13 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: GMessageUtils.h
+@File: GMessageManagerWrapper.h
 @Time: 2022/11/1 22:48
 @Desc: 
 ***************************/
 
-#ifndef CGRAPH_GMESSAGEUTILS_H
-#define CGRAPH_GMESSAGEUTILS_H
+#ifndef CGRAPH_GMESSAGEMANAGERWRAPPER_H
+#define CGRAPH_GMESSAGEMANAGERWRAPPER_H
 
 #include "GMessageManager.h"
 
@@ -61,7 +61,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 
 /****************************
- * 清空所有的topic
+ * 以下针对所有功能
  ****************************/
 /* 清空所有的topic */
 #define CGRAPH_CLEAR_MESSAGES()                                                                      \
@@ -69,4 +69,4 @@ CGRAPH_NAMESPACE_BEGIN
 
 CGRAPH_NAMESPACE_END
 
-#endif //CGRAPH_GMESSAGEUTILS_H
+#endif //CGRAPH_GMESSAGEMANAGERWRAPPER_H

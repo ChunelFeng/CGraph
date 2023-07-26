@@ -11,6 +11,6 @@
 
 #include "GMessage.h"
 #include "GMessageManager.h"
-#include "GMessageUtils.h"
+#include "GMessageManagerWrapper.h"
 
 #endif //CGRAPH_GMESSAGEINCLUDE_H
