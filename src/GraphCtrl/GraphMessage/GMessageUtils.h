@@ -1,13 +1,13 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: GMessageManagerWrapper.h
+@File: GMessageUtils.h
 @Time: 2022/11/1 22:48
 @Desc: 
 ***************************/
 
-#ifndef CGRAPH_GMESSAGEMANAGERWRAPPER_H
-#define CGRAPH_GMESSAGEMANAGERWRAPPER_H
+#ifndef CGRAPH_GMESSAGEUTILS_H
+#define CGRAPH_GMESSAGEUTILS_H
 
 #include "GMessageManager.h"
 
@@ -69,4 +69,4 @@ CGRAPH_NAMESPACE_BEGIN
 
 CGRAPH_NAMESPACE_END
 
-#endif //CGRAPH_GMESSAGEMANAGERWRAPPER_H
+#endif //CGRAPH_GMESSAGEUTILS_H

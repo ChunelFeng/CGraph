@@ -1,0 +1,5 @@
+# To shield the difference between Windows and Linux systems.
+
+*.h text eol=native
+*.cpp text eol=native
+*.inl text eol=native
