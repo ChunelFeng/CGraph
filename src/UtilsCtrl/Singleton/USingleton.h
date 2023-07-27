@@ -9,8 +9,9 @@
 #ifndef CGRAPH_USINGLETON_H
 #define CGRAPH_USINGLETON_H
 
-#include "../UtilsObject.h"
 #include "USingletonDefine.h"
+#include "../UtilsObject.h"
+#include "../ThreadPool/UThreadPoolInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

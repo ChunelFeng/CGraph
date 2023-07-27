@@ -10,6 +10,7 @@
 #define CGRAPH_UTHREADOBJECT_H
 
 #include "../UtilsObject.h"
+#include "UThreadPoolDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
