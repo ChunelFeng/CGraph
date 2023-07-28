@@ -88,7 +88,8 @@ protected:
         if (popTask(task) || popPoolTask(task) || stealTask(task)) {
             runTask(task);
         } else {
-            std::this_thread::yield();
+            config_->extreme_speed_enable_ ? std::this_thread::yield()
+                                           : CGRAPH_SLEEP_MICROSECOND(CGRAPH_EMPTY_INTERVAL_MMS);
         }
     }
 
@@ -99,7 +100,8 @@ protected:
             // 尝试从主线程中获取/盗取批量task，如果成功，则依次执行
             runTasks(tasks);
         } else {
-            std::this_thread::yield();
+            config_->extreme_speed_enable_ ? std::this_thread::yield()
+                                           : CGRAPH_SLEEP_MICROSECOND(CGRAPH_EMPTY_INTERVAL_MMS);
         }
     }
 
@@ -142,14 +144,14 @@ protected:
          * 窃取的时候，仅从相邻的primary线程中窃取
          * 待窃取相邻的数量，不能超过默认primary线程数
          */
-        int range = config_->calcStealRange();
+        static int range = config_->calcStealRange();
         for (int i = 0; i < range; i++) {
             /**
             * 从线程中周围的thread中，窃取任务。
             * 如果成功，则返回true，并且执行任务。
             */
             int curIndex = (index_ + i + 1) % config_->default_thread_size_;
-            if (nullptr != (*pool_threads_)[curIndex]
+            if (unlikely(nullptr != (*pool_threads_)[curIndex])
                 && ((*pool_threads_)[curIndex])->work_stealing_queue_.trySteal(task)) {
                 return true;
             }
