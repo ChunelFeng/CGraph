@@ -7,6 +7,7 @@
 ***************************/
 
 #include "GElement.h"
+#include "../GraphPipeline/_GPerf/GPerfInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -16,6 +17,7 @@ GElement::GElement() {
 
 
 GElement::~GElement() {
+    CGRAPH_DELETE_PTR(perf_info_)
     CGRAPH_DELETE_PTR(aspect_manager_)
     for (auto& param : local_params_) {
         CGRAPH_DELETE_PTR(param.second)    // 依次删除本地的参数信息
@@ -273,9 +275,25 @@ CVoid GElement::dumpElement(std::ostream& oss) {
         oss << this->name_;
     }
 
+    dumpPerfInfo(oss);
+
     oss << "\"];\n";
     if (this->loop_ > 1 && !this->isGroup()) {
         oss << 'p' << this << " -> p" << this << "[label=\"" << this->loop_ << "\"]" << ";\n";
+    }
+}
+
+
+CVoid GElement::dumpPerfInfo(std::ostream& oss) {
+    if (perf_info_ && perf_info_->loop_ > 0) {
+        // 包含 perf信息的情况
+        oss << "\n";
+        oss << "[start " << perf_info_->first_start_ts_;
+        oss << "ms, per_cost " << (perf_info_->accu_cost_ts_ / perf_info_->loop_);
+        if (1 != perf_info_->loop_) {
+            oss << "ms, total_cost " << perf_info_->accu_cost_ts_;
+        }
+        oss << "ms]";
     }
 }
 

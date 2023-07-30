@@ -22,6 +22,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 enum class GMultiConditionType;
+class GPerfInfo;
 
 class GElement : public GElementObject,
                  public CDescInfo {
@@ -263,6 +264,13 @@ private:
     CVoid dumpElement(std::ostream& oss);
 
     /**
+     * graphviz dump perf逻辑
+     * @param oss
+     * @return
+     */
+    CVoid dumpPerfInfo(std::ostream& oss);
+
+    /**
      * 判断是否进入 yield状态。如果是的话，则等待恢复。未进入yield状态，则继续运行
      * @return
      */
@@ -289,10 +297,11 @@ private:
     GElementParamMap local_params_;                  // 用于记录当前element的内部参数
     GAspectManagerPtr aspect_manager_ { nullptr };   // 整体流程的切面管理类
     UThreadPoolPtr thread_pool_ { nullptr };         // 用于执行的线程池信息
-    std::atomic<GElementState> cur_state_ { GElementState::CREATE };    // 当前执行状态
+    std::atomic<GElementState> cur_state_ { GElementState::CREATE };       // 当前执行状态
+    GPerfInfo* perf_info_ = nullptr;                                       // 用于perf的信息
 
-    std::mutex yield_mutex_;                         // 控制停止执行的锁
-    std::condition_variable yield_cv_;               // 控制停止执行的条件变量
+    std::mutex yield_mutex_;                                               // 控制停止执行的锁
+    std::condition_variable yield_cv_;                                     // 控制停止执行的条件变量
 
     friend class GNode;
     friend class GCluster;
@@ -310,6 +319,7 @@ private:
     friend class GDynamicEngine;
     friend class GMaxParaOptimizer;
     friend class GElementRepository;
+    friend class GPerf;
     template<typename T> friend class GSingleton;
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER_WITH_MEMBER

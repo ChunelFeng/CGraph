@@ -9,13 +9,14 @@
 #ifndef CGRAPH_CVALTYPE_H
 #define CGRAPH_CVALTYPE_H
 
+#include "CBasicDefine.h"
 #include "CStatus.h"
 #include "CException.h"
 
 using CChar = CGraph::CCHAR;
 using CUint = CGraph::CUINT;
-using CSec = CGraph::CUINT;            // 表示秒信息, for second
-using CMSec = CGraph::CUINT;           // 表示毫秒信息, for millisecond
+using CSec = CGraph::CLONG;            // 表示秒信息, for second
+using CMSec = CGraph::CLONG;           // 表示毫秒信息, for millisecond
 using CSize = CGraph::CSIZE;
 using CVoid = CGraph::CVOID;
 using CVoidPtr = CGraph::CVOID *;

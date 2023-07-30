@@ -53,6 +53,8 @@ CVoid GGroup::dumpGroupLabelBegin(std::ostream& oss) {
         oss << name_;
     }
 
+    dumpPerfInfo(oss);
+
     if (this->loop_ > 1) {
         oss << " loop=" << this->loop_;
     }

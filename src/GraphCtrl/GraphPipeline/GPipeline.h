@@ -17,6 +17,7 @@
 
 #include "GPipelineObject.h"
 #include "_GSchedule/GScheduleInclude.h"
+#include "_GPerf/GPerfInclude.h"
 #include "../GraphElement/GElementInclude.h"
 #include "../GraphDaemon/GDaemonInclude.h"
 #include "../GraphEvent/GEventInclude.h"
@@ -89,6 +90,13 @@ public:
      * @notice 将输出的内容，复制到 https://dreampuf.github.io/GraphvizOnline/ 中查看效果
     */
     CStatus dump(std::ostream& oss = std::cout);
+
+    /**
+     * 查看性能分析
+     * @return
+     * @notice 将输出的内容，复制到 https://dreampuf.github.io/GraphvizOnline/ 中查看效果
+     */
+    CStatus perf(std::ostream& oss = std::cout);
 
     /**
      * 根据传入的info信息，创建node节点
@@ -301,6 +309,7 @@ private:
 
     friend class GPipelineFactory;
     friend class UAllocator;
+    friend class GPerf;
 };
 
 using GPipelinePtr = GPipeline *;

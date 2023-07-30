@@ -89,7 +89,7 @@ protected:
             runTask(task);
         } else {
             config_->extreme_speed_enable_ ? std::this_thread::yield()
-                                           : CGRAPH_SLEEP_MICROSECOND(CGRAPH_EMPTY_INTERVAL_MMS);
+                                           : CGRAPH_SLEEP_MICROSECOND(CGRAPH_EMPTY_INTERVAL_MCS);
         }
     }
 
@@ -101,7 +101,7 @@ protected:
             runTasks(tasks);
         } else {
             config_->extreme_speed_enable_ ? std::this_thread::yield()
-                                           : CGRAPH_SLEEP_MICROSECOND(CGRAPH_EMPTY_INTERVAL_MMS);
+                                           : CGRAPH_SLEEP_MICROSECOND(CGRAPH_EMPTY_INTERVAL_MCS);
         }
     }
 

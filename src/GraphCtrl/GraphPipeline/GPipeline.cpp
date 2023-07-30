@@ -170,6 +170,17 @@ CStatus GPipeline::dump(std::ostream& oss) {
 }
 
 
+CStatus GPipeline::perf(std::ostream& oss) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+
+    status = GPerf::perf(this);
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    CGRAPH_FUNCTION_END
+}
+
+
 GPipelinePtr GPipeline::setGElementRunTtl(CMSec ttl) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element_manager_, element_manager_->engine_)

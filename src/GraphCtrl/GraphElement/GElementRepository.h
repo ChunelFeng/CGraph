@@ -67,9 +67,11 @@ private:
     GElementState cur_state_ = GElementState::CREATE;            // 当前状态信息
 
     friend class GPipeline;
+    friend class GPerf;
 };
 
 using GElementRepositoryPtr = GElementRepository *;
+using GElementRepositoryRef = GElementRepository &;
 
 CGRAPH_NAMESPACE_END
 
