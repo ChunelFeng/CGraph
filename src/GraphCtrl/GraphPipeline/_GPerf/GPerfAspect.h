@@ -35,9 +35,10 @@ protected:
     }
 
     CVoid finishRun(const CStatus& curStatus) final {
+        auto cur = CGRAPH_GET_CURRENT_MS();
+        perf_info_->last_finish_ts_ = cur - pipeline_start_ts_;
         perf_info_->loop_++;
-        perf_info_->accu_cost_ts_ += (CGRAPH_GET_CURRENT_MS() - cur_start_ts_);
-        cur_start_ts_ = 0;
+        perf_info_->accu_cost_ts_ += (cur - cur_start_ts_);
     }
 
 private:

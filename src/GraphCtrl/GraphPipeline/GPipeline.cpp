@@ -157,7 +157,7 @@ CStatus GPipeline::resume() {
 CStatus GPipeline::dump(std::ostream& oss) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
-    oss << "digraph CGraph {\n";
+    oss << "\ndigraph CGraph {\n";
     oss << "compound=true;\n";
 
     for (const auto& element : element_manager_->manager_elements_) {
@@ -165,7 +165,7 @@ CStatus GPipeline::dump(std::ostream& oss) {
         element->dump(oss);
     }
 
-    oss << "}\n";
+    oss << "}\n\n";
     CGRAPH_FUNCTION_END
 }
 
@@ -175,8 +175,6 @@ CStatus GPipeline::perf(std::ostream& oss) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     status = GPerf::perf(this);
-    CGRAPH_FUNCTION_CHECK_STATUS
-
     CGRAPH_FUNCTION_END
 }
 

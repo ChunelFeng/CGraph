@@ -17,7 +17,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GAspectManager : public GAspectObject,
                        public GraphManager<GAspect> {
-public:
+protected:
     explicit GAspectManager() = default;
 
     ~GAspectManager() override {
@@ -101,12 +101,29 @@ public:
         CGRAPH_FUNCTION_END
     }
 
+    /**
+     * 弹出去最后一个
+     * @return
+     */
+    CStatus popLast() {
+        CGRAPH_FUNCTION_BEGIN
+        if (0 == getSize()) {
+            CGRAPH_RETURN_ERROR_STATUS("no aspect to pop")
+        }
+
+        auto* last = aspect_arr_.back();
+        CGRAPH_DELETE_PTR(last);
+        aspect_arr_.pop_back();    // 弹出最后一个
+        CGRAPH_FUNCTION_END
+    }
+
     CGRAPH_NO_ALLOWED_COPY(GAspectManager)
 
 private:
     GAspectPtrArr aspect_arr_;
 
     friend class GElement;
+    friend class UAllocator;
 };
 
 using GAspectManagerPtr = GAspectManager *;

@@ -19,8 +19,6 @@ class GPipeline;
 
 class GPerf : public GraphObject {
 protected:
-    explicit GPerf() = default;
-
     /**
      * 针对pipeline进行性能分析
      * @param pipeline
@@ -34,6 +32,13 @@ protected:
      * @return
      */
     static CStatus inject(GPipeline* pipeline);
+
+    /**
+     * 恢复原来的pipeline信息
+     * @param pipeline
+     * @return
+     */
+    static CStatus recover(GPipeline* pipeline);
 
     friend class GPipeline;
 };

@@ -289,7 +289,8 @@ CVoid GElement::dumpPerfInfo(std::ostream& oss) {
         // 包含 perf信息的情况
         oss << "\n";
         oss << "[start " << perf_info_->first_start_ts_;
-        oss << "ms, per_cost " << (perf_info_->accu_cost_ts_ / perf_info_->loop_);
+        oss << "ms, finish " << perf_info_->last_finish_ts_ << "ms,\n";
+        oss << "per_cost " << (perf_info_->accu_cost_ts_ / perf_info_->loop_);
         if (1 != perf_info_->loop_) {
             oss << "ms, total_cost " << perf_info_->accu_cost_ts_;
         }
@@ -330,6 +331,22 @@ CStatus GElement::buildRelation(GElementRelation& relation) {
 
 CBool GElement::isSerializable() {
     return true;
+}
+
+
+CStatus GElement::popLastAspect() {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(false)
+    CGRAPH_ASSERT_NOT_NULL(aspect_manager_)
+
+    status = aspect_manager_->popLast();
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    if (0 == aspect_manager_->getSize()) {
+        CGRAPH_DELETE_PTR(aspect_manager_)
+    }
+
+    CGRAPH_FUNCTION_END
 }
 
 CGRAPH_NAMESPACE_END

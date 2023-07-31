@@ -282,6 +282,12 @@ private:
      */
     virtual CBool isSerializable();
 
+    /**
+     * 弹出一个最后一个切面
+     * @return
+     */
+    CStatus popLastAspect();
+
 private:
     CBool done_ { false };                           // 判定被执行结束
     CBool linkable_ { false };                       // 判定是否可以连通计算
