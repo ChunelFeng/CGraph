@@ -102,6 +102,7 @@ CBool GElement::isLinkable() const {
 
 CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     for (GElementPtr cur: elements) {
         CGRAPH_ASSERT_NOT_NULL(cur)
         if (this == cur) {

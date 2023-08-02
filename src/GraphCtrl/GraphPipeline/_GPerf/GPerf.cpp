@@ -36,14 +36,14 @@ CStatus GPerf::inject(GPipelinePtr pipeline) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(pipeline)
 
-    const CMSec pipelineStartTs = CGRAPH_GET_CURRENT_MS();
+    const CMSec now = CGRAPH_GET_CURRENT_MS();
     for (auto* cur : pipeline->repository_.elements_) {
         /**
          * 给其中的每个element，都添加这个切面信息
          * 这里是不需要考虑 delete perf_info_的，因为在 element结束的时候，会自动释放
          */
         cur->perf_info_ = UAllocator::safeMallocCStruct<GPerfInfo>();
-        cur->addGAspect<GPerfAspect<CMSec, GPerfInfoPtr>>(pipelineStartTs, cur->perf_info_);
+        cur->addGAspect<GPerfAspect<CMSec, GPerfInfoPtr>>(now, cur->perf_info_);
     }
     CGRAPH_FUNCTION_END
 }
