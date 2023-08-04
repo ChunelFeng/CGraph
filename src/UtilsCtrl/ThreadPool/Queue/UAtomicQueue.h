@@ -81,11 +81,14 @@ public:
      * 阻塞式等待弹出
      * @return
      */
-    std::unique_ptr<T> waitPop() {
+    std::unique_ptr<T> popWithTimeout(CMSec ms) {
         CGRAPH_UNIQUE_LOCK lk(mutex_);
-        cv_.wait(lk, [this] { return !queue_.empty(); });
+        if (!cv_.wait_for(lk, std::chrono::milliseconds(ms), [this] { return !queue_.empty(); })) {
+            return nullptr;
+        }
+
         std::unique_ptr<T> result = std::move(queue_.front());
-        queue_.pop();
+        queue_.pop();    // 如果等成功了，则弹出一个信息
         return result;
     }
 

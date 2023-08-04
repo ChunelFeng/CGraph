@@ -27,6 +27,18 @@ CGRAPH_NAMESPACE_BEGIN
 #endif
 
 
+#if __cplusplus >= 201703L
+    using CGRAPH_READ_LOCK = std::shared_lock<std::shared_mutex>;
+    using CGRAPH_WRITE_LOCK = std::unique_lock<std::shared_mutex>;
+#else
+    using CGRAPH_READ_LOCK = std::unique_lock<std::mutex>;    // C++14不支持读写锁，使用mutex替代
+    using CGRAPH_WRITE_LOCK = std::unique_lock<std::mutex>;
+#endif
+
+using CGRAPH_LOCK_GUARD = std::lock_guard<std::mutex>;
+using CGRAPH_UNIQUE_LOCK = std::unique_lock<std::mutex>;
+
+
 template<typename T>
 CStatus __ASSERT_NOT_NULL(T t) {
     return (unlikely(nullptr == t))

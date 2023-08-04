@@ -10,7 +10,6 @@
 #define CGRAPH_UTIMER_H
 
 #include "../UtilsObject.h"
-#include "../ThreadPool/UThreadPoolDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

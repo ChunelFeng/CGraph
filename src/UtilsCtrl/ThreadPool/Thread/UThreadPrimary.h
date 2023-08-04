@@ -17,6 +17,7 @@ class UThreadPrimary : public UThreadBase {
 protected:
     explicit UThreadPrimary() {
         index_ = CGRAPH_SECONDARY_THREAD_COMMON_ID;
+        steal_range_ = 0;
         pool_threads_ = nullptr;
         type_ = CGRAPH_THREAD_TYPE_PRIMARY;
     }
@@ -25,8 +26,10 @@ protected:
     CStatus init() override {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(false)
+        CGRAPH_ASSERT_NOT_NULL(config_)
 
         is_init_ = true;
+        steal_range_ = config_->calcStealRange();
         thread_ = std::move(std::thread(&UThreadPrimary::run, this));
         setSchedParam();
         setAffinity(index_);
@@ -88,8 +91,7 @@ protected:
         if (popTask(task) || popPoolTask(task) || stealTask(task)) {
             runTask(task);
         } else {
-            config_->extreme_speed_enable_ ? std::this_thread::yield()
-                                           : CGRAPH_SLEEP_MICROSECOND(CGRAPH_EMPTY_INTERVAL_MCS);
+             std::this_thread::yield();
         }
     }
 
@@ -100,8 +102,7 @@ protected:
             // 尝试从主线程中获取/盗取批量task，如果成功，则依次执行
             runTasks(tasks);
         } else {
-            config_->extreme_speed_enable_ ? std::this_thread::yield()
-                                           : CGRAPH_SLEEP_MICROSECOND(CGRAPH_EMPTY_INTERVAL_MCS);
+            std::this_thread::yield();
         }
     }
 
@@ -144,8 +145,7 @@ protected:
          * 窃取的时候，仅从相邻的primary线程中窃取
          * 待窃取相邻的数量，不能超过默认primary线程数
          */
-        static int range = config_->calcStealRange();
-        for (int i = 0; i < range; i++) {
+        for (int i = 0; i < steal_range_; i++) {
             /**
             * 从线程中周围的thread中，窃取任务。
             * 如果成功，则返回true，并且执行任务。
@@ -171,8 +171,7 @@ protected:
             return false;
         }
 
-        int range = config_->calcStealRange();
-        for (int i = 0; i < range; i++) {
+        for (int i = 0; i < steal_range_; i++) {
             int curIndex = (index_ + i + 1) % config_->default_thread_size_;
             if (nullptr != (*pool_threads_)[curIndex]
                 && ((*pool_threads_)[curIndex])->work_stealing_queue_.trySteal(tasks, config_->max_steal_batch_size_)) {
@@ -185,6 +184,7 @@ protected:
 
 private:
     int index_;                                                    // 线程index
+    int steal_range_;                                              // 偷窃的范围信息
     UWorkStealingQueue work_stealing_queue_;                       // 内部队列信息
     std::vector<UThreadPrimary *>* pool_threads_;                  // 用于存放线程池中的线程信息
 

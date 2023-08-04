@@ -32,7 +32,6 @@ struct UThreadPoolConfig : public CStruct {
     bool bind_cpu_enable_ = CGRAPH_BIND_CPU_ENABLE;
     bool batch_task_enable_ = CGRAPH_BATCH_TASK_ENABLE;
     bool monitor_enable_ = CGRAPH_MONITOR_ENABLE;
-    bool extreme_speed_enable_ = CGRAPH_EXTREME_SPEED_ENABLE;
 
 protected:
     /**

@@ -70,7 +70,8 @@ protected:
         if (popPoolTask(task)) {
             runTask(task);
         } else {
-            std::this_thread::yield();
+            // 如果单词无法获取，则稍加等待
+            waitRunTask();
         }
     }
 
@@ -80,7 +81,21 @@ protected:
         if (popPoolTask(tasks)) {
             runTasks(tasks);
         } else {
-            std::this_thread::yield();
+            waitRunTask();
+        }
+    }
+
+
+    /**
+     * 有等待的执行任务
+     * @param ms
+     * @return
+     * @notice 目的是降低cpu的占用率
+     */
+    CVoid waitRunTask(CMSec ms = CGRAPH_EMPTY_INTERVAL_MS) {
+        auto task = this->pool_task_queue_->popWithTimeout(ms);
+        if (nullptr != task) {
+            (*task)();
         }
     }
 

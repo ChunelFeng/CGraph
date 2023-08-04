@@ -21,17 +21,6 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-    #if __cplusplus >= 201703L
-using CGRAPH_READ_LOCK = std::shared_lock<std::shared_mutex>;
-using CGRAPH_WRITE_LOCK = std::unique_lock<std::shared_mutex>;
-    #else
-using CGRAPH_READ_LOCK = std::unique_lock<std::mutex>;    // C++14不支持读写锁，使用mutex替代
-using CGRAPH_WRITE_LOCK = std::unique_lock<std::mutex>;
-    #endif
-
-using CGRAPH_LOCK_GUARD = std::lock_guard<std::mutex>;
-using CGRAPH_UNIQUE_LOCK = std::unique_lock<std::mutex>;
-
 static const int CGRAPH_CPU_NUM = (int)std::thread::hardware_concurrency();
 static const int CGRAPH_THREAD_TYPE_PRIMARY = 1;
 static const int CGRAPH_THREAD_TYPE_SECONDARY = 2;
@@ -49,7 +38,7 @@ static const CInt CGRAPH_THREAD_MIN_PRIORITY = 0;                               
 static const CInt CGRAPH_THREAD_DEFAULT_PRIORITY = 20;                                      // 线程默认优先级
 static const CInt CGRAPH_THREAD_MAX_PRIORITY = 99;                                          // 线程最高优先级
 static const CMSec CGRAPH_MAX_BLOCK_TTL = 3999999999;                                       // 最大阻塞时间，单位为ms
-static const CInt CGRAPH_EMPTY_INTERVAL_MCS = 50;                                           // 无可执行任务且非极速模式下休眠时间，单位为mcs
+static const CInt CGRAPH_EMPTY_INTERVAL_MS = 100;                                           // 无任务情况下的休眠时间，单位为ms
 static const CUint CGRAPH_DEFAULT_RINGBUFFER_SIZE = 1024;                                   // 默认环形队列的大小
 static const CIndex CGRAPH_SECONDARY_THREAD_COMMON_ID = -1;                                 // 辅助线程统一id标识
 static const CInt CGRAPH_DEFAULT_PRIORITY = 0;                                              // 默认优先级
@@ -78,7 +67,6 @@ static const int CGRAPH_PRIMARY_THREAD_POLICY = CGRAPH_THREAD_SCHED_OTHER;      
 static const int CGRAPH_SECONDARY_THREAD_POLICY = CGRAPH_THREAD_SCHED_OTHER;                // 辅助线程调度策略
 static const int CGRAPH_PRIMARY_THREAD_PRIORITY = CGRAPH_THREAD_DEFAULT_PRIORITY;           // 主线程调度优先级（取值范围0~99）
 static const int CGRAPH_SECONDARY_THREAD_PRIORITY = CGRAPH_THREAD_DEFAULT_PRIORITY;         // 辅助线程调度优先级（取值范围0~99）
-static const bool CGRAPH_EXTREME_SPEED_ENABLE = true;                                       // 是否开启极速模式（如果关闭，可以大幅降低系统负载）
 
 CGRAPH_NAMESPACE_END
 
