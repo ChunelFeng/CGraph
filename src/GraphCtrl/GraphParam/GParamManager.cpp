@@ -28,6 +28,7 @@ CStatus GParamManager::init() {
          * init() 是在pipeline init的时候被执行的
          * setup() 是在pipeline run开始的时候被执行的
          */
+        CGRAPH_ASSERT_NOT_NULL(param.second);
         status += param.second->init();
     }
     CGRAPH_FUNCTION_END
@@ -37,6 +38,7 @@ CStatus GParamManager::init() {
 CStatus GParamManager::destroy() {
     CGRAPH_FUNCTION_BEGIN
     for (auto& param : params_map_) {
+        CGRAPH_ASSERT_NOT_NULL(param.second);
         status += param.second->destroy();
     }
     CGRAPH_FUNCTION_CHECK_STATUS
@@ -59,9 +61,7 @@ CStatus GParamManager::clear() {
 
 CVoid GParamManager::resetWithStatus(const CStatus& curStatus) {
     for (auto cur : params_map_) {
-        if (likely(cur.second)) {
-            cur.second->reset(curStatus);
-        }
+        cur.second->reset(curStatus);
     }
 }
 
@@ -69,9 +69,8 @@ CVoid GParamManager::resetWithStatus(const CStatus& curStatus) {
 CStatus GParamManager::setup() {
     CGRAPH_FUNCTION_BEGIN
     for (auto cur : params_map_) {
-        if (likely(cur.second)) {
-            status += cur.second->setup();
-        }
+        // 这里不需要判断非空，因为在init的时候，已经判断过了
+        status += cur.second->setup();
     }
     CGRAPH_FUNCTION_END
 }

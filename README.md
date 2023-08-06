@@ -145,6 +145,7 @@ int main() {
 * [纯序员给你介绍图化框架的简单实现——线程池优化（四）](http://www.chunel.cn/archives/cgraph-threadpool-4-introduce)
 * [纯序员给你介绍图化框架的简单实现——线程池优化（五）](http://www.chunel.cn/archives/cgraph-threadpool-5-introduce)
 * [纯序员给你介绍图化框架的简单实现——线程池优化（六）](http://www.chunel.cn/archives/cgraph-threadpool-6-introduce)
+* [纯序员给你介绍图化框架的简单实现——性能优化（一）](http://www.chunel.cn/archives/cgraph-performance-1)
 * [纯序员给你介绍图化框架的简单实现——距离计算](http://www.chunel.cn/archives/cgraph-distance-introduce)
   <br><br>
 * [CGraph 主打歌——《听码农的话》](http://www.chunel.cn/archives/listen-to-coder)
@@ -317,7 +318,7 @@ int main() {
 [2023.07.12 - v2.4.3 - Chunel]
 * 优化了`CStatus`功能，添加了异常定位信息
 
-[2023.07.28 - v2.5.0 - Chunel]
+[2023.08.06 - v2.5.0 - Chunel]
 * 提供了perf功能，用于做`pipeline`的性能分析
 
 </details>
