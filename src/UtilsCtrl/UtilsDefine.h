@@ -119,9 +119,6 @@ static std::mutex g_check_status_mtx;
 #define CGRAPH_SLEEP_MILLISECOND(ms)                                            \
     std::this_thread::sleep_for(std::chrono::milliseconds(ms));                 \
 
-#define CGRAPH_SLEEP_MICROSECOND(mcs)                                           \
-    std::this_thread::sleep_for(std::chrono::microseconds(mcs));                \
-
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_UTILSDEFINE_H

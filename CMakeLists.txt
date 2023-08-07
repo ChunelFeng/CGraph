@@ -43,11 +43,11 @@ set(CGRAPH_TUTORIAL_LIST
         T20-YieldResume
 
         # 以下为工具类tutorial
-        TU01-ThreadPool
-        TU02-Lru
-        TU03-Trie
-        TU04-Timer
-        TU05-Distance
+        # TU01-ThreadPool
+        # TU02-Lru
+        # TU03-Trie
+        # TU04-Timer
+        # TU05-Distance
         )
 
 # add CGraph environment info

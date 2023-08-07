@@ -32,8 +32,8 @@ void tutorial_simple() {
 
     /**
     UThreadPoolConfig config;             // （可选）推荐根据自己设定的dag逻辑，来配置调度信息
-    config.default_thread_size_ = 0;      // 非计算密集型任务，推荐将 default_thread_size_ 设置为0，可以极大的降低cpu占用率
-    config.secondary_thread_size_ = 2;    // 更多配置信息，请参考 UThreadPoolDefine.h 中的描述
+    config.default_thread_size_ = 2;
+    config.secondary_thread_size_ = 0;    // 更多配置信息，请参考 UThreadPoolDefine.h 中的描述
     pipeline->setUniqueThreadPoolConfig(config);
     */
 

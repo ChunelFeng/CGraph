@@ -11,7 +11,6 @@
 
 #include "USingletonDefine.h"
 #include "../UtilsObject.h"
-#include "../ThreadPool/UThreadPoolInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -72,7 +71,7 @@ protected:
      * @return
      */
     CVoid create() {
-        if (nullptr == handle_) {
+        if (unlikely(nullptr == handle_)) {
             CGRAPH_LOCK_GUARD lock(lock_);
             if (nullptr == handle_) {
                 handle_ = CGRAPH_SAFE_MALLOC_COBJECT(T)
@@ -94,7 +93,7 @@ protected:
     CGRAPH_NO_ALLOWED_COPY(USingleton);
 
 private:
-    T* handle_ { nullptr };
+    T* handle_ { nullptr };             // 对应的单例句柄信息
     std::mutex lock_;
 };
 

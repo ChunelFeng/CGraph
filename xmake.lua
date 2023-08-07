@@ -35,11 +35,8 @@ tutorial_list = {
         "T16-MessageSendRecv",
         "T17-MessagePubSub",
         "T18-Event",
-        "TU01-ThreadPool",
-        "TU02-Lru",
-        "TU03-Trie",
-        "TU04-Timer",
-        "TU05-Distance"
+        "T19-Cancel",
+        "T20-YieldResume"
 }
 
 -- add tutorial target one by one
