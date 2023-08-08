@@ -35,7 +35,6 @@ static const int CGRAPH_THREAD_SCHED_RR = 0;
 static const int CGRAPH_THREAD_SCHED_FIFO = 0;
     #endif
 static const CInt CGRAPH_THREAD_MIN_PRIORITY = 0;                                           // 线程最低优先级
-static const CInt CGRAPH_THREAD_DEFAULT_PRIORITY = 20;                                      // 线程默认优先级
 static const CInt CGRAPH_THREAD_MAX_PRIORITY = 99;                                          // 线程最高优先级
 static const CMSec CGRAPH_MAX_BLOCK_TTL = 3999999999;                                       // 最大阻塞时间，单位为ms
 static const CInt CGRAPH_EMPTY_INTERVAL_MS = 100;                                           // 无任务情况下的休眠时间，单位为ms
@@ -65,8 +64,8 @@ static const int CGRAPH_MONITOR_SPAN = 5;                                       
 static const bool CGRAPH_BIND_CPU_ENABLE = false;                                           // 是否开启绑定cpu模式（仅针对主线程）
 static const int CGRAPH_PRIMARY_THREAD_POLICY = CGRAPH_THREAD_SCHED_OTHER;                  // 主线程调度策略
 static const int CGRAPH_SECONDARY_THREAD_POLICY = CGRAPH_THREAD_SCHED_OTHER;                // 辅助线程调度策略
-static const int CGRAPH_PRIMARY_THREAD_PRIORITY = CGRAPH_THREAD_DEFAULT_PRIORITY;           // 主线程调度优先级（取值范围0~99）
-static const int CGRAPH_SECONDARY_THREAD_PRIORITY = CGRAPH_THREAD_DEFAULT_PRIORITY;         // 辅助线程调度优先级（取值范围0~99）
+static const int CGRAPH_PRIMARY_THREAD_PRIORITY = CGRAPH_THREAD_MIN_PRIORITY;               // 主线程调度优先级（取值范围0~99，配合调度策略一起使用，不建议不了解相关内容的童鞋做修改）
+static const int CGRAPH_SECONDARY_THREAD_PRIORITY = CGRAPH_THREAD_MIN_PRIORITY;             // 辅助线程调度优先级（同上）
 
 CGRAPH_NAMESPACE_END
 

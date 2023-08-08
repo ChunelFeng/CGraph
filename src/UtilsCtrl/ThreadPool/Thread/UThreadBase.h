@@ -172,7 +172,7 @@ protected:
         sched_param param = { calcPriority(priority) };
         int ret = pthread_setschedparam(handle, calcPolicy(policy), &param);
         if (0 != ret) {
-            CGRAPH_ECHO("warning : set thread sched param failed, error code is [%d]", ret);
+            CGRAPH_ECHO("warning : set thread sched param failed, system error code is [%d]", ret);
         }
 #endif
     }
@@ -193,7 +193,7 @@ protected:
         auto handle = thread_.native_handle();
         int ret = pthread_setaffinity_np(handle, sizeof(cpu_set_t), &mask);
         if (0 != ret) {
-            CGRAPH_ECHO("warning : set thread affinity failed, error code is [%d]", ret);
+            CGRAPH_ECHO("warning : set thread affinity failed, system error code is [%d]", ret);
         }
 #endif
     }

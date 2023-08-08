@@ -32,7 +32,7 @@ void tutorial_cancel() {
     CGRAPH_ECHO("pipeline async run first time, FINISH.");
     CGRAPH_ECHO("======================");
 
-    pipeline->asyncRun();
+    result = pipeline->asyncRun();
     CGRAPH_ECHO("pipeline async run second time, BEGIN.");
     CGRAPH_SLEEP_MILLISECOND(1500)
 
@@ -44,6 +44,7 @@ void tutorial_cancel() {
     CGRAPH_ECHO("pipeline async run second time, CANCEL.");
     CGRAPH_ECHO("======================");
 
+    result.wait();    // 请务必等待执行完成之后，再进行destroy逻辑
     pipeline->destroy();
     GPipelineFactory::remove(pipeline);
 }

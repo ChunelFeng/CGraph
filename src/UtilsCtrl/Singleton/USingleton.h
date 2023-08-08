@@ -71,7 +71,7 @@ protected:
      * @return
      */
     CVoid create() {
-        if (unlikely(nullptr == handle_)) {
+        if (likely(nullptr == handle_)) {
             CGRAPH_LOCK_GUARD lock(lock_);
             if (nullptr == handle_) {
                 handle_ = CGRAPH_SAFE_MALLOC_COBJECT(T)
