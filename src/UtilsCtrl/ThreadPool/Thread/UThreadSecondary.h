@@ -71,7 +71,7 @@ protected:
             runTask(task);
         } else {
             // 如果单词无法获取，则稍加等待
-            waitRunTask();
+            waitRunTask(config_->queue_emtpy_interval_);
         }
     }
 
@@ -81,7 +81,7 @@ protected:
         if (popPoolTask(tasks)) {
             runTasks(tasks);
         } else {
-            waitRunTask();
+            waitRunTask(config_->queue_emtpy_interval_);
         }
     }
 
@@ -92,7 +92,7 @@ protected:
      * @return
      * @notice 目的是降低cpu的占用率
      */
-    CVoid waitRunTask(CMSec ms = CGRAPH_EMPTY_INTERVAL_MS) {
+    CVoid waitRunTask(CMSec ms) {
         auto task = this->pool_task_queue_->popWithTimeout(ms);
         if (nullptr != task) {
             (*task)();

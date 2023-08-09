@@ -211,7 +211,7 @@ CVoid UThreadPool::monitor() {
         }
 
         // 如果 primary线程都在执行，则表示忙碌
-        bool busy = std::all_of(primary_threads_.begin(), primary_threads_.end(),
+        bool busy = !primary_threads_.empty() && std::all_of(primary_threads_.begin(), primary_threads_.end(),
                                 [](UThreadPrimaryPtr ptr) { return nullptr != ptr && ptr->is_running_; });
 
         // 如果忙碌或者priority_task_queue_中有任务，则需要添加 secondary线程

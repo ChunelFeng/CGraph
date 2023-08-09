@@ -25,6 +25,7 @@ struct UThreadPoolConfig : public CStruct {
     int max_steal_batch_size_ = CGRAPH_MAX_STEAL_BATCH_SIZE;
     int secondary_thread_ttl_ = CGRAPH_SECONDARY_THREAD_TTL;
     int monitor_span_ = CGRAPH_MONITOR_SPAN;
+    CMSec queue_emtpy_interval_ = CGRAPH_QUEUE_EMPTY_INTERVAL;
     int primary_thread_policy_ = CGRAPH_PRIMARY_THREAD_POLICY;
     int secondary_thread_policy_ = CGRAPH_SECONDARY_THREAD_POLICY;
     int primary_thread_priority_ = CGRAPH_PRIMARY_THREAD_PRIORITY;
