@@ -44,6 +44,13 @@ private:
     CStatus setup();
 
     /**
+     * 等待所有的element执行结束
+     * @return
+     * @notice 主要针对异步流程
+     */
+    CStatus reset();
+
+    /**
      * 设置所有内部的element状态
      * @param state
      * @return
@@ -60,11 +67,12 @@ private:
 
     ~GElementRepository() override;
 
-    CStatus run() override;
+    CStatus run() final;
 
 private:
     GElementPtrSet elements_;                                    // 用于记录所有的element信息
     GElementState cur_state_ = GElementState::CREATE;            // 当前状态信息
+    GElementPtrSet async_nodes_;                                 // 所有异步节点的信息
 
     friend class GPipeline;
     friend class GPerf;

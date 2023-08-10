@@ -11,6 +11,7 @@
 
 #include "GNodeDefine.h"
 #include "GNode.h"
+#include "GAsyncNode.h"
 #include "GTemplateNode.h"
 
 #endif //CGRAPH_GNODEINCLUDE_H

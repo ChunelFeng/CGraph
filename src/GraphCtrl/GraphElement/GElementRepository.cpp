@@ -7,12 +7,18 @@
 ***************************/
 
 #include "GElementRepository.h"
+#include "GNode/GNodeInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
 CVoid GElementRepository::insert(GElementPtr ptr) {
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr)
     elements_.insert(ptr);
+
+    if (GElementType::ASYNC_NODE == ptr->element_type_) {
+        // 如果是异步节点，专门存放起来
+        async_nodes_.emplace(ptr);
+    }
 }
 
 
@@ -35,6 +41,16 @@ CStatus GElementRepository::setup() {
     CGRAPH_FUNCTION_BEGIN
     // 一旦执行，全部设置为 normal状态
     status = pushAllState(GElementState::NORMAL);
+    CGRAPH_FUNCTION_END
+}
+
+
+CStatus GElementRepository::reset() {
+    CGRAPH_FUNCTION_BEGIN
+    for (auto& cur : async_nodes_) {
+        status += ((GAsyncNodePtr)cur)->async_result_.get();
+    }
+
     CGRAPH_FUNCTION_END
 }
 

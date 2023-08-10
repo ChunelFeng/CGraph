@@ -21,6 +21,7 @@ const static CIndex CGRAPH_DEFAULT_BINDING_INDEX = -1;          // 默认绑定�
 enum class GElementType {
     ELEMENT = 0x00000000,                    // 元素
     NODE = 0x00010000,                       // 节点
+    ASYNC_NODE = 0x00011000,                 // 异步节点
     GROUP = 0x00020000,                      // 组
     CLUSTER = 0x00020001,                    // 簇
     REGION = 0x00020002,                     // 区域

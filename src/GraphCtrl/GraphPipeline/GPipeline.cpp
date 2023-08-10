@@ -63,6 +63,7 @@ CStatus GPipeline::run() {
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status = element_manager_->run();
+    status += repository_.reset();    // 等异步的逻辑执行，并且获取异步执行的结果信息
     param_manager_->resetWithStatus(status);
     CGRAPH_FUNCTION_END
 }

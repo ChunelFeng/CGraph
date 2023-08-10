@@ -320,6 +320,7 @@ int main() {
 
 [2023.08.06 - v2.5.0 - Chunel]
 * 提供了perf功能，用于做`pipeline`的性能分析
+* 提供了`GAsyncNode`(异步节点)功能
 
 </details>
 

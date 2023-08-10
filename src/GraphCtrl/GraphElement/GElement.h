@@ -304,12 +304,13 @@ private:
     GAspectManagerPtr aspect_manager_ { nullptr };   // 整体流程的切面管理类
     UThreadPoolPtr thread_pool_ { nullptr };         // 用于执行的线程池信息
     std::atomic<GElementState> cur_state_ { GElementState::CREATE };       // 当前执行状态
-    GPerfInfo* perf_info_ = nullptr;                                       // 用于perf的信息
+    GPerfInfo* perf_info_ = nullptr;                                          // 用于perf的信息
 
-    std::mutex yield_mutex_;                                               // 控制停止执行的锁
-    std::condition_variable yield_cv_;                                     // 控制停止执行的条件变量
+    std::mutex yield_mutex_;                                                  // 控制停止执行的锁
+    std::condition_variable yield_cv_;                                        // 控制停止执行的条件变量
 
     friend class GNode;
+    friend class GAsyncNode;
     friend class GCluster;
     friend class GRegion;
     friend class GCondition;
