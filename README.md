@@ -155,13 +155,14 @@ int main() {
 * [以图优图：CGraph中计算dag最大并发度思路总结](http://www.chunel.cn/archives/cgraph-max-para-size)
   <br><br>
 
-## 五. 关联项目
+## 五. 联系方式
 
-* [GraphANNS](https://github.com/whenever5225/GraphANNS) : Graph-based Approximate Nearest Neighbor Search Working off CGraph
-* [CThreadPool](https://github.com/ChunelFeng/CThreadPool) : 一个简单好用、功能强大、性能优异、跨平台的C++线程池
-* [taskflow](https://github.com/taskflow/taskflow) : A General-purpose Parallel and Heterogeneous Task Programming System
-* [awesome-cpp](https://github.com/fffaraz/awesome-cpp) : A curated list of awesome C++ (or C) frameworks, libraries, resources, and shiny things. Inspired by awesome-... stuff.
-* [awesome-workflow-engines](https://github.com/meirwah/awesome-workflow-engines) : A curated list of awesome open source workflow engines
+* 微信： ChunelFeng (如有意见或建议，欢迎随时交流。请扫描下方二维码，并简单备注相关信息)
+* 邮箱： chunel@foxmail.com
+* 源码： https://github.com/ChunelFeng/CGraph
+* 论坛： www.chunel.cn
+
+![CGraph Author](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Author.jpg)
 
 ------------
 <details>
@@ -263,7 +264,7 @@ int main() {
 * 提供针对C++14版本的支持
 * 更新`tutorial`内容
 
-[2022.10.03 - v2.1.1 - Chunel]  
+[2022.10.03 - v2.1.1 - Chunel]
 * 提供线程池中的任务优先级机制
 * 优化`group`执行逻辑
 
@@ -348,13 +349,12 @@ int main() {
 
 ------------
 <details>
-<summary><b>附录-3. 联系方式</b></summary>
+<summary><b>附录-3. 关联项目</b></summary>
 
-* 微信： ChunelFeng
-* 邮箱： chunel@foxmail.com
-* 源码： https://github.com/ChunelFeng/CGraph
-* 论坛： www.chunel.cn
-
-![CGraph Author](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Author.jpg)
+* [GraphANNS](https://github.com/whenever5225/GraphANNS) : Graph-based Approximate Nearest Neighbor Search Working off CGraph
+* [CThreadPool](https://github.com/ChunelFeng/CThreadPool) : 一个简单好用、功能强大、性能优异、跨平台的C++线程池
+* [taskflow](https://github.com/taskflow/taskflow) : A General-purpose Parallel and Heterogeneous Task Programming System
+* [awesome-cpp](https://github.com/fffaraz/awesome-cpp) : A curated list of awesome C++ (or C) frameworks, libraries, resources, and shiny things. Inspired by awesome-... stuff.
+* [awesome-workflow-engines](https://github.com/meirwah/awesome-workflow-engines) : A curated list of awesome open source workflow engines
 
 </details>
