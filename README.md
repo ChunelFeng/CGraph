@@ -14,9 +14,11 @@
   CGraph 说明文档
 </h1>
 
+<img align="right" src="https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Author.jpg" width="256px">
+
 ><b>CGraph</b> is a cross-platform <b>D</b>irected <b>A</b>cyclic <b>G</b>raph framework based on pure C++ without any 3rd-party dependencies.</br></br>
->You, with it, can build your own operators simply, and describe any running schedules as you need, such as dependence, parallelling, aggregation and so on. Some useful tools and plugins are also provide to improve your project.</br></br>
->Tutorials and contact information are show as follows. Please get in touch with us for free if you need more about this repository.
+>You, with it, can <b>build your own operators simply, and describe any running schedules</b> as you need, such as dependence, parallelling, aggregation and so on. Some useful tools and plugins are also provide to improve your project.</br></br>
+>Tutorials and contact information are show as follows. Please <b>get in touch with us for free</b> if you need more about this repository.
 
 ## 一. 简介
 
@@ -155,14 +157,13 @@ int main() {
 * [以图优图：CGraph中计算dag最大并发度思路总结](http://www.chunel.cn/archives/cgraph-max-para-size)
   <br><br>
 
-## 五. 联系方式
+## 五. 关联项目
 
-* 微信： ChunelFeng (如有意见或建议，欢迎随时交流。请扫描下方二维码，并简单备注相关信息)
-* 邮箱： chunel@foxmail.com
-* 源码： https://github.com/ChunelFeng/CGraph
-* 论坛： www.chunel.cn
-
-![CGraph Author](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Author.jpg)
+* [GraphANNS](https://github.com/whenever5225/GraphANNS) : Graph-based Approximate Nearest Neighbor Search Working off CGraph
+* [CThreadPool](https://github.com/ChunelFeng/CThreadPool) : 一个简单好用、功能强大、性能优异、跨平台的C++线程池
+* [taskflow](https://github.com/taskflow/taskflow) : A General-purpose Parallel and Heterogeneous Task Programming System
+* [awesome-cpp](https://github.com/fffaraz/awesome-cpp) : A curated list of awesome C++ (or C) frameworks, libraries, resources, and shiny things. Inspired by awesome-... stuff.
+* [awesome-workflow-engines](https://github.com/meirwah/awesome-workflow-engines) : A curated list of awesome open source workflow engines
 
 ------------
 <details>
@@ -349,12 +350,11 @@ int main() {
 
 ------------
 <details>
-<summary><b>附录-3. 关联项目</b></summary>
+<summary><b>附录-3. 联系方式</b></summary>
 
-* [GraphANNS](https://github.com/whenever5225/GraphANNS) : Graph-based Approximate Nearest Neighbor Search Working off CGraph
-* [CThreadPool](https://github.com/ChunelFeng/CThreadPool) : 一个简单好用、功能强大、性能优异、跨平台的C++线程池
-* [taskflow](https://github.com/taskflow/taskflow) : A General-purpose Parallel and Heterogeneous Task Programming System
-* [awesome-cpp](https://github.com/fffaraz/awesome-cpp) : A curated list of awesome C++ (or C) frameworks, libraries, resources, and shiny things. Inspired by awesome-... stuff.
-* [awesome-workflow-engines](https://github.com/meirwah/awesome-workflow-engines) : A curated list of awesome open source workflow engines
+* 微信： ChunelFeng (欢迎扫描上方二维码，和项目主要作者成为好友。添加时，请简单备注个人信息^_^)
+* 邮箱： chunel@foxmail.com
+* 源码： https://github.com/ChunelFeng/CGraph
+* 论坛： www.chunel.cn
 
 </details>
