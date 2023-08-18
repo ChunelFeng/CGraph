@@ -11,7 +11,7 @@
 
 using namespace CGraph;
 
-void tutorial_cluster () {
+void tutorial_cluster() {
     CStatus status;
     GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b_cluster, c, d = nullptr;
@@ -30,6 +30,13 @@ void tutorial_cluster () {
     if (!status.isOK()) {
         return;
     }
+
+    /**
+     * 如果想查看当前 pipeline 的流图结构信息，
+     * 请调用 dump()方法，并且将输出的内容(不包含node内部的打印信息)，
+     * 复制到 https://dreampuf.github.io/GraphvizOnline/ 中查看效果
+     */
+    // pipeline->dump();
 
     /* process函数，相当于 init(),run()*n,destroy()函数，同时调用 */
     status = pipeline->process();

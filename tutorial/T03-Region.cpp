@@ -37,6 +37,13 @@ void tutorial_region() {
     status = pipeline->process();
     CGRAPH_ECHO("pipeline process status is : [%d]", status.getCode());
 
+    /**
+     * 如果想查看pipeline内部，各部分(element)的运行耗时情况，
+     * 请调用 perf()方法，并且将输出的内容(不包含node内部的打印信息)，
+     * 复制到 https://dreampuf.github.io/GraphvizOnline/
+     */
+    // pipeline->perf();
+
     GPipelineFactory::remove(pipeline);
 }
 

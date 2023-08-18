@@ -94,7 +94,11 @@ public:
     /**
      * 查看性能分析
      * @return
-     * @notice 将输出的内容，复制到 https://dreampuf.github.io/GraphvizOnline/ 中查看效果
+     * @notice 将输出的内容，复制到 https://dreampuf.github.io/GraphvizOnline/ 中查看效果，字段解释如下：
+     * start : 当前element第一次被执行的时间
+     * finish : 当前element最后一次被执行结束的时间
+     * per_cost : 当前element单次执行耗时
+     * total_cost : 当前element执行的总耗时（仅在element多次执行时展示）
      */
     CStatus perf(std::ostream& oss = std::cout);
 

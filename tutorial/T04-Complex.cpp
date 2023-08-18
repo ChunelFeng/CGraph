@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: T04-Complex.cpp
 @Time: 2021/6/7 9:00 下午
-@Desc: 本例主要演示，各种 GElement 混合的使用方法
+@Desc: 本例主要演示，各种 GElement 混合的使用方法。主要表示，group中还可以插入其他的group
 ***************************/
 
 #include "MyGNode/MyNode1.h"
