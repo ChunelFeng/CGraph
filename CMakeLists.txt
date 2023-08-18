@@ -41,6 +41,7 @@ set(CGRAPH_TUTORIAL_LIST
         T18-Event
         T19-Cancel
         T20-YieldResume
+        T21-MultiCondition
 
         # 以下为工具类tutorial
         # TU01-ThreadPool

@@ -38,11 +38,7 @@ void tutorial_yield_resume() {
     status += pipeline->resume();     // 暂停一段时间后，恢复执行
 
     result.wait();    // 等待pipeline异步执行结束
-    status += pipeline->destroy();
-    if (!status.isOK()) {
-        std::cout << status.getInfo() << std::endl;
-        return;
-    }
+    pipeline->destroy();
 
     GPipelineFactory::remove(pipeline);
 }

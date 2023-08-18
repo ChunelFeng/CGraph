@@ -36,7 +36,8 @@ tutorial_list = {
         "T17-MessagePubSub",
         "T18-Event",
         "T19-Cancel",
-        "T20-YieldResume"
+        "T20-YieldResume",
+        "T21-MultiCondition"
 }
 
 -- add tutorial target one by one
