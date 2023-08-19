@@ -112,18 +112,14 @@ CStatus GPipeline::process(CSize runTimes) {
 
 std::future<CStatus> GPipeline::asyncRun() {
     /**
-     * 1. 确定是否已经初始化
-     * 2. 确定线程资源是ok的（理论上，初始化后，就一定会有值）
-     * 3. 异步的执行 run() 方法，并且返回执行结果的 future 信息
+     * 1. 确认当前pipeline已经初始化完毕
+     * 2. 异步的执行 run() 方法，并且返回执行结果的 future 信息
      */
     CGRAPH_ASSERT_INIT_THROW_ERROR(true)
 
-    auto tp = schedule_.getThreadPool();
-    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(tp)
-
-    return tp->commitWithPriority([this] {
+    return std::async(std::launch::async, [this] {
         return run();
-    }, CGRAPH_DEFAULT_PRIORITY);
+    });
 }
 
 
@@ -248,6 +244,7 @@ CStatus GPipeline::makeSerial() {
     config.secondary_thread_size_ = 0;
     config.max_thread_size_ = 0;
     config.monitor_enable_ = false;
+    config.batch_task_enable_ = false;
     schedule_.config_ = config;
     CGRAPH_FUNCTION_END
 }
