@@ -22,7 +22,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 enum class GMultiConditionType;
-class GPerfInfo;
+struct GPerfInfo;
 
 class GElement : public GElementObject,
                  public CDescInfo {
