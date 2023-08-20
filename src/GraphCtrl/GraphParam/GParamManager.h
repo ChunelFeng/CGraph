@@ -93,5 +93,4 @@ CGRAPH_NAMESPACE_END
 
 #include "GParamManager.inl"
 
-
 #endif //CGRAPH_GPARAMMANAGER_H

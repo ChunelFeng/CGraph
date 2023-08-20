@@ -26,6 +26,7 @@ enum class GElementType {
     CLUSTER = 0x00020001,                    // 簇
     REGION = 0x00020002,                     // 区域
     CONDITION = 0x00020004,                  // 条件
+    SOME = 0x00020008,                       // 部分
     MULTI_CONDITION = 0x00020014,            // 多条件
     ADAPTER = 0x00040000,                    // 适配器
     FUNCTION = 0x00040001,                   // 函数

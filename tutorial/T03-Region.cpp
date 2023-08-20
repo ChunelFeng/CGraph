@@ -40,7 +40,8 @@ void tutorial_region() {
     /**
      * 如果想查看pipeline内部，各部分(element)的运行耗时情况，
      * 请调用 perf()方法，并且将输出的内容(不包含node内部的打印信息)，
-     * 复制到 https://dreampuf.github.io/GraphvizOnline/
+     * 复制到 https://dreampuf.github.io/GraphvizOnline/ 查看效果
+     * 具体字段解释，请参考函数头文件备注信息
      */
     // pipeline->perf();
 

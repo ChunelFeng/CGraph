@@ -19,10 +19,23 @@ GAsyncNode::GAsyncNode() {
 CStatus GAsyncNode::run() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
+    if (loop_ > 1) {
+        CGRAPH_RETURN_ERROR_STATUS("GAsyncNode can set loop=1 only")
+    }
 
     async_result_ = this->thread_pool_->commitWithPriority([this] {
         return this->asyncRun();
     }, CGRAPH_ASYNC_NODE_TASK_STRATEGY);
+
+    CGRAPH_FUNCTION_END
+}
+
+
+CStatus GAsyncNode::getResult() {
+    CGRAPH_FUNCTION_BEGIN
+    if (async_result_.valid()) {
+        status = async_result_.get();
+    }
 
     CGRAPH_FUNCTION_END
 }

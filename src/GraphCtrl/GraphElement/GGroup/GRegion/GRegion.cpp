@@ -93,8 +93,8 @@ CVoid GRegion::dump(std::ostream& oss) {
 
     dumpGroupLabelEnd(oss);
 
-    for (const auto& node : run_before_) {
-        dumpEdge(oss, this, node);
+    for (const auto& element : run_before_) {
+        dumpEdge(oss, this, element);
     }
 }
 

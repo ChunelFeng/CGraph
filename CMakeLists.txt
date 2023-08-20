@@ -42,9 +42,10 @@ set(CGRAPH_TUTORIAL_LIST
         T19-Cancel
         T20-YieldResume
         T21-MultiCondition
+        T22-Some
 
         # 以下为工具类tutorial
-        # TU01-ThreadPool
+        TU01-ThreadPool
         # TU02-Lru
         # TU03-Trie
         # TU04-Timer

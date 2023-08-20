@@ -94,13 +94,10 @@ GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
-    GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T)
+    GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T);
     status = node->setElementInfo(info.dependence_, info.name_, info.loop_,
                                   this->param_manager_, this->event_manager_);
-    if (!status.isOK()) {
-        CGRAPH_DELETE_PTR(node);
-        return nullptr;
-    }
+    CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
     repository_.insert(node);
     return node;
@@ -119,26 +116,24 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
     // 如果不是所有的都非空，则创建失败
     if (std::any_of(elements.begin(), elements.end(),
                     [](GElementPtr element) { return (nullptr == element); })) {
-        return nullptr;
+        CGRAPH_THROW_EXCEPTION("createGGroup elements have nullptr.")
     }
 
     if (std::any_of(dependElements.begin(), dependElements.end(),
                     [](GElementPtr element) { return (nullptr == element); })) {
-        return nullptr;
+        CGRAPH_THROW_EXCEPTION("createGGroup dependElements have nullptr.")
     }
 
     GGroupPtr group = CGRAPH_SAFE_MALLOC_COBJECT(T)
     for (GElementPtr element : elements) {
-        group->addElement(element);
+        status += group->addElement(element);
         element->belong_ = group;    // 从属于这个group的信息
     }
+    CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
     status = group->setElementInfo(dependElements, name, loop,
                                    nullptr, nullptr);    // 注册group信息的时候，不能注册paramManager信息
-    if (unlikely(!status.isOK())) {
-        CGRAPH_DELETE_PTR(group)
-        return nullptr;
-    }
+    CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
     this->repository_.insert(group);
     return group;

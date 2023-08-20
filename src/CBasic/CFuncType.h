@@ -75,6 +75,12 @@ enum class CFunctionType {
 #define CGRAPH_THROW_EXCEPTION(info)                                    \
     throw CException(info, CGRAPH_GET_LOCATE);                          \
 
+/** 在异常状态的情况下，抛出异常 */
+#define CGRAPH_THROW_EXCEPTION_BY_STATUS(status)                        \
+    if (unlikely(status.isErr())) {                                     \
+        CGRAPH_THROW_EXCEPTION(status.getInfo());                       \
+    }                                                                   \
+
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_CFUNCTYPE_H

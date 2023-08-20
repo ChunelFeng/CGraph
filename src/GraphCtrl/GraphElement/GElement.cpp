@@ -308,7 +308,7 @@ CVoid GElement::checkYield() {
 }
 
 
-CBool GElement::isGroup() {
+CBool GElement::isGroup() const {
     // 按位与 GROUP有值，表示是 GROUP的逻辑
     return (long(element_type_) & long(GElementType::GROUP)) > 0;
 }

@@ -13,7 +13,6 @@
 
 #include "GGroupDefine.h"
 #include "../GElement.h"
-#include "../../GraphParam/GParamInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -56,7 +55,7 @@ private:
      */
     CVoid dumpGroupLabelEnd(std::ostream& oss);
 
-protected:
+private:
     GElementPtrArr group_elements_arr_;    // 存放 element的数组
 
     friend class GStaticEngine;
@@ -65,6 +64,7 @@ protected:
     friend class GRegion;
     friend class GCondition;
     template<GMultiConditionType> friend class GMultiCondition;
+    template<CSize> friend class GSome;
 };
 
 using GGroupPtr = GGroup *;

@@ -3,8 +3,11 @@
 @Contact: chunel@foxmail.com
 @File: GSingleton.cpp
 @Time: 2021/10/30 10:24 下午
-@Desc: 
+@Desc:
 ***************************/
+
+#ifndef CGRAPH_GSINGLETON_INL
+#define CGRAPH_GSINGLETON_INL
 
 #include "GSingleton.h"
 
@@ -97,3 +100,5 @@ CStatus GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElement
 }
 
 CGRAPH_NAMESPACE_END
+
+#endif //CGRAPH_GSINGLETON_INL

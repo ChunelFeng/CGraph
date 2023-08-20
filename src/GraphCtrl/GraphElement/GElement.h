@@ -108,7 +108,7 @@ public:
      * 当前element是否是一个 group逻辑
      * @return
      */
-    CBool isGroup();
+    CBool isGroup() const;
 
 protected:
     /**
@@ -314,6 +314,7 @@ private:
     friend class GCluster;
     friend class GRegion;
     friend class GCondition;
+    template<CSize> friend class GSome;
     template<GMultiConditionType> friend class GMultiCondition;
     friend class GGroup;
     friend class GPipeline;

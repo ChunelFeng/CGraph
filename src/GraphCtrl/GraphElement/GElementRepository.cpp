@@ -48,7 +48,7 @@ CStatus GElementRepository::setup() {
 CStatus GElementRepository::reset() {
     CGRAPH_FUNCTION_BEGIN
     for (auto& cur : async_nodes_) {
-        status += ((GAsyncNodePtr)cur)->async_result_.get();
+        status += ((GAsyncNodePtr)cur)->getResult();
     }
 
     CGRAPH_FUNCTION_END

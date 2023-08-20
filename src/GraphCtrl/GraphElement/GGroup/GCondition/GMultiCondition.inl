@@ -6,6 +6,9 @@
 @Desc: 
 ***************************/
 
+#ifndef CGRAPH_GMULTICONDITION_INL
+#define CGRAPH_GMULTICONDITION_INL
+
 #include "GMultiCondition.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -105,3 +108,5 @@ CBool GMultiCondition<type>::isSerializable() {
 }
 
 CGRAPH_NAMESPACE_END
+
+#endif //CGRAPH_GMULTICONDITION_INL

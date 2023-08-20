@@ -23,6 +23,12 @@ protected:
      */
     virtual CStatus asyncRun() = 0;
 
+    /**
+     * 异步获取结果信息
+     * @return
+     */
+    CStatus getResult();
+
     explicit GAsyncNode();
 
 private:
@@ -32,6 +38,7 @@ private:
     std::future<CStatus> async_result_;            // 用于记录当前节点的执行情况
 
     friend class GElementRepository;
+    template<CSize> friend class GSome;
 };
 
 using GAsyncNodePtr = GAsyncNode *;
