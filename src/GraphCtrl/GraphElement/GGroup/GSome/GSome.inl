@@ -23,7 +23,7 @@ CStatus GSome<TriggerNum>::addElement(GElementPtr element) {
         CGRAPH_RETURN_ERROR_STATUS("GSome can insert async node only current.")
     }
 
-    group_elements_arr_.template emplace_back(element);
+    group_elements_arr_.emplace_back(element);
     CGRAPH_FUNCTION_END
 }
 

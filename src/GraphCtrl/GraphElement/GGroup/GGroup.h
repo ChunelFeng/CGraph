@@ -13,7 +13,6 @@
 
 #include "GGroupDefine.h"
 #include "../GElement.h"
-#include "../../GraphParam/GParamInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
