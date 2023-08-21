@@ -39,6 +39,10 @@ template<CSize TriggerNum>
 CStatus GSome<TriggerNum>::run()  {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
+    if (group_elements_arr_.size() < TriggerNum) {
+        CGRAPH_RETURN_ERROR_STATUS("this GSome need at least [" + std::to_string(TriggerNum) + "] element")
+    }
+
     left_num_.store(TriggerNum);    // 还剩n个，就完成当前GSome的执行逻辑
     cur_status_ = CStatus();
 
@@ -51,9 +55,7 @@ CStatus GSome<TriggerNum>::run()  {
         return left_num_ <= 0 || cur_status_.isErr();
     });
 
-    if (!cur_status_.isOK()) {
-        status = cur_status_;    // 出错的话，赋值到外部去，让上游知道。
-    }
+    status = cur_status_;    // 出错的话，赋值到外部去，让上游知道。
     CGRAPH_FUNCTION_END
 }
 
