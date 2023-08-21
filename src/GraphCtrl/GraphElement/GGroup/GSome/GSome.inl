@@ -55,7 +55,7 @@ CStatus GSome<TriggerNum>::run()  {
         return left_num_ <= 0 || cur_status_.isErr();
     });
 
-    status = cur_status_;    // 出错的话，赋值到外部去，让上游知道。
+    status = cur_status_;
     CGRAPH_FUNCTION_END
 }
 
