@@ -36,7 +36,6 @@ auto UThreadPool::commit(const FunctionType& func, CIndex index)
         // 返回其他结果，放到pool的queue中执行
         task_queue_.push(std::move(task));
     }
-    input_task_num_++;    // 计数
     return result;
 }
 
@@ -54,7 +53,6 @@ auto UThreadPool::commitWithPriority(const FunctionType& func, int priority)
     }
 
     priority_task_queue_.push(std::move(task), priority);
-    input_task_num_++;
     return result;
 }
 

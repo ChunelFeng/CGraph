@@ -58,7 +58,7 @@ GElementPtr GElement::setName(const std::string& name) {
 }
 
 
-GElement* GElement::setLoop(CSize loop) {
+GElementPtr GElement::setLoop(CSize loop) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     this->loop_ = loop;
@@ -66,7 +66,7 @@ GElement* GElement::setLoop(CSize loop) {
 }
 
 
-GElement* GElement::setLevel(CLevel level) {
+GElementPtr GElement::setLevel(CLevel level) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     this->level_ = level;
@@ -74,7 +74,7 @@ GElement* GElement::setLevel(CLevel level) {
 }
 
 
-GElement* GElement::setVisible(CBool visible) {
+GElementPtr GElement::setVisible(CBool visible) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     this->visible_ = visible;
@@ -82,10 +82,18 @@ GElement* GElement::setVisible(CBool visible) {
 }
 
 
-GElement* GElement::setBindingIndex(CIndex index) {
+GElementPtr GElement::setBindingIndex(CIndex index) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     this->binding_index_ = index;
+    return this;
+}
+
+
+GElementPtr GElement::setTimeout(CMSec timeout) {
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+
+    this->timeout_ = timeout;
     return this;
 }
 
@@ -100,9 +108,15 @@ CBool GElement::isLinkable() const {
 }
 
 
+CBool GElement::isAsync() const {
+    // 如果timeout > 0, 则异步执行
+    return this->timeout_ > 0;
+}
+
+
 CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    CGRAPH_ASSERT_INIT(false)
     for (GElementPtr cur: elements) {
         CGRAPH_ASSERT_NOT_NULL(cur)
         if (this == cur) {
@@ -166,9 +180,9 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                     status = doAspect(GAspectType::BEGIN_RUN);
                     CGRAPH_FUNCTION_CHECK_STATUS
                     do {
-                        status = run();
+                        status = actualRun();
                         /**
-                         * 在run结束之后，首先需要判断一下是否进入yield状态了。
+                         * 在实际run结束之后，首先需要判断一下是否进入yield状态了。
                          * 接下来，如果状态是ok的，并且被条件hold住，则循环执行
                          * 默认所有element的isHold条件均为false，即不hold，即执行一次
                          * 可以根据需求，对任意element类型，添加特定的isHold条件
@@ -292,7 +306,7 @@ CVoid GElement::dumpPerfInfo(std::ostream& oss) {
         oss << "[start " << perf_info_->first_start_ts_;
         oss << "ms, finish " << perf_info_->last_finish_ts_ << "ms,\n";
         oss << "per_cost " << (perf_info_->accu_cost_ts_ / perf_info_->loop_);
-        if (1 != perf_info_->loop_) {
+        if (perf_info_->loop_ > 1) {
             oss << "ms, total_cost " << perf_info_->accu_cost_ts_;
         }
         oss << "ms]";
@@ -345,6 +359,35 @@ CStatus GElement::popLastAspect() {
 
     if (0 == aspect_manager_->getSize()) {
         CGRAPH_DELETE_PTR(aspect_manager_)
+    }
+
+    CGRAPH_FUNCTION_END
+}
+
+
+CStatus GElement::actualRun() {
+    CGRAPH_FUNCTION_BEGIN
+    if (likely(0 == timeout_)) {
+        // 不设定超时时间，一直run到结束为止
+        status = run();
+    } else {
+        // 针对有timeout设定的执行，通过异步执行的方式来解决
+        async_result_ = thread_pool_->commit([this] {
+            return run();
+        }, getBindingIndex());
+        auto futStatus = async_result_.wait_for(std::chrono::milliseconds(timeout_));
+        if (std::future_status::ready == futStatus) {
+            status = async_result_.get();    // 目前的策略是，如果超时了，就不管了。一直到最后的时候，会统一回收这些信息
+        }
+    }
+    CGRAPH_FUNCTION_END
+}
+
+
+CStatus GElement::getAsyncResult() {
+    CGRAPH_FUNCTION_BEGIN
+    if (async_result_.valid()) {
+        status = async_result_.get();
     }
 
     CGRAPH_FUNCTION_END

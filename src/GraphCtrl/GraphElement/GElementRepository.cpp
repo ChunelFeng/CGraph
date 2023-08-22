@@ -14,11 +14,6 @@ CGRAPH_NAMESPACE_BEGIN
 CVoid GElementRepository::insert(GElementPtr ptr) {
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr)
     elements_.insert(ptr);
-
-    if (GElementType::ASYNC_NODE == ptr->element_type_) {
-        // 如果是异步节点，专门存放起来
-        async_nodes_.emplace(ptr);
-    }
 }
 
 
@@ -47,8 +42,8 @@ CStatus GElementRepository::setup() {
 
 CStatus GElementRepository::reset() {
     CGRAPH_FUNCTION_BEGIN
-    for (auto& cur : async_nodes_) {
-        status += ((GAsyncNodePtr)cur)->getResult();
+    for (auto& cur : async_elements_) {
+        status += cur->getAsyncResult();
     }
 
     CGRAPH_FUNCTION_END
@@ -62,7 +57,7 @@ CStatus GElementRepository::pushAllState(const GElementState& state) {
     }
 
     cur_state_ = state;    // 记录当前的状态信息
-    for (auto* cur : elements_) {
+    for (auto& cur : elements_) {
         cur->cur_state_.store(state);
         if (GElementState::YIELD != state) {
             // 目前仅非yield状态，需要切换的。如果一直处于 yield状态，是不需要被通知的
@@ -83,6 +78,23 @@ CBool GElementRepository::isCancelState() const {
 }
 
 
+CStatus GElementRepository::init() {
+    CGRAPH_FUNCTION_BEGIN
+    for (auto& element : elements_) {
+        /**
+         * 以下几种情况，需要到最后，再确认是否执行ok的
+         * 1. 异步节点信息
+         * 2. 包含超时逻辑的信息
+         */
+        CGRAPH_ASSERT_NOT_NULL(element)
+        if (element->isAsync()) {
+            async_elements_.emplace(element);
+        }
+    }
+    CGRAPH_FUNCTION_END
+}
+
+
 CStatus GElementRepository::destroy() {
     CGRAPH_FUNCTION_BEGIN
     /**
@@ -96,6 +108,11 @@ CStatus GElementRepository::destroy() {
 }
 
 
+CStatus GElementRepository::run() {
+    CGRAPH_NO_SUPPORT
+}
+
+
 GElementRepository::~GElementRepository() {
     // 删除所有内部的element信息
     for (GElementPtr element : elements_) {
@@ -103,9 +120,5 @@ GElementRepository::~GElementRepository() {
     }
 }
 
-
-CStatus GElementRepository::run() {
-   CGRAPH_NO_SUPPORT
-}
 
 CGRAPH_NAMESPACE_END

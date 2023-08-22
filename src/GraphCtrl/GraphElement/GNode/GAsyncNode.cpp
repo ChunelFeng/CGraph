@@ -23,6 +23,10 @@ CStatus GAsyncNode::run() {
         CGRAPH_RETURN_ERROR_STATUS("GAsyncNode can set loop=1 only")
     }
 
+    if (timeout_ != 0) {
+        CGRAPH_RETURN_ERROR_STATUS("GAsyncNode can set timeout=0 only")
+    }
+
     async_result_ = this->thread_pool_->commitWithPriority([this] {
         return this->asyncRun();
     }, CGRAPH_ASYNC_NODE_TASK_STRATEGY);
@@ -31,13 +35,8 @@ CStatus GAsyncNode::run() {
 }
 
 
-CStatus GAsyncNode::getResult() {
-    CGRAPH_FUNCTION_BEGIN
-    if (async_result_.valid()) {
-        status = async_result_.get();
-    }
-
-    CGRAPH_FUNCTION_END
+CBool GAsyncNode::isAsync() const {
+    return true;
 }
 
 CGRAPH_NAMESPACE_END

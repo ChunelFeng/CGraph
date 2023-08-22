@@ -105,6 +105,13 @@ public:
     GElement* setBindingIndex(CIndex index);
 
     /**
+     * 设定当前算子的超时时间
+     * @param timeout
+     * @return
+     */
+    GElement* setTimeout(CMSec timeout);
+
+    /**
      * 当前element是否是一个 group逻辑
      * @return
      */
@@ -203,6 +210,12 @@ private:
     CBool isLinkable() const;
 
     /**
+     * 判定当前的内容，是否需要异步执行
+     * @return
+     */
+    virtual CBool isAsync() const;
+
+    /**
      * 执行切面逻辑
      * @param aspectType
      * @param curStatus
@@ -288,23 +301,36 @@ private:
      */
     CStatus popLastAspect();
 
+    /*
+     * 正式执行逻辑，主要分为直接执行，或者有等待timeout的执行
+     */
+    CStatus actualRun();
+
+    /**
+     * 异步获取结果信息
+     * @return
+     */
+    CStatus getAsyncResult();
+
 private:
-    CBool done_ { false };                           // 判定被执行结束
-    CBool linkable_ { false };                       // 判定是否可以连通计算
-    CBool visible_ { true };                         // 判断可见的，如果被删除的话，则认为是不可见的
-    CSize loop_ { CGRAPH_DEFAULT_LOOP_TIMES };       // 元素执行次数
-    CLevel level_ { CGRAPH_DEFAULT_ELEMENT_LEVEL };  // 用于设定init的执行顺序(值小的，优先init，可以为负数)
-    CIndex binding_index_ { CGRAPH_DEFAULT_BINDING_INDEX };    // 用于设定绑定线程id
-    std::atomic<CSize> left_depend_ { 0 };        // 当 left_depend_ 值为0的时候，即可以执行该element信息
-    std::set<GElement *> run_before_;                // 被依赖的节点（后继）
-    std::set<GElement *> dependence_;                // 依赖的节点信息（前驱）
-    GElementType element_type_;                      // 用于区分element 内部类型
-    GElement* belong_ { nullptr };                   // 从属的element 信息，如为nullptr，则表示从属于 pipeline
-    GElementParamMap local_params_;                  // 用于记录当前element的内部参数
-    GAspectManagerPtr aspect_manager_ { nullptr };   // 整体流程的切面管理类
-    UThreadPoolPtr thread_pool_ { nullptr };         // 用于执行的线程池信息
+    CBool done_ { false };                                                    // 判定被执行结束
+    CBool linkable_ { false };                                                // 判定是否可以连通计算
+    CBool visible_ { true };                                                  // 判断可见的，如果被删除的话，则认为是不可见的
+    CSize loop_ { CGRAPH_DEFAULT_LOOP_TIMES };                                // 元素执行次数
+    CLevel level_ { CGRAPH_DEFAULT_ELEMENT_LEVEL };                           // 用于设定init的执行顺序(值小的，优先init，可以为负数)
+    CIndex binding_index_ { CGRAPH_DEFAULT_BINDING_INDEX };                   // 用于设定绑定线程id
+    CMSec timeout_ = 0;                                                       // 超时时间信息（0表示不计算超时）
+    std::atomic<CSize> left_depend_ { 0 };                                 // 当 left_depend_ 值为0的时候，即可以执行该element信息
+    std::set<GElement *> run_before_;                                         // 被依赖的节点（后继）
+    std::set<GElement *> dependence_;                                         // 依赖的节点信息（前驱）
+    GElementType element_type_;                                               // 用于区分element 内部类型
+    GElement* belong_ { nullptr };                                            // 从属的element 信息，如为nullptr，则表示从属于 pipeline
+    GElementParamMap local_params_;                                           // 用于记录当前element的内部参数
+    GAspectManagerPtr aspect_manager_ { nullptr };                            // 整体流程的切面管理类
+    UThreadPoolPtr thread_pool_ { nullptr };                                  // 用于执行的线程池信息
     std::atomic<GElementState> cur_state_ { GElementState::CREATE };       // 当前执行状态
     GPerfInfo* perf_info_ = nullptr;                                          // 用于perf的信息
+    std::future<CStatus> async_result_;                                       // 用于记录当前节点的异步执行情况
 
     std::mutex yield_mutex_;                                                  // 控制停止执行的锁
     std::condition_variable yield_cv_;                                        // 控制停止执行的条件变量

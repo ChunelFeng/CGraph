@@ -69,7 +69,7 @@ CVoid GSome<TriggerNum>::process(GAsyncNodePtr ptr) {
             cur_status_ += ptr->run();    // 开始异步执行起来了
         }
         if (cur_status_.isOK()) {
-            cur_status_ += ptr->getResult();
+            cur_status_ += ptr->getAsyncResult();
         }
         left_num_--;
         cv_.notify_one();

@@ -180,12 +180,14 @@ CBool GElementManager::checkSerializable() {
      * 1. 内部的element，均为可串行执行的
      * 2. 当前element，不超过1个前驱或者后继
      * 3. 有且仅有一个起点，一个终点
+     * 4. 有超时逻辑
      */
     int frontSize = 0, tailSize = 0;
     for (auto& cur : manager_elements_) {
         if (!cur->isSerializable()
             || cur->run_before_.size() > 1
-            || cur->dependence_.size() > 1) {
+            || cur->dependence_.size() > 1
+            || cur->isAsync()) {
             return false;
         }
 

@@ -33,7 +33,7 @@ CStatus GPipeline::init() {
     CGRAPH_ASSERT_INIT(false)    // 必须是非初始化的状态下，才可以初始化。反之同理
     CGRAPH_ASSERT_NOT_NULL(element_manager_, param_manager_, daemon_manager_, event_manager_)
 
-    status += initSchedule();
+    status += initEnv();
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status += param_manager_->init();
@@ -255,11 +255,12 @@ GElementState GPipeline::getCurState() const {
 }
 
 
-CStatus GPipeline::initSchedule() {
+CStatus GPipeline::initEnv() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(event_manager_, element_manager_)
 
-    status = schedule_.init();
+    status = repository_.init();
+    status += schedule_.init();
     CGRAPH_FUNCTION_CHECK_STATUS
 
     auto tp = schedule_.getThreadPool();

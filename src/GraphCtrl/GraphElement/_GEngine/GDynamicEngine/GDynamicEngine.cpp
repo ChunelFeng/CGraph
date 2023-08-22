@@ -100,8 +100,14 @@ CStatus GDynamicEngine::process(GElementPtr element, CBool affinity) {
         afterElementRun(element);
     };
 
-    if (affinity && (CGRAPH_DEFAULT_BINDING_INDEX == element->getBindingIndex())) {
-        exec();    // 如果 affinity=true，表示用当前的线程，执行这个逻辑。以便增加亲和性
+    if (affinity
+        && CGRAPH_DEFAULT_BINDING_INDEX == element->getBindingIndex()
+        && 0 == element->timeout_) {
+        /**
+         * 如果 affinity=true，表示用当前的线程，执行这个逻辑。以便增加亲和性
+         * 还有一个条件，就是
+         */
+        exec();
     } else {
         thread_pool_->commit(exec, calcIndex(element));
     }

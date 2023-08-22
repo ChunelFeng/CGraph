@@ -23,19 +23,12 @@ protected:
      */
     virtual CStatus asyncRun() = 0;
 
-    /**
-     * 异步获取结果信息
-     * @return
-     */
-    CStatus getResult();
-
     explicit GAsyncNode();
 
 private:
-    CStatus run() final;
+    CBool isAsync() const override;
 
-private:
-    std::future<CStatus> async_result_;            // 用于记录当前节点的执行情况
+    CStatus run() final;
 
     friend class GElementRepository;
     template<CSize> friend class GSome;

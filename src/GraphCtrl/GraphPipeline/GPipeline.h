@@ -294,10 +294,10 @@ protected:
     ~GPipeline() override;
 
     /**
-     * 初始化调度信息，包括线程池
+     * 初始化环境信息，包括线程池 等
      * @return
      */
-    CStatus initSchedule();
+    CStatus initEnv();
 
     /** 不允许外部赋值和构造 */
     CGRAPH_NO_ALLOWED_COPY(GPipeline)
