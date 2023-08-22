@@ -83,7 +83,7 @@ CStatus UThreadPool::submit(const UTaskGroup& taskGroup, CMSec ttl) {
     }
 
     // 计算最终运行时间信息
-    auto deadline = std::chrono::system_clock::now()
+    auto deadline = std::chrono::steady_clock::now()
                     + std::chrono::milliseconds(std::min(taskGroup.getTtl(), ttl));
 
     for (auto& fut : futures) {
