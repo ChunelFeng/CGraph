@@ -51,7 +51,6 @@ protected:
 protected:
     UThreadPoolPtr thread_pool_ { nullptr };                    // 内部执行的线程池
     CUint total_element_size_ = 0;                              // 总的element的数量
-    CMSec element_run_ttl_ = CGRAPH_DEFAULT_ELEMENT_RUN_TTL;    // 单个节点最大运行周期
     int schedule_strategy_ = CGRAPH_DEFAULT_TASK_STRATEGY;      // 调度策略
 
     friend class GElementManager;

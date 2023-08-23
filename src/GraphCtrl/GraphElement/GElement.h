@@ -100,16 +100,17 @@ public:
      * 设定绑定的线程id
      * @param index，需要绑定的 thread id 信息
      * @return
-     * @notice 若不了解调度机制，不建议使用本接口，或仅针对 GNode 类型数据使用。否则可能导致运行时阻塞
+     * @notice 若不了解调度机制，不建议使用本接口，否则可能导致运行时阻塞
      */
     GElement* setBindingIndex(CIndex index);
 
     /**
      * 设定当前算子的超时时间
-     * @param timeout
+     * @param timeout 超时时间
+     * @param asError 当超时的时候，是否直接当做错误返回
      * @return
      */
-    GElement* setTimeout(CMSec timeout);
+    GElement* setTimeout(CMSec timeout, CBool asError = true);
 
     /**
      * 当前element是否是一个 group逻辑
@@ -185,13 +186,13 @@ protected:
 
 private:
     /**
-     * run方法执行之前的执行函数
+     * run方法执行之前的执行函数（请勿覆写）
      * @return
      */
     virtual CStatus beforeRun();
 
     /**
-     * run方法执行之后的执行函数
+     * run方法执行之后的执行函数（请勿覆写）
      * @return
      */
     virtual CStatus afterRun();
@@ -304,7 +305,7 @@ private:
     /*
      * 正式执行逻辑，主要分为直接执行，或者有等待timeout的执行
      */
-    CStatus actualRun();
+    CStatus fatRun();
 
     /**
      * 异步获取结果信息
@@ -315,11 +316,12 @@ private:
 private:
     CBool done_ { false };                                                    // 判定被执行结束
     CBool linkable_ { false };                                                // 判定是否可以连通计算
-    CBool visible_ { true };                                                  // 判断可见的，如果被删除的话，则认为是不可见的
+    CBool visible_ { true };                                                  // 判定可见的，如果被删除的话，则认为是不可见的
+    CBool timeout_as_error_ { true };                                         // 判定超时的情况下，是否返回错误
     CSize loop_ { CGRAPH_DEFAULT_LOOP_TIMES };                                // 元素执行次数
     CLevel level_ { CGRAPH_DEFAULT_ELEMENT_LEVEL };                           // 用于设定init的执行顺序(值小的，优先init，可以为负数)
     CIndex binding_index_ { CGRAPH_DEFAULT_BINDING_INDEX };                   // 用于设定绑定线程id
-    CMSec timeout_ = 0;                                                       // 超时时间信息（0表示不计算超时）
+    CMSec timeout_ { 0 };                                                     // 超时时间信息（0表示不计算超时）
     std::atomic<CSize> left_depend_ { 0 };                                 // 当 left_depend_ 值为0的时候，即可以执行该element信息
     std::set<GElement *> run_before_;                                         // 被依赖的节点（后继）
     std::set<GElement *> dependence_;                                         // 依赖的节点信息（前驱）

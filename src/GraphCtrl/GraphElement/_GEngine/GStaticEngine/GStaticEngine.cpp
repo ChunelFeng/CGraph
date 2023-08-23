@@ -120,14 +120,11 @@ CStatus GStaticEngine::analyse(const GSortedGElementPtrSet& elements) {
 
 CStatus GStaticEngine::run() {
     CGRAPH_FUNCTION_BEGIN
-
-    run_element_size_ = 0;    // 每次执行的时候，
-    std::vector<CMSec> curClusterTtl;    // 用于记录分解后，每个cluster包含的element的个数，用于验证执行的超时情况。
+    run_element_size_ = 0;    // 每次执行的时候，记录执行了多少个element信息
     std::vector<std::future<CStatus> > futures;
 
     for (GClusterArrRef clusterArr : para_cluster_arrs_) {
         futures.clear();
-        curClusterTtl.clear();
 
         /** 将分解后的pipeline信息，以cluster为维度，放入线程池依次执行 */
         for (GClusterRef cluster : clusterArr) {
@@ -136,25 +133,10 @@ CStatus GStaticEngine::run() {
             }, calcIndex(&cluster)));
 
             run_element_size_ += cluster.getElementNum();
-            curClusterTtl.emplace_back(cluster.getElementNum() * element_run_ttl_);
         }
 
-        int index = 0;
         for (auto& fut : futures) {
-            // 不设定最大运行周期的情况（默认情况）
-            if (likely(CGRAPH_DEFAULT_ELEMENT_RUN_TTL == element_run_ttl_)) {
-                status += fut.get();
-            } else {
-                // 如果设定超时时间，则以超时时间为准
-                const auto& futStatus = fut.wait_for(std::chrono::milliseconds(curClusterTtl[index]));
-                switch (futStatus) {
-                    case std::future_status::ready: status += fut.get(); break;
-                    case std::future_status::timeout: status += CErrStatus("thread status timeout"); break;
-                    case std::future_status::deferred: status += CErrStatus("thread status deferred"); break;
-                    default: status += CErrStatus("thread status unknown");
-                }
-            }
-            index++;
+            status = fut.get();
             CGRAPH_FUNCTION_CHECK_STATUS
         }
     }

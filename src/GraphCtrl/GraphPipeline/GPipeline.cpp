@@ -176,16 +176,6 @@ CStatus GPipeline::perf(std::ostream& oss) {
 }
 
 
-GPipelinePtr GPipeline::setGElementRunTtl(CMSec ttl) {
-    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
-    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element_manager_, element_manager_->engine_)
-
-    // 在element_manager中区执行信息了，所以ttl放到
-    element_manager_->engine_->element_run_ttl_ = ttl;
-    return this;
-}
-
-
 GPipelinePtr GPipeline::setGEngineType(GEngineType type) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element_manager_)

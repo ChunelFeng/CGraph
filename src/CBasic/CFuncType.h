@@ -77,9 +77,13 @@ enum class CFunctionType {
 
 /** 在异常状态的情况下，抛出异常 */
 #define CGRAPH_THROW_EXCEPTION_BY_STATUS(status)                        \
-    if (unlikely(status.isErr())) {                                     \
+    if (unlikely((status).isErr())) {                                   \
         CGRAPH_THROW_EXCEPTION(status.getInfo());                       \
     }                                                                   \
+
+#define CGRAPH_THROW_EXCEPTION_BY_CONDITION(cond, info)                 \
+    if (unlikely(cond)) { CGRAPH_THROW_EXCEPTION(info); }               \
+
 
 CGRAPH_NAMESPACE_END
 

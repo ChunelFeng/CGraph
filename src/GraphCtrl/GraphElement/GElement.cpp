@@ -84,16 +84,21 @@ GElementPtr GElement::setVisible(CBool visible) {
 
 GElementPtr GElement::setBindingIndex(CIndex index) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
-
+    /**
+     * 由于内部有调度机制，不保证绑定线程后，一定在固定线程上执行。
+     * 仅保证优先考虑使用绑定线程执行
+     */
     this->binding_index_ = index;
     return this;
 }
 
 
-GElementPtr GElement::setTimeout(CMSec timeout) {
+GElementPtr GElement::setTimeout(CMSec timeout, CBool asError) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION(timeout < 0, "timeout value cannot smaller than 0")
 
     this->timeout_ = timeout;
+    this->timeout_as_error_ = asError;
     return this;
 }
 
@@ -180,7 +185,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                     status = doAspect(GAspectType::BEGIN_RUN);
                     CGRAPH_FUNCTION_CHECK_STATUS
                     do {
-                        status = actualRun();
+                        status = fatRun();
                         /**
                          * 在实际run结束之后，首先需要判断一下是否进入yield状态了。
                          * 接下来，如果状态是ok的，并且被条件hold住，则循环执行
@@ -365,7 +370,7 @@ CStatus GElement::popLastAspect() {
 }
 
 
-CStatus GElement::actualRun() {
+CStatus GElement::fatRun() {
     CGRAPH_FUNCTION_BEGIN
     if (likely(0 == timeout_)) {
         // 不设定超时时间，一直run到结束为止
@@ -374,10 +379,18 @@ CStatus GElement::actualRun() {
         // 针对有timeout设定的执行，通过异步执行的方式来解决
         async_result_ = thread_pool_->commit([this] {
             return run();
-        }, getBindingIndex());
+        }, CGRAPH_DEFAULT_BINDING_INDEX);
         auto futStatus = async_result_.wait_for(std::chrono::milliseconds(timeout_));
         if (std::future_status::ready == futStatus) {
             status = async_result_.get();    // 目前的策略是，如果超时了，就不管了。一直到最后的时候，会统一回收这些信息
+        } else {
+            /**
+             * 如果执行超时，在设定 timeout_as_error_ = true 的情况下，直接返回
+             * 在设定 timeout_as_error_ = false 的情况下，整体流程继续执行，并且在 pipeline 执行结束时，等待超时节点执行完成
+             */
+            if (timeout_as_error_) {
+                CGRAPH_RETURN_ERROR_STATUS("[" + this->name_ + "] running time more than [" + std::to_string(timeout_) + "] ms")
+            }
         }
     }
     CGRAPH_FUNCTION_END

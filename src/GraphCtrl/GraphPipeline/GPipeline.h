@@ -233,14 +233,6 @@ public:
     GPipeline* addGEvent(const std::string& key, TParam* param = nullptr);
 
     /**
-     * 设置执行的最大时间周期，单位为毫秒
-     * @param ttl
-     * @return
-     * @notice beta接口
-     */
-    GPipeline* setGElementRunTtl(CMSec ttl);
-
-    /**
      * 设置引擎策略
      * @param type
      * @return

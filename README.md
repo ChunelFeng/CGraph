@@ -320,9 +320,9 @@ int main() {
 [2023.07.12 - v2.4.3 - Chunel]
 * 优化了`CStatus`功能，添加了异常定位信息
 
-[2023.08.20 - v2.5.0 - Chunel]
+[2023.08.23 - v2.5.0 - Chunel]
 * 提供了perf功能，用于做`pipeline`的性能分析
-* 提供了`AsyncNode`(异步节点)功能
+* 提供了`element`的超时机制
 * 提供了`some`(部分)功能，优化`pipeline`的异步执行方式
 
 </details>
