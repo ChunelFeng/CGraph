@@ -34,6 +34,22 @@ struct UThreadPoolConfig : public CStruct {
     bool batch_task_enable_ = CGRAPH_BATCH_TASK_ENABLE;
     bool monitor_enable_ = CGRAPH_MONITOR_ENABLE;
 
+    CStatus check() const {
+        CGRAPH_FUNCTION_BEGIN
+        if (default_thread_size_ < 0 || secondary_thread_size_ < 0) {
+            CGRAPH_RETURN_ERROR_STATUS("thread size cannot less than 0")
+        }
+
+        if (default_thread_size_ + secondary_thread_size_ > max_thread_size_) {
+            CGRAPH_RETURN_ERROR_STATUS("max thread size is less than default + secondary thread")
+        }
+
+        if (monitor_enable_ && monitor_span_ <= 0) {
+            CGRAPH_RETURN_ERROR_STATUS("monitor span cannot less than 0")
+        }
+        CGRAPH_FUNCTION_END
+    }
+
 protected:
     /**
      * 计算可盗取的范围，盗取范围不能超过默认线程数-1

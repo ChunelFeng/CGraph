@@ -188,22 +188,22 @@ GPipelinePtr GPipeline::setGEngineType(GEngineType type) {
 GPipelinePtr GPipeline::setUniqueThreadPoolConfig(const UThreadPoolConfig& config) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    CGRAPH_THROW_EXCEPTION_BY_STATUS(config.check())
 
     /**
      * 实际是将信息传递给 schedule中，如果是unique的话，就使用这个参数
      * 如果是 shared的话，其实配置是无效的
      */
     schedule_.config_ = config;
-    CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL
+    return this;
 }
 
 
 GPipelinePtr GPipeline::setSharedThreadPool(UThreadPoolPtr ptr) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
-
-    status = schedule_.makeType(ptr);
-    CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL
+    CGRAPH_THROW_EXCEPTION_BY_STATUS(schedule_.makeType(ptr))
+    return this;
 }
 
 
