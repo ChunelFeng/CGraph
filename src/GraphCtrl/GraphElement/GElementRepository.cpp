@@ -44,6 +44,10 @@ CStatus GElementRepository::reset() {
     CGRAPH_FUNCTION_BEGIN
     for (auto& cur : async_elements_) {
         status += cur->getAsyncResult();
+        if (cur->isTimeout()) {
+            // 如果是超时的状态，则恢复原样
+            cur->cur_state_.store(GElementState::NORMAL);
+        }
     }
 
     CGRAPH_FUNCTION_END

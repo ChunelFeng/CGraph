@@ -34,6 +34,7 @@ template<CSize TriggerNum>
 CStatus GSome<TriggerNum>::run()  {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((0 == TriggerNum), "trigger num cannot set 0.")
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((group_elements_arr_.size() < TriggerNum),     \
                                             "this GSome need at least [" + std::to_string(TriggerNum) + "] element")
 

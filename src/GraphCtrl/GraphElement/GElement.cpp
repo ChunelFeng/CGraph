@@ -241,6 +241,23 @@ CBool GElement::isMatch() {
 }
 
 
+CBool GElement::isTimeout() const {
+    /**
+     * 判断的标准是：
+     * 1. 如果当前节点超时，则认定为超时
+     * 2. 如果当前节点所在的group超时，则也认定为超时
+     */
+    CBool result = (GElementState::TIMEOUT == cur_state_.load());
+    GElementPtr belong = this->belong_;
+    while (!result && belong) {
+        result = (GElementState::TIMEOUT == belong->cur_state_.load());
+        belong = belong->belong_;
+    }
+
+    return result;
+}
+
+
 CStatus GElement::crashed(const CException& ex) {
     return CStatus(STATUS_CRASH, ex.what(), CGRAPH_GET_LOCATE);
 }
@@ -385,6 +402,7 @@ CStatus GElement::asyncRun() {
          * 如果执行超时，在设定 timeout_as_error_ = true 的情况下，直接返回
          * 在设定 timeout_as_error_ = false 的情况下，整体流程继续执行，并且在 pipeline 执行结束时，等待超时节点执行完成
          */
+        cur_state_.store(GElementState::TIMEOUT);
         CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(timeout_as_error_,    \
         "[" + name_ + "] running time more than [" + std::to_string(timeout_) + "]ms")
     }

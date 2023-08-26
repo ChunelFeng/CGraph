@@ -38,6 +38,7 @@ enum class GElementState {
     NORMAL = 0x1000,                          // 正常执行状态
     CANCEL = 0x1001,                          // 取消状态
     YIELD = 0x1002,                           // 暂停状态
+    TIMEOUT = 0x1010,                         // 超时状态
 };
 
 CGRAPH_NAMESPACE_END

@@ -144,6 +144,12 @@ protected:
     virtual CBool isMatch();
 
     /**
+     * 判断当前是否超时
+     * @return
+     */
+    CBool isTimeout() const;
+
+    /**
      * 崩溃流程处理
      * @param ex
      * @return
