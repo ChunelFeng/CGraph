@@ -33,10 +33,13 @@ void tutorial_timeout() {
      * 如果设定为 false，则程序继续执行。
      * pipeline会确保在 pipeline->run() 执行完成之前，所有超时节点执行结束
      */
-    c->setTimeout(300, true);
-    pipeline->process();
+    CMSec timeout = 300;
+    std::cout << "set [" << c->getName() << "] timeout as [" << timeout << "]ms" << std::endl;
+    c->setTimeout(timeout, true);
+    status = pipeline->process();
     if (!status.isOK()) {
-        std::cout << "[ERROR] T23-timeout pipeline run error info : " << status.getInfo() << std::endl;
+        // 会报超时的错误
+        std::cout << "ERROR: T23-timeout pipeline run error info : " << status.getInfo() << std::endl;
     }
 
     GPipelineFactory::remove(pipeline);

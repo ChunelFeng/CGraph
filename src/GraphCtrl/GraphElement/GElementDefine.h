@@ -13,15 +13,14 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-const static CMSec CGRAPH_DEFAULT_ELEMENT_RUN_TTL = 0;          // 线程超时时间设定，0为不设定超时信息，单位毫秒
 const static CSize CGRAPH_DEFAULT_LOOP_TIMES = 1;               // 默认循环次数信息
 const static CLevel CGRAPH_DEFAULT_ELEMENT_LEVEL = 0;           // 默认的element级别，用于控制init函数
 const static CIndex CGRAPH_DEFAULT_BINDING_INDEX = -1;          // 默认绑定线程id，-1表示不绑定
+const static CMSec CGRAPH_DEFAULT_ELEMENT_TIMEOUT = 0;          // 默认element的超时时间
 
 enum class GElementType {
     ELEMENT = 0x00000000,                    // 元素
     NODE = 0x00010000,                       // 节点
-    ASYNC_NODE = 0x00011000,                 // 异步节点
     GROUP = 0x00020000,                      // 组
     CLUSTER = 0x00020001,                    // 簇
     REGION = 0x00020002,                     // 区域

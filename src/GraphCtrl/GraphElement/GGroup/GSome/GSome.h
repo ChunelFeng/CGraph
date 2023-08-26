@@ -20,27 +20,20 @@ CGRAPH_NAMESPACE_BEGIN
 template<CSize TriggerNum = 1>
 class GSome : public GGroup {
 protected:
-    CStatus addElement(GElementPtr element) override;
-
     explicit GSome();
 
-    /**
-     * 异步处理 GSome中的所有信息
-     * @param ptr
-     * @return
-     */
-    CVoid process(GAsyncNodePtr ptr);
+    CStatus addElement(GElementPtr element) override;
 
-    CStatus run() override;
+    CStatus run() final;
 
-    CBool isSerializable() override;
+    CBool isSerializable() final;
 
     CVoid dump(std::ostream& oss) final;
 
     CGRAPH_NO_ALLOWED_COPY(GSome)
 
 private:
-    std::atomic<CSize> left_num_ {0};      // 还剩的触发结束的个数
+    CSize left_num_ = 0;                       // 还剩的触发结束的个数
     CStatus cur_status_ ;                      // 记录异步时刻的当前状态信息
 
     std::mutex lock_;

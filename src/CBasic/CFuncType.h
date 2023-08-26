@@ -62,6 +62,10 @@ enum class CFunctionType {
 #define CGRAPH_RETURN_ERROR_STATUS(info)                                \
     return CErrStatus(info);                                            \
 
+/** 根据条件判断是否返回错误状态 */
+#define CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(cond, info)             \
+    if (unlikely(cond)) { CGRAPH_RETURN_ERROR_STATUS(info); }           \
+
 /** 不支持当前功能 */
 #define CGRAPH_NO_SUPPORT                                               \
     return CErrStatus(CGRAPH_FUNCTION_NO_SUPPORT);                      \
@@ -78,9 +82,10 @@ enum class CFunctionType {
 /** 在异常状态的情况下，抛出异常 */
 #define CGRAPH_THROW_EXCEPTION_BY_STATUS(status)                        \
     if (unlikely((status).isErr())) {                                   \
-        CGRAPH_THROW_EXCEPTION(status.getInfo());                       \
+        CGRAPH_THROW_EXCEPTION((status).getInfo());                     \
     }                                                                   \
 
+/** 根据条件判断是否抛出异常 */
 #define CGRAPH_THROW_EXCEPTION_BY_CONDITION(cond, info)                 \
     if (unlikely(cond)) { CGRAPH_THROW_EXCEPTION(info); }               \
 

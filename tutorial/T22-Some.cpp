@@ -3,11 +3,11 @@
 @Contact: chunel@foxmail.com
 @File: T22-Some.cpp
 @Time: 2023/8/20 13:39
-@Desc: 本例主要演示，GSome的使用方法，插入的元素并发执行n个完毕后，整体结束（本例为 beta版本）
+@Desc: 本例主要演示，GSome的使用方法，插入的元素并发执行n个完毕后，整体结束
 ***************************/
 
 #include "MyGNode/MyNode1.h"
-#include "MyGNode/MyAsyncNode.h"
+#include "MyGNode/MyNode2.h"
 
 using namespace CGraph;
 
@@ -17,25 +17,21 @@ void tutorial_some() {
 
     /**
      * 创建一个类型为GSome的组，其中注入3个异步节点，其中有[1]个执行完成，则GSome执行结束
+     * 也就是说，这个 GSome 会执行1s后，就往下继续执行。效果类似增强版本的弱依赖
      * 需要注意的是，当前GSome执行完成，并且今后后续的element后，
-     * 内部的异步节点仍会继续执行，故如果在异步节点内，做参数处理，请注意考虑后续影响
-     * 当前pipeline的run()方法，会等到内部的异步节点全部执行完成后，才结束
+     * 内部的节点仍会继续执行，故如果在节点内做参数处理，请注意考虑后续影响
+     * 当前pipeline的run()方法，会等到内部的内部节点全部执行完成后，才结束
      */
     b_some = pipeline->createGGroup<GSome<1>>({
-        /**
-         * 注入三个异步节点，分别sleep 5/2/8s,
-         * 执行完 sleep(2s)的异步节点后，当前的 GSome结束。内部其他节点继续执行
-         * 注意：异步节点只允许 loop=1，否则运行时会报错
-         */
-        pipeline->createGNode<MyAsyncNode<5>>(GNodeInfo("asyncNodeB1")),
-        pipeline->createGNode<MyAsyncNode<2>>(GNodeInfo("asyncNodeB2")),
-        pipeline->createGNode<MyAsyncNode<8>>(GNodeInfo("asyncNodeB3"))
+        pipeline->createGNode<MyNode1>(GNodeInfo("nodeB1")),
+        pipeline->createGNode<MyNode2>(GNodeInfo("nodeB2")),
+        pipeline->createGNode<MyNode2>(GNodeInfo("nodeB3"))
     });
 
     CStatus status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");
     status += pipeline->registerGElement<GSome<1>>(&b_some, {a}, "someB");
-    status += pipeline->registerGElement<MyNode1>(&c, {a}, "nodeC");
-    status += pipeline->registerGElement<MyNode1>(&d, {b_some, c}, "nodeD");
+    status += pipeline->registerGElement<MyNode1>(&c, {b_some}, "nodeC");
+    status += pipeline->registerGElement<MyNode2>(&d, {c}, "nodeD");
     if (!status.isOK()) {
         return;
     }

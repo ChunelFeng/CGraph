@@ -214,7 +214,7 @@ private:
      * 判定当前的内容，是否需要异步执行
      * @return
      */
-    virtual CBool isAsync() const;
+    CBool isAsync() const;
 
     /**
      * 执行切面逻辑
@@ -269,7 +269,10 @@ private:
      * @param label
      * @return
     */
-    CVoid dumpEdge(std::ostream& oss, GElement* src, GElement* dst, const std::string& label=CGRAPH_EMPTY);
+    CVoid dumpEdge(std::ostream& oss,
+                   GElement* src,
+                   GElement* dst,
+                   const std::string& label = CGRAPH_EMPTY);
 
     /**
      * graphviz dump 点逻辑
@@ -302,10 +305,11 @@ private:
      */
     CStatus popLastAspect();
 
-    /*
-     * 正式执行逻辑，主要分为直接执行，或者有等待timeout的执行
+    /**
+     * 异步执行
+     * @return
      */
-    CStatus fatRun();
+    CStatus asyncRun();
 
     /**
      * 异步获取结果信息
@@ -321,7 +325,7 @@ private:
     CSize loop_ { CGRAPH_DEFAULT_LOOP_TIMES };                                // 元素执行次数
     CLevel level_ { CGRAPH_DEFAULT_ELEMENT_LEVEL };                           // 用于设定init的执行顺序(值小的，优先init，可以为负数)
     CIndex binding_index_ { CGRAPH_DEFAULT_BINDING_INDEX };                   // 用于设定绑定线程id
-    CMSec timeout_ { 0 };                                                     // 超时时间信息（0表示不计算超时）
+    CMSec timeout_ { CGRAPH_DEFAULT_ELEMENT_TIMEOUT };                        // 超时时间信息（0表示不计算超时）
     std::atomic<CSize> left_depend_ { 0 };                                 // 当 left_depend_ 值为0的时候，即可以执行该element信息
     std::set<GElement *> run_before_;                                         // 被依赖的节点（后继）
     std::set<GElement *> dependence_;                                         // 依赖的节点信息（前驱）
@@ -338,7 +342,6 @@ private:
     std::condition_variable yield_cv_;                                        // 控制停止执行的条件变量
 
     friend class GNode;
-    friend class GAsyncNode;
     friend class GCluster;
     friend class GRegion;
     friend class GCondition;

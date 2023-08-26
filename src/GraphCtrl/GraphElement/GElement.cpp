@@ -114,8 +114,8 @@ CBool GElement::isLinkable() const {
 
 
 CBool GElement::isAsync() const {
-    // 如果timeout > 0, 则异步执行
-    return this->timeout_ > 0;
+    // 如果timeout != 0, 则异步执行
+    return this->timeout_ != CGRAPH_DEFAULT_ELEMENT_TIMEOUT;
 }
 
 
@@ -185,7 +185,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                     status = doAspect(GAspectType::BEGIN_RUN);
                     CGRAPH_FUNCTION_CHECK_STATUS
                     do {
-                        status = fatRun();
+                        status = (!isAsync()) ? run() : asyncRun();    // 大概率是同步执行
                         /**
                          * 在实际run结束之后，首先需要判断一下是否进入yield状态了。
                          * 接下来，如果状态是ok的，并且被条件hold住，则循环执行
@@ -247,9 +247,8 @@ CStatus GElement::crashed(const CException& ex) {
 
 
 CIndex GElement::getThreadIndex() {
-    if (nullptr == thread_pool_) {
-        return CGRAPH_SECONDARY_THREAD_COMMON_ID;    // 理论不存在的情况
-    }
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION((nullptr == thread_pool_),    \
+        this->getName() + " getThreadIndex with no threadpool")    // 理论不可能出现的情况
 
     auto tid = (CSize)std::hash<std::thread::id>{}(std::this_thread::get_id());
     return thread_pool_->getThreadNum(tid);
@@ -370,29 +369,26 @@ CStatus GElement::popLastAspect() {
 }
 
 
-CStatus GElement::fatRun() {
+CStatus GElement::asyncRun() {
     CGRAPH_FUNCTION_BEGIN
-    if (likely(0 == timeout_)) {
-        // 不设定超时时间，一直run到结束为止
-        status = run();
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!isAsync(), "[" + name_ + "] cannot async run.")
+
+    async_result_ = thread_pool_->commit([this] {
+        return run();
+    }, CGRAPH_POOL_TASK_STRATEGY);
+
+    auto futStatus = async_result_.wait_for(std::chrono::milliseconds(timeout_));
+    if (std::future_status::ready == futStatus) {
+        status = getAsyncResult();
     } else {
-        // 针对有timeout设定的执行，通过异步执行的方式来解决
-        async_result_ = thread_pool_->commit([this] {
-            return run();
-        }, CGRAPH_DEFAULT_BINDING_INDEX);
-        auto futStatus = async_result_.wait_for(std::chrono::milliseconds(timeout_));
-        if (std::future_status::ready == futStatus) {
-            status = async_result_.get();    // 目前的策略是，如果超时了，就不管了。一直到最后的时候，会统一回收这些信息
-        } else {
-            /**
-             * 如果执行超时，在设定 timeout_as_error_ = true 的情况下，直接返回
-             * 在设定 timeout_as_error_ = false 的情况下，整体流程继续执行，并且在 pipeline 执行结束时，等待超时节点执行完成
-             */
-            if (timeout_as_error_) {
-                CGRAPH_RETURN_ERROR_STATUS("[" + this->name_ + "] running time more than [" + std::to_string(timeout_) + "] ms")
-            }
-        }
+        /**
+         * 如果执行超时，在设定 timeout_as_error_ = true 的情况下，直接返回
+         * 在设定 timeout_as_error_ = false 的情况下，整体流程继续执行，并且在 pipeline 执行结束时，等待超时节点执行完成
+         */
+        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(timeout_as_error_,    \
+        "[" + name_ + "] running time more than [" + std::to_string(timeout_) + "]ms")
     }
+
     CGRAPH_FUNCTION_END
 }
 
@@ -400,7 +396,7 @@ CStatus GElement::fatRun() {
 CStatus GElement::getAsyncResult() {
     CGRAPH_FUNCTION_BEGIN
     if (async_result_.valid()) {
-        status = async_result_.get();
+        status = async_result_.get();    // 这里的get和valid方法，都是线程安全的
     }
 
     CGRAPH_FUNCTION_END

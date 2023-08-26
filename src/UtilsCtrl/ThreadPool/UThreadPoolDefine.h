@@ -43,9 +43,8 @@ static const CInt CGRAPH_DEFAULT_PRIORITY = 0;                                  
 
 
 static const int CGRAPH_DEFAULT_TASK_STRATEGY = -1;                                         // 默认线程调度策略
+static const int CGRAPH_POOL_TASK_STRATEGY = -2;                                            // 固定用pool中的队列的调度策略
 static const int CGRAPH_LONG_TIME_TASK_STRATEGY = -101;                                     // 长时间任务调度策略
-static const int CGRAPH_REGION_TASK_STRATEGY = -102;                                        // region的调度策略
-static const int CGRAPH_ASYNC_NODE_TASK_STRATEGY = -103;                                    // 异步node的调度策略
 
 /**
  * 以下为线程池配置信息

@@ -14,21 +14,6 @@
 CGRAPH_NAMESPACE_BEGIN
 
 template<CSize TriggerNum>
-CStatus GSome<TriggerNum>::addElement(GElementPtr element) {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT(false)
-
-    if (GElementType::ASYNC_NODE != element->element_type_) {
-        group_elements_arr_.clear();    // 如果有错误的情况，就直接清空本地的内容
-        CGRAPH_RETURN_ERROR_STATUS("GSome can insert async node only current.")
-    }
-
-    group_elements_arr_.emplace_back(element);
-    CGRAPH_FUNCTION_END
-}
-
-
-template<CSize TriggerNum>
 GSome<TriggerNum>::GSome() {
     element_type_ = GElementType::SOME;
     session_ = URandom<>::generateSession(CGRAPH_STR_SOME);
@@ -36,46 +21,44 @@ GSome<TriggerNum>::GSome() {
 
 
 template<CSize TriggerNum>
-CStatus GSome<TriggerNum>::run()  {
+CStatus GSome<TriggerNum>::addElement(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(thread_pool_)
-    if (group_elements_arr_.size() < TriggerNum) {
-        CGRAPH_RETURN_ERROR_STATUS("this GSome need at least [" + std::to_string(TriggerNum) + "] element")
-    }
+    CGRAPH_ASSERT_INIT(false)
 
-    left_num_.store(TriggerNum);    // 还剩n个，就完成当前GSome的执行逻辑
-    cur_status_ = CStatus();
-
-    for (auto* element : group_elements_arr_) {
-        process((GAsyncNodePtr)element);
-    }
-
-    CGRAPH_UNIQUE_LOCK lock(lock_);
-    cv_.wait(lock, [this] {
-        return left_num_ <= 0 || cur_status_.isErr();
-    });
-
-    status = cur_status_;
+    group_elements_arr_.emplace_back(element);
     CGRAPH_FUNCTION_END
 }
 
 
 template<CSize TriggerNum>
-CVoid GSome<TriggerNum>::process(GAsyncNodePtr ptr) {
-    // 这里的内容，仅可能为 GAsyncNode 的子类的信息
-    const auto& exec = [this, ptr] {
-        {
-            CGRAPH_UNIQUE_LOCK lock(lock_);
-            cur_status_ += ptr->run();    // 开始异步执行起来了
-        }
-        if (cur_status_.isOK()) {
-            cur_status_ += ptr->getAsyncResult();
-        }
-        left_num_--;
-        cv_.notify_one();
-    };
+CStatus GSome<TriggerNum>::run()  {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(thread_pool_)
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((group_elements_arr_.size() < TriggerNum),     \
+                                            "this GSome need at least [" + std::to_string(TriggerNum) + "] element")
 
-    thread_pool_->commit(exec);
+    left_num_ = TriggerNum;    // 还剩n个，就完成当前GSome的执行逻辑
+    cur_status_ = CStatus();
+
+    for (auto* element : group_elements_arr_) {
+        thread_pool_->commit([this, element] {
+            auto curStatus = element->fatProcessor(CFunctionType::RUN);
+            {
+                CGRAPH_UNIQUE_LOCK lock(lock_);
+                cur_status_ += curStatus;
+                left_num_--;
+            }
+            cv_.notify_one();
+        }, CGRAPH_POOL_TASK_STRATEGY);
+    }
+
+    CGRAPH_UNIQUE_LOCK lock(lock_);
+    cv_.wait(lock, [this] {
+        return left_num_ == 0 || cur_status_.isErr();
+    });
+
+    status = cur_status_;
+    CGRAPH_FUNCTION_END
 }
 
 

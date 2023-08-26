@@ -15,7 +15,6 @@ CGRAPH_NAMESPACE_BEGIN
 
 static const char* CGRAPH_STR_PIPELINE = "pipeline";
 static const char* CGRAPH_STR_NODE = "node";
-static const char* CGRAPH_STR_ASYNC_NODE = "async_node";
 static const char* CGRAPH_STR_CLUSTER = "cluster";
 static const char* CGRAPH_STR_REGION = "region";
 static const char* CGRAPH_STR_CONDITION = "condition";
