@@ -80,21 +80,19 @@
 
 class MyNode1 : public CGraph::GNode {
 public:
-    CStatus run () override {
-        CStatus status;
+    CStatus run() override {
         printf("[%s], Sleep for 1 second ...\n", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(1)
-        return status;
+        return CStatus();
     }
 };
 
 class MyNode2 : public CGraph::GNode {
 public:
-    CStatus run () override {
-        CStatus status;
+    CStatus run() override {
         printf("[%s], Sleep for 2 second ...\n", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(2)
-        return status;
+        return CStatus();
     }
 };
 ```
@@ -110,14 +108,11 @@ int main() {
     GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b, c, d = nullptr;
 
-    /* 注册节点，其中MyNode1和MyNode2必须为GNode的子类，否则无法通过编译 */
-    CStatus status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");
-    status += pipeline->registerGElement<MyNode2>(&b, {a}, "nodeB");
-    status += pipeline->registerGElement<MyNode1>(&c, {a}, "nodeC");
-    status += pipeline->registerGElement<MyNode2>(&d, {b, c}, "nodeD");
-    if (!status.isOK()) {
-        return;    // 对以上所有CGraph接口的返回值做判定
-    }
+    /* 注册节点之间的依赖关系 */
+    pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");
+    pipeline->registerGElement<MyNode2>(&b, {a}, "nodeB");
+    pipeline->registerGElement<MyNode1>(&c, {a}, "nodeC");
+    pipeline->registerGElement<MyNode2>(&d, {b, c}, "nodeD");
 
     /* 执行流图框架 */
     pipeline->process();
@@ -320,7 +315,7 @@ int main() {
 [2023.07.12 - v2.4.3 - Chunel]
 * 优化了`CStatus`功能，添加了异常定位信息
 
-[2023.08.23 - v2.5.0 - Chunel]
+[2023.08.26 - v2.5.0 - Chunel]
 * 提供了perf功能，用于做`pipeline`的性能分析
 * 提供了`element`的超时机制
 * 提供了`some`(部分)功能，优化`pipeline`的异步执行方式
