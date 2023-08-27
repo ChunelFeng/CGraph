@@ -89,7 +89,6 @@ public:
             }
 
             value = std::move((*ring_buffer_queue_[head_]));
-            ring_buffer_queue_[head_].release();
             head_ = (head_ + 1) % capacity_;
         }
         push_cv_.notify_one();
