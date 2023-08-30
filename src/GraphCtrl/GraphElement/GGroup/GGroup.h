@@ -64,7 +64,7 @@ private:
     friend class GRegion;
     friend class GCondition;
     template<GMultiConditionType> friend class GMultiCondition;
-    template<CSize> friend class GSome;
+    template<CInt> friend class GSome;
 };
 
 using GGroupPtr = GGroup *;

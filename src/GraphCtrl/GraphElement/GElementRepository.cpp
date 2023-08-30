@@ -84,6 +84,7 @@ CBool GElementRepository::isCancelState() const {
 
 CStatus GElementRepository::init() {
     CGRAPH_FUNCTION_BEGIN
+    async_elements_.clear();    // 每次记得清空这里。因为每次init之后，都可能不一样
     for (auto& element : elements_) {
         /**
          * 以下几种情况，需要到最后，再确认是否执行ok的

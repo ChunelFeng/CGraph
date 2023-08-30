@@ -221,13 +221,11 @@ CStatus GPipeline::makeSerial() {
     CGRAPH_ASSERT_INIT(false)
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
 
-    if (schedule_.type_ != GScheduleType::UNIQUE) {
-        CGRAPH_RETURN_ERROR_STATUS("cannot set serial config without UNIQUE schedule")
-    }
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((schedule_.type_ != GScheduleType::UNIQUE),    \
+                                            "cannot set serial config without UNIQUE schedule")
 
-    if (!element_manager_->checkSerializable()) {
-        CGRAPH_RETURN_ERROR_STATUS("cannot set serial config for this pipeline")
-    }
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!element_manager_->checkSerializable(),    \
+                                       "cannot set serial config for this pipeline")
 
     UThreadPoolConfig config;
     config.default_thread_size_ = 0;    // 设置之后，不再开辟线程池，直接通过主线程执行pipeline的逻辑

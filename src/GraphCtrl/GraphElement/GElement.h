@@ -351,7 +351,7 @@ private:
     friend class GCluster;
     friend class GRegion;
     friend class GCondition;
-    template<CSize> friend class GSome;
+    template<CInt> friend class GSome;
     template<GMultiConditionType> friend class GMultiCondition;
     friend class GGroup;
     friend class GPipeline;

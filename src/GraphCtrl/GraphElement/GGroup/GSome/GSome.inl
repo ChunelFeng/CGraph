@@ -13,14 +13,14 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<CSize TriggerNum>
+template<CInt TriggerNum>
 GSome<TriggerNum>::GSome() {
     element_type_ = GElementType::SOME;
     session_ = URandom<>::generateSession(CGRAPH_STR_SOME);
 }
 
 
-template<CSize TriggerNum>
+template<CInt TriggerNum>
 CStatus GSome<TriggerNum>::addElement(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
@@ -30,11 +30,11 @@ CStatus GSome<TriggerNum>::addElement(GElementPtr element) {
 }
 
 
-template<CSize TriggerNum>
+template<CInt TriggerNum>
 CStatus GSome<TriggerNum>::run()  {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((0 == TriggerNum), "trigger num cannot set 0.")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((0 >= TriggerNum), "trigger num must bigger than 0.")
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((group_elements_arr_.size() < TriggerNum),     \
                                             "this GSome need at least [" + std::to_string(TriggerNum) + "] element")
 
@@ -63,13 +63,13 @@ CStatus GSome<TriggerNum>::run()  {
 }
 
 
-template<CSize TriggerNum>
+template<CInt TriggerNum>
 CBool GSome<TriggerNum>::isSerializable() {
     return false;    // 情况较为复杂，默认不可以
 }
 
 
-template<CSize TriggerNum>
+template<CInt TriggerNum>
 CVoid GSome<TriggerNum>::dump(std::ostream& oss) {
     dumpElement(oss);
     dumpGroupLabelBegin(oss);

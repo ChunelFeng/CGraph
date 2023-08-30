@@ -17,7 +17,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<CSize TriggerNum = 1>
+template<CInt TriggerNum = 1>
 class GSome : public GGroup {
 protected:
     explicit GSome();
@@ -33,7 +33,7 @@ protected:
     CGRAPH_NO_ALLOWED_COPY(GSome)
 
 private:
-    CSize left_num_ = 0;                       // 还剩的触发结束的个数
+    CInt left_num_ = 0;                        // 还剩的触发结束的个数
     CStatus cur_status_ ;                      // 记录异步时刻的当前状态信息
 
     std::mutex lock_;
