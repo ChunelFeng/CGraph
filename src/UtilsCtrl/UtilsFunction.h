@@ -67,6 +67,17 @@ inline CVoid CGRAPH_ECHO(const char *cmd, ...) {
  * 获取当前的ms信息
  * @return
  */
+inline CMSec CGRAPH_GET_CURRENT_MS() {
+    // 获取当前的时间戳信息
+    return std::chrono::time_point_cast<std::chrono::milliseconds>    \
+        (std::chrono::steady_clock::now()).time_since_epoch().count();
+}
+
+
+/**
+ * 获取当前的ms信息(包含小数)
+ * @return
+ */
 inline CFMSec CGRAPH_GET_CURRENT_ACCURATE_MS() {
     // 获取当前的时间戳信息
     return (CFMSec)std::chrono::time_point_cast<std::chrono::microseconds>    \

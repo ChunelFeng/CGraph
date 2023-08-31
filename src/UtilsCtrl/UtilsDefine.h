@@ -12,9 +12,11 @@
 #include <iostream>
 #include <string>
 
-#if __cplusplus >= 201703L
+    #if __cplusplus >= 201703L
 #include <shared_mutex>
-#endif
+    #else
+#include <mutex>
+    #endif
 
 #include "../CBasic/CBasicInclude.h"
 #include "UAllocator.h"

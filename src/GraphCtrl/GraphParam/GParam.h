@@ -9,14 +9,6 @@
 #ifndef CGRAPH_GPARAM_H
 #define CGRAPH_GPARAM_H
 
-#include <string>
-
-    #if __cplusplus >= 201703L
-#include <shared_mutex>
-    #else
-#include <mutex>
-    #endif
-
 #include "GParamObject.h"
 
 CGRAPH_NAMESPACE_BEGIN

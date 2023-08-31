@@ -12,7 +12,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 CStatus GDaemon::init() {
     CGRAPH_FUNCTION_BEGIN
-    timer_.start(interval_, [&] {
+    timer_.start(interval_, [this] {
         this->daemonTask(param_);
     });
     CGRAPH_FUNCTION_END
