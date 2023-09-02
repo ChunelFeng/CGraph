@@ -216,6 +216,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                 CGRAPH_RETURN_ERROR_STATUS("get function type error")
         }
     } catch (const CException& ex) {
+        doAspect(GAspectType::ENTER_CRASHED);
         status = crashed(ex);
     }
 

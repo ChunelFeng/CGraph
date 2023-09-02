@@ -96,6 +96,9 @@ CStatus GElementRepository::init() {
             async_elements_.emplace(element);
         }
     }
+
+    // 每次初始化之后，所有的状态，都可以恢复了
+    status = pushAllState(GElementState::NORMAL);
     CGRAPH_FUNCTION_END
 }
 

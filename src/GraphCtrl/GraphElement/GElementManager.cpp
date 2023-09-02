@@ -15,6 +15,7 @@ GElementManager::GElementManager() {
     engine_ = nullptr;
 }
 
+
 GElementManager::~GElementManager() {
     /**
      * manager中的节点，在析构的时候不需要释放。
@@ -39,8 +40,6 @@ CStatus GElementManager::init() {
         status = element->fatProcessor(CFunctionType::INIT);
         CGRAPH_FUNCTION_CHECK_STATUS
         element->is_init_ = true;
-        // 初始化了之后，就进入正常状态，可以执行了
-        element->cur_state_ = GElementState::NORMAL;
     }
 
     CGRAPH_FUNCTION_END
@@ -54,8 +53,6 @@ CStatus GElementManager::destroy() {
         status = element->fatProcessor(CFunctionType::DESTROY);
         CGRAPH_FUNCTION_CHECK_STATUS
         element->is_init_ = false;
-        // 如果destroy成功，则恢复到刚刚创建的状态
-        element->cur_state_ = GElementState::CREATE;
     }
 
     CGRAPH_DELETE_PTR(engine_)
@@ -163,7 +160,6 @@ CStatus GElementManager::calcMaxParaSize(CSize& size) {
         size = op.getMaxParaSize(manager_elements_);
     } else {
         // 遇到不可以解析的情况，将size赋值为0，告知上游
-        size = 0;
         status = CErrStatus("cannot calculate max parallel size within groups");
     }
     CGRAPH_FUNCTION_END

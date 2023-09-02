@@ -20,6 +20,7 @@ enum class GAspectType {
     FINISH_RUN = 3,
     BEGIN_DESTROY = 4,
     FINISH_DESTROY = 5,
+    ENTER_CRASHED = 99,
 };
 
 CGRAPH_NAMESPACE_END

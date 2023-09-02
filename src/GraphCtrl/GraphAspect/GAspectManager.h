@@ -42,6 +42,7 @@ protected:
                 case GAspectType::FINISH_INIT : aspect->finishInit(curStatus); break;
                 case GAspectType::BEGIN_DESTROY : status = aspect->beginDestroy(); break;
                 case GAspectType::FINISH_DESTROY : aspect->finishDestroy(curStatus); break;
+                case GAspectType::ENTER_CRASHED : aspect->enterCrashed(); break;
                 default: status = CErrStatus("unknown aspect type");
             }
 
