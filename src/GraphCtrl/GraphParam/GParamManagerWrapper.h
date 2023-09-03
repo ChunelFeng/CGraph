@@ -96,6 +96,8 @@ private:                                                                        
         return this;                                                                    \
     }                                                                                   \
                                                                                         \
+protected:                                                                              \
+                                                                                        \
 
 
 #define CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER_WITH_MEMBER                               \
