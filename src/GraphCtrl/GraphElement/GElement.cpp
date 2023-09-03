@@ -59,7 +59,10 @@ GElementPtr GElement::setName(const std::string& name) {
 
 
 GElementPtr GElement::setLoop(CSize loop) {
+    // 由于运行机制问题，loop执行的element，不支持异步执行
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION((timeout_ > CGRAPH_DEFAULT_ELEMENT_TIMEOUT && loop != CGRAPH_DEFAULT_LOOP_TIMES),     \
+                                        "cannot set loop value when timeout is bigger than 0")
 
     this->loop_ = loop;
     return this;
@@ -95,7 +98,9 @@ GElementPtr GElement::setBindingIndex(CIndex index) {
 
 GElementPtr GElement::setTimeout(CMSec timeout, CBool asError) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
-    CGRAPH_THROW_EXCEPTION_BY_CONDITION(timeout < 0, "timeout value cannot smaller than 0")
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION((timeout < CGRAPH_DEFAULT_ELEMENT_TIMEOUT), "timeout value cannot smaller than 0")
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION((loop_ > 1 && CGRAPH_DEFAULT_ELEMENT_TIMEOUT != timeout),     \
+                                        "cannot set timeout value when loop bigger than 1")
 
     this->timeout_ = timeout;
     this->timeout_as_error_ = asError;
