@@ -98,7 +98,8 @@ GElementPtr GElement::setBindingIndex(CIndex index) {
 
 GElementPtr GElement::setTimeout(CMSec timeout, CBool asError) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
-    CGRAPH_THROW_EXCEPTION_BY_CONDITION((timeout < CGRAPH_DEFAULT_ELEMENT_TIMEOUT), "timeout value cannot smaller than 0")
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION((timeout < CGRAPH_DEFAULT_ELEMENT_TIMEOUT),     \
+                                   "timeout value cannot smaller than 0")
     CGRAPH_THROW_EXCEPTION_BY_CONDITION((loop_ > 1 && CGRAPH_DEFAULT_ELEMENT_TIMEOUT != timeout),     \
                                         "cannot set timeout value when loop bigger than 1")
 
@@ -190,7 +191,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                     status = doAspect(GAspectType::BEGIN_RUN);
                     CGRAPH_FUNCTION_CHECK_STATUS
                     do {
-                        status = (!isAsync()) ? run() : asyncRun();    // 大概率是同步执行
+                        status = (!isAsync()) ? run() : asyncRun();
                         /**
                          * 在实际run结束之后，首先需要判断一下是否进入yield状态了。
                          * 接下来，如果状态是ok的，并且被条件hold住，则循环执行

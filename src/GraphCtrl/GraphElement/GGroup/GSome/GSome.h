@@ -24,11 +24,15 @@ protected:
 
     CStatus addElement(GElementPtr element) override;
 
+    CStatus init() final;
+
     CStatus run() final;
 
     CBool isSerializable() final;
 
     CVoid dump(std::ostream& oss) final;
+
+    CBool isHold() final;
 
     CGRAPH_NO_ALLOWED_COPY(GSome)
 
