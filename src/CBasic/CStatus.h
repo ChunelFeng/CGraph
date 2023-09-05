@@ -60,21 +60,15 @@ public:
     CSTATUS& operator=(const CSTATUS& status) = default;
 
     CSTATUS& operator+=(const CSTATUS& cur) {
-        if (this->isOK() && cur.isOK()) {
-            return (*this);
+        /**
+         * 如果当前状态已经异常，则不做改动
+         * 如果当前状态正常，并且传入的状态是异常的话，则返回异常
+         */
+        if (!this->isErr() && cur.isErr()) {
+            this->error_code_ = cur.error_code_;
+            this->error_info_ = cur.error_info_;
+            this->error_locate_ = cur.error_locate_;
         }
-
-        error_info_ = this->isOK()
-                ? cur.error_info_
-                : (cur.isOK()
-                    ? error_info_
-                    : (error_info_ + STATUS_ERROR_INFO_CONNECTOR + cur.error_info_));
-        error_locate_ = this->isOK()
-                      ? cur.error_locate_
-                      : (cur.isOK()
-                         ? error_locate_
-                         : (error_locate_ + STATUS_ERROR_INFO_CONNECTOR + cur.error_locate_));
-        error_code_ = STATUS_ERR;
 
         return (*this);
     }

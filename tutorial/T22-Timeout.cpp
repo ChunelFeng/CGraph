@@ -1,7 +1,7 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: T23-Timeout.cpp
+@File: T22-Timeout.cpp
 @Time: 2023/8/23 22:26
 @Desc: 本例主要演示，设定节点超时(timeout)逻辑，针对group同样可以设置
 ***************************/
@@ -39,7 +39,7 @@ void tutorial_timeout() {
     status = pipeline->process();
     if (!status.isOK()) {
         // 会报超时的错误
-        std::cout << "ERROR: T23-timeout pipeline run error info : " << status.getInfo() << std::endl;
+        std::cout << "**** T23-timeout pipeline run error info : " << status.getInfo() << std::endl;
     }
 
     GPipelineFactory::remove(pipeline);

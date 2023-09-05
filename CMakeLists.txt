@@ -42,8 +42,8 @@ set(CGRAPH_TUTORIAL_LIST
         T19-Cancel
         T20-YieldResume
         T21-MultiCondition
-        T22-Some
-        T23-Timeout
+        T22-Timeout
+        T23-Some
 
         # 以下为工具类tutorial
         TU01-ThreadPool

@@ -1,7 +1,7 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: T22-Some.cpp
+@File: T23-Some.cpp
 @Time: 2023/8/20 13:39
 @Desc: 本例主要演示，GSome的使用方法，插入的元素并发执行n个完毕后，整体结束
 ***************************/

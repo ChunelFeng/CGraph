@@ -64,6 +64,12 @@ CStatus GSome<TriggerNum>::run()  {
     left_num_ = TriggerNum;    // 还剩n个，就完成当前GSome的执行逻辑
     cur_status_ = CStatus();
 
+    /**
+     * 1. 并发的执行，其中的所有逻辑信息
+     * 2. 等待 Trigger Num 个element执行完成
+     * 3. 将所有未执行完的element 设置为timeout
+     * 4. 赋返回值
+     */
     for (auto* element : group_elements_arr_) {
         thread_pool_->commit([this, element] {
             auto curStatus = element->fatProcessor(CFunctionType::RUN);
@@ -81,6 +87,11 @@ CStatus GSome<TriggerNum>::run()  {
         return left_num_ <= 0 || cur_status_.isErr();
     });
 
+    for (GElementPtr element : group_elements_arr_) {
+        if (!element->done_) {
+            element->cur_state_.store(GElementState::TIMEOUT);
+        }
+    }
     status = cur_status_;
     CGRAPH_FUNCTION_END
 }
