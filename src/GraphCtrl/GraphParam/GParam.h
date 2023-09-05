@@ -23,10 +23,10 @@ public:
 
     /**
      * 获取参数的调用栈信息
-     * @param trace
+     * @param traces
      * @return
      */
-    CStatus getBacktrace(std::vector<std::string>& trace);
+    CStatus getBacktrace(std::vector<std::string>& traces);
 
     /**
      * 添加trace信息

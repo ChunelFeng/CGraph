@@ -10,7 +10,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-CStatus GParam::getBacktrace(std::vector<std::string>& trace) {
+CStatus GParam::getBacktrace(std::vector<std::string>& traces) {
     CGRAPH_FUNCTION_BEGIN
     if (likely(!backtrace_enable_)) {
         // 非问题排查或信息展示场景，更倾向不开启此功能
@@ -18,7 +18,8 @@ CStatus GParam::getBacktrace(std::vector<std::string>& trace) {
     }
 
     backtrace_lock_.lock();
-    backtrace_.getUniqueArray(trace);
+    traces.clear();
+    backtrace_.getUniqueArray(traces);
     backtrace_lock_.unlock();
 
     CGRAPH_FUNCTION_END

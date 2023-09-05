@@ -87,11 +87,14 @@ CStatus GElementRepository::init() {
     async_elements_.clear();    // 每次记得清空这里。因为每次init之后，都可能不一样
     for (auto& element : elements_) {
         /**
-         * 以下几种情况，需要到最后，再确认是否执行ok的
-         * 1. 异步节点信息
-         * 2. 包含超时逻辑的信息
+         * 1. 查验element是否为空
+         * 2. 查验配置信息是否正确
+         * 3. 记录异步节点的信息
          */
         CGRAPH_ASSERT_NOT_NULL(element)
+        status = element->checkSuitable();
+        CGRAPH_FUNCTION_CHECK_STATUS
+
         if (element->isAsync()) {
             async_elements_.emplace(element);
         }

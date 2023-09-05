@@ -40,24 +40,6 @@ CStatus GSome<TriggerNum>::addElement(GElementPtr element) {
 
 
 template<CInt TriggerNum>
-CStatus GSome<TriggerNum>::init() {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(thread_pool_)
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((CGRAPH_DEFAULT_LOOP_TIMES != loop_), "GSome cannot set loop > 1.")
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((0 >= TriggerNum), "trigger num must bigger than 0.")
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((group_elements_arr_.size() < TriggerNum),     \
-                                            "this GSome need at least [" + std::to_string(TriggerNum) + "] element.")
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(std::any_of(group_elements_arr_.begin(), group_elements_arr_.end(), [](GElementPtr ptr) {
-        return !ptr->isAsync();
-    }), "GSome contains async node only.")
-
-    status = GGroup::init();
-
-    CGRAPH_FUNCTION_END
-}
-
-
-template<CInt TriggerNum>
 CStatus GSome<TriggerNum>::run()  {
     CGRAPH_FUNCTION_BEGIN
 
@@ -126,6 +108,24 @@ template<CInt TriggerNum>
 CBool GSome<TriggerNum>::isHold() {
     // 这里固定是不可以 hold的
     return false;
+}
+
+
+template<CInt TriggerNum>
+CStatus GSome<TriggerNum>::checkSuitable() {
+    CGRAPH_FUNCTION_BEGIN
+    status = GElement::checkSuitable();
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((CGRAPH_DEFAULT_LOOP_TIMES != loop_), "GSome cannot set loop > 1.")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((0 >= TriggerNum), "trigger num must bigger than 0.")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((group_elements_arr_.size() < TriggerNum),     \
+                                            "this GSome need at least [" + std::to_string(TriggerNum) + "] element.")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(std::any_of(group_elements_arr_.begin(), group_elements_arr_.end(), [](GElementPtr ptr) {
+        return !ptr->isAsync();
+    }), "GSome contains async node only.")
+
+    CGRAPH_FUNCTION_END
 }
 
 CGRAPH_NAMESPACE_END

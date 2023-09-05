@@ -323,6 +323,12 @@ private:
      */
     CStatus getAsyncResult();
 
+    /**
+     * 判断当前节点，是否符合执行逻辑。主要用于init的早期阶段
+     * @return
+     */
+    virtual CStatus checkSuitable();
+
 private:
     /** 状态相关信息 */
     CBool done_ { false };                                                    // 判定被执行结束

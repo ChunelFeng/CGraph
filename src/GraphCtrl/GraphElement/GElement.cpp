@@ -427,4 +427,15 @@ CStatus GElement::getAsyncResult() {
     CGRAPH_FUNCTION_END
 }
 
+
+CStatus GElement::checkSuitable() {
+    CGRAPH_FUNCTION_BEGIN
+
+    // 包含异步执行的逻辑，不可以loop超过1次
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((loop_ > CGRAPH_DEFAULT_LOOP_TIMES && this->isAsync()),     \
+    "[" + name_ + "] can set loop = 1 only for the reason of async run")
+
+    CGRAPH_FUNCTION_END
+}
+
 CGRAPH_NAMESPACE_END
