@@ -65,6 +65,15 @@ CStatus GPipeline::registerGElement(GFunctionPtr *functionRef,
 }
 
 
+template<typename GFence>
+CStatus GPipeline::registerGElement(GFencePtr *fenceRef,
+                                    const GElementPtrSet &dependElements,
+                                    const std::string &name,
+                                    CSize loop) {
+    return this->registerGElement<GFence>((GElementPtr *)(fenceRef), dependElements, name, loop);
+}
+
+
 template<typename TNode, typename ...Args,
         c_enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int>>
 CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,

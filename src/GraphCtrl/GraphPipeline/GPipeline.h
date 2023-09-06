@@ -162,6 +162,21 @@ public:
                              CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
+     * 注册fence类型的内容，模板特化
+     * @tparam GFence
+     * @param fenceRef
+     * @param dependElements
+     * @param name
+     * @param loop
+     * @return
+     */
+    template<typename GFence>
+    CStatus registerGElement(GFencePtr *fenceRef,
+                             const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
+                             const std::string &name = CGRAPH_EMPTY,
+                             CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
+
+    /**
      * 在图中注册一个模板Element信息
      * @tparam TNode
      * @tparam Args

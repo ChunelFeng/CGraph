@@ -102,12 +102,12 @@ public:
                    CGRAPH_CALLBACK_CONST_FUNCTION_REF onFinished = nullptr);
 
     /**
-     * 获取根据线程id信息，获取线程num信息
+     * 获取根据线程id信息，获取线程index信息
      * @param tid
      * @return
      * @notice 辅助线程返回-1
      */
-    CIndex getThreadNum(CSize tid);
+    CIndex getThreadIndex(CSize tid);
 
     /**
      * 释放所有的线程信息

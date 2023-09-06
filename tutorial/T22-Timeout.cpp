@@ -29,7 +29,7 @@ void tutorial_timeout() {
     /**
      * c 正常执行需要 [2000ms]，但是设置超时时长为 [300 ms]
      * 故在执行的过程中，会出现超时异常。
-     * 如果设定为 WAIT_BY_PIPELINE，
+     * 如果设定为 HOLD_BY_PIPELINE，
      * pipeline会确保在 pipeline->run() 执行完成之前，所有超时节点执行结束
      */
     CMSec timeout = 300;

@@ -10,7 +10,7 @@ message("* * * * * * * * * * * * * * * * * * * * * * * * * * * * *")
 
 cmake_minimum_required(VERSION 3.2.5)
 
-project(CGraph VERSION 2.5.0)
+project(CGraph VERSION 2.5.1)
 
 # CGraph默认使用C++11版本，推荐使用C++17版本。暂不支持C++11以下版本
 set(CMAKE_CXX_STANDARD 11)
@@ -44,6 +44,7 @@ set(CGRAPH_TUTORIAL_LIST
         T21-MultiCondition
         T22-Timeout
         T23-Some
+        T24-Fence
 
         # 以下为工具类tutorial
         TU01-ThreadPool

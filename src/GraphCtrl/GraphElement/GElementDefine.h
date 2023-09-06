@@ -30,6 +30,7 @@ enum class GElementType {
     ADAPTER = 0x00040000,                    // 适配器
     FUNCTION = 0x00040001,                   // 函数
     SINGLETON = 0x00040002,                  // 单例
+    FENCE = 0x00040004,                      // 栅栏
 };
 
 

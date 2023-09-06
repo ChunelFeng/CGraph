@@ -43,9 +43,13 @@ CStatus GElementRepository::setup() {
 CStatus GElementRepository::reset() {
     CGRAPH_FUNCTION_BEGIN
     for (auto& cur : async_elements_) {
-        status += cur->getAsyncResult();
+        if (GElementTimeoutStrategy::HOLD_BY_PIPELINE == cur->timeout_strategy_) {
+            // 强烈建议，在这里等待执行完成
+            status += cur->getAsyncResult();
+        }
+
+        // 无论如何，写回非 timeout状态，确保不会迭代到下一轮
         if (cur->isTimeout()) {
-            // 如果是超时的状态，则恢复原样
             cur->cur_state_.store(GElementState::NORMAL);
         }
     }

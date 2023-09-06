@@ -320,6 +320,9 @@ int main() {
 * 提供了`element`的超时机制
 * 提供了`some`(部分)功能，优化`pipeline`的异步执行方式
 
+[2023.09.06 - v2.5.1 - Chunel]
+* 提供`fence`(栅栏)功能
+
 </details>
 
 ------------

@@ -95,7 +95,7 @@ GElementPtr GElement::setTimeout(CMSec timeout, GElementTimeoutStrategy strategy
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_THROW_EXCEPTION_BY_CONDITION((timeout < CGRAPH_DEFAULT_ELEMENT_TIMEOUT),     \
                                    "timeout value cannot smaller than 0")
-    CGRAPH_THROW_EXCEPTION_BY_CONDITION((loop_ > 1 && CGRAPH_DEFAULT_ELEMENT_TIMEOUT != timeout),     \
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION((loop_ > CGRAPH_DEFAULT_LOOP_TIMES && CGRAPH_DEFAULT_ELEMENT_TIMEOUT != timeout),     \
                                         "cannot set timeout value when loop bigger than 1")
 
     this->timeout_ = timeout;
@@ -270,7 +270,7 @@ CIndex GElement::getThreadIndex() {
         this->getName() + " getThreadIndex with no threadpool")    // 理论不可能出现的情况
 
     auto tid = (CSize)std::hash<std::thread::id>{}(std::this_thread::get_id());
-    return thread_pool_->getThreadNum(tid);
+    return thread_pool_->getThreadIndex(tid);
 }
 
 

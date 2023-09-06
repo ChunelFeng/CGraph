@@ -374,6 +374,7 @@ private:
     friend class GElementManager;
     friend class GElementSorter;
     friend class GFunction;
+    friend class GFence;
     friend class GEngine;
     friend class GStaticEngine;
     friend class GDynamicEngine;
