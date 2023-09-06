@@ -29,17 +29,16 @@ void tutorial_timeout() {
     /**
      * c 正常执行需要 [2000ms]，但是设置超时时长为 [300 ms]
      * 故在执行的过程中，会出现超时异常。
-     * 第二个参数 asError 如果设定为 true，则出现异常之后，整体程序直接返回异常
-     * 如果设定为 false，则程序继续执行。
+     * 如果设定为 WAIT_BY_PIPELINE，
      * pipeline会确保在 pipeline->run() 执行完成之前，所有超时节点执行结束
      */
     CMSec timeout = 300;
     std::cout << "set [" << c->getName() << "] timeout as [" << timeout << "]ms" << std::endl;
-    c->setTimeout(timeout, true);
+    c->setTimeout(timeout, GElementTimeoutStrategy::AS_ERROR);
     status = pipeline->process();
     if (!status.isOK()) {
         // 会报超时的错误
-        std::cout << "**** T23-timeout pipeline run error info : " << status.getInfo() << std::endl;
+        std::cout << "**** T22-timeout pipeline run error info : " << status.getInfo() << std::endl;
     }
 
     GPipelineFactory::remove(pipeline);

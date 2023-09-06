@@ -11,11 +11,6 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-GElement::GElement() {
-    element_type_ = GElementType::ELEMENT;
-}
-
-
 GElement::~GElement() {
     CGRAPH_DELETE_PTR(perf_info_)
     CGRAPH_DELETE_PTR(aspect_manager_)
@@ -96,7 +91,7 @@ GElementPtr GElement::setBindingIndex(CIndex index) {
 }
 
 
-GElementPtr GElement::setTimeout(CMSec timeout, CBool asError) {
+GElementPtr GElement::setTimeout(CMSec timeout, GElementTimeoutStrategy strategy) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_THROW_EXCEPTION_BY_CONDITION((timeout < CGRAPH_DEFAULT_ELEMENT_TIMEOUT),     \
                                    "timeout value cannot smaller than 0")
@@ -104,7 +99,7 @@ GElementPtr GElement::setTimeout(CMSec timeout, CBool asError) {
                                         "cannot set timeout value when loop bigger than 1")
 
     this->timeout_ = timeout;
-    this->timeout_as_error_ = asError;
+    this->timeout_strategy_ = strategy;
     return this;
 }
 
@@ -405,13 +400,9 @@ CStatus GElement::asyncRun() {
     if (std::future_status::ready == futStatus) {
         status = getAsyncResult();
     } else {
-        /**
-         * 如果执行超时，在设定 timeout_as_error_ = true 的情况下，直接返回
-         * 在设定 timeout_as_error_ = false 的情况下，整体流程继续执行，并且在 pipeline 执行结束时，等待超时节点执行完成
-         */
-        cur_state_.store(GElementState::TIMEOUT);
-        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(timeout_as_error_,    \
+        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION( GElementTimeoutStrategy::AS_ERROR == timeout_strategy_,    \
         "[" + name_ + "] running time more than [" + std::to_string(timeout_) + "]ms")
+        cur_state_.store(GElementState::TIMEOUT);
     }
 
     CGRAPH_FUNCTION_END
@@ -433,7 +424,7 @@ CStatus GElement::checkSuitable() {
 
     // 包含异步执行的逻辑，不可以loop超过1次
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((loop_ > CGRAPH_DEFAULT_LOOP_TIMES && this->isAsync()),     \
-    "[" + name_ + "] can set loop = 1 only for the reason of async run")
+    "[" + name_ + "] can set loop <= 1 only for the reason of async run")
 
     CGRAPH_FUNCTION_END
 }

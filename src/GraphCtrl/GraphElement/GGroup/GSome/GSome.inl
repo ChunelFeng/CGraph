@@ -31,7 +31,7 @@ CStatus GSome<TriggerNum>::addElement(GElementPtr element) {
      * 用于确保在pipeline run执行完成之前，所有的 element 都会被回收
      */
     if (CGRAPH_DEFAULT_ELEMENT_TIMEOUT == element->timeout_) {
-        element->setTimeout(CGRAPH_MAX_BLOCK_TTL, false);
+        element->setTimeout(CGRAPH_MAX_BLOCK_TTL, GElementTimeoutStrategy::HOLD_BY_PIPELINE);
     }
 
     group_elements_arr_.emplace_back(element);

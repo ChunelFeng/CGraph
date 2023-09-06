@@ -41,6 +41,13 @@ enum class GElementState {
     TIMEOUT = 0x1010,                         // 超时状态
 };
 
+
+enum class GElementTimeoutStrategy {
+    AS_ERROR = 1,                             // 当做异常处理（默认）
+    HOLD_BY_PIPELINE = 2,                     // pipeline run执行完成之前，等待结束
+    NO_HOLD = 3,                              // 不等待结束。非特殊场景，强烈不推荐使用，不排除个别平台会出现崩溃的情况
+};
+
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GELEMENTDEFINE_H

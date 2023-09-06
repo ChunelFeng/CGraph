@@ -107,10 +107,11 @@ public:
     /**
      * 设定当前算子的超时时间
      * @param timeout 超时时间
-     * @param asError 当超时的时候，是否直接当做错误返回
+     * @param strategy 当超时的时候，处理的策略
      * @return
      */
-    GElement* setTimeout(CMSec timeout, CBool asError = true);
+    GElement* setTimeout(CMSec timeout,
+                         GElementTimeoutStrategy strategy = GElementTimeoutStrategy::AS_ERROR);
 
     /**
      * 当前element是否是一个 group逻辑
@@ -122,7 +123,7 @@ protected:
     /**
      * 构造函数
      */
-    explicit GElement();
+    explicit GElement() = default;
 
     /**
      * 析构函数
@@ -334,8 +335,8 @@ private:
     CBool done_ { false };                                                    // 判定被执行结束
     CBool linkable_ { false };                                                // 判定是否可以连通计算
     CBool visible_ { true };                                                  // 判定可见的，如果被删除的话，则认为是不可见的
-    CBool timeout_as_error_ { true };                                         // 判定超时的情况下，是否返回错误
-    GElementType element_type_;                                               // 用于区分element 内部类型
+    GElementTimeoutStrategy timeout_strategy_ { GElementTimeoutStrategy::AS_ERROR };    // 判定超时的情况下，是否返回错误
+    GElementType element_type_ { GElementType::ELEMENT };                     // 用于区分element 内部类型
     std::atomic<GElementState> cur_state_ { GElementState::CREATE };       // 当前执行状态
 
     /** 配置相关信息 */
