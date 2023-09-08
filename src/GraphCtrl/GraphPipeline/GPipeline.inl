@@ -74,6 +74,15 @@ CStatus GPipeline::registerGElement(GFencePtr *fenceRef,
 }
 
 
+template<typename GCoordinator, CInt SIZE>
+CStatus GPipeline::registerGElement(GCoordinatorPtr<SIZE> *coordinatorRef,
+                                     const GElementPtrSet &dependElements,
+                                     const std::string &name,
+                                     CSize loop) {
+    return this->registerGElement<GCoordinator, SIZE>((GElementPtr *)(coordinatorRef), dependElements, name, loop);
+}
+
+
 template<typename TNode, typename ...Args,
         c_enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int>>
 CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,

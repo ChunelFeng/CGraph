@@ -19,8 +19,6 @@ protected:
         element_type_ = GElementType::ADAPTER;
     }
 
-    ~GAdapter() override = default;
-
     friend class GPipeline;
 };
 

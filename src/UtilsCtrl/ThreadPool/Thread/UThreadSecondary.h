@@ -112,7 +112,7 @@ protected:
             cur_ttl_--;    // 如果当前线程没有在执行，则ttl-1
         }
 
-        return cur_ttl_ <= 0;
+        return cur_ttl_ <= 0 && done_;    // 必须是正在执行的线程，才可以被回收
     }
 
 private:

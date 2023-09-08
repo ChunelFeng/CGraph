@@ -13,5 +13,6 @@
 #include "GSingleton/GSingleton.h"
 #include "GFunction/GFunction.h"
 #include "GFence/GFence.h"
+#include "GCoordinator/GCoordinator.h"
 
 #endif //CGRAPH_GADAPTERINCLUDE_H

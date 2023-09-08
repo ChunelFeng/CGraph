@@ -26,7 +26,7 @@ void tutorial_fence() {
 
     CSec sec = 5;
     a_function->setFunction(CFunctionType::RUN, [a_function, sec] {
-        CGRAPH_ECHO("[%s] begin sleep for [%d]s", a_function->getName().c_str(), sec);
+        CGRAPH_ECHO("[%s] begin sleep for [%ld]s", a_function->getName().c_str(), sec);
         CGRAPH_SLEEP_SECOND(sec)
         CGRAPH_ECHO("[%s] run finished.", a_function->getName().c_str());
         return CStatus();

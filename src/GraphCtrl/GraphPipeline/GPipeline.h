@@ -177,6 +177,22 @@ public:
                              CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
+     * 注册GCoordinator类型的内容，模板特化
+     * @tparam GCoordinator
+     * @tparam SIZE
+     * @param coordinatorRef
+     * @param dependElements
+     * @param name
+     * @param loop
+     * @return
+     */
+    template<typename GCoordinator, CInt SIZE>
+    CStatus registerGElement(GCoordinatorPtr<SIZE> *coordinatorRef,
+                             const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
+                             const std::string &name = CGRAPH_EMPTY,
+                             CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
+
+    /**
      * 在图中注册一个模板Element信息
      * @tparam TNode
      * @tparam Args

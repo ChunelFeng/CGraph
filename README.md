@@ -322,6 +322,7 @@ int main() {
 
 [2023.09.06 - v2.5.1 - Chunel]
 * 提供`fence`(栅栏)功能
+* 提供`coordinator`(协调)功能
 
 </details>
 

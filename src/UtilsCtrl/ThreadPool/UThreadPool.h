@@ -121,6 +121,19 @@ public:
      */
     CBool isInit() const;
 
+    /**
+     * 生成辅助线程。内部确保辅助线程数量不超过设定参数
+     * @param size
+     * @return
+     */
+    CStatus createSecondaryThread(CInt size);
+
+    /**
+     * 删除辅助线程
+     * @param size
+     * @return
+     */
+    CStatus releaseSecondaryThread(CInt size);
 
 protected:
     /**
@@ -129,13 +142,6 @@ protected:
      * @return
      */
     virtual CIndex dispatch(CIndex origIndex);
-
-    /**
-     * 生成辅助线程。内部确保辅助线程数量不超过设定参数
-     * @param size
-     * @return
-     */
-    CStatus createSecondaryThread(CInt size);
 
     /**
      * 监控线程执行函数，主要是判断是否需要增加线程，或销毁线程
@@ -155,6 +161,7 @@ private:
     UThreadPoolConfig config_;                                                      // 线程池设置值
     std::thread monitor_thread_;                                                    // 监控线程
     std::map<CSize, int> thread_record_map_;                                        // 线程记录的信息
+    std::mutex st_mutex_;                                                           // 辅助线程发生变动的时候，加的mutex信息
 };
 
 using UThreadPoolPtr = UThreadPool *;

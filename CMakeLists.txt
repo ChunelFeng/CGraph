@@ -45,6 +45,7 @@ set(CGRAPH_TUTORIAL_LIST
         T22-Timeout
         T23-Some
         T24-Fence
+        T25-Coordinator
 
         # 以下为工具类tutorial
         TU01-ThreadPool

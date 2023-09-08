@@ -162,6 +162,29 @@ CBool UThreadPool::isInit() const {
 }
 
 
+CStatus UThreadPool::releaseSecondaryThread(CInt size) {
+    CGRAPH_FUNCTION_BEGIN
+
+    // 先将所有已经结束的，给删掉
+    CGRAPH_LOCK_GUARD lock(st_mutex_);
+    for (auto iter = secondary_threads_.begin(); iter != secondary_threads_.end(); ) {
+        !(*iter)->done_ ? secondary_threads_.erase(iter++) : iter++;
+    }
+
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((size > secondary_threads_.size()),    \
+                                            "cannot release [" + std::to_string(size) + "] secondary thread,"    \
+                                            + "only [" + std::to_string(secondary_threads_.size()) + "] left.")
+
+    // 再标记几个需要删除的信息
+    for (auto iter = secondary_threads_.begin();
+         iter != secondary_threads_.end() && size-- > 0; ) {
+        (*iter)->done_ = false;
+        iter++;
+    }
+    CGRAPH_FUNCTION_END
+}
+
+
 CIndex UThreadPool::dispatch(CIndex origIndex) {
     CIndex realIndex = 0;
     if (CGRAPH_DEFAULT_TASK_STRATEGY == origIndex) {
@@ -186,6 +209,8 @@ CStatus UThreadPool::createSecondaryThread(CInt size) {
 
     int leftSize = (int)(config_.max_thread_size_ - config_.default_thread_size_ - secondary_threads_.size());
     int realSize = std::min(size, leftSize);    // 使用 realSize 来确保所有的线程数量之和，不会超过设定max值
+
+    CGRAPH_LOCK_GUARD lock(st_mutex_);
     for (int i = 0; i < realSize; i++) {
         auto ptr = CGRAPH_MAKE_UNIQUE_COBJECT(UThreadSecondary)
         ptr->setThreadPoolInfo(&task_queue_, &priority_task_queue_, &config_);
@@ -219,8 +244,11 @@ CVoid UThreadPool::monitor() {
         }
 
         // 判断 secondary 线程是否需要退出
-        for (auto iter = secondary_threads_.begin(); iter != secondary_threads_.end(); ) {
-            (*iter)->freeze() ? secondary_threads_.erase(iter++) : iter++;
+        {
+            CGRAPH_LOCK_GUARD lock(st_mutex_);
+            for (auto iter = secondary_threads_.begin(); iter != secondary_threads_.end(); ) {
+                (*iter)->freeze() ? secondary_threads_.erase(iter++) : iter++;
+            }
         }
     }
 }

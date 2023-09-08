@@ -363,25 +363,26 @@ private:
     std::condition_variable yield_cv_;                                        // 控制停止执行的条件变量
 
     friend class GNode;
+    friend class GGroup;
     friend class GCluster;
     friend class GRegion;
     friend class GCondition;
     template<CInt> friend class GSome;
     template<GMultiConditionType> friend class GMultiCondition;
-    friend class GGroup;
     friend class GPipeline;
-    friend class GAdapter;
     friend class GElementManager;
     friend class GElementSorter;
+    friend class GAdapter;
     friend class GFunction;
     friend class GFence;
+    template<CInt> friend class GCoordinator;
+    template<typename T> friend class GSingleton;
     friend class GEngine;
     friend class GStaticEngine;
     friend class GDynamicEngine;
     friend class GMaxParaOptimizer;
     friend class GElementRepository;
     friend class GPerf;
-    template<typename T> friend class GSingleton;
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER_WITH_MEMBER
     CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER_WITH_MEMBER
