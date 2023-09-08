@@ -41,7 +41,7 @@ void tutorial_fence() {
      * fence中加入的，必须是异步执行（设置 timeout耗时）的element
      * 设定为 HOLD_BY_PIPELINE 的element，如果不加入 fence中，则在 pipeline run结束之前，会等待其执行结束
      */
-    d_fence->addGElements({a_function, b});
+    d_fence->waitGElements({a_function, b});
 
     status = pipeline->process();
     if (status.isErr()) {

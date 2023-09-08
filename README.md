@@ -351,7 +351,7 @@ int main() {
 <details>
 <summary><b>附录-3. 联系方式</b></summary>
 
-* 微信： ChunelFeng (欢迎扫描上方二维码，和项目主要作者成为好友。添加时，请简单备注个人信息^_^)
+* 微信： ChunelFeng (欢迎扫描上方二维码，和项目主要作者成为好友。请简单备注个人信息^_^)
 * 邮箱： chunel@foxmail.com
 * 源码： https://github.com/ChunelFeng/CGraph
 * 论坛： www.chunel.cn

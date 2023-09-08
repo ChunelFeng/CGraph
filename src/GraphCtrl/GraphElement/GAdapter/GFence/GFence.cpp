@@ -16,7 +16,7 @@ GFence::GFence() {
 }
 
 
-GFencePtr GFence::addGElement(GElementPtr element) {
+GFencePtr GFence::waitGElement(GElementPtr element) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element)
     CGRAPH_THROW_EXCEPTION_BY_CONDITION(!element->isAsync(),     \
@@ -27,10 +27,10 @@ GFencePtr GFence::addGElement(GElementPtr element) {
 }
 
 
-GFencePtr GFence::addGElements(const std::set<GElementPtr>& elements) {
+GFencePtr GFence::waitGElements(const std::set<GElementPtr>& elements) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     for (auto* element : elements) {
-        addGElement(element);
+        waitGElement(element);
     }
     return this;
 }

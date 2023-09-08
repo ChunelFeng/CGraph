@@ -23,14 +23,14 @@ public:
      * @return
      * @notice 对外仅可以
      */
-    GFence* addGElement(GElementPtr element);
+    GFence* waitGElement(GElementPtr element);
 
     /**
      * 添加需要等待的一组element
      * @param elements
      * @return
      */
-    GFence* addGElements(const std::set<GElementPtr>& elements);
+    GFence* waitGElements(const std::set<GElementPtr>& elements);
 
     /**
      * 清空所有的elements信息
