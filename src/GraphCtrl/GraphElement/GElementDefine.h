@@ -31,6 +31,7 @@ enum class GElementType {
     FUNCTION = 0x00040001,                   // 函数
     SINGLETON = 0x00040002,                  // 单例
     FENCE = 0x00040004,                      // 栅栏
+    COORDINATOR = 0x00040008,                // 协调
 };
 
 

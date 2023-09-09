@@ -6,6 +6,8 @@
 @Desc: 
 ***************************/
 
+#include <iomanip>
+
 #include "GPipeline.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -154,6 +156,8 @@ CStatus GPipeline::resume() {
 CStatus GPipeline::dump(std::ostream& oss) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
+    oss << std::fixed << std::setprecision(2);    // 小数点最多展示2位数字
+
     oss << "\ndigraph CGraph {\n";
     oss << "compound=true;\n";
 

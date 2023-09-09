@@ -26,6 +26,7 @@ static const char* CGRAPH_STR_DAEMON = "daemon";
 static const char* CGRAPH_STR_ASPECT = "aspect";
 static const char* CGRAPH_STR_EVENT = "event";
 static const char* CGRAPH_STR_FENCE = "fence";
+static const char* CGRAPH_STR_COORDINATOR = "coordinator";
 
 CGRAPH_NAMESPACE_END
 

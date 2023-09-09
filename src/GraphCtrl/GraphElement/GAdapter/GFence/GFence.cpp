@@ -54,6 +54,13 @@ CStatus GFence::checkSuitable() {
 }
 
 
+CVoid GFence::dumpElement(std::ostream& oss) {
+    dumpElementHeader(oss);
+    dumpPerfInfo(oss);
+    oss << "\", shape=box]\n";
+}
+
+
 CStatus GFence::run() {
     CGRAPH_FUNCTION_BEGIN
 

@@ -41,7 +41,9 @@ public:
 protected:
     explicit GFence();
 
-    CStatus checkSuitable() override;
+    CStatus checkSuitable() final;
+
+    CVoid dumpElement(std::ostream& oss) final;
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
 

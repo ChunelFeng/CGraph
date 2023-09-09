@@ -285,7 +285,14 @@ private:
      * graphviz dump 点逻辑
      * @param oss
     */
-    CVoid dumpElement(std::ostream& oss);
+    virtual CVoid dumpElement(std::ostream& oss);
+
+    /**
+     * dump 当前element的header。主要就是为了代码
+     * @param oss
+     * @return
+     */
+    CVoid dumpElementHeader(std::ostream& oss);
 
     /**
      * graphviz dump perf逻辑

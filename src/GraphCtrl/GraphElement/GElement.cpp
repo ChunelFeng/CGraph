@@ -306,18 +306,22 @@ CVoid GElement::dumpEdge(std::ostream& oss, GElementPtr src, GElementPtr dst, co
 
 
 CVoid GElement::dumpElement(std::ostream& oss) {
-    oss << 'p' << this << "[label=\"";
-    if (this->name_.empty()) {
-        oss << 'p' << this;    // 如果没有名字，则通过当前指针位置来代替
-    } else {
-        oss << this->name_;
-    }
-
+    dumpElementHeader(oss);
     dumpPerfInfo(oss);
 
     oss << "\"];\n";
     if (this->loop_ > 1 && !this->isGroup()) {
         oss << 'p' << this << " -> p" << this << "[label=\"" << this->loop_ << "\"]" << ";\n";
+    }
+}
+
+
+CVoid GElement::dumpElementHeader(std::ostream& oss) {
+    oss << 'p' << this << "[label=\"";
+    if (this->name_.empty()) {
+        oss << 'p' << this;    // 如果没有名字，则通过当前指针位置来代替
+    } else {
+        oss << this->name_;
     }
 }
 
