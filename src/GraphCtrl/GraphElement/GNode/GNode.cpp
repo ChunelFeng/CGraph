@@ -26,7 +26,6 @@ GNode* GNode::setType(const GNodeType& type) {
 CStatus GNode::spawn(const UTaskGroup& tasks, CMSec ttl) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(true)
-    CGRAPH_ASSERT_NOT_NULL(thread_pool_)
 
     status = thread_pool_->submit(tasks, ttl);
     CGRAPH_FUNCTION_END

@@ -80,7 +80,11 @@ CVoid __ASSERT_NOT_NULL_THROW_EXCEPTION(T t, Args... args) {
 
 /** 判断传入的多个指针信息，是否为空 */
 #define CGRAPH_ASSERT_NOT_NULL(ptr, ...)                                                     \
-    __ASSERT_NOT_NULL(ptr, ##__VA_ARGS__);                                                   \
+    {                                                                                        \
+        const CStatus& __cur_status__ = __ASSERT_NOT_NULL(ptr, ##__VA_ARGS__);               \
+        if (unlikely(__cur_status__.isErr())) { return __cur_status__; }                     \
+    }                                                                                        \
+
 
 /** 判断传入的多个指针，是否为空。如果为空，则抛出异常信息 */
 #define CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr, ...)                                         \

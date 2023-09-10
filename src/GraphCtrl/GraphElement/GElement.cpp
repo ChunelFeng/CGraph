@@ -425,6 +425,7 @@ CStatus GElement::getAsyncResult() {
 
 CStatus GElement::checkSuitable() {
     CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(thread_pool_)
 
     // 包含异步执行的逻辑，不可以loop超过1次
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((loop_ > CGRAPH_DEFAULT_LOOP_TIMES && this->isAsync()),     \

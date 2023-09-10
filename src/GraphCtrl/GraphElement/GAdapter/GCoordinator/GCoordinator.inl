@@ -23,7 +23,6 @@ GCoordinator<SIZE>::GCoordinator() {
 template<CInt SIZE>
 CStatus GCoordinator<SIZE>::run() {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(thread_pool_)
     status = (SIZE >= 0)
              ? thread_pool_->createSecondaryThread(SIZE)
              : thread_pool_->releaseSecondaryThread((-1) * SIZE);

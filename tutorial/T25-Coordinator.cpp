@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: T25-Coordinator.cpp
 @Time: 2023/9/8 22:01
-@Desc: 本例主要演示，通过 GCoordinator 在pipeline执行的过程中，修改
+@Desc: 本例主要演示，通过 GCoordinator 在pipeline执行的过程中，修改辅助线程数
 ***************************/
 
 #include "MyGNode/MyNode1.h"
@@ -14,7 +14,7 @@ using namespace CGraph;
 void tutorial_coordinator() {
     GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b, c, d, f, g, h = nullptr;
-    GCoordinatorPtr<-2> e_coordinator = nullptr;    // 申明一个减少三个辅助线程的 GCoordinator
+    GCoordinatorPtr<-2> e_coordinator = nullptr;    // 申明一个减少2个(-2个)辅助线程的 GCoordinator
 
     UThreadPoolConfig config;
     config.default_thread_size_ = 0;

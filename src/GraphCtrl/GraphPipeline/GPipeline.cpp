@@ -251,8 +251,7 @@ CStatus GPipeline::initEnv() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(event_manager_, element_manager_)
 
-    status = repository_.init();
-    status += schedule_.init();
+    status = schedule_.init();
     CGRAPH_FUNCTION_CHECK_STATUS
 
     auto tp = schedule_.getThreadPool();
@@ -263,6 +262,7 @@ CStatus GPipeline::initEnv() {
     // 设置所有的element 中的thread_pool
     repository_.setThreadPool(tp);
 
+    status += repository_.init();
     CGRAPH_FUNCTION_END
 }
 
