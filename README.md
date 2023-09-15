@@ -69,7 +69,7 @@
   ```shell
   $ sudo apt-get install cmake -y          # 安装cmake
   $ ./CGraph-build.sh                      # 编译CGraph工程，生成的内容在同级/build/文件夹中
-  $ ./build/T00-HelloCGraph                # 运行第一个实例程序，并且在终端输出 Hello, CGraph.
+  $ ./build/tutorial/T00-HelloCGraph       # 运行第一个实例程序，并且在终端输出 Hello, CGraph.
   ```
 
 ## 三. 使用Demo
@@ -323,6 +323,7 @@ int main() {
 [2023.09.06 - v2.5.1 - Chunel]
 * 提供`fence`(栅栏)功能
 * 提供`coordinator`(协调)功能
+* 添加`example`相关内容，针对不同行业，提供一些简单的实现用例
 
 </details>
 

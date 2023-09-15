@@ -11,6 +11,7 @@
 
 #include <mutex>
 #include <chrono>
+#include <iomanip>
 #include <ctime>
 #include <cstdarg>
 #include <algorithm>
@@ -35,16 +36,10 @@ inline CVoid CGRAPH_ECHO(const char *cmd, ...) {
 #ifndef _WIN32
     // 非windows系统，打印到毫秒
     auto now = std::chrono::system_clock::now();
-    // 通过不同精度获取相差的毫秒数
-    uint64_t disMs = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count()
-                     - std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count() * 1000;
-    time_t tt = std::chrono::system_clock::to_time_t(now);
-    auto localTime = localtime(&tt);
-    char strTime[32] = { 0 };
-    sprintf(strTime, "[%04d-%02d-%02d %02d:%02d:%02d.%03d]", localTime->tm_year + 1900,
-            localTime->tm_mon + 1, localTime->tm_mday, localTime->tm_hour,
-            localTime->tm_min, localTime->tm_sec, (int)disMs);
-    std::cout << "[CGraph] " << strTime << " ";
+    auto time = std::chrono::system_clock::to_time_t(now);
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count() % 1000;
+    std::cout << "[" << std::put_time(std::localtime(&time), "%Y-%m-%d %H:%M:%S.")    \
+        << std::setfill('0') << std::setw(3) << ms << "] ";
 #else
     // windows系统，打印到秒
     time_t curTime;

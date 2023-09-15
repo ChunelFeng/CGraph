@@ -98,16 +98,17 @@ CStatus GPipeline::process(CSize runTimes) {
     CGRAPH_FUNCTION_CHECK_STATUS
 
     while (runTimes-- > 0
+           && !status.isErr()
            && !repository_.isCancelState()) {
         /**
          * 1. 执行轮数（runTimes）没有结束
-         * 2. 没有进入取消状态
+         * 2. 执行结果正常
+         * 3. 没有进入取消状态
          */
-        status = run();
-        CGRAPH_FUNCTION_CHECK_STATUS
+        status += run();
     }
 
-    status = destroy();
+    status += destroy();
     CGRAPH_FUNCTION_END
 }
 

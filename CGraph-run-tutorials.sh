@@ -1,11 +1,14 @@
 #!/bin/bash
 
-if [ ! -d "build" ]; then
-    echo -e "\033[31m[ERROR] Directory /build does not exist.\033[0m"
+CGRAPH_TUTORIAL_DIR="build/tutorial/"
+
+if [ ! -d $CGRAPH_TUTORIAL_DIR ]; then
+    echo -e "\033[31m[ERROR] Directory $CGRAPH_TUTORIAL_DIR does not exist.\033[0m"
     exit 1
 fi
 
-cd build
+# shellcheck disable=SC2164
+cd $CGRAPH_TUTORIAL_DIR
 
 for file in *; do
     # 执行所有可执行文件，并且过滤掉文件夹
