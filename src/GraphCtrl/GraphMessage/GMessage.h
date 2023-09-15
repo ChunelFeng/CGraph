@@ -10,6 +10,7 @@
 #define CGRAPH_GMESSAGE_H
 
 #include "GMessageObject.h"
+#include "GMessageDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -30,13 +31,15 @@ public:
 
     /**
      * 写入参数
+     * @tparam TImpl
      * @param value
+     * @param strategy
      * @return
      */
     template<class TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CVoid send(const TImpl& value) {
-        queue_.push(value);
+    CVoid send(const TImpl& value, GMessagePushStrategy strategy) {
+        queue_.push(value, strategy);
     }
 
     /**

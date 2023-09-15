@@ -26,7 +26,7 @@ public:
         MyMessageParam mp;    // 创建一个消息，并且发送出去
         mp.num = (num_++) * 100;
         mp.info = "this is a test info, num = " + std::to_string(mp.num);
-        CStatus status = CGRAPH_PUB_MPARAM(MyMessageParam, "pub-sub", mp);
+        CStatus status = CGRAPH_PUB_MPARAM(MyMessageParam, "pub-sub", mp, CGraph::GMessagePushStrategy::WAIT);
         return status;
     }
 

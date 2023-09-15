@@ -25,8 +25,8 @@ CGRAPH_NAMESPACE_BEGIN
     CGraph::GMessageManagerSingleton.get()->removeTopic(topic);                                      \
 
 /* 发送一个 message param */
-#define CGRAPH_SEND_MPARAM(Type, topic, value)                                                       \
-    CGraph::GMessageManagerSingleton.get()->template sendTopicValue<Type>(topic, value);             \
+#define CGRAPH_SEND_MPARAM(Type, topic, value, strategy)                                             \
+    CGraph::GMessageManagerSingleton.get()->template sendTopicValue<Type>(topic, value, strategy);   \
 
 /* 接收一个 message param */
 #define CGRAPH_RECV_MPARAM(Type, topic, value)                                                       \
@@ -44,8 +44,8 @@ CGRAPH_NAMESPACE_BEGIN
     CGraph::GMessageManagerSingleton.get()->template bindTopic<Type>(topic, size);                   \
 
 /* 发布一个消息 */
-#define CGRAPH_PUB_MPARAM(Type, topic, value)                                                        \
-    CGraph::GMessageManagerSingleton.get()->template pubTopicValue<Type>(topic, value);              \
+#define CGRAPH_PUB_MPARAM(Type, topic, value, strategy)                                              \
+    CGraph::GMessageManagerSingleton.get()->template pubTopicValue<Type>(topic, value, strategy);    \
 
 /* 订阅一个消息 */
 #define CGRAPH_SUB_MPARAM(Type, connId, value)                                                       \

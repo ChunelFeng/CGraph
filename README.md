@@ -320,9 +320,10 @@ int main() {
 * 提供了`element`的超时机制
 * 提供了`some`(部分)功能，优化`pipeline`的异步执行方式
 
-[2023.09.06 - v2.5.1 - Chunel]
+[2023.09.15 - v2.5.1 - Chunel]
 * 提供`fence`(栅栏)功能
 * 提供`coordinator`(协调)功能
+* 优化`message`(消息)功能，可以设定写入阻塞时的处理方式
 * 添加`example`相关内容，针对不同行业，提供一些简单的实现用例
 
 </details>

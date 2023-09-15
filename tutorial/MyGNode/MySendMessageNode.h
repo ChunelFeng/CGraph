@@ -18,7 +18,12 @@ public:
         MyMessageParam mp;    // 创建一个消息，并且发送出去
         mp.num = (num_++) * 10;
         mp.info = "this is a test send info, num = " + std::to_string(mp.num);
-        CStatus status = CGRAPH_SEND_MPARAM(MyMessageParam, "send-recv", mp);
+        /**
+         * 在v2.5.1版本，增加了 GMessagePushStrategy 策略，不兼容之前版本
+         * 如果需要跟之前逻辑保持一致，直接设定 CGraph::GMessagePushStrategy::WAIT 即可
+         * 其他的选项功能，参考 URingBufferPushStrategy(GMessagePushStrategy的别名) 的说明
+         */
+        CStatus status = CGRAPH_SEND_MPARAM(MyMessageParam, "send-recv", mp, CGraph::GMessagePushStrategy::WAIT)
         return status;
     }
 

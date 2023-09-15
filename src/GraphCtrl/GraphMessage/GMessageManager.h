@@ -101,11 +101,14 @@ public:
      * @tparam TImpl
      * @param topic
      * @param value
+     * @param strategy
      * @return
      */
     template<typename TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CStatus sendTopicValue(const std::string& topic, const TImpl& value) {
+    CStatus sendTopicValue(const std::string& topic,
+                           const TImpl& value,
+                           GMessagePushStrategy strategy) {
         CGRAPH_FUNCTION_BEGIN
         auto innerTopic = SEND_RECV_PREFIX + topic;
         auto result = send_recv_message_map_.find(innerTopic);
@@ -116,7 +119,7 @@ public:
         auto message = static_cast<GMessagePtr<T> >(result->second);
         CGRAPH_ASSERT_NOT_NULL(message);
 
-        message->send(value);
+        message->send(value, strategy);
         CGRAPH_FUNCTION_END
     }
 
@@ -155,11 +158,14 @@ public:
      * @tparam TImpl
      * @param topic
      * @param value
+     * @param strategy
      * @return
      */
     template<typename TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CStatus pubTopicValue(const std::string& topic, const TImpl& value) {
+    CStatus pubTopicValue(const std::string& topic,
+                          const TImpl& value,
+                          GMessagePushStrategy strategy) {
         CGRAPH_FUNCTION_BEGIN
         auto innerTopic = PUB_SUB_PREFIX + topic;
         auto result = pub_sub_message_map_.find(innerTopic);
@@ -169,7 +175,7 @@ public:
 
         auto& messageSet = result->second;
         for (auto msg : messageSet) {
-            msg->send(value);    // 给所有订阅的信息，一次发送消息
+            msg->send(value, strategy);    // 给所有订阅的信息，一次发送消息
         }
         CGRAPH_FUNCTION_END
     }

@@ -53,15 +53,26 @@ public:
 
     /**
      * 写入信息
+     * @tparam TImpl
      * @param value
+     * @param strategy
      * @return
      */
     template<class TImpl = T>
-    CVoid push(const TImpl& value) {
+    CVoid push(const TImpl& value, URingBufferPushStrategy strategy) {
         {
             CGRAPH_UNIQUE_LOCK lk(mutex_);
             if (isFull()) {
-                push_cv_.wait(lk, [this] { return !isFull(); });
+                switch (strategy) {
+                    case URingBufferPushStrategy::WAIT:
+                        push_cv_.wait(lk, [this] { return !isFull(); });
+                        break;
+                    case URingBufferPushStrategy::REPLACE:
+                        head_ = (head_ + 1) % capacity_;
+                        break;
+                    case URingBufferPushStrategy::DROP:
+                        return;    // 直接返回，不写入即可
+                }
             }
 
             ring_buffer_queue_[tail_] = std::move(c_make_unique<TImpl>(value));

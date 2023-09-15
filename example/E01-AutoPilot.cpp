@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <cstring>
 
 #include "CGraph.h"
 
@@ -47,7 +48,7 @@ public:
         memcpy(image.image_buf_, info.c_str(), info.length());
         cur_index_++;
 
-        CGRAPH_PUB_MPARAM(ImageMParam, EXAMPLE_IMAGE_TOPIC, image);
+        CGRAPH_PUB_MPARAM(ImageMParam, EXAMPLE_IMAGE_TOPIC, image, GMessagePushStrategy::WAIT);
     }
 
 private:

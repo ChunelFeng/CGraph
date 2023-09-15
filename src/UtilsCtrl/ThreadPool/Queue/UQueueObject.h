@@ -12,6 +12,7 @@
 #include <mutex>
 
 #include "../UThreadObject.h"
+#include "UQueueDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
