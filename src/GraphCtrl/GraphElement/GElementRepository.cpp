@@ -135,5 +135,4 @@ GElementRepository::~GElementRepository() {
     }
 }
 
-
 CGRAPH_NAMESPACE_END

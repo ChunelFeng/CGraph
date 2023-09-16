@@ -1,6 +1,7 @@
 # 对应 example 中的内容
 set(CGRAPH_EXAMPLE_LIST
         E01-AutoPilot
+        E02-MockGUI
         )
 
 foreach(example ${CGRAPH_EXAMPLE_LIST})

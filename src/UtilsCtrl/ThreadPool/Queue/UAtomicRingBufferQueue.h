@@ -119,11 +119,19 @@ public:
     }
 
 protected:
+    /**
+     * 当前队列是否为满
+     * @return
+     */
     CBool isFull() {
         // 空出来一个位置，这个时候不让 tail写入
         return head_ == (tail_ + 1) % capacity_;
     }
 
+    /**
+     * 当前队列是否为空
+     * @return
+     */
     CBool isEmpty() {
         return head_ == tail_;
     }

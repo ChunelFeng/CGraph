@@ -26,8 +26,12 @@ protected:
 
     /**
      * 执行切面逻辑
+     * @param type
+     * @param curStatus
+     * @return
      */
-    CStatus reflect(const GAspectType& type, const CStatus& curStatus = CStatus()) {
+    CStatus reflect(const GAspectType& type,
+                    const CStatus& curStatus = CStatus()) {
         CGRAPH_FUNCTION_BEGIN
 
         for (GAspectPtr aspect : aspect_arr_) {
@@ -108,9 +112,7 @@ protected:
      */
     CStatus popLast() {
         CGRAPH_FUNCTION_BEGIN
-        if (0 == getSize()) {
-            CGRAPH_RETURN_ERROR_STATUS("no aspect to pop")
-        }
+        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(0 == getSize(), "no aspect to pop")
 
         auto* last = aspect_arr_.back();
         CGRAPH_DELETE_PTR(last);
