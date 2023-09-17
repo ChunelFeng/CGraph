@@ -60,7 +60,7 @@ protected:
      * @param
      * @return
     */
-    CStatus wait();
+    CVoid wait();
 
 private:
     GElementPtrArr total_element_arr_;                          // pipeline中所有的元素信息集合

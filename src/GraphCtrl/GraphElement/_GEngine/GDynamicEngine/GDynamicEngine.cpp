@@ -42,7 +42,9 @@ CStatus GDynamicEngine::run() {
 
     asyncRun();
 
-    status = wait();
+    if (!cur_status_.isOK()) {
+        status = cur_status_;    // 如果不是ok的话，进行赋值
+    }
     CGRAPH_FUNCTION_END
 }
 
@@ -64,9 +66,16 @@ CStatus GDynamicEngine::afterRunCheck() {
 
 
 CVoid GDynamicEngine::asyncRun() {
+    /**
+     * 1. 执行没有任何依赖的element
+     * 2. 在element执行完成之后，进行裂变，直到所有的element执行完成
+     * 3. 等待异步执行结束
+     */
     for (const auto& element : front_element_arr_) {
         process(element, element == front_element_arr_.back());
     }
+
+    wait();
 }
 
 
@@ -140,8 +149,7 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
 }
 
 
-CStatus GDynamicEngine::wait() {
-    CGRAPH_FUNCTION_BEGIN
+CVoid GDynamicEngine::wait() {
     CGRAPH_UNIQUE_LOCK lock(lock_);
     cv_.wait(lock, [this] {
         /**
@@ -151,8 +159,6 @@ CStatus GDynamicEngine::wait() {
          */
         return (finished_end_size_ >= total_end_size_) || cur_status_.isErr();
     });
-    status = cur_status_;    // 等待结束后，做赋值
-    CGRAPH_FUNCTION_END
 }
 
 CGRAPH_NAMESPACE_END
