@@ -33,22 +33,11 @@ inline CVoid CGRAPH_ECHO(const char *cmd, ...) {
 #endif
 
     std::lock_guard<std::mutex> lock{ g_echo_mtx };
-#ifndef _WIN32
-    // 非windows系统，打印到毫秒
     auto now = std::chrono::system_clock::now();
     auto time = std::chrono::system_clock::to_time_t(now);
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count() % 1000;
     std::cout << "[" << std::put_time(std::localtime(&time), "%Y-%m-%d %H:%M:%S.")    \
         << std::setfill('0') << std::setw(3) << ms << "] ";
-#else
-    // windows系统，打印到秒
-    time_t curTime;
-    time(&curTime);
-    std::string ct = ctime(&curTime);
-    std::cout << "[CGraph] ["
-              << ct.assign(ct.begin(), ct.end()-1)    // 去掉时间的最后一位\n信息
-              << "] ";
-#endif
 
     va_list args;
     va_start(args, cmd);
@@ -64,7 +53,7 @@ inline CVoid CGRAPH_ECHO(const char *cmd, ...) {
  */
 inline CMSec CGRAPH_GET_CURRENT_MS() {
     // 获取当前的时间戳信息
-    return std::chrono::time_point_cast<std::chrono::milliseconds>    \
+    return (CMSec)std::chrono::time_point_cast<std::chrono::milliseconds>    \
         (std::chrono::steady_clock::now()).time_since_epoch().count();
 }
 
