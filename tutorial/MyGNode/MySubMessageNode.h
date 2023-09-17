@@ -26,7 +26,7 @@ public:
     }
 
     CStatus run() override {
-        MyMessageParam mp;    // 接收一个消息
+        std::unique_ptr<MyMessageParam> mp = nullptr;    // 通过智能指针类型，接收一个消息。相比value接收(Recv or Sub)，性能会好一些
         CStatus status = CGRAPH_SUB_MPARAM(MyMessageParam, conn_id_, mp)
         if (!status.isOK()) {
             CGraph::CGRAPH_ECHO("[%s] recv message error", this->getName().c_str());
@@ -34,8 +34,7 @@ public:
         }
 
         CGraph::CGRAPH_ECHO("[%s] conn id = [%d], num = [%d], info = [%s]",
-                            this->getName().c_str(), conn_id_, mp.num, mp.info.c_str());
-
+                            this->getName().c_str(), conn_id_, mp->num, mp->info.c_str());
         return status;
     }
 

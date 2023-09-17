@@ -99,7 +99,37 @@ public:
                 CGRAPH_RETURN_ERROR_STATUS("receive message timeout.")
             }
 
-            value = std::move(*ring_buffer_queue_[head_]);
+            value = *ring_buffer_queue_[head_];    // 这里直接进行值copy
+            head_ = (head_ + 1) % capacity_;
+        }
+        push_cv_.notify_one();
+        CGRAPH_FUNCTION_END
+    }
+
+    /**
+     * 等待弹出信息。ps：当入参为智能指针的情况
+     * @tparam TImpl
+     * @param value
+     * @param timeout
+     * @return
+     */
+    template<class TImpl = T>
+    CStatus waitPopWithTimeout(std::unique_ptr<TImpl>& value, CMSec timeout) {
+        CGRAPH_FUNCTION_BEGIN
+        {
+            CGRAPH_UNIQUE_LOCK lk(mutex_);
+            if (isEmpty()
+                && !pop_cv_.wait_for(lk, std::chrono::milliseconds(timeout),
+                                     [this] { return !isEmpty(); })) {
+                // 如果timeout的时间内，等不到消息，则返回错误信息
+                CGRAPH_RETURN_ERROR_STATUS("receive message timeout.")
+            }
+
+            /**
+             * 当传入的内容，是智能指针的时候，
+             * 这里就直接通过 move转移过去好了，跟直接传值的方式，保持区别
+             */
+            value = std::move(ring_buffer_queue_[head_]);
             head_ = (head_ + 1) % capacity_;
         }
         push_cv_.notify_one();

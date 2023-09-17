@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: T24-Fence.cpp
 @Time: 2023/9/6 23:17
-@Desc: 本例主要演示，通过 GFence逻辑，来
+@Desc: 本例主要演示，通过 GFence逻辑，来控制超时节点的等待逻辑
 ***************************/
 
 #include "MyGNode/MyNode1.h"

@@ -44,7 +44,7 @@ protected:
 class ShowEvent : public GEvent {
     CVoid trigger(GEventParamPtr param) override {
         auto p = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(ProcessParam, EXAMPLE_PARAM_KEY);
-        // CGRAPH_PARAM_READ_CODE_BLOCK(p);    // 本例中，对 param的处理，并未考虑并发之间的影响。实际操作中，需要注意
+        CGRAPH_PARAM_READ_CODE_BLOCK(p);
         p->print();
     }
 };
@@ -54,7 +54,10 @@ class SwitchAspect : public GAspect {
 public:
     CStatus beginRun() override {
         auto p = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(ProcessParam, EXAMPLE_PARAM_KEY);
-        p->change(this->getName(), true);
+        {
+            CGRAPH_PARAM_WRITE_CODE_BLOCK(p)
+            p->change(this->getName(), true);
+        }
 
         notify(EXAMPLE_EVENT_KEY, GEventType::SYNC);
         return CStatus();
@@ -62,7 +65,11 @@ public:
 
     CVoid finishRun(const CStatus& curStatus) override {
         auto p = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(ProcessParam, EXAMPLE_PARAM_KEY);
-        p->change(this->getName(), false);
+        {
+            CGRAPH_PARAM_WRITE_CODE_BLOCK(p)
+            p->change(this->getName(), false);
+        }
+
         notify(EXAMPLE_EVENT_KEY, GEventType::SYNC);
     }
 };

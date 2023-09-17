@@ -15,12 +15,24 @@ struct MyMessageParam : public CGraph::GMessageParam {
     int num = 0;
     std::string info;
 
+    explicit MyMessageParam() {
+        num = 0;
+        info = "";
+    }
+
+    /**
+     * 注意：
+     * 使用 GMessageParam 类型参数的时候，建议实现构造拷贝 和 赋值拷贝函数
+     * 否则，针对指针类型变量，可能会出现深浅拷贝的问题
+     */
+    explicit MyMessageParam(const MyMessageParam& param) {
+        /** 针对通过 unique_ptr<value> 获取的方式，推荐实现构造拷贝函数 */
+        this->info = param.info;
+        this->num = param.num;
+    }
+
     MyMessageParam& operator=(const MyMessageParam& param) {
-        /**
-         * 注意：
-         * 使用 GMessageParam 类型参数的时候，建议 实现赋值拷贝函数
-         * 否则，针对指针类型变量，可能会出现深浅拷贝的问题
-         */
+        /** 针对通过 value 获取的方式，推荐实现赋值拷贝函数 */
         if (this == &param) {
             return *this;
         }

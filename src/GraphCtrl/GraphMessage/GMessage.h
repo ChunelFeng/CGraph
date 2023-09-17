@@ -9,6 +9,8 @@
 #ifndef CGRAPH_GMESSAGE_H
 #define CGRAPH_GMESSAGE_H
 
+#include <memory>
+
 #include "GMessageObject.h"
 #include "GMessageDefine.h"
 
@@ -51,6 +53,19 @@ public:
     template<class TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CStatus recv(TImpl& value, CMSec timeout) {
+        return queue_.waitPopWithTimeout(value, timeout);
+    }
+
+    /**
+     * 通过智能指针的方式传递
+     * @tparam TImpl
+     * @param value
+     * @param timeout
+     * @return
+     */
+    template<class TImpl,
+            c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
+    CStatus recv(std::unique_ptr<TImpl>& value, CMSec timeout) {
         return queue_.waitPopWithTimeout(value, timeout);
     }
 
