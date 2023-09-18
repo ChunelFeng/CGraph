@@ -101,10 +101,7 @@ CBool GMultiCondition<type>::isSerializable() {
         return false;
     }
 
-    return std::all_of(group_elements_arr_.begin(), group_elements_arr_.end(),
-                       [](GElementPtr element) {
-        return element->isSerializable();
-    });
+    return GGroup::isSerializable();
 }
 
 CGRAPH_NAMESPACE_END

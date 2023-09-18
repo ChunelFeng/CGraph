@@ -32,17 +32,16 @@ CGRAPH_NAMESPACE_BEGIN
     #define unlikely
 #endif
 
+using CGRAPH_LOCK_GUARD = std::lock_guard<std::mutex>;
+using CGRAPH_UNIQUE_LOCK = std::unique_lock<std::mutex>;
 
 #if __cplusplus >= 201703L
     using CGRAPH_READ_LOCK = std::shared_lock<std::shared_mutex>;
     using CGRAPH_WRITE_LOCK = std::unique_lock<std::shared_mutex>;
 #else
-    using CGRAPH_READ_LOCK = std::unique_lock<std::mutex>;    // C++14不支持读写锁，使用mutex替代
-    using CGRAPH_WRITE_LOCK = std::unique_lock<std::mutex>;
+    using CGRAPH_READ_LOCK = CGRAPH_LOCK_GUARD;    // C++14不支持读写锁，使用mutex替代
+    using CGRAPH_WRITE_LOCK = CGRAPH_LOCK_GUARD;
 #endif
-
-using CGRAPH_LOCK_GUARD = std::lock_guard<std::mutex>;
-using CGRAPH_UNIQUE_LOCK = std::unique_lock<std::mutex>;
 
 
 template<typename T>
@@ -96,7 +95,7 @@ static std::mutex g_check_status_mtx;
 #define CGRAPH_FUNCTION_CHECK_STATUS                                                         \
     if (unlikely(status.isErr())) {                                                          \
         if (status.isCrash()) { throw CException(status.getInfo()); }                        \
-        std::lock_guard<std::mutex> lock{ g_check_status_mtx };                              \
+        CGRAPH_LOCK_GUARD lock{ g_check_status_mtx };                                        \
         CGRAPH_ECHO("%s, errorCode = [%d], errorInfo = [%s].",                               \
             status.getLocate().c_str(), status.getCode(), status.getInfo().c_str());         \
         return status;                                                                       \
