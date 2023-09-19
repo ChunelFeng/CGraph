@@ -6,8 +6,6 @@
 @Desc: 
 ***************************/
 
-#include <iomanip>
-
 #include "GPipeline.h"
 
 CGRAPH_NAMESPACE_BEGIN
