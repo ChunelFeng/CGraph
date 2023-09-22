@@ -2,6 +2,7 @@
 set(CGRAPH_EXAMPLE_LIST
         E01-AutoPilot
         E02-MockGUI
+        E03-ThirdFlow
         )
 
 foreach(example ${CGRAPH_EXAMPLE_LIST})

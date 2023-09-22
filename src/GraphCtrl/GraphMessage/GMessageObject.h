@@ -10,12 +10,13 @@
 #define CGRAPH_GMESSAGEOBJECT_H
 
 #include "../GraphObject.h"
+#include "../GraphParam/GParamInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
 class GMessageObject : public GraphObject {
 public:
-    CStatus run() override {
+    CStatus run() final {
         CGRAPH_NO_SUPPORT
     }
 };

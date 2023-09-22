@@ -12,7 +12,6 @@
 #include <string>
 #include <set>
 #include <unordered_map>
-#include <atomic>
 #include <memory>
 
 #include "GMessage.h"

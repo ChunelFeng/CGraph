@@ -15,9 +15,8 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GMessageParam : public GParamObject {
     /**
-     * 用于消息传递的参数
-     * 建议派生类重载赋值构造函数
-     * 否则可能会出现深浅拷贝的问题
+     * 用于消息传递的参数时，建议实现构造拷贝 和 赋值拷贝函数
+     * 否则，针对指针类型变量，可能会出现深浅拷贝的问题
      * @param param
      * @return
      */
