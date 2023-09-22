@@ -15,10 +15,7 @@ struct MyMessageParam : public CGraph::GMessageParam {
     int num = 0;
     std::string info;
 
-    explicit MyMessageParam() {
-        num = 0;
-        info = "";
-    }
+    explicit MyMessageParam() = default;
 
     /**
      * 注意：

@@ -15,14 +15,14 @@
 class MyRecvMessageNode : public CGraph::GNode {
 public:
     CStatus run() override {
-        MyMessageParam mp;    // 接收一个消息
+        std::unique_ptr<MyMessageParam> mp = nullptr;    // 接收一个消息
         CStatus status = CGRAPH_RECV_MPARAM(MyMessageParam, "send-recv", mp);
         if (!status.isOK()) {
             CGraph::CGRAPH_ECHO("MySubMessageNode sub message error");
             return status;
         }
 
-        CGraph::CGRAPH_ECHO("num = [%d], info = [%s]", mp.num, mp.info.c_str());
+        CGraph::CGRAPH_ECHO("num = [%d], info = [%s]", mp->num, mp->info.c_str());
         return status;
     }
 };

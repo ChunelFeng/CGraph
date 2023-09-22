@@ -156,6 +156,33 @@ public:
     }
 
     /**
+     * 根据传入的topic，输入智能指针类型的信息
+     * @tparam TImpl
+     * @param topic
+     * @param value
+     * @param strategy
+     * @return
+     */
+    template<typename TImpl,
+            c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
+    CStatus sendTopicValue(const std::string& topic,
+                           std::unique_ptr<TImpl>& value,
+                           GMessagePushStrategy strategy) {
+        CGRAPH_FUNCTION_BEGIN
+        auto innerTopic = SEND_RECV_PREFIX + topic;
+        auto result = send_recv_message_map_.find(innerTopic);
+        if (result == send_recv_message_map_.end()) {
+            CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
+        }
+
+        auto message = static_cast<GMessagePtr<T> >(result->second);
+        CGRAPH_ASSERT_NOT_NULL(message);
+
+        message->send(value, strategy);
+        CGRAPH_FUNCTION_END
+    }
+
+    /**
      * 绑定对应的topic信息，并且获取 conn_id 信息
      * @tparam TImpl
      * @param topic
@@ -165,10 +192,10 @@ public:
     template<typename TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CIndex bindTopic(const std::string& topic, CUint size) {
-        CGRAPH_LOCK_GUARD lock(bind_mutex_);
         auto innerTopic = PUB_SUB_PREFIX + topic;
         auto message = UAllocator::safeMallocTemplateCObject<GMessage<TImpl>, CUint>(size);
 
+        CGRAPH_LOCK_GUARD lock(bind_mutex_);
         CIndex connId = (++cur_conn_id_);
         auto result = pub_sub_message_map_.find(innerTopic);
         if (result != pub_sub_message_map_.end()) {

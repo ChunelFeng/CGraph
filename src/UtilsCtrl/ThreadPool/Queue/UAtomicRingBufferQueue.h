@@ -82,6 +82,36 @@ public:
     }
 
     /**
+     * 写入智能指针类型的信息
+     * @tparam TImpl
+     * @param value
+     * @param strategy
+     * @return
+     */
+    template<class TImpl = T>
+    CVoid push(std::unique_ptr<TImpl>& value, URingBufferPushStrategy strategy) {
+        {
+            CGRAPH_UNIQUE_LOCK lk(mutex_);
+            if (isFull()) {
+                switch (strategy) {
+                    case URingBufferPushStrategy::WAIT:
+                        push_cv_.wait(lk, [this] { return !isFull(); });
+                        break;
+                    case URingBufferPushStrategy::REPLACE:
+                        head_ = (head_ + 1) % capacity_;
+                        break;
+                    case URingBufferPushStrategy::DROP:
+                        return;    // 直接返回，不写入即可
+                }
+            }
+
+            ring_buffer_queue_[tail_] = std::move(value);
+            tail_ = (tail_ + 1) % capacity_;
+        }
+        pop_cv_.notify_one();
+    }
+
+    /**
      * 等待弹出信息
      * @param value
      * @param timeout

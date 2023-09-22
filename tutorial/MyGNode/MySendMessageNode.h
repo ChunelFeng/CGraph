@@ -15,9 +15,15 @@
 class MySendMessageNode : public CGraph::GNode {
 public:
     CStatus run() override {
-        MyMessageParam mp;    // 创建一个消息，并且发送出去
-        mp.num = (num_++) * 10;
-        mp.info = "this is a test send info, num = " + std::to_string(mp.num);
+        /**
+         * 可以使用 MyMessageParam mp; 构建值的方式传递
+         * 推荐使用 unique_ptr 的方式，进行 send 和 recv
+         * 可以减少内存copy次数
+         */
+        std::unique_ptr<MyMessageParam> mp(new MyMessageParam());
+
+        mp->num = (num_++) * 10;
+        mp->info = "this is a test send info, num = " + std::to_string(mp->num);
         /**
          * 在v2.5.1版本，增加了 GMessagePushStrategy 策略，不兼容之前版本
          * 如果需要跟之前逻辑保持一致，直接设定 CGraph::GMessagePushStrategy::WAIT 即可
