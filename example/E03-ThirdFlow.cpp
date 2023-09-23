@@ -43,7 +43,7 @@ public:
             CGRAPH_SEND_MPARAM(InputMParam, INPUT_TOPIC_NAME, input, GMessagePushStrategy::WAIT);
         }
 
-        CGRAPH_ECHO("InputGNode run finished");
+        CGRAPH_ECHO("    ----> InputGNode run finished");
         return CStatus();
     }
 };
@@ -72,7 +72,7 @@ public:
             CGRAPH_SEND_MPARAM(ResultMParam, RESULT_TOPIC_NAME, result, GMessagePushStrategy::WAIT);
         }
 
-        CGRAPH_ECHO("ProcessGNode run finished");
+        CGRAPH_ECHO("    ----> ProcessGNode run finished");
         return CStatus();
     }
 };
@@ -93,7 +93,7 @@ public:
                         result->negative_num_, result->eng_info_.c_str(), result->process_ts_);
         }
 
-        CGRAPH_ECHO("ResultGNode run finished");
+        CGRAPH_ECHO("    ----> ResultGNode run finished");
         return CStatus();
     }
 };

@@ -324,7 +324,7 @@ public:
 
 
 protected:
-    CStatus init() override {
+    CStatus init() final {
         /**
          * 仅可能被 USingleton 类调用，自动构造时候使用
          * 防止菱形引用的奇异
@@ -332,7 +332,7 @@ protected:
         CGRAPH_EMPTY_FUNCTION
     }
 
-    CStatus destroy() override {
+    CStatus destroy() final {
         CGRAPH_EMPTY_FUNCTION
     }
 
@@ -350,8 +350,6 @@ private:
 
     template<typename U, USingletonType, CBool> friend class USingleton;
 };
-
-static USingleton<GMessageManager<>, USingletonType::LAZY, false> GMessageManagerSingleton;    // 对外提供的GMessageManager方式
 
 CGRAPH_NAMESPACE_END
 
