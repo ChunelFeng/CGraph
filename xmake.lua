@@ -44,5 +44,7 @@ tutorial_list = {
 for _, v in pairs(tutorial_list) do
     target(v)
         set_kind("binary")
+        add_includedirs("src")
+        add_headerfiles("src/CGraph.h")
         add_files("src/**.cpp", string.format("tutorial/%s.cpp", v))
 end
