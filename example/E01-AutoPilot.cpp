@@ -9,8 +9,8 @@
 ***************************/
 
 #include <iostream>
-#include <algorithm>
 #include <cstring>
+#include <memory>
 
 #include "CGraph.h"
 
@@ -26,16 +26,29 @@ struct ImageMParam : public GMessageParam {
     int frame_id_ = 0;
     char image_buf_[DEFAULT_IMAGE_SIZE] = {0};
 
+    explicit ImageMParam() = default;
+
+    ImageMParam(const ImageMParam& param) : GMessageParam(param) {
+        this->frame_id_ = param.frame_id_;
+        memcpy(image_buf_, param.image_buf_, DEFAULT_IMAGE_SIZE);
+    }
+
     ImageMParam& operator=(const ImageMParam& param) {
         if (this == &param) {
             return *this;
         }
 
         this->frame_id_ = param.frame_id_;
-        memset(image_buf_, 0, DEFAULT_IMAGE_SIZE);
         memcpy(image_buf_, param.image_buf_, DEFAULT_IMAGE_SIZE);
         return *this;
     }
+};
+
+
+struct DetectResultGParam : public GParam {
+    int lane_num_ = 0;
+    int car_num_ = 0;
+    int frame_id_ = 0;
 };
 
 
@@ -56,20 +69,6 @@ private:
 };
 
 
-struct DetectResultGParam : public GParam {
-    int lane_num_ = 0;
-    int car_num_ = 0;
-    int frame_id_ = 0;
-
-    CStatus setup() override {
-        lane_num_ = 0;
-        car_num_ = 0;
-        frame_id_ = 0;
-        return CStatus();
-    }
-};
-
-
 class LaneDetectorGNode : public GNode {
 public:
     CStatus init() override {
@@ -79,7 +78,7 @@ public:
     }
 
     CStatus run() override {
-        ImageMParam image;
+        std::unique_ptr<ImageMParam> image = nullptr;
         auto status = CGRAPH_SUB_MPARAM(ImageMParam, conn_id_, image);
         if (status.isErr()) {
             return status;
@@ -87,8 +86,8 @@ public:
 
         auto param = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(DetectResultGParam, EXAMPLE_PARAM_KEY)
         // detector lane in image.image_buf_ ...
-        CGRAPH_ECHO("detecting lane in frame [%d], info is [%s]", image.frame_id_, image.image_buf_);
-        param->frame_id_ = image.frame_id_;
+        CGRAPH_ECHO("detecting lane in frame [%d], info is [%s]", image->frame_id_, image->image_buf_);
+        param->frame_id_ = image->frame_id_;
         param->lane_num_ = std::abs((int)std::random_device{}()) % 10;
         return CStatus();
     }
@@ -106,14 +105,14 @@ public:
     }
 
     CStatus run() override {
-        ImageMParam image;
+        std::unique_ptr<ImageMParam> image = nullptr;
         auto status = CGRAPH_SUB_MPARAM(ImageMParam, conn_id_, image);
         if (status.isErr()) {
             return status;
         }
 
         auto param = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(DetectResultGParam, EXAMPLE_PARAM_KEY);
-        CGRAPH_ECHO("finding car in frame [%d], info is [%s]", image.frame_id_, image.image_buf_);
+        CGRAPH_ECHO("finding car in frame [%d], info is [%s]", image->frame_id_, image->image_buf_);
         // find car in image.image_buf_ ...
         param->car_num_ = std::abs((int)std::random_device{}()) % 5;
         return CStatus();

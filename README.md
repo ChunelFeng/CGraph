@@ -34,6 +34,7 @@
 详细功能介绍和用法，请参考 **推荐阅读** 中的文章内容。项目相关视频在B站持续更新中，欢迎观看交流和一键三连：<br>
 * [【B站视频】CGraph 入门篇](https://www.bilibili.com/video/BV1mk4y1v7XJ) <br>
 * [【B站视频】CGraph 功能篇](https://www.bilibili.com/video/BV1CN411w7XB) <br>
+* [【B站视频】CGraph 应用篇](https://www.bilibili.com/video/BV1B84y1D7Hs) <br>
 
 
 ## 二. 编译说明
@@ -310,10 +311,10 @@ int main() {
 
 [2023.06.17 - v2.4.2 - Chunel]
 * 提供`MultiCondition`(多条件)功能
-* 提供了`pipeline`暂停执行和恢复执行功能
+* 提供`pipeline`暂停执行和恢复执行功能
 
 [2023.07.12 - v2.4.3 - Chunel]
-* 优化了`CStatus`功能，添加了异常定位信息
+* 优化`CStatus`功能，添加了异常定位信息
 
 [2023.09.05 - v2.5.0 - Chunel]
 * 提供了perf功能，用于做`pipeline`的性能分析
@@ -324,7 +325,7 @@ int main() {
 * 提供`fence`(栅栏)功能
 * 提供`coordinator`(协调)功能
 
-[2023.09.16 - v2.5.2 - Chunel]
+[2023.09.23 - v2.5.2 - Chunel]
 * 优化`message`(消息)功能，可以设定写入阻塞时的处理方式，减少内存copy次数
 * 添加`example`相关内容，针对不同行业，提供一些简单实现
 
