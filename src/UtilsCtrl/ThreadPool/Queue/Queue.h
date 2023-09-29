@@ -7,6 +7,8 @@
  *******************************************************************/
 
 #include <atomic>
+#include <new>
+#include <unique_ptr>
 
 template <typename T>
 class Queue {
@@ -145,7 +147,6 @@ class Queue {
         new_data.release();
         break;
       } else {
-
         counted_node_ptr old_next = {0};
 
         if (old_tail.ptr->next.compare_exchange_strong(old_next, new_next)) {
