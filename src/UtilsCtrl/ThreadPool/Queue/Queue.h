@@ -6,9 +6,9 @@
  * @date   2023.9.29
  *******************************************************************/
 
-#include <atomic>
 #include <new>
 #include <unique_ptr>
+#include <atomic>
 
 template <typename T>
 class Queue {
