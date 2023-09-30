@@ -10,7 +10,6 @@
 #ifndef CGRAPH_UWORKSTEALINGQUEUE_H
 #define CGRAPH_UWORKSTEALINGQUEUE_H
 
-#include <queue>
 #include <deque>
 
 #include "UQueueObject.h"
@@ -35,6 +34,22 @@ public:
                 std::this_thread::yield();
             }
         }
+    }
+
+
+    /**
+     * 尝试往队列里写入信息
+     * @param task
+     * @return
+     */
+    CBool tryPush(UTask&& task) {
+        CBool result = false;
+        if (lock_.try_lock()) {
+            deque_.emplace_back(std::move(task));
+            result = true;
+            lock_.unlock();
+        }
+        return result;
     }
 
 
@@ -65,8 +80,7 @@ public:
      * @param maxLocalBatchSize
      * @return
      */
-    CBool tryPop(UTaskArrRef taskArr,
-                 int maxLocalBatchSize) {
+    CBool tryPop(UTaskArrRef taskArr, int maxLocalBatchSize) {
         bool result = false;
         if (lock_.try_lock()) {
             while (!deque_.empty() && maxLocalBatchSize--) {

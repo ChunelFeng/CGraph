@@ -51,7 +51,7 @@ static const int CGRAPH_LONG_TIME_TASK_STRATEGY = -101;                         
  */
 static const int CGRAPH_DEFAULT_THREAD_SIZE = 0;                                            // 默认开启主线程个数
 static const int CGRAPH_SECONDARY_THREAD_SIZE = 8;                                          // 默认开启辅助线程个数
-static const int CGRAPH_MAX_THREAD_SIZE = 128;                                              // 最大线程个数
+static const int CGRAPH_MAX_THREAD_SIZE = 16;                                               // 最大线程个数
 static const int CGRAPH_MAX_TASK_STEAL_RANGE = 2;                                           // 盗取机制相邻范围
 static const bool CGRAPH_BATCH_TASK_ENABLE = false;                                         // 是否开启批量任务功能
 static const int CGRAPH_MAX_LOCAL_BATCH_SIZE = 2;                                           // 批量执行本地任务最大值

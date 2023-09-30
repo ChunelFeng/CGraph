@@ -19,7 +19,7 @@ using namespace CGraph;
 const static char* EXAMPLE_PARAM_KEY = "example-param-key";
 const static char* EXAMPLE_EVENT_KEY = "example-event-key";
 
-struct ProcessParam : public GParam {
+struct ProcessGParam : public GParam {
     CVoid change(const std::string& name, bool isBegin) {
         if (isBegin) {
             running_elements_.insert(name);
@@ -41,19 +41,19 @@ protected:
 };
 
 
-class ShowEvent : public GEvent {
+class ShowGEvent : public GEvent {
     CVoid trigger(GEventParamPtr param) override {
-        auto p = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(ProcessParam, EXAMPLE_PARAM_KEY);
+        auto p = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(ProcessGParam, EXAMPLE_PARAM_KEY);
         CGRAPH_PARAM_READ_CODE_BLOCK(p);
         p->print();
     }
 };
 
 
-class SwitchAspect : public GAspect {
+class SwitchGAspect : public GAspect {
 public:
     CStatus beginRun() override {
-        auto p = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(ProcessParam, EXAMPLE_PARAM_KEY);
+        auto p = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(ProcessGParam, EXAMPLE_PARAM_KEY);
         {
             CGRAPH_PARAM_WRITE_CODE_BLOCK(p)
             p->change(this->getName(), true);
@@ -64,7 +64,7 @@ public:
     }
 
     CVoid finishRun(const CStatus& curStatus) override {
-        auto p = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(ProcessParam, EXAMPLE_PARAM_KEY);
+        auto p = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(ProcessGParam, EXAMPLE_PARAM_KEY);
         {
             CGRAPH_PARAM_WRITE_CODE_BLOCK(p)
             p->change(this->getName(), false);
@@ -96,9 +96,9 @@ void example_mock_gui() {
     pipeline->registerGElement<ActionGNode>(&f, {d, e}, "nodeF");
     pipeline->registerGElement<ActionGNode>(&g, {e}, "nodeG");
 
-    pipeline->createGParam<ProcessParam>(EXAMPLE_PARAM_KEY);
-    pipeline->addGEvent<ShowEvent>(EXAMPLE_EVENT_KEY);
-    pipeline->addGAspect<SwitchAspect>();    // 在每个node，开始和结束的时候，去触发 EXAMPLE_EVENT_KEY 事件，显示当前正在running的node信息
+    pipeline->createGParam<ProcessGParam>(EXAMPLE_PARAM_KEY);
+    pipeline->addGEvent<ShowGEvent>(EXAMPLE_EVENT_KEY);
+    pipeline->addGAspect<SwitchGAspect>();    // 在每个node，开始和结束的时候，去触发 EXAMPLE_EVENT_KEY 事件，显示当前正在running的node信息
 
     pipeline->process();
     GPipelineFactory::clear();

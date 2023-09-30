@@ -108,12 +108,25 @@ protected:
 
 
     /**
+     * 依次push到任一队列里。如果都失败，则yield，然后重新push
+     * @param task
+     * @return
+     */
+    CVoid pushTask(UTask&& task) {
+        while (!(primary_queue_.tryPush(std::move(task))
+                 || secondary_queue_.tryPush(std::move(task)))) {
+            std::this_thread::yield();
+        }
+    }
+
+
+    /**
      * 从本地弹出一个任务
      * @param task
      * @return
      */
     bool popTask(UTaskRef task) {
-        return work_stealing_queue_.tryPop(task);
+        return primary_queue_.tryPop(task) || secondary_queue_.tryPop(task);
     }
 
 
@@ -123,7 +136,13 @@ protected:
      * @return
      */
     bool popTask(UTaskArrRef tasks) {
-        return work_stealing_queue_.tryPop(tasks, config_->max_local_batch_size_);
+        CBool result = primary_queue_.tryPop(tasks, config_->max_local_batch_size_);
+        auto leftSize = config_->max_local_batch_size_ - tasks.size();
+        if (leftSize > 0) {
+            // 如果凑齐了，就不需要了。没凑齐的话，就继续
+            result |= (secondary_queue_.tryPop(tasks, leftSize));
+        }
+        return result;
     }
 
 
@@ -149,10 +168,12 @@ protected:
             /**
             * 从线程中周围的thread中，窃取任务。
             * 如果成功，则返回true，并且执行任务。
+             * steal 的时候，先从第二个队列里偷，从而降低触碰锁的概率
             */
             int curIndex = (index_ + i + 1) % config_->default_thread_size_;
-            if (unlikely(nullptr != (*pool_threads_)[curIndex])
-                && ((*pool_threads_)[curIndex])->work_stealing_queue_.trySteal(task)) {
+            if (likely((*pool_threads_)[curIndex])
+                && (((*pool_threads_)[curIndex])->secondary_queue_.trySteal(task))
+                    || ((*pool_threads_)[curIndex])->primary_queue_.trySteal(task)) {
                 return true;
             }
         }
@@ -167,15 +188,28 @@ protected:
      * @return
      */
     bool stealTask(UTaskArrRef tasks) {
-        if (unlikely(pool_threads_->size() < config_->default_thread_size_)) {
+        if (unlikely(pool_threads_->size() != config_->default_thread_size_)) {
             return false;
         }
 
         for (int i = 0; i < steal_range_; i++) {
             int curIndex = (index_ + i + 1) % config_->default_thread_size_;
-            if (nullptr != (*pool_threads_)[curIndex]
-                && ((*pool_threads_)[curIndex])->work_stealing_queue_.trySteal(tasks, config_->max_steal_batch_size_)) {
-                return true;
+            if (likely((*pool_threads_)[curIndex])) {
+                bool result = ((*pool_threads_)[curIndex])->secondary_queue_.trySteal(tasks, config_->max_steal_batch_size_);
+                auto leftSize = config_->max_steal_batch_size_ - tasks.size();
+                if (leftSize > 0) {
+                    result |= ((*pool_threads_)[curIndex])->primary_queue_.trySteal(tasks, leftSize);
+                }
+
+                if (result) {
+                    /**
+                     * 在这里，我们对模型进行了简化。实现的思路是：
+                     * 尝试从邻居主线程(先secondary，再primary)中，获取 x(=max_steal_batch_size_) 个task，
+                     * 如果从某一个邻居中，获取了 y(<=x) 个task，则也终止steal的流程
+                     * 且如果如果有一次批量steal成功，就认定成功
+                     */
+                    return true;
+                }
             }
         }
 
@@ -185,7 +219,8 @@ protected:
 private:
     int index_;                                                    // 线程index
     int steal_range_;                                              // 偷窃的范围信息
-    UWorkStealingQueue work_stealing_queue_;                       // 内部队列信息
+    UWorkStealingQueue primary_queue_;                             // 内部队列信息
+    UWorkStealingQueue secondary_queue_;                           // 第二个队列，用于减少触锁概率，提升性能
     std::vector<UThreadPrimary *>* pool_threads_;                  // 用于存放线程池中的线程信息
 
     friend class UThreadPool;
