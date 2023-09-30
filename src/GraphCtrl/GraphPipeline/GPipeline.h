@@ -286,6 +286,14 @@ public:
     GPipeline* setSharedThreadPool(UThreadPoolPtr ptr);
 
     /**
+     * 设置在执行完成后，是否校验整体执行逻辑
+     * @param enable
+     * @return
+     * @notice 默认校验。如果确定流程正常，可以考虑取消校验流程，从而降低整体耗时
+     */
+    GPipeline* setAutoCheck(CBool enable);
+
+    /**
      * 获取最大并发度
      * @param size
      * @return
@@ -304,7 +312,7 @@ public:
      * 获取当前的执行状态
      * @return
      */
-    GElementState getCurState() const;
+    GPipelineState getCurState() const;
 
     /**
      * 注册GParam 交互类集合

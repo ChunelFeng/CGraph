@@ -210,6 +210,16 @@ GPipelinePtr GPipeline::setSharedThreadPool(UThreadPoolPtr ptr) {
 }
 
 
+GPipelinePtr GPipeline::setAutoCheck(CBool enable) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element_manager_)
+
+    element_manager_->auto_check_enable_ = enable;
+    return this;
+}
+
+
 CStatus GPipeline::calcMaxPara(CSize& size) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
@@ -241,7 +251,7 @@ CStatus GPipeline::makeSerial() {
 }
 
 
-GElementState GPipeline::getCurState() const {
+GPipelineState GPipeline::getCurState() const {
     return repository_.cur_state_;
 }
 

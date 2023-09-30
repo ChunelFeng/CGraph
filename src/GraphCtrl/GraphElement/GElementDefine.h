@@ -42,6 +42,7 @@ enum class GElementState {
     YIELD = 0x1002,                           // 暂停状态
     TIMEOUT = 0x1010,                         // 超时状态
 };
+using GPipelineState = GElementState;         // pipeline 同element共享状态
 
 
 enum class GElementTimeoutStrategy {

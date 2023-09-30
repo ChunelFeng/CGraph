@@ -15,9 +15,6 @@ CStatus GEventManager::init() {
     for (auto iter : events_map_) {
         status += (iter.second)->init();
     }
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    is_init_ = true;
     CGRAPH_FUNCTION_END
 }
 
@@ -27,9 +24,6 @@ CStatus GEventManager::destroy() {
     for (auto iter : events_map_) {
         status += (iter.second)->destroy();
     }
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    is_init_ = false;
     CGRAPH_FUNCTION_END
 }
 
@@ -60,7 +54,6 @@ CStatus GEventManager::trigger(const std::string &key, GEventType type) {
 
 
 GEventObject* GEventManager::setThreadPool(UThreadPoolPtr ptr) {
-    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr)
     for (auto& iter : events_map_) {
         CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(iter.second)

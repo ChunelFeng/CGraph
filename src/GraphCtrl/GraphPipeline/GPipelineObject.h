@@ -14,6 +14,8 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class GPipelineObject : public GraphObject {
+protected:
+    CBool is_init_ = false;                          // 判断是否init
 };
 
 CGRAPH_NAMESPACE_END

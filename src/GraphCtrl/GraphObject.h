@@ -16,8 +16,6 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class GraphObject : public CObject {
-protected:
-    CBool is_init_ = false;                          // 判断是否init
 };
 
 CGRAPH_NAMESPACE_END
