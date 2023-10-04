@@ -61,7 +61,7 @@ public:
     CBool tryPop(UTask& task) {
         // 这里不使用raii锁，主要是考虑到多线程的情况下，可能会重复进入
         bool result = false;
-        if (lock_.try_lock()) {
+        if (!deque_.empty() && lock_.try_lock()) {
             if (!deque_.empty()) {
                 task = std::move(deque_.front());    // 从前方弹出
                 deque_.pop_front();
@@ -82,7 +82,7 @@ public:
      */
     CBool tryPop(UTaskArrRef taskArr, int maxLocalBatchSize) {
         bool result = false;
-        if (lock_.try_lock()) {
+        if (!deque_.empty() && lock_.try_lock()) {
             while (!deque_.empty() && maxLocalBatchSize--) {
                 taskArr.emplace_back(std::move(deque_.front()));
                 deque_.pop_front();
@@ -102,7 +102,7 @@ public:
      */
     CBool trySteal(UTask& task) {
         bool result = false;
-        if (lock_.try_lock()) {
+        if (!deque_.empty() && lock_.try_lock()) {
             if (!deque_.empty()) {
                 task = std::move(deque_.back());    // 从后方窃取
                 deque_.pop_back();
