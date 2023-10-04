@@ -11,7 +11,6 @@
 
 #include "GElement.h"
 #include "GElementSorter.h"
-#include "GGroup/GCluster/GCluster.h"
 #include "_GEngine/GEngineInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN

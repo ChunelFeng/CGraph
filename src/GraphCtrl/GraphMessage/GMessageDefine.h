@@ -9,8 +9,6 @@
 #ifndef CGRAPH_GMESSAGEDEFINE_H
 #define CGRAPH_GMESSAGEDEFINE_H
 
-#include <string>
-
 #include "GMessageObject.h"
 
 CGRAPH_NAMESPACE_BEGIN

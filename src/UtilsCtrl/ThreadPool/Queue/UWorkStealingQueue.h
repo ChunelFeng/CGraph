@@ -46,8 +46,8 @@ public:
         CBool result = false;
         if (lock_.try_lock()) {
             deque_.emplace_back(std::move(task));
-            result = true;
             lock_.unlock();
+            result = true;
         }
         return result;
     }
