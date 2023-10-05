@@ -183,6 +183,13 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
     try {
         switch (type) {
             case CFunctionType::RUN: {
+                if (0 == trigger_times_) {
+                    /** 第一次执行的时候， */
+                    status = prepareRun();
+                    CGRAPH_FUNCTION_CHECK_STATUS
+                }
+
+                trigger_times_++;    // 记录实际上触发了多少次，而不是正式执行了多少次
                 for (CSize i = 0; i < this->loop_ && GElementState::NORMAL == cur_state_.load(); i++) {
                     /** 执行带切面的run方法 */
                     status = doAspect(GAspectType::BEGIN_RUN);
@@ -223,6 +230,11 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
     }
 
     CGRAPH_FUNCTION_END
+}
+
+
+CStatus GElement::prepareRun() {
+    CGRAPH_EMPTY_FUNCTION
 }
 
 
