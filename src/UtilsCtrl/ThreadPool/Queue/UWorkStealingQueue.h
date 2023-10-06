@@ -122,7 +122,7 @@ public:
      */
     CBool trySteal(UTaskArrRef taskArr, int maxStealBatchSize) {
         bool result = false;
-        if (lock_.try_lock()) {
+        if (!deque_.empty() && lock_.try_lock()) {
             while (!deque_.empty() && maxStealBatchSize--) {
                 taskArr.emplace_back(std::move(deque_.back()));
                 deque_.pop_back();

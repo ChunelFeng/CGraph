@@ -43,7 +43,7 @@ public:
      */
     CBool tryPop(T& value) {
         CBool result = false;
-        if (mutex_.try_lock()) {
+        if (!queue_.empty() && mutex_.try_lock()) {
             if (!queue_.empty()) {
                 value = std::move(*queue_.front());
                 queue_.pop();
@@ -64,7 +64,7 @@ public:
      */
     CBool tryPop(std::vector<T>& values, int maxPoolBatchSize) {
         CBool result = false;
-        if (mutex_.try_lock()) {
+        if (!queue_.empty() && mutex_.try_lock()) {
             while (!queue_.empty() && maxPoolBatchSize-- > 0) {
                 values.emplace_back(std::move(*queue_.front()));
                 queue_.pop();
