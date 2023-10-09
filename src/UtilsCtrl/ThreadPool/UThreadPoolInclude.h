@@ -17,5 +17,6 @@
 #include "Task/UTaskInclude.h"
 #include "Thread/UThreadInclude.h"
 #include "Lock/ULockInclude.h"
+#include "Semaphore/USemaphore.h"
 
 #endif //CGRAPH_UTHREADPOOLINCLUDE_H
