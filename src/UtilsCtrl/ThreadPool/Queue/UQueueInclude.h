@@ -13,5 +13,6 @@
 #include "UWorkStealingQueue.h"
 #include "UAtomicPriorityQueue.h"
 #include "UAtomicRingBufferQueue.h"
+#include "ULockFreeRingBufferQueue.h"
 
 #endif //CGRAPH_UQUEUEINCLUDE_H

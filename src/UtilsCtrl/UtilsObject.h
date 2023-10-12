@@ -14,7 +14,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class UtilsObject : public CObject {
-public:
+protected:
     CStatus run() override {
         CGRAPH_NO_SUPPORT
     }
