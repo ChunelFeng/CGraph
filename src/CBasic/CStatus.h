@@ -46,12 +46,20 @@ public:
     }
 
     CSTATUS(const CSTATUS &status) {
+        if (status.isOK()) {
+            return;
+        }
+
         this->error_code_ = status.error_code_;
         this->error_info_ = status.error_info_;
         this->error_locate_ = status.error_locate_;
     }
 
     CSTATUS(const CSTATUS &&status) noexcept {
+        if (status.isOK()) {
+            return;
+        }
+
         this->error_code_ = status.error_code_;
         this->error_info_ = status.error_info_;
         this->error_locate_ = status.error_locate_;
