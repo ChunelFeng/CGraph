@@ -17,7 +17,6 @@ class UThreadPrimary : public UThreadBase {
 protected:
     explicit UThreadPrimary() {
         index_ = CGRAPH_SECONDARY_THREAD_COMMON_ID;
-        steal_range_ = 0;
         pool_threads_ = nullptr;
         type_ = CGRAPH_THREAD_TYPE_PRIMARY;
     }
@@ -29,7 +28,7 @@ protected:
         CGRAPH_ASSERT_NOT_NULL(config_)
 
         is_init_ = true;
-        steal_range_ = config_->calcStealRange();
+        buildStealTargets();
         thread_ = std::move(std::thread(&UThreadPrimary::run, this));
         setSchedParam();
         setAffinity(index_);
@@ -64,7 +63,7 @@ protected:
      * 线程执行函数
      * @return
      */
-    CStatus run() override {
+    CStatus run() final {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
         CGRAPH_ASSERT_NOT_NULL(pool_threads_)
@@ -164,16 +163,15 @@ protected:
          * 窃取的时候，仅从相邻的primary线程中窃取
          * 待窃取相邻的数量，不能超过默认primary线程数
          */
-        for (int i = 0; i < steal_range_; i++) {
+        for (auto& target : steal_targets_) {
             /**
             * 从线程中周围的thread中，窃取任务。
             * 如果成功，则返回true，并且执行任务。
              * steal 的时候，先从第二个队列里偷，从而降低触碰锁的概率
             */
-            int curIndex = (index_ + i + 1) % config_->default_thread_size_;
-            if (likely((*pool_threads_)[curIndex])
-                && (((*pool_threads_)[curIndex])->secondary_queue_.trySteal(task))
-                    || ((*pool_threads_)[curIndex])->primary_queue_.trySteal(task)) {
+            if (likely((*pool_threads_)[target])
+                && (((*pool_threads_)[target])->secondary_queue_.trySteal(task))
+                    || ((*pool_threads_)[target])->primary_queue_.trySteal(task)) {
                 return true;
             }
         }
@@ -192,13 +190,12 @@ protected:
             return false;
         }
 
-        for (int i = 0; i < steal_range_; i++) {
-            int curIndex = (index_ + i + 1) % config_->default_thread_size_;
-            if (likely((*pool_threads_)[curIndex])) {
-                bool result = ((*pool_threads_)[curIndex])->secondary_queue_.trySteal(tasks, config_->max_steal_batch_size_);
+        for (auto& target : steal_targets_) {
+            if (likely((*pool_threads_)[target])) {
+                bool result = ((*pool_threads_)[target])->secondary_queue_.trySteal(tasks, config_->max_steal_batch_size_);
                 auto leftSize = config_->max_steal_batch_size_ - tasks.size();
                 if (leftSize > 0) {
-                    result |= ((*pool_threads_)[curIndex])->primary_queue_.trySteal(tasks, leftSize);
+                    result |= ((*pool_threads_)[target])->primary_queue_.trySteal(tasks, leftSize);
                 }
 
                 if (result) {
@@ -216,12 +213,25 @@ protected:
         return false;
     }
 
+
+    /**
+     * 构造 steal 范围的 target，避免每次盗取的时候，重复计算
+     * @return
+     */
+    CVoid buildStealTargets() {
+        steal_targets_.clear();
+        for (int i = 0; i < config_->calcStealRange(); i++) {
+            auto target = (index_ + i + 1) % config_->default_thread_size_;
+            steal_targets_.push_back(target);
+        }
+    }
+
 private:
     int index_;                                                    // 线程index
-    int steal_range_;                                              // 偷窃的范围信息
     UWorkStealingQueue primary_queue_;                             // 内部队列信息
     UWorkStealingQueue secondary_queue_;                           // 第二个队列，用于减少触锁概率，提升性能
     std::vector<UThreadPrimary *>* pool_threads_;                  // 用于存放线程池中的线程信息
+    std::vector<int> steal_targets_;                               // 被偷的目标信息
 
     friend class UThreadPool;
     friend class UAllocator;

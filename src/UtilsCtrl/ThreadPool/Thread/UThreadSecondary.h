@@ -56,7 +56,7 @@ protected:
     }
 
 
-    CStatus run() override {
+    CStatus run() final {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
 
