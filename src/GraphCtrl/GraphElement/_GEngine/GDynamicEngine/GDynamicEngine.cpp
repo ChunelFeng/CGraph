@@ -117,7 +117,7 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     run_element_size_++;
 
     std::vector<GElementPtr> ready;    // 表示可以执行的列表信息
-    for (auto cur : element->run_before_) {
+    for (auto* cur : element->run_before_) {
         if (--cur->left_depend_ <= 0) {
             ready.emplace_back(cur);
         }
@@ -125,6 +125,14 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
 
     for (auto& cur : ready) {
         process(cur, cur == ready.back());
+    }
+
+    if (!element->run_before_.empty() && cur_status_.isOK()) {
+        /**
+         * 为了减少进入下方lock的概率
+         * 如果不是尾部节点，或者没有执行错误，则不进入下面的逻辑
+         */
+        return;
     }
 
     CGRAPH_LOCK_GUARD lock(lock_);
