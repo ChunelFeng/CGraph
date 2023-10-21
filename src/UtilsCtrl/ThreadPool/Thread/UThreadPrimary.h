@@ -224,6 +224,7 @@ protected:
             auto target = (index_ + i + 1) % config_->default_thread_size_;
             steal_targets_.push_back(target);
         }
+        steal_targets_.shrink_to_fit();
     }
 
 private:

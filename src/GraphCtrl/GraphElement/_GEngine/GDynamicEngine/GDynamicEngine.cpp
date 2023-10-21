@@ -42,23 +42,17 @@ CStatus GDynamicEngine::run() {
 
     asyncRun();
 
-    if (!cur_status_.isOK()) {
-        status = cur_status_;    // 如果不是ok的话，进行赋值
-    }
+    status = cur_status_;
     CGRAPH_FUNCTION_END
 }
 
 
 CStatus GDynamicEngine::afterRunCheck() {
     CGRAPH_FUNCTION_BEGIN
-    if (run_element_size_ != total_element_arr_.size()) {
-        CGRAPH_RETURN_ERROR_STATUS("dynamic engine run element size not match...")
-    }
-
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(run_element_size_ != total_element_arr_.size(),    \
+                                            "dynamic engine run element size not match...")
     for (GElementPtr element : total_element_arr_) {
-        if (!element->done_) {
-            CGRAPH_RETURN_ERROR_STATUS("dynamic engine run check failed...")
-        }
+        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!element->done_, "dynamic engine run check failed...")
     }
 
     CGRAPH_FUNCTION_END
@@ -95,10 +89,7 @@ CStatus GDynamicEngine::beforeRun() {
 
 CStatus GDynamicEngine::process(GElementPtr element, CBool affinity) {
     CGRAPH_FUNCTION_BEGIN
-    if (unlikely(cur_status_.isErr())) {
-        // 如果当前整体状态异常，直接返回，不执行了
-        CGRAPH_RETURN_ERROR_STATUS("current status error")
-    }
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(cur_status_.isErr(), "current status error");
 
     const auto& exec = [this, element] {
         auto curStatus = element->fatProcessor(CFunctionType::RUN);
@@ -136,7 +127,6 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
         process(cur, cur == ready.back());
     }
 
-    CGRAPH_UNIQUE_LOCK lock(lock_);
     /**
      * 满足一下条件之一，则通知wait函数停止等待
      * 1，无后缀节点全部执行完毕

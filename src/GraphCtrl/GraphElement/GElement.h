@@ -365,7 +365,7 @@ private:
     GAspectManagerPtr aspect_manager_ { nullptr };                            // 整体流程的切面管理类
     UThreadPoolPtr thread_pool_ { nullptr };                                  // 用于执行的线程池信息
     GPerfInfo* perf_info_ = nullptr;                                          // 用于perf的信息
-    CLong trigger_times_ { 0 };                                               // 被触发的次数信息（loop执行n次，算触发1次）
+    CULong trigger_times_ { 0 };                                              // 被触发的次数信息（loop执行n次，算触发1次）
 
     /** 图相关信息 */
     std::atomic<CSize> left_depend_ { 0 };                                 // 当 left_depend_ 值为0的时候，即可以执行该element信息
