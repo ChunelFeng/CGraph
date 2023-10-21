@@ -127,6 +127,7 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
         process(cur, cur == ready.back());
     }
 
+    CGRAPH_LOCK_GUARD lock(lock_);
     /**
      * 满足一下条件之一，则通知wait函数停止等待
      * 1，无后缀节点全部执行完毕
