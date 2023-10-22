@@ -9,6 +9,8 @@
 #ifndef CGRAPH_UTHREADPRIMARY_H
 #define CGRAPH_UTHREADPRIMARY_H
 
+#include <vector>
+
 #include "UThreadBase.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -229,8 +231,8 @@ protected:
 
 private:
     int index_;                                                    // 线程index
-    UWorkStealingQueue primary_queue_;                             // 内部队列信息
-    UWorkStealingQueue secondary_queue_;                           // 第二个队列，用于减少触锁概率，提升性能
+    UWorkStealingQueue<UTask> primary_queue_;                      // 内部队列信息
+    UWorkStealingQueue<UTask> secondary_queue_;                    // 第二个队列，用于减少触锁概率，提升性能
     std::vector<UThreadPrimary *>* pool_threads_;                  // 用于存放线程池中的线程信息
     std::vector<int> steal_targets_;                               // 被偷的目标信息
 
