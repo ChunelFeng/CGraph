@@ -203,13 +203,13 @@ private:
      * run方法执行之前的执行函数（请勿覆写）
      * @return
      */
-    virtual CStatus beforeRun();
+    virtual CVoid beforeRun();
 
     /**
      * run方法执行之后的执行函数（请勿覆写）
      * @return
      */
-    virtual CStatus afterRun();
+    virtual CVoid afterRun();
 
     /**
      * 判定element是否可以运行

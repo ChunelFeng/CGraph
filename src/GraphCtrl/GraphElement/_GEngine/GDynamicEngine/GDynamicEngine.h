@@ -31,14 +31,14 @@ protected:
      * @param
      * @return
     */
-    CVoid asyncRun();
+    CVoid asyncRunAndWait();
 
     /**
      * 动态图运行前重置
      * @param
      * @return
     */
-    CStatus beforeRun();
+    CVoid beforeRun();
 
     /**
      * element 运行element

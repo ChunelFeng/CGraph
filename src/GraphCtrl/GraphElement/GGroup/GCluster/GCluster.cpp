@@ -45,9 +45,7 @@ CStatus GCluster::run() {
 CStatus GCluster::process(CBool isMock) {
     CGRAPH_FUNCTION_BEGIN
 
-    status = this->beforeRun();
-    CGRAPH_FUNCTION_CHECK_STATUS
-
+    this->beforeRun();
     if (likely(!isMock)) {
         // 如果是mock执行，则不进入这里
         for (GElementPtr element : this->group_elements_arr_) {
@@ -56,39 +54,29 @@ CStatus GCluster::process(CBool isMock) {
         }
     }
 
-    status = this->afterRun();
+    this->afterRun();
     CGRAPH_FUNCTION_END
 }
 
 
-CStatus GCluster::beforeRun() {
-    CGRAPH_FUNCTION_BEGIN
-
+CVoid GCluster::beforeRun() {
     this->done_ = false;
     this->left_depend_ = dependence_.size();
     for (GElementPtr element : this->group_elements_arr_) {
-        status = element->beforeRun();
-        CGRAPH_FUNCTION_CHECK_STATUS
+        element->beforeRun();
     }
-
-    CGRAPH_FUNCTION_END
 }
 
 
-CStatus GCluster::afterRun() {
-    CGRAPH_FUNCTION_BEGIN
-
+CVoid GCluster::afterRun() {
     for (GElementPtr element : this->group_elements_arr_) {
-        status = element->afterRun();
-        CGRAPH_FUNCTION_CHECK_STATUS
+        element->afterRun();
     }
 
     for (auto& element : this->run_before_) {
         element->left_depend_--;
     }
     this->done_ = true;
-
-    CGRAPH_FUNCTION_END
 }
 
 

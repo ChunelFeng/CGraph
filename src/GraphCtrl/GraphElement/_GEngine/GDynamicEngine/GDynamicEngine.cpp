@@ -37,10 +37,8 @@ CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
 
 CStatus GDynamicEngine::run() {
     CGRAPH_FUNCTION_BEGIN
-    status = beforeRun();
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    asyncRun();
+    beforeRun();
+    asyncRunAndWait();
 
     status = cur_status_;
     CGRAPH_FUNCTION_END
@@ -59,7 +57,7 @@ CStatus GDynamicEngine::afterRunCheck() {
 }
 
 
-CVoid GDynamicEngine::asyncRun() {
+CVoid GDynamicEngine::asyncRunAndWait() {
     /**
      * 1. 执行没有任何依赖的element
      * 2. 在element执行完成之后，进行裂变，直到所有的element执行完成
@@ -73,17 +71,13 @@ CVoid GDynamicEngine::asyncRun() {
 }
 
 
-CStatus GDynamicEngine::beforeRun() {
-    CGRAPH_FUNCTION_BEGIN
-
+CVoid GDynamicEngine::beforeRun() {
     finished_end_size_ = 0;
     run_element_size_ = 0;
     cur_status_ = CStatus();
     for (GElementPtr element : total_element_arr_) {
-        status += element->beforeRun();
+        element->beforeRun();
     }
-
-    CGRAPH_FUNCTION_END
 }
 
 

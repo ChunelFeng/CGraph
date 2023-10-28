@@ -20,24 +20,17 @@ GElement::~GElement() {
 }
 
 
-CStatus GElement::beforeRun() {
-    CGRAPH_FUNCTION_BEGIN
+CVoid GElement::beforeRun() {
     this->done_ = false;
     this->left_depend_ = dependence_.size();
-
-    CGRAPH_FUNCTION_END
 }
 
 
-CStatus GElement::afterRun() {
-    CGRAPH_FUNCTION_BEGIN
-
+CVoid GElement::afterRun() {
     for (auto& element : this->run_before_) {
         element->left_depend_--;
     }
     this->done_ = true;
-
-    CGRAPH_FUNCTION_END
 }
 
 

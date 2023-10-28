@@ -49,9 +49,9 @@ private:
 
     CStatus addElement(GElementPtr element) final;
 
-    CStatus beforeRun() final;
+    CVoid beforeRun() final;
 
-    CStatus afterRun() final;
+    CVoid afterRun() final;
 
     CVoid dump(std::ostream& oss) final;
 
