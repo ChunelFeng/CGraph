@@ -10,6 +10,7 @@
 #define CGRAPH_UTHREADPRIMARY_H
 
 #include <vector>
+#include <mutex>
 
 #include "UThreadBase.h"
 
@@ -92,7 +93,7 @@ protected:
         if (popTask(task) || popPoolTask(task) || stealTask(task)) {
             runTask(task);
         } else {
-             std::this_thread::yield();
+            fatWait();
         }
     }
 
@@ -103,7 +104,22 @@ protected:
             // 尝试从主线程中获取/盗取批量task，如果成功，则依次执行
             runTasks(tasks);
         } else {
-            std::this_thread::yield();
+            fatWait();
+        }
+    }
+
+
+    /**
+     * 如果总是进入无task的状态，则开始休眠
+     * 休眠一定时间后，然后恢复执行状态，避免出现
+     */
+    CVoid fatWait() {
+        cur_empty_epoch_++;
+        std::this_thread::yield();
+        if (cur_empty_epoch_ >= config_->primary_thread_busy_epoch_) {
+            CGRAPH_UNIQUE_LOCK lk(mutex_);
+            cv_.wait_for(lk, std::chrono::milliseconds(config_->primary_thread_empty_interval_));
+            cur_empty_epoch_ = 0;
         }
     }
 
@@ -118,6 +134,7 @@ protected:
                  || secondary_queue_.tryPush(std::move(task)))) {
             std::this_thread::yield();
         }
+        cv_.notify_one();
     }
 
 
@@ -231,10 +248,14 @@ protected:
 
 private:
     int index_;                                                    // 线程index
+    int cur_empty_epoch_ = 0;                                      // 当前空转的轮数信息
     UWorkStealingQueue<UTask> primary_queue_;                      // 内部队列信息
     UWorkStealingQueue<UTask> secondary_queue_;                    // 第二个队列，用于减少触锁概率，提升性能
     std::vector<UThreadPrimary *>* pool_threads_;                  // 用于存放线程池中的线程信息
     std::vector<int> steal_targets_;                               // 被偷的目标信息
+
+    std::mutex mutex_;
+    std::condition_variable cv_;
 
     friend class UThreadPool;
     friend class UAllocator;

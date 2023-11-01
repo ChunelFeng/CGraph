@@ -229,7 +229,7 @@ CVoid UThreadPool::monitor() {
             CGRAPH_SLEEP_SECOND(1)
         }
 
-        int span = config_.monitor_span_;
+        auto span = config_.monitor_span_;
         while (config_.monitor_enable_ && is_init_ && span--) {
             CGRAPH_SLEEP_SECOND(1)    // 保证可以快速退出
         }
