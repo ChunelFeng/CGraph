@@ -111,7 +111,7 @@ protected:
 
     /**
      * 如果总是进入无task的状态，则开始休眠
-     * 休眠一定时间后，然后恢复执行状态，避免出现
+     * 休眠一定时间后，然后恢复执行状态，避免出现异常情况导致无法唤醒
      */
     CVoid fatWait() {
         cur_empty_epoch_++;
@@ -134,6 +134,7 @@ protected:
                  || secondary_queue_.tryPush(std::move(task)))) {
             std::this_thread::yield();
         }
+        cur_empty_epoch_ = 0;
         cv_.notify_one();
     }
 
