@@ -44,7 +44,7 @@ protected:
 private:
     CFMSec pipeline_start_ts_ = 0.0;                  // 流水线开启的时间
     CFMSec cur_start_ts_ = 0.0;                       // 当前element开始运行的时间
-    GPerfInfoPtr perf_info_ = nullptr;                 // 具体赋值的对象
+    GPerfInfoPtr perf_info_ = nullptr;                // 具体赋值的对象
 
     friend class UAllocator;
 };

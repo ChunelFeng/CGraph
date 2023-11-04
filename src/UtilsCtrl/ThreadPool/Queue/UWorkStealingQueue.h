@@ -26,7 +26,7 @@ public:
     CVoid push(T&& task) {
         while (true) {
             if (lock_.try_lock()) {
-                deque_.emplace_front(std::forward<T>(task));
+                deque_.emplace_back(std::forward<T>(task));
                 lock_.unlock();
                 break;
             } else {
@@ -60,7 +60,7 @@ public:
         while (true) {
             if (lock_.try_lock()) {
                 for (const auto& task : tasks) {
-                    deque_.emplace_front(std::forward<T>(task));
+                    deque_.emplace_back(std::forward<T>(task));
                 }
                 lock_.unlock();
                 break;
