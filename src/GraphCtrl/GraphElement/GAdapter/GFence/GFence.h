@@ -58,6 +58,7 @@ private:
 };
 
 using GFencePtr = GFence *;
+using GFencePPtr = GFencePtr *;
 
 CGRAPH_NAMESPACE_END
 

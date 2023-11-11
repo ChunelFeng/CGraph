@@ -405,6 +405,7 @@ private:
 };
 
 using GElementPtr = GElement *;
+using GElementPPtr = GElementPtr *;
 using GElementPtrArr = std::vector<GElementPtr>;
 using GElementPtrSet = std::set<GElementPtr>;
 

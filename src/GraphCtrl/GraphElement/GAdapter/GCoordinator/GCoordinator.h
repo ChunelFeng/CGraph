@@ -30,6 +30,9 @@ protected:
 template<CInt SIZE>
 using GCoordinatorPtr = GCoordinator<SIZE> *;
 
+template<CInt SIZE>
+using GCoordinatorPPtr = GCoordinatorPtr<SIZE> *;
+
 CGRAPH_NAMESPACE_END
 
 #include "GCoordinator.inl"

@@ -47,6 +47,7 @@ private:
 };
 
 using GFunctionPtr = GFunction *;
+using GFunctionPPtr = GFunctionPtr *;
 
 CGRAPH_NAMESPACE_END
 

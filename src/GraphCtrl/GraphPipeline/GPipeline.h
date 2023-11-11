@@ -141,7 +141,7 @@ public:
      */
     template<typename T,
             c_enable_if_t<std::is_base_of<GElement, T>::value, int> = 0>
-    CStatus registerGElement(GElementPtr *elementRef,
+    CStatus registerGElement(GElementPPtr elementRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = CGRAPH_EMPTY,
                              CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
@@ -156,7 +156,7 @@ public:
      * @return
      */
     template<typename GFunction>
-    CStatus registerGElement(GFunctionPtr *functionRef,
+    CStatus registerGElement(GFunctionPPtr functionRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = CGRAPH_EMPTY,
                              CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
@@ -171,7 +171,7 @@ public:
      * @return
      */
     template<typename GFence>
-    CStatus registerGElement(GFencePtr *fenceRef,
+    CStatus registerGElement(GFencePPtr fenceRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = CGRAPH_EMPTY,
                              CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
@@ -187,7 +187,7 @@ public:
      * @return
      */
     template<typename GCoordinator, CInt SIZE>
-    CStatus registerGElement(GCoordinatorPtr<SIZE> *coordinatorRef,
+    CStatus registerGElement(GCoordinatorPPtr<SIZE> coordinatorRef,
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = CGRAPH_EMPTY,
                              CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
@@ -213,13 +213,13 @@ public:
 
     /**
      * 注册一个组信息（推荐使用）
-     * @param group
+     * @param groupRef
      * @param dependElements
      * @param name
      * @param loop
      * @return
      */
-    CStatus registerGGroup(GElementPtr group,
+    CStatus registerGGroup(GElementPPtr groupRef,
                            const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                            const std::string &name = CGRAPH_EMPTY,
                            CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);

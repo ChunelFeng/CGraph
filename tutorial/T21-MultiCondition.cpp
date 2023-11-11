@@ -27,9 +27,10 @@ void tutorial_multi_condition() {
     });
 
     CStatus status = pipeline->registerGElement<MyWriteParamNode>(&a, {}, "nodeA");
-    status += pipeline->registerGElement<GMultiCondition<GMultiConditionType::SERIAL>>(&b_multi_condition, {a}, "multiConditionB");
+    // 新版本中，推荐使用 registerGGroup 来注册group信息，简化流程
+    status += pipeline->registerGGroup(&b_multi_condition, {a}, "multiConditionB");
     status += pipeline->registerGElement<MyWriteParamNode>(&c, {b_multi_condition}, "nodeC");
-    status += pipeline->registerGElement<GMultiCondition<GMultiConditionType::PARALLEL>>(&d_multi_condition, {c}, "multiConditionD");
+    status += pipeline->registerGGroup(&d_multi_condition, {c}, "multiConditionD");
 
     pipeline->process();    // 运行pipeline
     GPipelineFactory::remove(pipeline);

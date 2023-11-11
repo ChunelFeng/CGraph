@@ -29,7 +29,7 @@ void tutorial_some() {
     });
 
     CStatus status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");
-    status += pipeline->registerGElement<GSome<1>>(&b_some, {a}, "someB");
+    status += pipeline->registerGGroup(&b_some, {a}, "someB");
     status += pipeline->registerGElement<MyNode1>(&c, {b_some}, "nodeC");
     status += pipeline->registerGElement<MyNode2>(&d, {c}, "nodeD");
     if (!status.isOK()) {

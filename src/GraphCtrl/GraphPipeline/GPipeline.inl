@@ -17,7 +17,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 template<typename T,
         c_enable_if_t<std::is_base_of<GElement, T>::value, int>>
-CStatus GPipeline::registerGElement(GElementPtr *elementRef,
+CStatus GPipeline::registerGElement(GElementPPtr elementRef,
                                     const GElementPtrSet &dependElements,
                                     const std::string &name,
                                     CSize loop) {
@@ -56,7 +56,7 @@ CStatus GPipeline::registerGElement(GElementPtr *elementRef,
 
 
 template<typename GFunction>
-CStatus GPipeline::registerGElement(GFunctionPtr *functionRef,
+CStatus GPipeline::registerGElement(GFunctionPPtr functionRef,
                                     const GElementPtrSet &dependElements,
                                     const std::string &name,
                                     CSize loop) {
@@ -66,7 +66,7 @@ CStatus GPipeline::registerGElement(GFunctionPtr *functionRef,
 
 
 template<typename GFence>
-CStatus GPipeline::registerGElement(GFencePtr *fenceRef,
+CStatus GPipeline::registerGElement(GFencePPtr fenceRef,
                                     const GElementPtrSet &dependElements,
                                     const std::string &name,
                                     CSize loop) {
@@ -75,7 +75,7 @@ CStatus GPipeline::registerGElement(GFencePtr *fenceRef,
 
 
 template<typename GCoordinator, CInt SIZE>
-CStatus GPipeline::registerGElement(GCoordinatorPtr<SIZE> *coordinatorRef,
+CStatus GPipeline::registerGElement(GCoordinatorPPtr<SIZE> coordinatorRef,
                                      const GElementPtrSet &dependElements,
                                      const std::string &name,
                                      CSize loop) {
