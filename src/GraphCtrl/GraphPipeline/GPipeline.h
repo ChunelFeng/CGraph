@@ -212,6 +212,19 @@ public:
                              Args... args);
 
     /**
+     * 注册一个组信息（推荐使用）
+     * @param group
+     * @param dependElements
+     * @param name
+     * @param loop
+     * @return
+     */
+    CStatus registerGGroup(GElementPtr group,
+                           const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
+                           const std::string &name = CGRAPH_EMPTY,
+                           CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
+
+    /**
      * 添加切面
      * @tparam TAspect
      * @tparam TParam

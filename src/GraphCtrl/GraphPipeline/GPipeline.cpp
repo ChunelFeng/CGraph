@@ -111,6 +111,25 @@ CStatus GPipeline::process(CSize runTimes) {
 }
 
 
+CStatus GPipeline::registerGGroup(GElementPtr group, const GElementPtrSet &dependElements,
+                                  const std::string &name, CSize loop) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(false)
+    CGRAPH_ASSERT_NOT_NULL(group)
+
+    auto curGroup = dynamic_cast<GGroupPtr>(group);
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr == curGroup, "input is not based on GGroup")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(curGroup->isRegistered(), "this group register duplicate")
+
+    status = group->setElementInfo(dependElements, name, loop, this->param_manager_, this->event_manager_);
+    CGRAPH_FUNCTION_CHECK_STATUS
+    status = element_manager_->add(group);
+    CGRAPH_FUNCTION_CHECK_STATUS
+    repository_.insert(group);
+    CGRAPH_FUNCTION_END
+}
+
+
 std::future<CStatus> GPipeline::asyncRun() {
     /**
      * 1. 确认当前pipeline已经初始化完毕
