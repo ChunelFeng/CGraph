@@ -1,0 +1,28 @@
+
+syntax = "proto3";
+
+package CGraphPB;
+
+import "aspect.proto";
+import "param.proto";
+
+enum TimeoutStrategy {
+    TIMEOUT_STRATEGY_AS_ERROR = 0;
+    TIMEOUT_STRATEGY_HOLD_BY_PIPELINE = 1;
+    TIMEOUT_STRATEGY_NO_HOLD = 2;
+}
+
+
+message Element {
+    string type = 1;
+    string name = 2;
+    int32 loop = 3;
+    int32 level = 4;
+    int32 timeout = 5;
+    TimeoutStrategy timeout_strategy = 6;
+    bool is_group = 7;
+    map<string, CGraphPB.PassedParam> params = 101;
+    repeated CGraphPB.Aspect aspects = 102;
+    repeated Element depends = 201;                   // 依赖的元素
+    repeated Element components = 202;                // 组成的元素，在 is_group=false 的时候为空
+}

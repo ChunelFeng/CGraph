@@ -1,0 +1,12 @@
+
+syntax = "proto3";
+
+package CGraphPB;
+
+import "param.proto";
+
+message Daemon {
+    string type = 1;
+    int32 interval = 2;
+    CGraphPB.PassedParam param = 101;
+}

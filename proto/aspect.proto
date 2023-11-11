@@ -1,0 +1,11 @@
+
+syntax = "proto3";
+
+package CGraphPB;
+
+import "param.proto";
+
+message Aspect {
+    string type = 1;
+    CGraphPB.PassedParam param = 101;
+}

@@ -1,0 +1,22 @@
+
+syntax = "proto3";
+
+package CGraphPB;
+
+message DefaultParam {
+}
+
+message DefaultPassedParam {
+}
+
+message Param {
+    oneof values {
+        DefaultParam default_param = 1;
+    }
+}
+
+message PassedParam {
+    oneof values {
+        DefaultPassedParam default_passed_param = 1;
+    }
+}

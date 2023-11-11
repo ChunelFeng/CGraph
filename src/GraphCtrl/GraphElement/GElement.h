@@ -350,7 +350,6 @@ private:
     CBool linkable_ { false };                                                // 判定是否可以连通计算
     CBool visible_ { true };                                                  // 判定可见的，如果被删除的话，则认为是不可见的
     CBool is_init_ { false };                                                 // 判断是否init
-    GElementTimeoutStrategy timeout_strategy_ { GElementTimeoutStrategy::AS_ERROR };    // 判定超时的情况下，是否返回错误
     GElementType element_type_ { GElementType::ELEMENT };                     // 用于区分element 内部类型
     std::atomic<GElementState> cur_state_ { GElementState::CREATE };       // 当前执行状态
 
@@ -359,6 +358,7 @@ private:
     CLevel level_ { CGRAPH_DEFAULT_ELEMENT_LEVEL };                           // 用于设定init的执行顺序(值小的，优先init，可以为负数)
     CIndex binding_index_ { CGRAPH_DEFAULT_BINDING_INDEX };                   // 用于设定绑定线程id
     CMSec timeout_ { CGRAPH_DEFAULT_ELEMENT_TIMEOUT };                        // 超时时间信息（0表示不计算超时）
+    GElementTimeoutStrategy timeout_strategy_ { GElementTimeoutStrategy::AS_ERROR };    // 判定超时的情况下，是否返回错误
 
     /** 执行期间相关信息 */
     GElementParamMap local_params_;                                           // 用于记录当前element的内部参数

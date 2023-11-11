@@ -1,0 +1,17 @@
+
+syntax = "proto3";
+
+package CGraphPB;
+
+import "element.proto";
+import "daemon.proto";
+import "event.proto";
+import "param.proto";
+
+
+message Pipeline {
+    repeated CGraphPB.Element elements = 1;
+    repeated CGraphPB.Daemon daemons = 2;
+    repeated CGraphPB.Event events = 3;
+    map<string, CGraphPB.Param> params = 4;
+}

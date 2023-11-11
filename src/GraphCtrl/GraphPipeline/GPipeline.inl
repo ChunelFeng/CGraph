@@ -174,8 +174,9 @@ GPipelinePtr GPipeline::addGAspect(const GElementPtrSet& elements, TParam* param
             element->addGAspect<TAspect, TParam>(param);
         }
     }
+    CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
-    CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL
+    return this;
 }
 
 
@@ -192,8 +193,9 @@ GPipeline* GPipeline::addGDaemon(CMSec ms, TParam* param) {
     daemon->setGParamManager(this->param_manager_);
     daemon->setGEventManager(this->event_manager_);
     status = daemon_manager_->add(daemon);
+    CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
-    CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL
+    return this;
 }
 
 
@@ -209,8 +211,9 @@ GPipeline* GPipeline::addGDaemon(CMSec ms, Args... args) {
     daemon->setGParamManager(this->param_manager_);
     daemon->setGEventManager(this->event_manager_);
     status = daemon_manager_->add(daemon);
+    CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
-    CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL
+    return this;
 }
 
 
@@ -224,7 +227,9 @@ GPipeline* GPipeline::addGEvent(const std::string& key, TParam* param) {
 
     event_manager_->param_manager_ = this->param_manager_;
     status = event_manager_->createWithParam<TEvent, TParam>(key, param);
-    CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL
+    CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
+
+    return this;
 }
 
 CGRAPH_NAMESPACE_END

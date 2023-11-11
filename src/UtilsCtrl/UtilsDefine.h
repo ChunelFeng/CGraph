@@ -119,9 +119,6 @@ static std::mutex g_check_status_mtx;
     }                                                                           \
 
 
-#define CGRAPH_CHECK_STATUS_RETURN_THIS_OR_NULL                                 \
-    return status.isOK() ? this : nullptr;                                      \
-
 #define CGRAPH_SLEEP_SECOND(s)                                                  \
     std::this_thread::sleep_for(std::chrono::seconds(s));                       \
 

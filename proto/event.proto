@@ -1,0 +1,12 @@
+
+syntax = "proto3";
+
+package CGraphPB;
+
+import "param.proto";
+
+message Event {
+    string type = 1;
+    string key = 2;
+    CGraphPB.PassedParam param = 101;
+}
