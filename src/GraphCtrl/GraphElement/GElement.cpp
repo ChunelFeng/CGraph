@@ -97,6 +97,27 @@ GElementPtr GElement::setTimeout(CMSec timeout, GElementTimeoutStrategy strategy
 }
 
 
+GElementRef GElement::operator--(int) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    return (*this);
+}
+
+
+GElementRef GElement::operator>(GElementPtr element) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element)
+    CGRAPH_THROW_EXCEPTION_BY_STATUS(element->addDependGElements({this}))
+    return (*this);
+}
+
+
+GElementRef GElement::operator&(GElementPtr element) {
+    return operator>(element);
+}
+
+
 CBool GElement::isRunnable() const {
     return 0 >= this->left_depend_ && !this->done_;
 }

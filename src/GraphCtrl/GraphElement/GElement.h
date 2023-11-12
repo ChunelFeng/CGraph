@@ -100,7 +100,7 @@ public:
      * 设定绑定的线程id
      * @param index，需要绑定的 thread id 信息
      * @return
-     * @notice 若不了解调度机制，不建议使用本接口，否则可能导致运行时阻塞
+     * @notice 本接口仅保证绑定线程优先调度，但不保证最终一定在绑定线程上执行。若不了解调度机制，不建议使用本接口，否则可能导致运行时阻塞。
      */
     GElement* setBindingIndex(CIndex index);
 
@@ -118,6 +118,17 @@ public:
      * @return
      */
     CBool isGroup() const;
+
+    /**
+     * 实现连续注册的语法糖，形如：
+     *  (*a)-->b&c;
+     *  (*b)-->d;
+     *  (*c)-->d;
+     * @return
+     */
+    GElement& operator--(int);
+    GElement& operator>(GElement* element);
+    GElement& operator&(GElement* element);
 
 protected:
     /**
@@ -404,6 +415,7 @@ private:
     CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER_WITH_MEMBER
 };
 
+using GElementRef = GElement &;
 using GElementPtr = GElement *;
 using GElementPPtr = GElementPtr *;
 using GElementPtrArr = std::vector<GElementPtr>;
