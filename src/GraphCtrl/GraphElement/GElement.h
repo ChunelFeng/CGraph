@@ -169,6 +169,12 @@ protected:
     CBool isTimeout() const;
 
     /**
+     * 判断当前是否可以在运行时更新图结构逻辑
+     * @return
+     */
+    CBool isMutable() const;
+
+    /**
      * 崩溃流程处理
      * @param ex
      * @return
@@ -394,6 +400,7 @@ private:
     friend class GCluster;
     friend class GRegion;
     friend class GCondition;
+    friend class GMutable;
     template<CInt> friend class GSome;
     template<GMultiConditionType> friend class GMultiCondition;
     friend class GPipeline;

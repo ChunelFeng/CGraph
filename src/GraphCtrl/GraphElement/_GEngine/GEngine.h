@@ -55,6 +55,7 @@ protected:
 
     friend class GElementManager;
     friend class GPipeline;
+    friend class GMutable;
 };
 
 using GEnginePtr = GEngine *;

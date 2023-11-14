@@ -63,6 +63,7 @@ private:
     friend class GCluster;
     friend class GRegion;
     friend class GCondition;
+    friend class GMutable;
     template<GMultiConditionType> friend class GMultiCondition;
     template<CInt> friend class GSome;
 };

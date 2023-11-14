@@ -55,7 +55,7 @@ CStatus GRegion::destroy() {
 CStatus GRegion::run() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(true)
-    CGRAPH_ASSERT_NOT_NULL(thread_pool_, manager_)
+    CGRAPH_ASSERT_NOT_NULL(manager_)
 
     status = manager_->run();
     CGRAPH_FUNCTION_END
@@ -64,7 +64,6 @@ CStatus GRegion::run() {
 
 CStatus GRegion::addElement(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
-
     CGRAPH_ASSERT_NOT_NULL(element, manager_)
 
     manager_->manager_elements_.emplace(element);

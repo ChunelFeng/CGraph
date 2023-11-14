@@ -102,6 +102,7 @@ private:
 
     friend class GPipeline;
     friend class GRegion;
+    friend class GMutable;
     friend class UAllocator;
 };
 

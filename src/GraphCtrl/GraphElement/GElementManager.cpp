@@ -82,7 +82,6 @@ CStatus GElementManager::add(GElementPtr element) {
     CGRAPH_ASSERT_NOT_NULL(element)
 
     this->manager_elements_.emplace(element);
-
     CGRAPH_FUNCTION_END
 }
 
@@ -107,11 +106,9 @@ CStatus GElementManager::remove(GElementPtr element) {
 
 CStatus GElementManager::clear() {
     CGRAPH_FUNCTION_BEGIN
-
-    for (auto element : manager_elements_) {
+    for (auto* element : manager_elements_) {
         CGRAPH_DELETE_PTR(element)
     }
-
     manager_elements_.clear();
     CGRAPH_FUNCTION_END
 }
@@ -143,7 +140,6 @@ CStatus GElementManager::initEngine() {
         case GEngineType::DYNAMIC : engine_ = CGRAPH_SAFE_MALLOC_COBJECT(GDynamicEngine) break;
         default: CGRAPH_RETURN_ERROR_STATUS("unknown engine type")
     }
-    CGRAPH_FUNCTION_CHECK_STATUS
 
     engine_->thread_pool_ = thread_pool_;
     status = engine_->setup(manager_elements_);

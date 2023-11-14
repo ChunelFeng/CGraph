@@ -20,6 +20,7 @@ static const char* CGRAPH_STR_REGION = "region";
 static const char* CGRAPH_STR_CONDITION = "condition";
 static const char* CGRAPH_STR_MULTI_CONDITION = "multi_condition";
 static const char* CGRAPH_STR_SOME = "some";
+static const char* CGRAPH_STR_MUTABLE = "mutable";
 static const char* CGRAPH_STR_FUNCTION = "function";
 static const char* CGRAPH_STR_SINGLETON = "singleton";
 static const char* CGRAPH_STR_DAEMON = "daemon";

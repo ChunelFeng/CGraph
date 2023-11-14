@@ -115,8 +115,12 @@ static std::mutex g_check_status_mtx;
 
 #define CGRAPH_ASSERT_INIT_THROW_ERROR(isInit)                                  \
     if (unlikely((isInit) != is_init_)) {                                       \
-        CGRAPH_THROW_EXCEPTION("[CException] init status is not suitable")      \
-    }                                                                           \
+        CGRAPH_THROW_EXCEPTION("[CException] init status is not suitable") }    \
+
+#define CGRAPH_ASSERT_MUTABLE_INIT_THROW_ERROR(isInit)                          \
+    if (unlikely((isInit) != is_init_) && !isMutable()) {                       \
+        CGRAPH_THROW_EXCEPTION("[CException] init status is not suitable") }    \
+
 
 
 #define CGRAPH_SLEEP_SECOND(s)                                                  \

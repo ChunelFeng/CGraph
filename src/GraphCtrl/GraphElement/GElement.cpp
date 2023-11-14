@@ -66,7 +66,7 @@ GElementPtr GElement::setLevel(CLevel level) {
 
 
 GElementPtr GElement::setVisible(CBool visible) {
-    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    CGRAPH_ASSERT_MUTABLE_INIT_THROW_ERROR(false)
 
     this->visible_ = visible;
     return this;
@@ -98,17 +98,19 @@ GElementPtr GElement::setTimeout(CMSec timeout, GElementTimeoutStrategy strategy
 
 
 GElementRef GElement::operator--(int) {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     return (*this);
 }
 
 
 GElementRef GElement::operator>(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    CGRAPH_ASSERT_MUTABLE_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element)
     CGRAPH_THROW_EXCEPTION_BY_STATUS(element->addDependGElements({this}))
+
+    // 默认通过 这种方式注入的内容，都设置成 visible 的状态
+    this->setVisible(true);
+    element->setVisible(true);
     return (*this);
 }
 
@@ -136,7 +138,11 @@ CBool GElement::isAsync() const {
 
 CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT(false)
+    if (!isMutable()) {
+        // 如果是 mutable的逻辑，则可以在 init之后，修改依赖关系
+        CGRAPH_ASSERT_INIT(false);
+    }
+
     for (GElementPtr cur: elements) {
         CGRAPH_ASSERT_NOT_NULL(cur)
         CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((cur->belong_ != this->belong_),     \
@@ -284,6 +290,12 @@ CBool GElement::isTimeout() const {
     }
 
     return result;
+}
+
+
+CBool GElement::isMutable() const {
+    // 写入 GMutable的 element，属于 mutable，可以在运行时，修改依赖关系
+    return belong_ && GElementType::MUTABLE == belong_->element_type_;
 }
 
 

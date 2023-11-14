@@ -15,5 +15,6 @@
 #include "GRegion/GRegion.h"
 #include "GCondition/GConditionInclude.h"
 #include "GSome/GSome.h"
+#include "GMutable/GMutable.h"
 
 #endif //CGRAPH_GGROUPINCLUDE_H
