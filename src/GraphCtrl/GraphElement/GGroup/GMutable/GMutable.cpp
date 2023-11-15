@@ -33,30 +33,27 @@ CStatus GMutable::addElement(GElementPtr element) {
 CStatus GMutable::init() {
     CGRAPH_FUNCTION_BEGIN
     manager_->setThreadPool(thread_pool_);
-    status = manager_->init();
+    status = manager_->initEngine();
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    status = GGroup::init();
     CGRAPH_FUNCTION_END
 }
 
 
 CStatus GMutable::run() {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(manager_, manager_->engine_);
+    CGRAPH_ASSERT_NOT_NULL(manager_)
 
     /**
-     * 1. 取消所有依赖关系，将element设置为不可见
+     * 1. 初始化内容
      * 2. 通过外部复写 translate()，来实现关系设定。其中，通过 --> 设定的，是会自动恢复visible的
      * 3. 通过 manager 执行
      */
-    for (auto* element : group_elements_arr_) {
-        element->run_before_.clear();
-        element->dependence_.clear();
-        element->setVisible(false);
-    }
-    status = translate(group_elements_arr_);
-    CGRAPH_FUNCTION_CHECK_STATUS
+    setup();
+    convert(group_elements_arr_);
 
-    status += manager_->engine_->setup({group_elements_arr_.begin(), group_elements_arr_.end()});
-    status += manager_->run();
+    status = manager_->process({group_elements_arr_.begin(), group_elements_arr_.end()});
     CGRAPH_FUNCTION_END
 }
 
@@ -70,6 +67,15 @@ CStatus GMutable::destroy() {
 
     status = GGroup::destroy();
     CGRAPH_FUNCTION_END
+}
+
+
+CVoid GMutable::setup() {
+    for (auto* element : group_elements_arr_) {
+        element->run_before_.clear();
+        element->dependence_.clear();
+        element->setVisible(false);
+    }
 }
 
 CGRAPH_NAMESPACE_END

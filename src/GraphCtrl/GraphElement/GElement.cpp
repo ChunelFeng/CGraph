@@ -48,7 +48,7 @@ GElementPtr GElement::setName(const std::string& name) {
 
 GElementPtr GElement::setLoop(CSize loop) {
     // 由于运行机制问题，loop执行的element，不支持异步执行
-    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    CGRAPH_ASSERT_MUTABLE_INIT_THROW_ERROR(false)
     CGRAPH_THROW_EXCEPTION_BY_CONDITION((timeout_ > CGRAPH_DEFAULT_ELEMENT_TIMEOUT && loop != CGRAPH_DEFAULT_LOOP_TIMES),     \
                                         "cannot set loop value when timeout is bigger than 0")
 
@@ -97,15 +97,21 @@ GElementPtr GElement::setTimeout(CMSec timeout, GElementTimeoutStrategy strategy
 }
 
 
-GElementRef GElement::operator--(int) {
+GElementRef GElement::operator--(int) noexcept {
+    try {
+        this->setVisible(true);
+    } catch (const CException& ex) {
+        CGRAPH_ECHO("[warning] default set visible failed.");
+    }
+
     return (*this);
 }
 
 
 GElementRef GElement::operator>(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_MUTABLE_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element)
+    CGRAPH_ASSERT_MUTABLE_INIT_THROW_ERROR(false)
     CGRAPH_THROW_EXCEPTION_BY_STATUS(element->addDependGElements({this}))
 
     // 默认通过 这种方式注入的内容，都设置成 visible 的状态
@@ -117,6 +123,17 @@ GElementRef GElement::operator>(GElementPtr element) {
 
 GElementRef GElement::operator&(GElementPtr element) {
     return operator>(element);
+}
+
+
+GElement& GElement::operator*(CSize loop) {
+    try {
+        this->setLoop(loop);
+    } catch (const CException& ex) {
+        CGRAPH_ECHO("[warning] default set loop failed.");
+    }
+
+    return (*this);
 }
 
 

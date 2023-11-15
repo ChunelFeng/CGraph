@@ -200,4 +200,15 @@ CBool GElementManager::checkSerializable() {
     return (1 == frontSize) && (1 == tailSize);
 }
 
+
+CStatus GElementManager::process(const GSortedGElementPtrSet& elements) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(engine_)
+
+    // 主要是给 mutable 使用
+    status += engine_->setup(elements);
+    status += run();
+    CGRAPH_FUNCTION_END
+}
+
 CGRAPH_NAMESPACE_END

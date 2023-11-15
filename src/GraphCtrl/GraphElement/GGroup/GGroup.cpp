@@ -24,6 +24,7 @@ CStatus GGroup::init() {
     CGRAPH_FUNCTION_CHECK_STATUS
 
     is_init_ = true;
+    trigger_times_ = 0;
     CGRAPH_FUNCTION_END
 }
 
@@ -38,6 +39,7 @@ CStatus GGroup::destroy() {
     CGRAPH_FUNCTION_CHECK_STATUS
 
     is_init_ = false;
+    trigger_times_ = 0;
     CGRAPH_FUNCTION_END
 }
 

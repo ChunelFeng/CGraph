@@ -126,9 +126,10 @@ public:
      *  (*c)-->d;
      * @return
      */
-    GElement& operator--(int);
+    GElement& operator--(int) noexcept;
     GElement& operator>(GElement* element);
     GElement& operator&(GElement* element);
+    GElement& operator*(CSize loop);
 
 protected:
     /**

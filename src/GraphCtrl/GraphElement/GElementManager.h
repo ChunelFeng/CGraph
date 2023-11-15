@@ -93,6 +93,13 @@ protected:
      */
     CBool checkSerializable();
 
+    /**
+     * 加入数据，并且执行
+     * @param elements
+     * @return
+     */
+    CStatus process(const GSortedGElementPtrSet& elements);
+
 private:
     GSortedGElementPtrSet manager_elements_;                    // 保存节点信息的内容
     GEnginePtr engine_ = nullptr;                               // 执行引擎

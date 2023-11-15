@@ -21,12 +21,13 @@ protected:
      * @param elements
      * @return
      */
-    virtual CStatus translate(GElementPtrArr& elements) = 0;
+    virtual CVoid convert(GElementPtrArr& elements) = 0;
 
     explicit GMutable();
 
     ~GMutable() override;
 
+private:
     CStatus addElement(GElementPtr element) final;
 
     CStatus init() final;
@@ -34,6 +35,12 @@ protected:
     CStatus run() final;
 
     CStatus destroy() final;
+
+    /**
+     * 将数据进行恢复
+     * @return
+     */
+    CVoid setup();
 
 private:
     GElementManagerPtr manager_ = nullptr;

@@ -27,6 +27,7 @@ set(CGRAPH_TUTORIAL_LIST
         T23-Some
         T24-Fence
         T25-Coordinator
+        T26-Mutable
         )
 
 
