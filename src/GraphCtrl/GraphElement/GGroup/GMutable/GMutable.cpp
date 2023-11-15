@@ -74,6 +74,7 @@ CVoid GMutable::setup() {
     for (auto* element : group_elements_arr_) {
         element->run_before_.clear();
         element->dependence_.clear();
+        element->setLoop(1);
         element->setVisible(false);
     }
 }

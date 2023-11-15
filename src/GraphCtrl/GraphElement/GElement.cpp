@@ -126,7 +126,7 @@ GElementRef GElement::operator&(GElementPtr element) {
 }
 
 
-GElement& GElement::operator*(CSize loop) {
+GElement& GElement::operator*(CSize loop) noexcept {
     try {
         this->setLoop(loop);
     } catch (const CException& ex) {
