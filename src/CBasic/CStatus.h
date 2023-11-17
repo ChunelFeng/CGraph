@@ -94,9 +94,11 @@ public:
      * 恢复状态信息
      */
     void reset() {
-        this->error_code_ = STATUS_OK;
-        this->error_info_.clear();
-        this->error_locate_.clear();
+        if (this->error_code_ != STATUS_OK) {
+            this->error_code_ = STATUS_OK;
+            this->error_info_.clear();
+            this->error_locate_.clear();
+        }
     }
 
     /**

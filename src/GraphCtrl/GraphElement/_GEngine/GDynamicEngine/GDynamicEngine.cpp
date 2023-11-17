@@ -74,7 +74,7 @@ CVoid GDynamicEngine::asyncRunAndWait() {
 CVoid GDynamicEngine::beforeRun() {
     finished_end_size_ = 0;
     run_element_size_ = 0;
-    cur_status_ = CStatus();
+    cur_status_.reset();
     for (GElementPtr element : total_element_arr_) {
         element->beforeRun();
     }
