@@ -317,7 +317,7 @@ CBool GElement::isMutable() const {
 
 
 CStatus GElement::crashed(const CException& ex) {
-    return CStatus(STATUS_CRASH, ex.what(), CGRAPH_GET_LOCATE);
+    return CStatus(internal::STATUS_CRASH, ex.what(), CGRAPH_GET_LOCATE);
 }
 
 

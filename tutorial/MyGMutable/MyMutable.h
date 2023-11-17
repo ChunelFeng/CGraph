@@ -14,7 +14,7 @@
 
 class MyMutable : public CGraph::GMutable {
 public:
-    CVoid convert(CGraph::GElementPtrArr& elements) override {
+    CStatus reshape(CGraph::GElementPtrArr& elements) override {
         auto param = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(MyParam, "param1")
         int count = param->iCount % 4;
         if (0 == count) {
@@ -36,6 +36,8 @@ public:
         } else {
             CGraph::CGRAPH_ECHO("---- run nothing");    // 理论不会进入这种情况
         }
+
+        return CStatus();
     }
 };
 

@@ -185,6 +185,7 @@ CStatus GPipeline::dump(std::ostream& oss) {
     }
 
     oss << "}\n\n";
+    std::cout.unsetf(std::ios::fixed);
     CGRAPH_FUNCTION_END
 }
 

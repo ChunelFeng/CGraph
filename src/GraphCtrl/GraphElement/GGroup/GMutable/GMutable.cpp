@@ -47,11 +47,12 @@ CStatus GMutable::run() {
 
     /**
      * 1. 初始化内容
-     * 2. 通过外部复写 translate()，来实现关系设定。其中，通过 --> 设定的，是会自动恢复visible的
+     * 2. 通过外部复写 reshape()，来实现关系设定。其中，通过 --> 设定的，是会自动恢复visible的
      * 3. 通过 manager 执行
      */
     setup();
-    convert(group_elements_arr_);
+    status = reshape(group_elements_arr_);
+    CGRAPH_FUNCTION_CHECK_STATUS
 
     status = manager_->process({group_elements_arr_.begin(), group_elements_arr_.end()});
     CGRAPH_FUNCTION_END

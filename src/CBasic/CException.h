@@ -15,6 +15,7 @@
 #include "CStrDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
+CGRAPH_INTERNAL_NAMESPACE_BEGIN
 
 class CEXCEPTION : public std::exception {
 public:
@@ -39,6 +40,7 @@ private:
     std::string exception_info_;            // 异常状态信息
 };
 
+CGRAPH_INTERNAL_NAMESPACE_END
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_CEXCEPTION_H

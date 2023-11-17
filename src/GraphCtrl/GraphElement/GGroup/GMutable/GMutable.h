@@ -17,11 +17,11 @@ CGRAPH_NAMESPACE_BEGIN
 class GMutable : public GGroup {
 protected:
     /**
-     * 修改内部数据的
+     * 重新设定内部数据的结构信息
      * @param elements
      * @return
      */
-    virtual CVoid convert(GElementPtrArr& elements) = 0;
+    virtual CStatus reshape(GElementPtrArr& elements) = 0;
 
     explicit GMutable();
 

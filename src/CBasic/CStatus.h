@@ -15,6 +15,7 @@
 #include "CStrDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
+CGRAPH_INTERNAL_NAMESPACE_BEGIN
 
 /**
  * 说明：
@@ -66,7 +67,7 @@ public:
     }
 
     CSTATUS& operator=(const CSTATUS& status) {
-        if (!status.isOK()) {
+        if (this->error_code_ != status.error_code_) {
             // 如果status是正常的话，则所有数据保持不变
             this->error_code_ = status.error_code_;
             this->error_info_ = status.error_info_;
@@ -87,6 +88,15 @@ public:
         }
 
         return (*this);
+    }
+
+    /**
+     * 恢复状态信息
+     */
+    void reset() {
+        this->error_code_ = STATUS_OK;
+        this->error_info_.clear();
+        this->error_locate_.clear();
     }
 
     /**
@@ -143,6 +153,7 @@ private:
     std::string error_locate_;                       // 错误发生的具体位置，形如：file|function|line
 };
 
+CGRAPH_INTERNAL_NAMESPACE_END
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_CSTATUS_H

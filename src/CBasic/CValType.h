@@ -13,27 +13,27 @@
 #include "CStatus.h"
 #include "CException.h"
 
-using CChar = CGraph::CCHAR;
-using CUint = CGraph::CUINT;
-using CSize = CGraph::CSIZE;
-using CVoid = CGraph::CVOID;
-using CVoidPtr = CGraph::CVOID *;
-using CInt = CGraph::CINT;
-using CLong = CGraph::CLONG;
-using CULong = CGraph::CULONG;
-using CBool = CGraph::CBOOL;
-using CIndex = CGraph::CINT;                // 表示标识信息，可以为负数
-using CFloat = CGraph::CFLOAT;
-using CDouble = CGraph::CDOUBLE;
-using CConStr = CGraph::CCONSTR;             // 表示 const char*
-using CBigBool = CGraph::CBIGBOOL;
+using CChar = CGraph::internal::CCHAR;
+using CUint = CGraph::internal::CUINT;
+using CSize = CGraph::internal::CSIZE;
+using CVoid = CGraph::internal::CVOID;
+using CVoidPtr = CGraph::internal::CVOID *;
+using CInt = CGraph::internal::CINT;
+using CLong = CGraph::internal::CLONG;
+using CULong = CGraph::internal::CULONG;
+using CBool = CGraph::internal::CBOOL;
+using CIndex = CGraph::internal::CINT;                // 表示标识信息，可以为负数
+using CFloat = CGraph::internal::CFLOAT;
+using CDouble = CGraph::internal::CDOUBLE;
+using CConStr = CGraph::internal::CCONSTR;             // 表示 const char*
+using CBigBool = CGraph::internal::CBIGBOOL;
 
-using CLevel = CGraph::CINT;
-using CSec = CGraph::CLONG;                  // 表示秒信息, for second
-using CMSec = CGraph::CLONG;                 // 表示毫秒信息, for millisecond
-using CFMSec = CGraph::CDOUBLE;              // 表示毫秒信息，包含小数点信息
+using CLevel = CGraph::internal::CINT;
+using CSec = CGraph::internal::CLONG;                  // 表示秒信息, for second
+using CMSec = CGraph::internal::CLONG;                 // 表示毫秒信息, for millisecond
+using CFMSec = CGraph::internal::CDOUBLE;              // 表示毫秒信息，包含小数点信息
 
-using CStatus = CGraph::CSTATUS;
-using CException = CGraph::CEXCEPTION;
+using CStatus = CGraph::internal::CSTATUS;
+using CException = CGraph::internal::CEXCEPTION;
 
 #endif //CGRAPH_CVALTYPE_H

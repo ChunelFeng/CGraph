@@ -19,6 +19,14 @@ namespace CGraph {                                                      \
 
 CGRAPH_NAMESPACE_BEGIN
 
+#define CGRAPH_INTERNAL_NAMESPACE_BEGIN                                 \
+namespace internal {                                                    \
+
+#define CGRAPH_INTERNAL_NAMESPACE_END                                   \
+} /* end of namespace internal */                                       \
+
+CGRAPH_INTERNAL_NAMESPACE_BEGIN
+
 using CCHAR = char;
 using CUINT = unsigned int;
 using CVOID = void;
@@ -32,6 +40,7 @@ using CDOUBLE = double;
 using CCONSTR = const char*;
 using CSIZE = size_t;
 
+CGRAPH_INTERNAL_NAMESPACE_END
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_CBASICDEFINE_H
