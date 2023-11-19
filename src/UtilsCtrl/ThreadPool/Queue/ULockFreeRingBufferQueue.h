@@ -16,7 +16,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T, CInt CAPACITY = 32>
+template<typename T, CInt CAPACITY = CGRAPH_DEFAULT_RINGBUFFER_SIZE>
 class ULockFreeRingBufferQueue : public UQueueObject {
 public:
     explicit ULockFreeRingBufferQueue() {
