@@ -136,9 +136,9 @@ CStatus GStaticEngine::run() {
         }
 
         for (auto& fut : futures) {
-            status = fut.get();
-            CGRAPH_FUNCTION_CHECK_STATUS
+            status += fut.get();
         }
+        CGRAPH_FUNCTION_CHECK_STATUS
     }
 
     CGRAPH_FUNCTION_END
