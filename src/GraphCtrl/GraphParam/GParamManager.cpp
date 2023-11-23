@@ -50,6 +50,7 @@ CStatus GParamManager::destroy() {
 
 CStatus GParamManager::clear() {
     CGRAPH_FUNCTION_BEGIN
+    CGRAPH_LOCK_GUARD lock(this->mutex_);
     for (auto& param : params_map_) {
         CGRAPH_DELETE_PTR(param.second)
     }

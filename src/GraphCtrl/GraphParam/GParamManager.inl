@@ -37,6 +37,7 @@ CStatus GParamManager::create(const std::string& key, CBool backtrace) {
 template<typename T,
         c_enable_if_t<std::is_base_of<GParam, T>::value, int>>
 T* GParamManager::get(const std::string& key) {
+    CGRAPH_LOCK_GUARD lock(this->mutex_);
     auto result = params_map_.find(key);
     if (result == params_map_.end()) {
         return nullptr;
