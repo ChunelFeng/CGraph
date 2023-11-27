@@ -14,7 +14,7 @@
 
 class MyWriteParamNode : public CGraph::GNode {
 public:
-    CStatus init () override {
+    CStatus init() override {
         CStatus status;
         /**
          * 推荐在init()中，将可能用到的参数创建好。也支持在run的时候创建
@@ -24,7 +24,14 @@ public:
         return status;
     }
 
-    CStatus run () override {
+    CStatus run() override {
+        /**
+         * 为了提高执行效率，
+         * 在【创建参数】的时候，【提供】锁保护机制
+         * 在【获取参数】的时候，【不提供】锁保护的机制
+         * 故无法通过在run()过程中，并发的通过 createGParam 和 getGParam 创建和获取参数
+         * 如果需要做此操作，请自行外部加锁
+         */
         auto* myParam = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(MyParam, "param1")
         int val = 0;
         int cnt = 0;

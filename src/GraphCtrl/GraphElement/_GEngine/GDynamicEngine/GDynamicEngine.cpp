@@ -37,9 +37,13 @@ CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
 
 CStatus GDynamicEngine::run() {
     CGRAPH_FUNCTION_BEGIN
-    beforeRun();
-    asyncRunAndWait();
 
+    if (likely(total_end_size_ != total_element_arr_.size())) {
+        beforeRun();
+        asyncRunAndWait();
+    } else {
+        parallelRunAll();
+    }
     status = cur_status_;
     CGRAPH_FUNCTION_END
 }
@@ -152,6 +156,27 @@ CVoid GDynamicEngine::wait() {
          */
         return (finished_end_size_ >= total_end_size_) || cur_status_.isErr();
     });
+}
+
+
+CVoid GDynamicEngine::parallelRunAll() {
+    /**
+     * 主要适用于dag是纯并发逻辑的情况
+     * 直接并发的执行所有的流程，从而减少调度损耗
+     * 实测效果，在32路纯并行的情况下，整体耗时从 21.5s降低到 12.5s
+     * 非纯并行逻辑，不走此函数
+     */
+    std::vector<std::future<CStatus>> futures;
+    futures.reserve(front_element_arr_.size());
+    for (auto* element : front_element_arr_) {
+        futures.emplace_back(thread_pool_->commit([element] {
+            return element->fatProcessor(CFunctionType::RUN);
+        }, calcIndex(element)));
+    }
+
+    for (auto& fut : futures) {
+        cur_status_ += fut.get();
+    }
 }
 
 CGRAPH_NAMESPACE_END
