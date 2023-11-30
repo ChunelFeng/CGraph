@@ -50,11 +50,6 @@ CVoid GParam::cleanBacktrace() {
 }
 
 
-const std::string& GParam::getKey() const {
-    return key_;
-}
-
-
 CStatus GParam::setup() {
     CGRAPH_EMPTY_FUNCTION
 }

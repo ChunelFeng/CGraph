@@ -28,7 +28,7 @@ public:
         // 如果没有，就插入array中
         if (inner_set_.find(val) == inner_set_.end()) {
             inner_set_.insert(val);
-            inner_array_.emplace_back(val);
+            inner_array_.push_back(val);
         }
     }
 
@@ -50,6 +50,10 @@ public:
     CVoid clear() {
         inner_set_.clear();
         inner_array_.clear();
+    }
+
+    ~USerialUniqueArray() override {
+        clear();
     }
 
 private:
