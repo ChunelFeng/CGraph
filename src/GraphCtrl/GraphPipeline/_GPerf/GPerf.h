@@ -24,7 +24,7 @@ protected:
      * @param pipeline
      * @return
      */
-    static CStatus perf(GPipeline* pipeline);
+    static CStatus perf(GPipeline* pipeline, std::ostream& oss);
 
     /**
      * 注入对应的切面信息
