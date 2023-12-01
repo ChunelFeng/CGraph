@@ -64,14 +64,14 @@ CStatus GElementRepository::pushAllState(const GElementState& state) {
         return status;    // 避免重复赋值
     }
 
-    cur_state_ = state;    // 记录当前的状态信息
     for (auto& cur : elements_) {
-        cur->cur_state_.store(state);
+        cur->cur_state_.store(state, std::memory_order_release);
         if (GElementState::YIELD != state) {
             // 目前仅非yield状态，需要切换的。如果一直处于 yield状态，是不需要被通知的
             cur->yield_cv_.notify_one();
         }
     }
+    cur_state_ = state;    // 记录当前的状态信息
     CGRAPH_FUNCTION_END
 }
 

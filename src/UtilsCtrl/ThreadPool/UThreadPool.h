@@ -58,25 +58,25 @@ public:
     /**
      * 提交任务信息
      * @tparam FunctionType
-     * @param func
+     * @param task
      * @param index
      * @return
      */
     template<typename FunctionType>
-    auto commit(const FunctionType& func,
+    auto commit(const FunctionType& task,
                 CIndex index = CGRAPH_DEFAULT_TASK_STRATEGY)
     -> std::future<decltype(std::declval<FunctionType>()())>;
 
     /**
      * 根据优先级，执行任务
      * @tparam FunctionType
-     * @param func
+     * @param task
      * @param priority 优先级别。自然序从大到小依次执行
      * @return
      * @notice 建议，priority 范围在 [-100, 100] 之间
      */
     template<typename FunctionType>
-    auto commitWithPriority(const FunctionType& func,
+    auto commitWithPriority(const FunctionType& task,
                             int priority)
     -> std::future<decltype(std::declval<FunctionType>()())>;;
 

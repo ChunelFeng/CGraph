@@ -36,7 +36,7 @@ public:
     CStatus createTopic(const std::string& topic, CUint size) {
         CGRAPH_FUNCTION_BEGIN
 
-        auto innerTopic = SEND_RECV_PREFIX + topic;    // 中间做一层映射，用来区分是 PubSub的，还是SendRecv的
+        auto innerTopic = internal::SEND_RECV_PREFIX + topic;    // 中间做一层映射，用来区分是 PubSub的，还是SendRecv的
         auto result = send_recv_message_map_.find(innerTopic);
         if (result != send_recv_message_map_.end()) {
             // 如果类型和size完全匹配的话，则直接返回创建成功。否则返回错误
@@ -59,7 +59,7 @@ public:
      */
     CStatus removeTopic(const std::string& topic) {
         CGRAPH_FUNCTION_BEGIN
-        auto innerTopic = SEND_RECV_PREFIX + topic;
+        auto innerTopic = internal::SEND_RECV_PREFIX + topic;
         auto result = send_recv_message_map_.find(innerTopic);
         if (result == send_recv_message_map_.end()) {
             CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
@@ -85,7 +85,7 @@ public:
                            TImpl& value,
                            CMSec timeout = CGRAPH_MAX_BLOCK_TTL) {
         CGRAPH_FUNCTION_BEGIN
-        auto innerTopic = SEND_RECV_PREFIX + topic;
+        auto innerTopic = internal::SEND_RECV_PREFIX + topic;
         auto result = send_recv_message_map_.find(innerTopic);
         if (result == send_recv_message_map_.end()) {
             CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
@@ -114,7 +114,7 @@ public:
                            std::unique_ptr<TImpl>& value,
                            CMSec timeout = CGRAPH_MAX_BLOCK_TTL) {
         CGRAPH_FUNCTION_BEGIN
-        auto innerTopic = SEND_RECV_PREFIX + topic;
+        auto innerTopic = internal::SEND_RECV_PREFIX + topic;
         auto result = send_recv_message_map_.find(innerTopic);
         if (result == send_recv_message_map_.end()) {
             CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
@@ -141,7 +141,7 @@ public:
                            const TImpl& value,
                            GMessagePushStrategy strategy) {
         CGRAPH_FUNCTION_BEGIN
-        auto innerTopic = SEND_RECV_PREFIX + topic;
+        auto innerTopic = internal::SEND_RECV_PREFIX + topic;
         auto result = send_recv_message_map_.find(innerTopic);
         if (result == send_recv_message_map_.end()) {
             CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
@@ -168,7 +168,7 @@ public:
                            std::unique_ptr<TImpl>& value,
                            GMessagePushStrategy strategy) {
         CGRAPH_FUNCTION_BEGIN
-        auto innerTopic = SEND_RECV_PREFIX + topic;
+        auto innerTopic = internal::SEND_RECV_PREFIX + topic;
         auto result = send_recv_message_map_.find(innerTopic);
         if (result == send_recv_message_map_.end()) {
             CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
@@ -191,7 +191,7 @@ public:
     template<typename TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CIndex bindTopic(const std::string& topic, CUint size) {
-        auto innerTopic = PUB_SUB_PREFIX + topic;
+        auto innerTopic = internal::PUB_SUB_PREFIX + topic;
         auto message = UAllocator::safeMallocTemplateCObject<GMessage<TImpl>, CUint>(size);
 
         CGRAPH_LOCK_GUARD lock(bind_mutex_);
@@ -225,7 +225,7 @@ public:
                           const TImpl& value,
                           GMessagePushStrategy strategy) {
         CGRAPH_FUNCTION_BEGIN
-        auto innerTopic = PUB_SUB_PREFIX + topic;
+        auto innerTopic = internal::PUB_SUB_PREFIX + topic;
         auto result = pub_sub_message_map_.find(innerTopic);
         if (result == pub_sub_message_map_.end()) {
             CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
@@ -287,7 +287,7 @@ public:
      */
     CStatus dropTopic(const std::string& topic) {
         CGRAPH_FUNCTION_BEGIN
-        auto innerTopic = PUB_SUB_PREFIX + topic;
+        auto innerTopic = internal::PUB_SUB_PREFIX + topic;
         auto result = pub_sub_message_map_.find(innerTopic);
         if (result == pub_sub_message_map_.end()) {
             CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
