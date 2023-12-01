@@ -12,7 +12,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-CStatus GPerf::perf(GPipelinePtr pipeline) {
+CStatus GPerf::perf(GPipelinePtr pipeline, std::ostream& oss) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(pipeline)
 
@@ -22,7 +22,7 @@ CStatus GPerf::perf(GPipelinePtr pipeline) {
     status = pipeline->process();
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    status = pipeline->dump();
+    status = pipeline->dump(oss);
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status = recover(pipeline);

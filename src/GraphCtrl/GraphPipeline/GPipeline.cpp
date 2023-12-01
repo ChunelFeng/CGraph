@@ -194,7 +194,7 @@ CStatus GPipeline::perf(std::ostream& oss) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
-    status = GPerf::perf(this);
+    status = GPerf::perf(this, oss);
     CGRAPH_FUNCTION_END
 }
 
