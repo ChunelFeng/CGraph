@@ -8,9 +8,9 @@ message("*  \\____/   \\____/   /_/     \\__,_/   / .___/ /_/ /_/   *")
 message("*                                    /_/ by Chunel Feng *")
 message("* * * * * * * * * * * * * * * * * * * * * * * * * * * * *")
 
-cmake_minimum_required(VERSION 3.2.5)
+cmake_minimum_required(VERSION 3.2.0)
 
-project(CGraph VERSION 2.5.3)
+project(CGraph VERSION 2.5.4)
 
 # CGraph默认使用C++11版本，推荐使用C++17版本。暂不支持C++11以下版本
 set(CMAKE_CXX_STANDARD 11)
@@ -23,3 +23,9 @@ include(cmake/CGraph-env-include.cmake)
 
 add_subdirectory(./tutorial)
 add_subdirectory(./example)
+
+# 功能测试相关内容
+# add_subdirectory(./test/functional)
+
+# 性能测试相关内容
+# add_subdirectory(./test/performance)
