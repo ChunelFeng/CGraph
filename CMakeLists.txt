@@ -23,3 +23,9 @@ include(cmake/CGraph-env-include.cmake)
 
 add_subdirectory(./tutorial)
 add_subdirectory(./example)
+
+# 功能测试相关内容
+add_subdirectory(./test/functional)
+
+# 性能测试相关内容
+add_subdirectory(./test/performance)
