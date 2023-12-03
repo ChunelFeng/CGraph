@@ -1,20 +1,20 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: TestNodes.h
+@File: TestGNodes.h
 @Time: 2023/12/3 17:40
 @Desc: 
 ***************************/
 
-#ifndef CGRAPH_TESTNODES_H
-#define CGRAPH_TESTNODES_H
+#ifndef CGRAPH_TESTGNODES_H
+#define CGRAPH_TESTGNODES_H
 
 #include <atomic>
 
 #include "CGraph.h"
 
 std::atomic<unsigned int> g_test_cnt = {0};
-class TestMaterialAdd1Node : public CGraph::GNode {
+class TestMaterialAdd1GNode : public CGraph::GNode {
 public:
     CStatus run() override {
         g_test_cnt++;
@@ -22,4 +22,4 @@ public:
     }
 };
 
-#endif //CGRAPH_TESTNODES_H
+#endif //CGRAPH_TESTGNODES_H

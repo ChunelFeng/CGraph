@@ -6,11 +6,11 @@
 @Desc: 
 ***************************/
 
-#include "../_materials/TestNodes.h"
+#include "../_materials/TestGNodes.h"
 
 using namespace CGraph;
 
-void tutorial_concurrent_32() {
+void test_performance_01() {
     // 并行的执行32次，对应第1个例子，8thread，32并发，50w次
     GPipelinePtr pipeline = GPipelineFactory::create();
     CStatus status;
@@ -23,11 +23,11 @@ void tutorial_concurrent_32() {
     config.primary_thread_policy_ = CGRAPH_THREAD_SCHED_RR;
     config.primary_thread_priority_ = 10;
     config.primary_thread_empty_interval_ = 1;
-    config.primary_thread_busy_epoch_ = 300;
+    config.primary_thread_busy_epoch_ = 500;
     config.monitor_enable_ = false;    // 关闭扩缩容机制
     pipeline->setUniqueThreadPoolConfig(config);
     for (auto& i : arr) {
-        pipeline->registerGElement<TestMaterialAdd1Node>(&i);
+        pipeline->registerGElement<TestMaterialAdd1GNode>(&i);
     }
     pipeline->setAutoCheck(false);
     status += pipeline->init();
@@ -45,6 +45,6 @@ void tutorial_concurrent_32() {
 
 
 int main() {
-    tutorial_concurrent_32();
+    test_performance_01();
     return 0;
 }

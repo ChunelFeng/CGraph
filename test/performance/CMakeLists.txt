@@ -2,6 +2,7 @@
 set(CGRAPH_PERFORMANCE_LIST
         test-performance-01
         test-performance-02
+        test-performance-03
         )
 
 
