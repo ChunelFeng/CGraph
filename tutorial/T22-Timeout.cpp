@@ -41,6 +41,10 @@ void tutorial_timeout() {
         std::cout << "**** T22-timeout pipeline run error info : " << status.getInfo() << std::endl;
     }
 
+    c->setTimeout(0);    // 设置回没有timeout的情况，重新执行，确认结果是正常的。
+    status = pipeline->process();
+    std::cout << "**** T22-timeout return to no timeout, error code is : " << status.getCode() << std::endl;
+
     GPipelineFactory::remove(pipeline);
 }
 

@@ -18,28 +18,30 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class UTask : public UThreadObject {
-    struct taskBased {
-        explicit taskBased() = default;
+    struct TaskBased {
+        explicit TaskBased() = default;
         virtual CVoid call() = 0;
-        virtual ~taskBased() = default;
+        virtual ~TaskBased() = default;
     };
 
     // 退化以获得实际类型，修改思路参考：https://github.com/ChunelFeng/CThreadPool/pull/3
     template<typename F, typename T = typename std::decay<F>::type>
-    struct taskDerided : taskBased {
+    struct TaskDerided : TaskBased {
         T func_;
-        explicit taskDerided(F&& func) : func_(std::forward<F>(func)) {}
+        explicit TaskDerided(F&& func) : func_(std::forward<F>(func)) {}
         CVoid call() override { func_(); }
     };
 
 public:
     template<typename F>
-    UTask(F&& f, int priority = 0)
-        : impl_(new taskDerided<F>(std::forward<F>(f)))
+    UTask(F&& func, int priority = 0)
+        : impl_(new TaskDerided<F>(std::forward<F>(func)))
         , priority_(priority) {}
 
     CVoid operator()() {
-        impl_->call();
+        if (likely(impl_)) {
+            impl_->call();
+        }
     }
 
     UTask() = default;
@@ -65,7 +67,7 @@ public:
     CGRAPH_NO_ALLOWED_COPY(UTask)
 
 private:
-    std::unique_ptr<taskBased> impl_ = nullptr;
+    std::unique_ptr<TaskBased> impl_ = nullptr;
     int priority_ = 0;                                 // 任务的优先级信息
 };
 

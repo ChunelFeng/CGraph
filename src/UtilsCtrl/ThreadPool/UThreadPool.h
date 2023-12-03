@@ -78,7 +78,7 @@ public:
     template<typename FunctionType>
     auto commitWithPriority(const FunctionType& task,
                             int priority)
-    -> std::future<decltype(std::declval<FunctionType>()())>;;
+    -> std::future<decltype(std::declval<FunctionType>()())>;
 
     /**
      * 执行任务组信息
