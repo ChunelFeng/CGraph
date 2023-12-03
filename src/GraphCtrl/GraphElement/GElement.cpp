@@ -22,7 +22,7 @@ GElement::~GElement() {
 
 CVoid GElement::beforeRun() {
     this->done_ = false;
-    this->left_depend_ = dependence_.size();
+    this->left_depend_.store(dependence_.size(), std::memory_order_release);
 }
 
 
@@ -138,7 +138,7 @@ GElement& GElement::operator*(CSize loop) noexcept {
 
 
 CBool GElement::isRunnable() const {
-    return 0 >= this->left_depend_ && !this->done_;
+    return 0 >= this->left_depend_.load(std::memory_order_consume) && !this->done_;
 }
 
 
@@ -172,7 +172,7 @@ CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
         this->dependence_.insert(cur);
     }
 
-    this->left_depend_ = this->dependence_.size();
+    this->left_depend_.store(this->dependence_.size(), std::memory_order_release);
     CGRAPH_FUNCTION_END
 }
 
@@ -227,7 +227,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                 }
 
                 trigger_times_++;    // 记录实际上触发了多少次，而不是正式执行了多少次
-                for (CSize i = 0; i < this->loop_ && GElementState::NORMAL == cur_state_.load(); i++) {
+                for (CSize i = 0; i < this->loop_ && GElementState::NORMAL == cur_state_.load(std::memory_order_consume); i++) {
                     /** 执行带切面的run方法 */
                     status = doAspect(GAspectType::BEGIN_RUN);
                     CGRAPH_FUNCTION_CHECK_STATUS
@@ -299,10 +299,10 @@ CBool GElement::isTimeout() const {
      * 1. 如果当前节点超时，则认定为超时
      * 2. 如果当前节点所在的group超时，则也认定为超时
      */
-    CBool result = (GElementState::TIMEOUT == cur_state_.load());
+    CBool result = (GElementState::TIMEOUT == cur_state_.load(std::memory_order_consume));
     GElementPtr belong = this->belong_;
     while (!result && belong) {
-        result = (GElementState::TIMEOUT == belong->cur_state_.load());
+        result = (GElementState::TIMEOUT == belong->cur_state_.load(std::memory_order_consume));
         belong = belong->belong_;
     }
 
@@ -400,7 +400,7 @@ CVoid GElement::dumpPerfInfo(std::ostream& oss) {
 CVoid GElement::checkYield() {
     std::unique_lock<std::mutex> lk(yield_mutex_);
     this->yield_cv_.wait(lk, [this] {
-        return GElementState::YIELD != cur_state_;
+        return GElementState::YIELD != cur_state_.load(std::memory_order_consume);
     });
 }
 
@@ -462,7 +462,7 @@ CStatus GElement::asyncRun() {
     } else {
         CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION( GElementTimeoutStrategy::AS_ERROR == timeout_strategy_,    \
         "[" + name_ + "] running time more than [" + std::to_string(timeout_) + "]ms")
-        cur_state_.store(GElementState::TIMEOUT);
+        cur_state_.store(GElementState::TIMEOUT, std::memory_order_release);
     }
 
     CGRAPH_FUNCTION_END

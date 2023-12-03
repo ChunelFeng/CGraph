@@ -50,7 +50,7 @@ CStatus GElementRepository::reset() {
 
         // 无论如何，写回非 timeout状态，确保不会迭代到下一轮
         if (cur->isTimeout()) {
-            cur->cur_state_.store(GElementState::NORMAL);
+            cur->cur_state_.store(GElementState::NORMAL, std::memory_order_release);
         }
     }
 

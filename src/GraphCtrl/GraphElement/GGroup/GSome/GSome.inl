@@ -71,7 +71,7 @@ CStatus GSome<TriggerNum>::run()  {
 
     for (GElementPtr element : group_elements_arr_) {
         if (!element->done_) {
-            element->cur_state_.store(GElementState::TIMEOUT);
+            element->cur_state_.store(GElementState::TIMEOUT, std::memory_order_release);
         }
     }
     status = cur_status_;
