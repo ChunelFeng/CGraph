@@ -16,7 +16,7 @@ void test_performance_01() {
     CStatus status;
     GElementPtr arr[32];
     UThreadPoolConfig config;
-    config.default_thread_size_ = 8;    // 我的笔记本，是8核心的 macbook pro m1
+    config.default_thread_size_ = 8;
     config.secondary_thread_size_ = 0;
     config.max_task_steal_range_ = 7;
     config.max_thread_size_ = 8;
