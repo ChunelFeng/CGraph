@@ -91,7 +91,7 @@ private:                                                                        
      * @param pm
      * @return
      */                                                                                 \
-    void* setGParamManager(GParamManagerPtr pm) {                                       \
+    virtual void* setGParamManager(GParamManagerPtr pm) {                               \
         this->param_manager_ = pm;                                                      \
         return this;                                                                    \
     }                                                                                   \

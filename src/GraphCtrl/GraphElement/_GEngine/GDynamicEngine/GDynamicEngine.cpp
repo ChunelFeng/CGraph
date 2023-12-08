@@ -51,10 +51,17 @@ CStatus GDynamicEngine::run() {
 
 CStatus GDynamicEngine::afterRunCheck() {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(run_element_size_.load(std::memory_order_consume) != total_element_arr_.size(),    \
+    if (likely(total_end_size_ != total_element_arr_.size())) {
+        /**
+         * 非纯并行的逻辑下，才需要判断。
+         * 纯并行度逻辑，肯定会所有都跑一遍，并且等待全部结束，
+         * 故，不需要判断。
+         */
+        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(run_element_size_.load(std::memory_order_consume) != total_element_arr_.size(),    \
                                             "dynamic engine run element size not match...")
-    for (GElementPtr element : total_element_arr_) {
-        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!element->done_, "dynamic engine run check failed...")
+        for (GElementPtr element : total_element_arr_) {
+            CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!element->done_, "dynamic engine run check failed...")
+        }
     }
 
     CGRAPH_FUNCTION_END

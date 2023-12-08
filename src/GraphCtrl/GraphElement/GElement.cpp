@@ -177,19 +177,32 @@ CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
 }
 
 
-CStatus GElement::setElementInfo(const GElementPtrSet& dependElements,
+CStatus GElement::addElementInfo(const GElementPtrSet& dependElements,
                                  const std::string& name,
-                                 CSize loop,
-                                 GParamManagerPtr paramManager,
-                                 GEventManagerPtr eventManager) {
+                                 CSize loop) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT(false)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+
+    status = this->addDependGElements(dependElements);
+    CGRAPH_FUNCTION_CHECK_STATUS
 
     this->setName(name)->setLoop(loop);
-    param_manager_ = paramManager;
-    event_manager_ = eventManager;
-    status = this->addDependGElements(dependElements);
     CGRAPH_FUNCTION_END
+}
+
+
+GElementPtr GElement::setManagers(GParamManagerPtr paramManager, GEventManagerPtr eventManager) {
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(paramManager, eventManager)
+
+    this->param_manager_ = paramManager;
+    this->event_manager_ = eventManager;
+    if (aspect_manager_) {
+        aspect_manager_->setGParamManager(paramManager);
+        aspect_manager_->setGEventManager(eventManager);
+    }
+
+    return this;
 }
 
 

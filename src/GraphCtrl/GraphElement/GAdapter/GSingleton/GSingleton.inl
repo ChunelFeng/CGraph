@@ -68,14 +68,11 @@ CStatus GSingleton<T>::destroy() {
 
 
 template <typename T>
-CStatus GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElements,
+CStatus GSingleton<T>::addElementInfo(const std::set<GElementPtr> &dependElements,
                                       const std::string &name,
-                                      CSize loop,
-                                      GParamManagerPtr paramManager,
-                                      GEventManagerPtr eventManager) {
+                                      CSize loop) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
-    CGRAPH_ASSERT_NOT_NULL(paramManager, eventManager)
 
     // 这里，内部和外部均需要设定name信息
     this->setName(name)->setLoop(loop);
@@ -84,19 +81,19 @@ CStatus GSingleton<T>::setElementInfo(const std::set<GElementPtr> &dependElement
 
     // 获取单例信息，然后将信息node中信息
     auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
-    if (element->param_manager_) {
-        // 设置一次即可，不支持多次设置
-        CGRAPH_FUNCTION_END
-    }
-
-    /**
-     * 内部不需要设置loop信息了，因为是根据adapter的loop次数循环的。
-     * 依赖关系也注册在adapter上
-     */
-    element->param_manager_ = paramManager;
-    element->event_manager_ = eventManager;
     element->name_ = name;
     CGRAPH_FUNCTION_END
+}
+
+
+template <typename T>
+GElementPtr GSingleton<T>::setManagers(GParamManagerPtr paramManager,
+                                       GEventManagerPtr eventManager) {
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(paramManager, eventManager)
+    auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
+    element->setManagers(paramManager, eventManager);
+    return this;
 }
 
 CGRAPH_NAMESPACE_END

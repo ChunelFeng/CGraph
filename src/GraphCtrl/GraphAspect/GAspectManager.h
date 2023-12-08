@@ -120,6 +120,20 @@ protected:
         CGRAPH_FUNCTION_END
     }
 
+    void* setGParamManager(GParamManagerPtr pm) override {
+        for (auto* cur : aspect_arr_) {
+            cur->setGParamManager(pm);
+        }
+        return this;
+    }
+
+    void* setGEventManager(GEventManagerPtr em) override {
+        for (auto* cur : aspect_arr_) {
+            cur->setGEventManager(em);
+        }
+        return this;
+    }
+
     CGRAPH_NO_ALLOWED_COPY(GAspectManager)
 
 private:

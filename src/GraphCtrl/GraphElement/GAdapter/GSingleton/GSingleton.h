@@ -25,20 +25,12 @@ private:
     CStatus run() override;
     CStatus destroy() override;
 
-    /**
-     * 适配singleton信息
-     * @param dependElements
-     * @param name
-     * @param loop
-     * @param paramManager
-     * @param eventManager
-     * @return
-     */
-    CStatus setElementInfo(const std::set<GElementPtr> &dependElements,
+    CStatus addElementInfo(const std::set<GElementPtr> &dependElements,
                            const std::string &name,
-                           CSize loop,
-                           GParamManagerPtr paramManager,
-                           GEventManagerPtr eventManager) override;
+                           CSize loop) override;
+
+    GElementPtr setManagers(GParamManagerPtr paramManager,
+                            GEventManagerPtr eventManager) override;
 
 private:
     static USingleton<T> s_singleton_;                    // 单例

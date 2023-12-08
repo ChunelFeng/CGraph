@@ -263,15 +263,20 @@ private:
      * @param dependElements
      * @param name
      * @param loop
-     * @param paramManager
-     * @paarm eventManager
      * @return
      */
-    virtual CStatus setElementInfo(const std::set<GElement *>& dependElements,
+    virtual CStatus addElementInfo(const std::set<GElement *>& dependElements,
                                    const std::string& name,
-                                   CSize loop,
-                                   GParamManagerPtr paramManager,
-                                   GEventManagerPtr eventManager);
+                                   CSize loop);
+
+    /**
+     * 设置manager信息
+     * @param paramManager
+     * @param eventManager
+     * @return
+     */
+    virtual GElement* setManagers(GParamManagerPtr paramManager,
+                                  GEventManagerPtr eventManager);
 
     /**
      * 包含切面相关功能的函数，fat取自fatjar的意思

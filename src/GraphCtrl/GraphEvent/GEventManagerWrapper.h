@@ -20,7 +20,7 @@ CGRAPH_NAMESPACE_BEGIN
      * @param em
      * @return
      */                                                                                 \
-    void* setGEventManager(GEventManagerPtr em) {                                       \
+    virtual void* setGEventManager(GEventManagerPtr em) {                               \
         this->event_manager_ = em;                                                      \
         return this;                                                                    \
     }                                                                                   \

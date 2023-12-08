@@ -32,6 +32,15 @@ GElementRepositoryPtr GElementRepository::setThreadPool(UThreadPoolPtr ptr) {
 }
 
 
+GElementRepositoryPtr GElementRepository::setManagers(GParamManagerPtr paramManager, GEventManagerPtr eventManager) {
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(paramManager, eventManager);
+    for (auto* cur : this->elements_) {
+        cur->setManagers(paramManager, eventManager);
+    }
+    return this;
+}
+
+
 CStatus GElementRepository::setup() {
     CGRAPH_FUNCTION_BEGIN
     // 一旦执行，全部设置为 normal状态

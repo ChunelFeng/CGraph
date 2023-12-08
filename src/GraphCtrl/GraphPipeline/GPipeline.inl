@@ -43,9 +43,7 @@ CStatus GPipeline::registerGElement(GElementPPtr elementRef,
     }
 
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
-    status = (*elementRef)->setElementInfo(dependElements, name, loop,
-                                           this->param_manager_,
-                                           this->event_manager_);
+    status = (*elementRef)->addElementInfo(dependElements, name, loop);
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status = element_manager_->add(dynamic_cast<GElementPtr>(*elementRef));
@@ -95,8 +93,7 @@ CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,
     (*elementRef) = new(std::nothrow) TNode(std::forward<Args &&>(args)...);
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
     // 以下 name，loop 信息，可以由外部设置
-    status = (*elementRef)->setElementInfo(dependElements, CGRAPH_EMPTY, CGRAPH_DEFAULT_LOOP_TIMES,
-                                           this->param_manager_, this->event_manager_);
+    status = (*elementRef)->addElementInfo(dependElements, CGRAPH_EMPTY, CGRAPH_DEFAULT_LOOP_TIMES);
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status = element_manager_->add(dynamic_cast<GElementPtr>(*elementRef));
@@ -113,8 +110,7 @@ GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T);
-    status = node->setElementInfo(info.dependence_, info.name_, info.loop_,
-                                  this->param_manager_, this->event_manager_);
+    status = node->addElementInfo(info.dependence_, info.name_, info.loop_);
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
     repository_.insert(node);
@@ -149,8 +145,7 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
     }
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
-    status = group->setElementInfo(dependElements, name, loop,
-                                   nullptr, nullptr);    // 注册group信息的时候，不能注册paramManager信息
+    status = group->addElementInfo(dependElements, name, loop);
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
     this->repository_.insert(group);

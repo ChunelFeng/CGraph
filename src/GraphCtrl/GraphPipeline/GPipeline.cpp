@@ -121,7 +121,7 @@ CStatus GPipeline::registerGGroup(GElementPPtr groupRef, const GElementPtrSet &d
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr == group, "input is not based on GGroup")
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(group->isRegistered(), "this group register duplicate")
 
-    status = group->setElementInfo(dependElements, name, loop, this->param_manager_, this->event_manager_);
+    status = group->addElementInfo(dependElements, name, loop);
     CGRAPH_FUNCTION_CHECK_STATUS
     status = element_manager_->add(group);
     CGRAPH_FUNCTION_CHECK_STATUS
@@ -278,7 +278,7 @@ GPipelineState GPipeline::getCurState() const {
 
 CStatus GPipeline::initEnv() {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(event_manager_, element_manager_)
+    CGRAPH_ASSERT_NOT_NULL(event_manager_, element_manager_, param_manager_)
 
     status = schedule_.init();
     CGRAPH_FUNCTION_CHECK_STATUS
@@ -290,6 +290,7 @@ CStatus GPipeline::initEnv() {
 
     // 设置所有的element 中的thread_pool
     repository_.setThreadPool(tp);
+    repository_.setManagers(param_manager_, event_manager_);
 
     status += repository_.init();
     CGRAPH_FUNCTION_END
