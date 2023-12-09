@@ -28,14 +28,11 @@ protected:
 
     CBool isSerializable() override;
 
-    /**
-     * 判断当前group是否已经被注册到特定pipeline中了。避免反复注册的问题
-     * @return
-     */
-    CBool isRegistered();
-
 private:
     explicit GGroup();
+
+    CStatus addManagers(GParamManagerPtr paramManager,
+                        GEventManagerPtr eventManager) override;
 
     CStatus init() override;
 

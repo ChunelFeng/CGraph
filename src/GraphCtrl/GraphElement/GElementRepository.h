@@ -38,14 +38,6 @@ private:
     GElementRepository* setThreadPool(UThreadPoolPtr ptr);
 
     /**
-     * 给所有的element，设定manager信息
-     * @param paramManager
-     * @param eventManager
-     * @return
-     */
-    GElementRepository* setManagers(GParamManagerPtr paramManager, GEventManagerPtr eventManager);
-
-    /**
      * 准备执行流程
      * @return
      */

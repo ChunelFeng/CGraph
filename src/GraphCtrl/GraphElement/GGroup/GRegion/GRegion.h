@@ -39,6 +39,9 @@ private:
 
     CBool isSerializable() final;
 
+    CStatus addManagers(GParamManagerPtr paramManager,
+                        GEventManagerPtr eventManager) final;
+
 private:
     GElementManagerPtr manager_ = nullptr;    // region 内部通过 manager来管理其中的 element 信息
 

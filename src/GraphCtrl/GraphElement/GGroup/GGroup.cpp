@@ -81,9 +81,20 @@ CBool GGroup::isSerializable() {
 }
 
 
-CBool GGroup::isRegistered() {
-    // 被注册的过group，这两个manager是不会为空的
-    return (nullptr != param_manager_) && (nullptr != event_manager_);
+CStatus GGroup::addManagers(GParamManagerPtr paramManager,
+                            GEventManagerPtr eventManager) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(paramManager, eventManager)
+    CGRAPH_ASSERT_INIT(false)
+
+    this->setGParamManager(paramManager);
+    this->setGEventManager(eventManager);
+    for (auto* cur : group_elements_arr_) {
+        CGRAPH_ASSERT_NOT_NULL(cur)
+        status += cur->addManagers(paramManager, eventManager);
+    }
+
+    CGRAPH_FUNCTION_END
 }
 
 CGRAPH_NAMESPACE_END

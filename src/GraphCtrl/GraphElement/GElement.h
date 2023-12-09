@@ -250,6 +250,12 @@ private:
     CBool isAsync() const;
 
     /**
+     * 判断当前element是否已经被注册到特定pipeline中了。避免反复注册的问题
+     * @return
+     */
+    CBool isRegistered() const;
+
+    /**
      * 执行切面逻辑
      * @param aspectType
      * @param curStatus
@@ -275,8 +281,8 @@ private:
      * @param eventManager
      * @return
      */
-    virtual GElement* setManagers(GParamManagerPtr paramManager,
-                                  GEventManagerPtr eventManager);
+    virtual CStatus addManagers(GParamManagerPtr paramManager,
+                                GEventManagerPtr eventManager);
 
     /**
      * 包含切面相关功能的函数，fat取自fatjar的意思

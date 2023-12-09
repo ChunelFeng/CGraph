@@ -153,6 +153,11 @@ CBool GElement::isAsync() const {
 }
 
 
+CBool GElement::isRegistered() const {
+    return (nullptr != param_manager_) && (nullptr != event_manager_);
+}
+
+
 CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
     if (!isMutable()) {
@@ -191,18 +196,19 @@ CStatus GElement::addElementInfo(const GElementPtrSet& dependElements,
 }
 
 
-GElementPtr GElement::setManagers(GParamManagerPtr paramManager, GEventManagerPtr eventManager) {
-    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
-    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(paramManager, eventManager)
+CStatus GElement::addManagers(GParamManagerPtr paramManager, GEventManagerPtr eventManager) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(false)
+    CGRAPH_ASSERT_NOT_NULL(paramManager, eventManager)
 
-    this->param_manager_ = paramManager;
-    this->event_manager_ = eventManager;
+    this->setGParamManager(paramManager);
+    this->setGEventManager(eventManager);
     if (aspect_manager_) {
         aspect_manager_->setGParamManager(paramManager);
         aspect_manager_->setGEventManager(eventManager);
     }
 
-    return this;
+    CGRAPH_FUNCTION_END
 }
 
 

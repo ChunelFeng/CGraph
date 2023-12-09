@@ -29,8 +29,8 @@ private:
                            const std::string &name,
                            CSize loop) override;
 
-    GElementPtr setManagers(GParamManagerPtr paramManager,
-                            GEventManagerPtr eventManager) override;
+    CStatus addManagers(GParamManagerPtr paramManager,
+                        GEventManagerPtr eventManager) override;
 
 private:
     static USingleton<T> s_singleton_;                    // 单例

@@ -31,7 +31,7 @@ CStatus GPipeline::registerGElement(GElementPPtr elementRef,
          * 2，未被注册到其他的pipeline中
          */
         if ((*elementRef) != nullptr
-            && ((GGroupPtr)(*elementRef))->isRegistered()) {
+            && ((*elementRef)->isRegistered())) {
             CGRAPH_RETURN_ERROR_STATUS("this group register duplicate")
         }
     } else if (std::is_base_of<GNode, T>::value || std::is_base_of<GAdapter, T>::value) {
@@ -44,6 +44,8 @@ CStatus GPipeline::registerGElement(GElementPPtr elementRef,
 
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
     status = (*elementRef)->addElementInfo(dependElements, name, loop);
+    CGRAPH_FUNCTION_CHECK_STATUS
+    status = (*elementRef)->addManagers(param_manager_, event_manager_);    // 每次注册进来之后，需要记录一下。被重新注册
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status = element_manager_->add(dynamic_cast<GElementPtr>(*elementRef));

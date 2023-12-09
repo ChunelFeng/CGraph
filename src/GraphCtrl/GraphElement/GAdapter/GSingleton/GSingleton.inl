@@ -87,13 +87,16 @@ CStatus GSingleton<T>::addElementInfo(const std::set<GElementPtr> &dependElement
 
 
 template <typename T>
-GElementPtr GSingleton<T>::setManagers(GParamManagerPtr paramManager,
-                                       GEventManagerPtr eventManager) {
-    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
-    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(paramManager, eventManager)
+CStatus GSingleton<T>::addManagers(GParamManagerPtr paramManager,
+                                   GEventManagerPtr eventManager) {
+    CGRAPH_FUNCTION_BEGIN
+
+    CGRAPH_ASSERT_INIT(false)
+    CGRAPH_ASSERT_NOT_NULL(paramManager, eventManager)
     auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
-    element->setManagers(paramManager, eventManager);
-    return this;
+    status = element->addManagers(paramManager, eventManager);
+
+    CGRAPH_FUNCTION_END
 }
 
 CGRAPH_NAMESPACE_END
