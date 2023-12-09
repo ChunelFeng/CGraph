@@ -22,7 +22,7 @@ public:
      * @return
      */
     const std::string& getName() const {
-        return name_;
+        return name_.empty() ? session_ : name_;
     }
 
     /**

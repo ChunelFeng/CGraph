@@ -117,9 +117,9 @@ CStatus GPipeline::registerGNode(GElementPPtr nodeRef, const GElementPtrSet &dep
     CGRAPH_ASSERT_NOT_NULL(*nodeRef)
 
     auto node = dynamic_cast<GNodePtr>(*nodeRef);
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr == node, getName() + " is not based on GNode")
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr != node->belong_, getName() + " can not register to pipeline for its belong to : " + node->belong_->getName())
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(node->isRegistered(), getName() + " register duplicate")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr == node,  "[" + (*nodeRef)->getName() + "] is not based on GNode")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr != node->belong_, "[" + node->getName() + "] can not register to pipeline for its belong to [" + node->belong_->getName() + "]")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(node->isRegistered(), "[" + node->getName() + "] register duplicate")
 
     status = innerRegister(node, dependElements, name, loop);
     CGRAPH_FUNCTION_END
@@ -133,9 +133,9 @@ CStatus GPipeline::registerGGroup(GElementPPtr groupRef, const GElementPtrSet &d
     CGRAPH_ASSERT_NOT_NULL(*groupRef)
 
     auto group = dynamic_cast<GGroupPtr>(*groupRef);
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr == group, getName() + " is not based on GGroup")
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr != group->belong_, getName() + " can not register to pipeline for its belong to : " + group->belong_->getName())
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(group->isRegistered(), getName() + " register duplicate")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr == group, "[" + (*groupRef)->getName() + "] is not based on GGroup")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr != group->belong_, "[" + group->getName() + "] can not register to pipeline for its belong to [" + group->belong_->getName() + "]")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(group->isRegistered(), "[" + group->getName() + "] register duplicate")
 
     status = innerRegister(group, dependElements, name, loop);
     CGRAPH_FUNCTION_END
