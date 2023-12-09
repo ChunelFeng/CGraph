@@ -42,15 +42,7 @@ CStatus GPipeline::registerGElement(GElementPPtr elementRef,
         (*elementRef) = new(std::nothrow) T();
     }
 
-    CGRAPH_ASSERT_NOT_NULL(*elementRef)
-    status = (*elementRef)->addElementInfo(dependElements, name, loop);
-    CGRAPH_FUNCTION_CHECK_STATUS
-    status = (*elementRef)->addManagers(param_manager_, event_manager_);    // 每次注册进来之后，需要记录一下。被重新注册
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    status = element_manager_->add(dynamic_cast<GElementPtr>(*elementRef));
-    CGRAPH_FUNCTION_CHECK_STATUS
-    repository_.insert(*elementRef);
+    status = innerRegister(*elementRef, dependElements, name, loop);
     CGRAPH_FUNCTION_END
 }
 
@@ -94,13 +86,8 @@ CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,
     // 构建模板node信息
     (*elementRef) = new(std::nothrow) TNode(std::forward<Args &&>(args)...);
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
-    // 以下 name，loop 信息，可以由外部设置
-    status = (*elementRef)->addElementInfo(dependElements, CGRAPH_EMPTY, CGRAPH_DEFAULT_LOOP_TIMES);
-    CGRAPH_FUNCTION_CHECK_STATUS
 
-    status = element_manager_->add(dynamic_cast<GElementPtr>(*elementRef));
-    CGRAPH_FUNCTION_CHECK_STATUS
-    repository_.insert(*elementRef);
+    status = innerRegister(*elementRef, dependElements, CGRAPH_EMPTY, CGRAPH_DEFAULT_LOOP_TIMES);
     CGRAPH_FUNCTION_END
 }
 
@@ -111,7 +98,7 @@ GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
-    GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T);
+    GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T)
     status = node->addElementInfo(info.dependence_, info.name_, info.loop_);
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
@@ -147,6 +134,7 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
     }
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
+    // 加入group的时候，是不设定manager信息的
     status = group->addElementInfo(dependElements, name, loop);
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 

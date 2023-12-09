@@ -212,6 +212,19 @@ public:
                              Args... args);
 
     /**
+     * 注册一个节点信息
+     * @param nodeRef
+     * @param dependElements
+     * @param name
+     * @param loop
+     * @return
+     */
+    CStatus registerGNode(GElementPPtr nodeRef,
+                          const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
+                          const std::string &name = CGRAPH_EMPTY,
+                          CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
+
+    /**
      * 注册一个组信息（推荐使用）
      * @param groupRef
      * @param dependElements
@@ -337,11 +350,23 @@ protected:
     explicit GPipeline();
     ~GPipeline() override;
 
+private:
     /**
      * 初始化环境信息，包括线程池 等
      * @return
      */
     CStatus initEnv();
+
+    /**
+     * 内部真实一个 element 信息
+     * @param element
+     * @param dependElements
+     * @param name
+     * @param loop
+     * @return
+     */
+    CStatus innerRegister(GElementPtr element, const GElementPtrSet &dependElements,
+                          const std::string &name, CSize loop);
 
     /** 不允许外部赋值和构造 */
     CGRAPH_NO_ALLOWED_COPY(GPipeline)

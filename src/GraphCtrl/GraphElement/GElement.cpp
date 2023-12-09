@@ -188,6 +188,7 @@ CStatus GElement::addElementInfo(const GElementPtrSet& dependElements,
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
+    // 添加依赖的时候，可能会出现异常情况。故在这里提前添加 && 做判定
     status = this->addDependGElements(dependElements);
     CGRAPH_FUNCTION_CHECK_STATUS
 
@@ -503,8 +504,11 @@ CStatus GElement::checkSuitable() {
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
 
     // 包含异步执行的逻辑，不可以loop超过1次
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((loop_ > CGRAPH_DEFAULT_LOOP_TIMES && this->isAsync()),     \
-    "[" + name_ + "] can set loop <= 1 only for the reason of async run")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(loop_ > CGRAPH_DEFAULT_LOOP_TIMES && this->isAsync(),     \
+    "[" + this->getName() + "] can set loop <= 1 only for the reason of async run")
+    if (!this->isRegistered()) {
+        CGRAPH_ECHO("[notice] [%s] is created but not registered into pipeline, so it will not work.", this->getName().c_str());
+    }
 
     CGRAPH_FUNCTION_END
 }

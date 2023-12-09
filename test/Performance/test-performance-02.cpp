@@ -6,7 +6,7 @@
 @Desc: 
 ***************************/
 
-#include "../_materials/TestGNodes.h"
+#include "../_Materials/TestGNodes.h"
 
 using namespace CGraph;
 

@@ -110,6 +110,21 @@ CStatus GPipeline::process(CSize runTimes) {
     CGRAPH_FUNCTION_END
 }
 
+CStatus GPipeline::registerGNode(GElementPPtr nodeRef, const GElementPtrSet &dependElements,
+                                 const std::string &name, CSize loop) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(false)
+    CGRAPH_ASSERT_NOT_NULL(*nodeRef)
+
+    auto node = dynamic_cast<GNodePtr>(*nodeRef);
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr == node, getName() + " is not based on GNode")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr != node->belong_, getName() + " can not register to pipeline for its belong to : " + node->belong_->getName())
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(node->isRegistered(), getName() + " register duplicate")
+
+    status = innerRegister(node, dependElements, name, loop);
+    CGRAPH_FUNCTION_END
+}
+
 
 CStatus GPipeline::registerGGroup(GElementPPtr groupRef, const GElementPtrSet &dependElements,
                                   const std::string &name, CSize loop) {
@@ -118,16 +133,11 @@ CStatus GPipeline::registerGGroup(GElementPPtr groupRef, const GElementPtrSet &d
     CGRAPH_ASSERT_NOT_NULL(*groupRef)
 
     auto group = dynamic_cast<GGroupPtr>(*groupRef);
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr == group, "input is not based on GGroup")
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(group->isRegistered(), "this group register duplicate")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr == group, getName() + " is not based on GGroup")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr != group->belong_, getName() + " can not register to pipeline for its belong to : " + group->belong_->getName())
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(group->isRegistered(), getName() + " register duplicate")
 
-    status = group->addElementInfo(dependElements, name, loop);
-    CGRAPH_FUNCTION_CHECK_STATUS
-    status = group->addManagers(param_manager_, event_manager_);
-    CGRAPH_FUNCTION_CHECK_STATUS
-    status = element_manager_->add(group);
-    CGRAPH_FUNCTION_CHECK_STATUS
-    repository_.insert(group);
+    status = innerRegister(group, dependElements, name, loop);
     CGRAPH_FUNCTION_END
 }
 
@@ -293,6 +303,26 @@ CStatus GPipeline::initEnv() {
     // 设置所有的element 中的thread_pool
     repository_.setThreadPool(tp);
     status += repository_.init();
+    CGRAPH_FUNCTION_END
+}
+
+
+CStatus GPipeline::innerRegister(GElementPtr element, const GElementPtrSet &dependElements,
+                                 const std::string &name, CSize loop) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(element)
+    CGRAPH_ASSERT_INIT(false)
+
+    const std::string& curName = name.empty() ? element->getName() : name;
+    status = element->addElementInfo(dependElements, curName, loop);
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    status = element->addManagers(param_manager_, event_manager_);
+    CGRAPH_FUNCTION_CHECK_STATUS
+    status = element_manager_->add(element);
+    CGRAPH_FUNCTION_CHECK_STATUS
+    repository_.insert(element);
+
     CGRAPH_FUNCTION_END
 }
 
