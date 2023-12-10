@@ -151,6 +151,12 @@ protected:
     virtual CStatus prepareRun();
 
     /**
+     * 判断当前是否超时
+     * @return
+     */
+    CBool isTimeout() const;
+
+    /**
      * 是否持续进行
      * 默认为false，表示执行且仅执行一次
      * @return
@@ -163,18 +169,6 @@ protected:
      * @notice 默认返回false，不执行
      */
     virtual CBool isMatch();
-
-    /**
-     * 判断当前是否超时
-     * @return
-     */
-    CBool isTimeout() const;
-
-    /**
-     * 判断当前是否可以在运行时更新图结构逻辑
-     * @return
-     */
-    CBool isMutable() const;
 
     /**
      * 崩溃流程处理
@@ -217,15 +211,18 @@ protected:
 
     CGRAPH_NO_ALLOWED_COPY(GElement);
 
+/********************************/
+/** 使用者请勿复写private中的函数 **/
+/********************************/
 private:
     /**
-     * run方法执行之前的执行函数（请勿覆写）
+     * run方法执行之前的执行函数
      * @return
      */
     virtual CVoid beforeRun();
 
     /**
-     * run方法执行之后的执行函数（请勿覆写）
+     * run方法执行之后的执行函数
      * @return
      */
     virtual CVoid afterRun();
@@ -250,10 +247,16 @@ private:
     CBool isAsync() const;
 
     /**
+     * 判断当前是否可以在运行时更新图结构逻辑
+     * @return
+     */
+    CBool isMutable() const;
+
+    /**
      * 判断当前element是否已经被注册到特定pipeline中了。避免反复注册的问题
      * @return
      */
-    CBool isRegistered() const;
+    virtual CBool isRegistered() const;
 
     /**
      * 执行切面逻辑

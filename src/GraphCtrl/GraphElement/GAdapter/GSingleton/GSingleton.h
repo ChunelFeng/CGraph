@@ -16,10 +16,7 @@ CGRAPH_NAMESPACE_BEGIN
 template<typename T>
 class GSingleton : public GAdapter {
 private:
-    explicit GSingleton() {
-        this->element_type_ = GElementType::SINGLETON;
-        session_ = URandom<>::generateSession(CGRAPH_STR_SINGLETON);
-    }
+    explicit GSingleton();
 
     CStatus init() override;
     CStatus run() override;
@@ -27,10 +24,16 @@ private:
 
     CStatus addElementInfo(const std::set<GElementPtr> &dependElements,
                            const std::string &name,
-                           CSize loop) override;
+                           CSize loop) final;
 
     CStatus addManagers(GParamManagerPtr paramManager,
-                        GEventManagerPtr eventManager) override;
+                        GEventManagerPtr eventManager) final;
+
+    CBool isHold() final;
+
+    CBool isMatch() final;
+
+    CBool isRegistered() const final;
 
 private:
     static USingleton<T> s_singleton_;                    // 单例
