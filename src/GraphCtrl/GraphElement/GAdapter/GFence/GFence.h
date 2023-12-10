@@ -21,7 +21,7 @@ public:
      * 添加需要等待的element（必须是异步的）
      * @param element
      * @return
-     * @notice 对外仅可以
+     * @notice 对外仅可以添加异步节点（设置了timeout的节点）
      */
     GFence* waitGElement(GElementPtr element);
 
@@ -29,6 +29,7 @@ public:
      * 添加需要等待的一组element
      * @param elements
      * @return
+     * @notice 对外仅可以添加异步节点（设置了timeout的节点）
      */
     GFence* waitGElements(const std::set<GElementPtr>& elements);
 
