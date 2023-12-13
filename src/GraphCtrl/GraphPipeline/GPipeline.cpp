@@ -56,7 +56,8 @@ CStatus GPipeline::run() {
      * 1. 将所有 GElement 的状态设定为 NORMAL
      * 2. 将所有的 GParam 设置为初始值
      * 3. 执行dag逻辑
-     * 4. 将所有的 GParam 复原
+     * 4. 将所有 GElement 的状态恢复为 NORMAL
+     * 5. 将所有的 GParam 复原
      */
     status += repository_.setup();
     status += param_manager_->setup();
@@ -75,14 +76,18 @@ CStatus GPipeline::destroy() {
     CGRAPH_ASSERT_INIT(true)
     CGRAPH_ASSERT_NOT_NULL(element_manager_, param_manager_, daemon_manager_, event_manager_)
 
+    /**
+     * 需要先将线程池相关内容析构，然后再做destroy。
+     * 否则的话，在错误status累积的情况下，在windows平台上，会产生崩溃
+     */
+    status += repository_.destroy();
+    status += schedule_.destroy();
+    CGRAPH_FUNCTION_CHECK_STATUS
+
     status += event_manager_->destroy();
     status += daemon_manager_->destroy();
     status += element_manager_->destroy();
     status += param_manager_->destroy();
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    status += repository_.destroy();
-    status += schedule_.destroy();
     CGRAPH_FUNCTION_CHECK_STATUS
 
     is_init_ = false;
