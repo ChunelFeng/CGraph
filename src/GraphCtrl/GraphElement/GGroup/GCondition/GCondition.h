@@ -36,7 +36,7 @@ private:
 
     CStatus run() override;
 
-    CStatus addElement(GElementPtr element) override;
+    CStatus addElement(GElementPtr element) final;
 
     friend class GPipeline;
 };

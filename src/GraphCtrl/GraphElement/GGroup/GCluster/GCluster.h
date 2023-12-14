@@ -34,7 +34,7 @@ protected:
      * 获取绑定信息
      * @return
      */
-    CIndex getBindingIndex() override;
+    CIndex getBindingIndex() const override;
 
 private:
     /**

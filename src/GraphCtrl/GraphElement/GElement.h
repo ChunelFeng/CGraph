@@ -120,6 +120,12 @@ public:
     CBool isGroup() const;
 
     /**
+     * 获取当前节点状态信息
+     * @return
+     */
+    GElementState getCurState() const;
+
+    /**
      * 实现连续注册的语法糖，形如：
      *  (*a)-->b&c;
      *  (*b)-->d;
@@ -200,7 +206,7 @@ protected:
      * @return
      * @notice 不同的group类型，获取 binding index 的方式不同
      */
-    virtual CIndex getBindingIndex();
+    virtual CIndex getBindingIndex() const;
 
     /**
      * 获取当前节点的相关关系信息，包含前驱、后继、从属关系

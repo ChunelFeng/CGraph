@@ -431,7 +431,17 @@ CBool GElement::isGroup() const {
 }
 
 
-CIndex GElement::getBindingIndex() {
+GElementState GElement::getCurState() const {
+    /**
+     * 如果有超时逻辑的话，优先判断
+     * 否则就是当前的状态
+     */
+    GElementState state = this->isTimeout() ? GElementState::TIMEOUT : cur_state_.load(std::memory_order_acquire);
+    return state;
+}
+
+
+CIndex GElement::getBindingIndex() const {
     return this->binding_index_;
 }
 

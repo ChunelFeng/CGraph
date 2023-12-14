@@ -105,7 +105,7 @@ CBool GCluster::isDone() {
 }
 
 
-CIndex GCluster::getBindingIndex() {
+CIndex GCluster::getBindingIndex() const {
     if (group_elements_arr_.empty()) {
         // 防止未注入的情况发生
         return CGRAPH_DEFAULT_BINDING_INDEX;
