@@ -167,6 +167,12 @@ CVoid GDynamicEngine::wait() {
 
 
 CVoid GDynamicEngine::parallelRunAll() {
+    // 特殊判定：如果只有一个节点的话，则直接执行就好了
+    if (1 == total_end_size_) {
+        cur_status_ = front_element_arr_[0]->fatProcessor(CFunctionType::RUN);
+        return;
+    }
+
     /**
      * 主要适用于dag是纯并发逻辑的情况
      * 直接并发的执行所有的流程，从而减少调度损耗
@@ -174,7 +180,7 @@ CVoid GDynamicEngine::parallelRunAll() {
      * 非纯并行逻辑，不走此函数
      */
     std::vector<std::future<CStatus>> futures;
-    futures.reserve(front_element_arr_.size());
+    futures.reserve(total_end_size_);
     for (auto* element : front_element_arr_) {
         futures.emplace_back(thread_pool_->commit([element] {
             return element->fatProcessor(CFunctionType::RUN);
