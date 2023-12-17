@@ -15,6 +15,8 @@
 #include <ctime>
 #include <cstdarg>
 #include <algorithm>
+#include <thread>
+#include <chrono>
 
 #include "../CBasic/CBasicInclude.h"
 
@@ -105,6 +107,25 @@ T CGRAPH_SUM(T t) {
 template<typename T, typename... Args>
 T CGRAPH_SUM(T val, Args... args) {
     return val + CGRAPH_SUM(args...);
+}
+
+
+/**
+ * 模拟的yield操作，兼容了 sleep 和 yield 两种情况
+ * 考虑到yield 在不同的os中，会有不同的实现方式，提供不同实现版本的yield方法
+ * @return
+ */
+inline CVoid CGRAPH_YIELD() {
+#ifdef _CGRAPH_SLEEP_MS_AS_YIELD_
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+#elif _CGRAPH_SLEEP_US_AS_YIELD_
+    std::this_thread::sleep_for(std::chrono::microseconds(1));
+#elif _CGRAPH_SLEEP_NS_AS_YIELD_
+    std::this_thread::sleep_for(std::chrono::nanoseconds(1));
+#else
+    // 默认情况下，还是直接调用系统的yield
+    std::this_thread::yield();
+#endif
 }
 
 CGRAPH_NAMESPACE_END

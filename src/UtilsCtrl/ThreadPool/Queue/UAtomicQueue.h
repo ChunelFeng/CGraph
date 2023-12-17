@@ -119,7 +119,7 @@ public:
                 mutex_.unlock();
                 break;
             } else {
-                std::this_thread::yield();
+                CGRAPH_YIELD();
             }
         }
         cv_.notify_one();

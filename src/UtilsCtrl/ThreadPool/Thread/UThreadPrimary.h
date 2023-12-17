@@ -115,7 +115,7 @@ protected:
      */
     CVoid fatWait() {
         cur_empty_epoch_++;
-        std::this_thread::yield();
+        CGRAPH_YIELD();
         if (cur_empty_epoch_ >= config_->primary_thread_busy_epoch_) {
             CGRAPH_UNIQUE_LOCK lk(mutex_);
             cv_.wait_for(lk, std::chrono::milliseconds(config_->primary_thread_empty_interval_));
@@ -132,7 +132,7 @@ protected:
     CVoid pushTask(UTask&& task) {
         while (!(primary_queue_.tryPush(std::move(task))
                  || secondary_queue_.tryPush(std::move(task)))) {
-            std::this_thread::yield();
+            CGRAPH_YIELD();
         }
         cur_empty_epoch_ = 0;
         cv_.notify_one();
