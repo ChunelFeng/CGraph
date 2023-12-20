@@ -457,7 +457,7 @@ CStatus GElement::buildRelation(GElementRelation& relation) {
 }
 
 
-CBool GElement::isSerializable() {
+CBool GElement::isSerializable() const {
     return true;
 }
 

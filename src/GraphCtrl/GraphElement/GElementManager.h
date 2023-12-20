@@ -18,7 +18,7 @@ CGRAPH_NAMESPACE_BEGIN
 class GElementManager : public GElementObject,
                         public GraphManager<GElement> {
 protected:
-    explicit GElementManager();
+    explicit GElementManager() = default;
     ~GElementManager() override;
     CGRAPH_NO_ALLOWED_COPY(GElementManager);
 
@@ -102,9 +102,9 @@ protected:
 
 private:
     GSortedGElementPtrSet manager_elements_;                    // 保存节点信息的内容
-    GEnginePtr engine_ = nullptr;                               // 执行引擎
-    GEngineType engine_type_ = GEngineType::DYNAMIC;            // 引擎执行方式
-    UThreadPoolPtr thread_pool_ = nullptr;                      // 线程池
+    GEnginePtr engine_ { nullptr };                             // 执行引擎
+    GEngineType engine_type_ { GEngineType::DYNAMIC };          // 引擎执行方式
+    UThreadPoolPtr thread_pool_ { nullptr };                    // 线程池
     CBool auto_check_enable_ = true;                            // 是否自动实现后校验逻辑
 
     friend class GPipeline;

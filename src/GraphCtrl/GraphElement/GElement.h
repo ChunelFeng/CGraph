@@ -357,7 +357,7 @@ private:
      * 判断当前元素，是否可以线性执行。默认返回true
      * @return
      */
-    virtual CBool isSerializable();
+    virtual CBool isSerializable() const;
 
     /**
      * 弹出一个最后一个切面
@@ -403,7 +403,7 @@ private:
     GElementParamMap local_params_;                                           // 用于记录当前element的内部参数
     GAspectManagerPtr aspect_manager_ { nullptr };                            // 整体流程的切面管理类
     UThreadPoolPtr thread_pool_ { nullptr };                                  // 用于执行的线程池信息
-    GPerfInfo* perf_info_ = nullptr;                                          // 用于perf的信息
+    GPerfInfo* perf_info_ { nullptr };                                        // 用于perf的信息
     CULong trigger_times_ { 0 };                                              // 被触发的次数信息（loop执行n次，算触发1次）
 
     /** 图相关信息 */
@@ -446,6 +446,7 @@ private:
 
 using GElementRef = GElement &;
 using GElementPtr = GElement *;
+using GElementCPtr = const GElement *;
 using GElementPPtr = GElementPtr *;
 using GElementPtrArr = std::vector<GElementPtr>;
 using GElementPtrSet = std::set<GElementPtr>;

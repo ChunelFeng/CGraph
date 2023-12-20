@@ -90,7 +90,7 @@ CIndex GMultiCondition<type>::choose() {
 
 
 template<GMultiConditionType type>
-CBool GMultiCondition<type>::isSerializable() {
+CBool GMultiCondition<type>::isSerializable() const {
     if (GMultiConditionType::PARALLEL == type && group_elements_arr_.size() > 1) {
         /**
          * 如果是PARALLEL模式的话，并且其中的元素个数大于1，则一定不可以串行执行

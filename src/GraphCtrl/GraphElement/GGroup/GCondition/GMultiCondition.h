@@ -35,7 +35,7 @@ private:
 
     CIndex choose() final;
 
-    CBool isSerializable() override;
+    CBool isSerializable() const override;
 
     friend class GPipeline;
     friend class UAllocator;

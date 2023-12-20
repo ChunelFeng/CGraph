@@ -37,7 +37,7 @@ private:
 
     CVoid dump(std::ostream& oss) final;
 
-    CBool isSerializable() final;
+    CBool isSerializable() const final;
 
     CStatus addManagers(GParamManagerPtr paramManager,
                         GEventManagerPtr eventManager) final;

@@ -26,7 +26,7 @@ protected:
      */
     virtual CStatus addElement(GElementPtr element) = 0;
 
-    CBool isSerializable() override;
+    CBool isSerializable() const override;
 
 private:
     explicit GGroup();

@@ -100,7 +100,7 @@ CVoid GRegion::dump(std::ostream& oss) {
 }
 
 
-CBool GRegion::isSerializable() {
+CBool GRegion::isSerializable() const {
     if (nullptr == manager_) {
         return false;
     }

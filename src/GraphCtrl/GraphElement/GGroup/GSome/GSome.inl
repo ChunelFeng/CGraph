@@ -80,7 +80,7 @@ CStatus GSome<TriggerNum>::run()  {
 
 
 template<CInt TriggerNum>
-CBool GSome<TriggerNum>::isSerializable() {
+CBool GSome<TriggerNum>::isSerializable() const {
     return false;    // 情况较为复杂，默认不可以
 }
 

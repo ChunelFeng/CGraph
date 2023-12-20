@@ -26,7 +26,7 @@ protected:
 
     CStatus run() final;
 
-    CBool isSerializable() final;
+    CBool isSerializable() const final;
 
     CVoid dump(std::ostream& oss) final;
 

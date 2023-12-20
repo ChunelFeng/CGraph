@@ -11,11 +11,6 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-GElementManager::GElementManager() {
-    engine_ = nullptr;
-}
-
-
 GElementManager::~GElementManager() {
     /**
      * manager中的节点，在析构的时候不需要释放。

@@ -69,7 +69,7 @@ CVoid GGroup::dumpGroupLabelEnd(std::ostream& oss) {
 }
 
 
-CBool GGroup::isSerializable() {
+CBool GGroup::isSerializable() const {
     /**
      * 针对group的情况，应该是所有在其中的element 都是可以串行的，才认定为可串行
      * 但是在 region和 multiCondition中，有针对性的判断
@@ -89,9 +89,9 @@ CStatus GGroup::addManagers(GParamManagerPtr paramManager,
 
     this->setGParamManager(paramManager);
     this->setGEventManager(eventManager);
-    for (auto* cur : group_elements_arr_) {
-        CGRAPH_ASSERT_NOT_NULL(cur)
-        status += cur->addManagers(paramManager, eventManager);
+    for (GElementPtr element : group_elements_arr_) {
+        CGRAPH_ASSERT_NOT_NULL(element)
+        status += element->addManagers(paramManager, eventManager);
     }
 
     CGRAPH_FUNCTION_END

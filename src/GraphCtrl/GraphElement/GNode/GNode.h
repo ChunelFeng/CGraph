@@ -36,7 +36,7 @@ protected:
     CStatus spawn(const UTaskGroup& tasks, CMSec ttl = CGRAPH_MAX_BLOCK_TTL);
 
 private:
-    GNodeType node_type_;                    // 节点类型
+    GNodeType node_type_ { GNodeType::BASIC };                    // 节点类型
 };
 
 using GNodePtr = GNode *;
