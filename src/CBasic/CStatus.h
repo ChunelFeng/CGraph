@@ -26,7 +26,6 @@ CGRAPH_INTERNAL_NAMESPACE_BEGIN
 static const int STATUS_OK = 0;                                 /** 正常流程返回值 */
 static const int STATUS_ERR = -1;                               /** 异常流程返回值 */
 static const int STATUS_CRASH = -996;                           /** 异常流程返回值 */
-static const char* STATUS_ERROR_INFO_CONNECTOR = " && ";        /** 多异常信息连接符号 */
 
 class CSTATUS {
 public:
@@ -47,7 +46,7 @@ public:
     }
 
     CSTATUS(const CSTATUS &status) {
-        if (status.isOK()) {
+        if (status.error_code_ == error_code_) {
             return;
         }
 
@@ -57,7 +56,7 @@ public:
     }
 
     CSTATUS(const CSTATUS &&status) noexcept {
-        if (status.isOK()) {
+        if (status.error_code_ == error_code_) {
             return;
         }
 

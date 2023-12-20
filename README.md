@@ -37,43 +37,10 @@
 * [【B站视频】CGraph 应用篇](https://www.bilibili.com/video/BV1B84y1D7Hs) <br>
 * [【B站视频】CGraph 分享篇](https://www.bilibili.com/video/BV1dh4y1i78u) <br>
 
-## 二. 编译说明
-* 本工程支持`MacOS`、`Linux`、`Windows`和`Android`系统，无任何第三方依赖。默认使用C++11版本，推荐使用C++17版本，暂不支持C++11以下的版本
+本工程使用纯C++11标准库编写，无任何第三方依赖。兼容`MacOS`、`Linux`、`Windows`和`Android`系统，支持通过 `CLion`、`VSCode`、`Xcode`、`Visual Studio`、`Code::Blocks`、`Qt Creator`等多款IDE进行本地编译和二次开发，具体编译方式请参考 [CGraph 编译说明](https://github.com/ChunelFeng/CGraph/blob/main/COMPILE.md )。
 
-* 使用`CLion`(推荐)作为IDE的开发者，打开`CMakeLists.txt`文件作为工程，即可编译通过
 
-* Windows环境中，使用`Visual Studio`(2013版或以上版本)作为IDE的开发者，安装cmake之后，输入以下指令，即可生成`CGraph.sln`文件
-  ```shell
-  $ git clone https://github.com/ChunelFeng/CGraph.git
-  $ cd CGraph
-  $ cmake . -Bbuild    # 在 build 文件夹下，生成对应的 CGraph.sln 文件
-  ```
-
-* MacOS环境中，使用`Xcode`作为IDE的开发者，安装cmake之后，输入以下指令，即可生成`CGraph.xcodeproj`文件
-  ```shell
-  $ git clone https://github.com/ChunelFeng/CGraph.git
-  $ cd CGraph
-  $ mkdir build && cd build
-  $ cmake .. -G Xcode    # 在 build 文件夹下，生成对应的 CGraph.xcodeproj 文件
-  ```
-
-* Linux环境开发者，在命令行模式下，输入以下指令，即可编译通过
-  ```shell
-  $ git clone https://github.com/ChunelFeng/CGraph.git
-  $ cd CGraph
-  $ cmake . -Bbuild
-  $ cd build
-  $ make -j8
-  ```
-
-* 提供online版本的编译调试环境，点击进入页面：[CGraph env online](https://gitpod.io/#/github.com/ChunelFeng/CGraph) ，通过github账号登录。进入后，输入以下指令，即可编译通过，并查看执行结果
-  ```shell
-  $ sudo apt-get install cmake -y          # 安装cmake
-  $ ./CGraph-build.sh                      # 编译CGraph工程，生成的内容在同级/build/文件夹中
-  $ ./build/tutorial/T00-HelloCGraph       # 运行第一个实例程序，并且在终端输出 Hello, CGraph.
-  ```
-
-## 三. 使用Demo
+## 二. 使用Demo
 
 #### MyNode.h
 ```cpp
@@ -127,7 +94,7 @@ int main() {
 <br>
 如上图所示，图结构执行的时候，首先执行`a`节点。`a`节点执行完毕后，并行执行`b`和`c`节点。`b`和`c`节点全部执行完毕后，再执行`d`节点。
 
-## 四. 推荐阅读
+## 三. 推荐阅读
 
 * [纯序员给你介绍图化框架的简单实现——执行逻辑](http://www.chunel.cn/archives/cgraph-run-introduce)
 * [纯序员给你介绍图化框架的简单实现——循环逻辑](http://www.chunel.cn/archives/cgraph-loop-introduce)
@@ -155,7 +122,7 @@ int main() {
 * [一文带你了解练习时长两年半的CGraph](http://www.chunel.cn/archives/cgraph-kunanniversary-introduce)
   <br><br>
 
-## 五. 关联项目
+## 四. 关联项目
 
 * [GraphANNS](https://github.com/whenever5225/GraphANNS) : Graph-based Approximate Nearest Neighbor Search Working off CGraph
 * [CThreadPool](https://github.com/ChunelFeng/CThreadPool) : 一个简单好用、功能强大、性能优异、跨平台的C++线程池
