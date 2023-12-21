@@ -12,8 +12,8 @@ CGRAPH_NAMESPACE_BEGIN
 
 CStatus GEventManager::init() {
     CGRAPH_FUNCTION_BEGIN
-    for (auto iter : events_map_) {
-        status += (iter.second)->init();
+    for (auto& event : events_map_) {
+        status += (event.second)->init();
     }
     CGRAPH_FUNCTION_END
 }
@@ -21,8 +21,8 @@ CStatus GEventManager::init() {
 
 CStatus GEventManager::destroy() {
     CGRAPH_FUNCTION_BEGIN
-    for (auto iter : events_map_) {
-        status += (iter.second)->destroy();
+    for (auto& event : events_map_) {
+        status += (event.second)->destroy();
     }
     CGRAPH_FUNCTION_END
 }
@@ -30,8 +30,8 @@ CStatus GEventManager::destroy() {
 
 CStatus GEventManager::clear() {
     CGRAPH_FUNCTION_BEGIN
-    for (auto iter : events_map_) {
-        CGRAPH_DELETE_PTR(iter.second)
+    for (auto& event : events_map_) {
+        CGRAPH_DELETE_PTR(event.second)
     }
 
     events_map_.clear();
@@ -53,11 +53,11 @@ CStatus GEventManager::trigger(const std::string &key, GEventType type) {
 }
 
 
-GEventObject* GEventManager::setThreadPool(UThreadPoolPtr ptr) {
+GEventObjectPtr GEventManager::setThreadPool(UThreadPoolPtr ptr) {
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr)
-    for (auto& iter : events_map_) {
-        CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(iter.second)
-        (iter.second)->setThreadPool(ptr);
+    for (auto& event : events_map_) {
+        CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(event.second)
+        (event.second)->setThreadPool(ptr);
     }
 
     return this;
@@ -66,6 +66,15 @@ GEventObject* GEventManager::setThreadPool(UThreadPoolPtr ptr) {
 
 GEventManager::~GEventManager() {
     clear();
+}
+
+
+CStatus GEventManager::reset() {
+    CGRAPH_FUNCTION_BEGIN
+    for (auto& event : events_map_) {
+        event.second->wait();
+    }
+    CGRAPH_FUNCTION_END
 }
 
 CGRAPH_NAMESPACE_END

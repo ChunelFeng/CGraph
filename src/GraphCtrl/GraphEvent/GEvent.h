@@ -9,7 +9,9 @@
 #ifndef CGRAPH_GEVENT_H
 #define CGRAPH_GEVENT_H
 
+#include <vector>
 #include <mutex>
+#include <future>
 
 #include "GEventObject.h"
 #include "GEventDefine.h"
@@ -34,6 +36,15 @@ private:
      * @return
      */
     CStatus process(GEventType type);
+
+    /**
+     * 执行结束后，清理所有异步的event逻辑
+     * @return
+     */
+    CVoid wait();
+
+private:
+    std::vector<std::future<CVoid>> async_futures_;    // 异步执行的逻辑集合，用于确保每次pipeline执行的时候，异步的event不会被带入下一次逻辑
 
     friend class GEventManager;
 };

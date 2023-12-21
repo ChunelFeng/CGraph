@@ -40,6 +40,8 @@ protected:
     GEventParamPtr param_ = nullptr;                         // 事件参数信息
 };
 
+using GEventObjectPtr = GEventObject *;
+
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GEVENTOBJECT_H

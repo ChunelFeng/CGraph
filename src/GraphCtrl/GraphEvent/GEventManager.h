@@ -48,11 +48,13 @@ protected:
 
     CStatus clear() final;
 
-    GEventObject* setThreadPool(UThreadPoolPtr ptr) override;
+    GEventObjectPtr setThreadPool(UThreadPoolPtr ptr) override;
 
     explicit GEventManager() = default;
 
     ~GEventManager() override;
+
+    CStatus reset() override;
 
     CGRAPH_NO_ALLOWED_COPY(GEventManager)
 

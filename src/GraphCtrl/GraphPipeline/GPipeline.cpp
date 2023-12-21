@@ -57,7 +57,8 @@ CStatus GPipeline::run() {
      * 2. 将所有的 GParam 设置为初始值
      * 3. 执行dag逻辑
      * 4. 将所有 GElement 的状态恢复为 NORMAL
-     * 5. 将所有的 GParam 复原
+     * 5. 等到所有异步事件执行结束
+     * 6. 将所有的 GParam 复原
      */
     status += repository_.setup();
     status += param_manager_->setup();
@@ -65,6 +66,7 @@ CStatus GPipeline::run() {
 
     status = element_manager_->run();
     status += repository_.reset();    // 等异步的逻辑执行，并且获取异步执行的结果信息
+    status += event_manager_->reset();    // 所有的事件（特指异步事件）执行结束
     param_manager_->resetWithStatus(status);
     CGRAPH_FUNCTION_END
 }
