@@ -45,17 +45,27 @@ CStatus UThreadPool::init() {
         CGRAPH_FUNCTION_END
     }
 
-    monitor_thread_ = std::move(std::thread(&UThreadPool::monitor, this));
+    if (config_.monitor_enable_) {
+        // 默认不开启监控线程
+        monitor_thread_ = std::move(std::thread(&UThreadPool::monitor, this));
+    }
     thread_record_map_.clear();
     primary_threads_.reserve(config_.default_thread_size_);
     for (int i = 0; i < config_.default_thread_size_; i++) {
-        auto ptr = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary);    // 创建核心线程数
-        ptr->setThreadPoolInfo(i, &task_queue_, &primary_threads_, &config_);
-        status += ptr->init();
-
+        auto* pt = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary);    // 创建核心线程数
+        pt->setThreadPoolInfo(i, &task_queue_, &primary_threads_, &config_);
         // 记录线程和匹配id信息
-        thread_record_map_[(CSize)std::hash<std::thread::id>{}(ptr->thread_.get_id())] = i;
-        primary_threads_.emplace_back(ptr);
+        thread_record_map_[(CSize)std::hash<std::thread::id>{}(pt->thread_.get_id())] = i;
+        primary_threads_.emplace_back(pt);
+    }
+
+    /**
+     * 等待所有thread 设置完毕之后，再进行 init()，
+     * 避免在个别的平台上，可能出现 thread竞争访问其他线程、并且导致异常的情况
+     * 参考： https://github.com/ChunelFeng/CGraph/issues/309
+     */
+    for (auto* pt : primary_threads_) {
+        status += pt->init();
     }
     CGRAPH_FUNCTION_CHECK_STATUS
 

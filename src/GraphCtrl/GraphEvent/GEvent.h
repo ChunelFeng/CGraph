@@ -10,7 +10,6 @@
 #define CGRAPH_GEVENT_H
 
 #include <vector>
-#include <mutex>
 #include <future>
 
 #include "GEventObject.h"
@@ -27,24 +26,37 @@ protected:
      */
     virtual CVoid trigger(GEventParamPtr param) = 0;
 
+    explicit GEvent();
+
+    ~GEvent() override;
+
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
 
 private:
+    CStatus init() final;
+
+    CStatus destroy() final;
+
     /**
      * 处理信号事件
      * @param type
+     * @param strategy
      * @return
      */
-    CStatus process(GEventType type);
+    CStatus process(GEventType type, GEventAsyncStrategy strategy);
 
     /**
-     * 执行结束后，清理所有异步的event逻辑
+     * 等待并清理所有异步的event逻辑
+     * @param strategy
      * @return
      */
-    CVoid wait();
+    CVoid asyncWait(GEventAsyncStrategy strategy);
 
 private:
-    std::vector<std::future<CVoid>> async_futures_;    // 异步执行的逻辑集合，用于确保每次pipeline执行的时候，异步的event不会被带入下一次逻辑
+    CBool is_init_ { false };                                        // 是否初始化
+    std::vector<std::future<CVoid>> async_run_finish_futures_ {};    // 异步执行的逻辑集合（pipeline run结束的时候）
+    std::vector<std::future<CVoid>> async_destroy_futures_ {};       // 异步执行的逻辑集合（pipeline destroy 的时候）
+    GEventParamPtr param_ { nullptr };                               // 事件参数信息
 
     friend class GEventManager;
 };

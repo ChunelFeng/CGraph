@@ -37,9 +37,10 @@ public:
      * 触发事件
      * @param key
      * @param type
+     * @param strategy, 仅当异步的时候生效
      * @return
      */
-    CStatus trigger(const std::string &key, GEventType type);
+    CStatus trigger(const std::string &key, GEventType type, GEventAsyncStrategy strategy);
 
 protected:
     CStatus init() override;

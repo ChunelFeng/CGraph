@@ -266,7 +266,7 @@ int main() {
 
 [2023.02.22 - v2.3.4 - Chunel]
 * 优化Windows系统下调度机制
-* 优化`param`机制和`event`机制
+* 优化`param`机制和`event`(事件)机制
 
 [2023.03.25 - v2.4.0 - [woodx](https://github.com/woodx9), Chunel]
 * 提供可运行的docker环境，和构建docker环境的dockerfile文件
@@ -303,8 +303,9 @@ int main() {
 * 提供`proto`定义文件
 * 添加`mutable`(异变)功能，提供依赖关系注册语法糖
 
-[2023.12.03 - v2.5.4 - Chunel]
+[2023.12.23 - v2.5.4 - Chunel]
 * 提供`test`内容，包含性能和功能方面的测试用例
+* 优化`event`(事件)机制，支持异步等待功能
 
 </details>
 

@@ -12,8 +12,8 @@ CGRAPH_NAMESPACE_BEGIN
 
 CStatus GEventManager::init() {
     CGRAPH_FUNCTION_BEGIN
-    for (auto& event : events_map_) {
-        status += (event.second)->init();
+    for (auto& iter : events_map_) {
+        status += (iter.second)->init();
     }
     CGRAPH_FUNCTION_END
 }
@@ -21,8 +21,8 @@ CStatus GEventManager::init() {
 
 CStatus GEventManager::destroy() {
     CGRAPH_FUNCTION_BEGIN
-    for (auto& event : events_map_) {
-        status += (event.second)->destroy();
+    for (auto& iter : events_map_) {
+        status += (iter.second)->destroy();
     }
     CGRAPH_FUNCTION_END
 }
@@ -30,8 +30,8 @@ CStatus GEventManager::destroy() {
 
 CStatus GEventManager::clear() {
     CGRAPH_FUNCTION_BEGIN
-    for (auto& event : events_map_) {
-        CGRAPH_DELETE_PTR(event.second)
+    for (auto& iter : events_map_) {
+        CGRAPH_DELETE_PTR(iter.second)
     }
 
     events_map_.clear();
@@ -39,7 +39,7 @@ CStatus GEventManager::clear() {
 }
 
 
-CStatus GEventManager::trigger(const std::string &key, GEventType type) {
+CStatus GEventManager::trigger(const std::string &key, GEventType type, GEventAsyncStrategy strategy) {
     CGRAPH_FUNCTION_BEGIN
     auto result = events_map_.find(key);
     if (events_map_.end() == result) {
@@ -48,16 +48,16 @@ CStatus GEventManager::trigger(const std::string &key, GEventType type) {
 
     auto event = result->second;
     CGRAPH_ASSERT_NOT_NULL(event)
-    status = event->process(type);
+    status = event->process(type, strategy);
     CGRAPH_FUNCTION_END
 }
 
 
 GEventObjectPtr GEventManager::setThreadPool(UThreadPoolPtr ptr) {
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr)
-    for (auto& event : events_map_) {
-        CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(event.second)
-        (event.second)->setThreadPool(ptr);
+    for (auto& iter : events_map_) {
+        CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(iter.second)
+        (iter.second)->setThreadPool(ptr);
     }
 
     return this;
@@ -71,8 +71,8 @@ GEventManager::~GEventManager() {
 
 CStatus GEventManager::reset() {
     CGRAPH_FUNCTION_BEGIN
-    for (auto& event : events_map_) {
-        event.second->wait();
+    for (auto& iter : events_map_) {
+        iter.second->asyncWait(GEventAsyncStrategy::PIPELINE_RUN_FINISH);
     }
     CGRAPH_FUNCTION_END
 }

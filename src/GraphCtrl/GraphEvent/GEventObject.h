@@ -17,14 +17,6 @@ CGRAPH_NAMESPACE_BEGIN
 class GEventObject : public GraphObject,
                      public CDescInfo {
 protected:
-    explicit GEventObject() {
-        session_ = URandom<>::generateSession(CGRAPH_STR_EVENT);
-    }
-
-    ~GEventObject() override {
-        CGRAPH_DELETE_PTR(param_)
-    }
-
     CStatus run() final {
         CGRAPH_NO_SUPPORT
     }
@@ -37,7 +29,6 @@ protected:
 protected:
     UThreadPoolPtr thread_pool_ = nullptr;                   // 线程池类
     GParamManagerPtr param_manager_ = nullptr;               // GParam参数管理类
-    GEventParamPtr param_ = nullptr;                         // 事件参数信息
 };
 
 using GEventObjectPtr = GEventObject *;

@@ -31,14 +31,15 @@ CGRAPH_NAMESPACE_BEGIN
      * @param type
      * @return
      * @notice 返回值仅表示是否触发成功，不表示事件是否执行成功
-     */                                                                                 \
-    CStatus notify(const std::string& key, GEventType type) {                           \
-        CGRAPH_FUNCTION_BEGIN                                                           \
-        CGRAPH_ASSERT_NOT_NULL(this->event_manager_)                                    \
-        status = this->event_manager_->trigger(key, type);                              \
-        CGRAPH_FUNCTION_END                                                             \
-    }                                                                                   \
-                                                                                        \
+     */                                                                                           \
+    CStatus notify(const std::string& key, GEventType type,                                       \
+                   GEventAsyncStrategy strategy = GEventAsyncStrategy::PIPELINE_RUN_FINISH) {     \
+        CGRAPH_FUNCTION_BEGIN                                                                     \
+        CGRAPH_ASSERT_NOT_NULL(this->event_manager_)                                              \
+        status = this->event_manager_->trigger(key, type, strategy);                              \
+        CGRAPH_FUNCTION_END                                                                       \
+    }                                                                                             \
+                                                                                                  \
 
 
 #define CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER_WITH_MEMBER                               \
