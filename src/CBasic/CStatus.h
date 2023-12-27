@@ -148,6 +148,29 @@ public:
         return STATUS_CRASH == error_code_;
     }
 
+    /**
+     * 设置异常信息
+     * @param code
+     * @param info
+     * @return
+     */
+    CSTATUS* setInfo(int code, const std::string& info) {
+        error_code_ = code;
+        error_info_ = (STATUS_OK == error_code_) ? CGRAPH_EMPTY : info;
+        return this;
+    }
+
+    /**
+     * 设置异常信息
+     * @param info
+     * @return
+     */
+    CSTATUS* setErrorInfo(const std::string& info) {
+        error_code_ = STATUS_ERR;
+        error_info_ = info;
+        return this;
+    }
+
 private:
     int error_code_ = STATUS_OK;                     // 错误码信息
     std::string error_info_;                         // 错误信息描述
