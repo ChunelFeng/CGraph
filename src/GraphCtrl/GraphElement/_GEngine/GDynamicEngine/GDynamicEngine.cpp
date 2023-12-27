@@ -57,7 +57,7 @@ CStatus GDynamicEngine::afterRunCheck() {
          * 纯并行度逻辑，肯定会所有都跑一遍，并且等待全部结束，
          * 故，不需要判断。
          */
-        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(run_element_size_.load(std::memory_order_consume) != total_element_arr_.size(),    \
+        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(run_element_size_.load(std::memory_order_acquire) != total_element_arr_.size(),    \
                                             "dynamic engine run element size not match...")
         for (GElementPtr element : total_element_arr_) {
             CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!element->done_, "dynamic engine run check failed...")
@@ -84,7 +84,7 @@ CVoid GDynamicEngine::asyncRunAndWait() {
 
 CVoid GDynamicEngine::beforeRun() {
     finished_end_size_ = 0;
-    run_element_size_ = 0;
+    run_element_size_.store(0, std::memory_order_release);
     cur_status_.reset();
     for (GElementPtr element : total_element_arr_) {
         element->beforeRun();
@@ -119,7 +119,7 @@ CStatus GDynamicEngine::process(GElementPtr element, CBool affinity) {
 
 CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     element->done_ = true;
-    run_element_size_++;
+    run_element_size_.fetch_add(1, std::memory_order_release);
 
     std::vector<GElementPtr> ready;    // 表示可以执行的列表信息
     for (auto* cur : element->run_before_) {

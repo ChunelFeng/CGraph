@@ -100,7 +100,7 @@ GElementPtr GElement::setTimeout(CMSec timeout, GElementTimeoutStrategy strategy
 GElementRef GElement::operator--(int) noexcept {
     try {
         this->setVisible(true);
-    } catch (const CException& ex) {
+    } catch (const CException&) {
         CGRAPH_ECHO("[warning] default set visible failed.");
     }
 
@@ -129,7 +129,7 @@ GElementRef GElement::operator&(GElementPtr element) {
 GElement& GElement::operator*(CSize loop) noexcept {
     try {
         this->setLoop(loop);
-    } catch (const CException& ex) {
+    } catch (const CException&) {
         CGRAPH_ECHO("[warning] default set loop failed.");
     }
 
@@ -138,7 +138,7 @@ GElement& GElement::operator*(CSize loop) noexcept {
 
 
 CBool GElement::isRunnable() const {
-    return 0 >= this->left_depend_.load(std::memory_order_consume) && !this->done_;
+    return 0 >= this->left_depend_.load(std::memory_order_acquire) && !this->done_;
 }
 
 
@@ -247,7 +247,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                 }
 
                 trigger_times_++;    // 记录实际上触发了多少次，而不是正式执行了多少次
-                for (CSize i = 0; i < this->loop_ && GElementState::NORMAL == cur_state_.load(std::memory_order_consume); i++) {
+                for (CSize i = 0; i < this->loop_ && GElementState::NORMAL == cur_state_.load(std::memory_order_acquire); i++) {
                     /** 执行带切面的run方法 */
                     status = doAspect(GAspectType::BEGIN_RUN);
                     CGRAPH_FUNCTION_CHECK_STATUS
@@ -319,10 +319,10 @@ CBool GElement::isTimeout() const {
      * 1. 如果当前节点超时，则认定为超时
      * 2. 如果当前节点所在的group超时，则也认定为超时
      */
-    CBool result = (GElementState::TIMEOUT == cur_state_.load(std::memory_order_consume));
+    CBool result = (GElementState::TIMEOUT == cur_state_.load(std::memory_order_acquire));
     GElementPtr belong = this->belong_;
     while (!result && belong) {
-        result = (GElementState::TIMEOUT == belong->cur_state_.load(std::memory_order_consume));
+        result = (GElementState::TIMEOUT == belong->cur_state_.load(std::memory_order_acquire));
         belong = belong->belong_;
     }
 
@@ -420,7 +420,7 @@ CVoid GElement::dumpPerfInfo(std::ostream& oss) {
 CVoid GElement::checkYield() {
     std::unique_lock<std::mutex> lk(yield_mutex_);
     this->yield_cv_.wait(lk, [this] {
-        return GElementState::YIELD != cur_state_.load(std::memory_order_consume);
+        return GElementState::YIELD != cur_state_.load(std::memory_order_acquire);
     });
 }
 
