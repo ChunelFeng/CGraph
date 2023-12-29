@@ -25,7 +25,10 @@ void test_functional_01() {
     status += pipeline->registerGElement<TestMaterialAdd1GNode>(&i, {g, h});
     status += pipeline->registerGElement<TestMaterialAdd1GNode>(&j, {h});
 
-    status = pipeline->process(1000000);
+    {
+        UTimeCounter counter;
+        status = pipeline->process(1000000);
+    }
     if (status.isErr()) {
         std::cout << status.getInfo() << std::endl;
     }
