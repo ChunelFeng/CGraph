@@ -35,7 +35,6 @@ CStatus GElementManager::init() {
         status = element->fatProcessor(CFunctionType::INIT);
         CGRAPH_FUNCTION_CHECK_STATUS
         element->is_init_ = true;
-        element->trigger_times_ = 0;
     }
 
     CGRAPH_FUNCTION_END
@@ -49,7 +48,6 @@ CStatus GElementManager::destroy() {
         status = element->fatProcessor(CFunctionType::DESTROY);
         CGRAPH_FUNCTION_CHECK_STATUS
         element->is_init_ = false;
-        element->trigger_times_ = 0;
     }
 
     CGRAPH_DELETE_PTR(engine_)

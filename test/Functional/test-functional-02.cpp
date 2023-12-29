@@ -6,8 +6,7 @@
 @Desc: 
 ***************************/
 
-
-#include "../_Materials/TestGNodes.h"
+#include "../_Materials/TestInclude.h"
 
 using namespace CGraph;
 
@@ -46,7 +45,7 @@ void test_functional_02() {
     status += pipeline->registerGElement<TestMaterialAdd1GNode>(&n, {l, cluster2}, "n");
 
     {
-        UTimeCounter counter;
+        UTimeCounter counter("test_functional_02");
         status = pipeline->process(10000);
     }
 

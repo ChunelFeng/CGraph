@@ -269,6 +269,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                 CGRAPH_FUNCTION_CHECK_STATUS
                 status = init();
                 doAspect(GAspectType::FINISH_INIT, status);
+                trigger_times_ = 0;
                 break;
             }
             case CFunctionType::DESTROY: {
@@ -276,6 +277,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                 CGRAPH_FUNCTION_CHECK_STATUS
                 status = destroy();
                 doAspect(GAspectType::FINISH_DESTROY, status);
+                trigger_times_ = 0;
                 break;
             }
             default:

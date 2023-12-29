@@ -6,7 +6,7 @@
 @Desc: 
 ***************************/
 
-#include "../_Materials/TestGNodes.h"
+#include "../_Materials/TestInclude.h"
 
 using namespace CGraph;
 
@@ -33,7 +33,7 @@ void test_performance_01() {
     status += pipeline->init();
 
     {
-        UTimeCounter counter;
+        UTimeCounter counter("test_performance_01");
         for (int t = 0; t < 500000; t++) {
             pipeline->run();
         }

@@ -9,11 +9,8 @@
 #ifndef CGRAPH_TESTGNODES_H
 #define CGRAPH_TESTGNODES_H
 
-#include <atomic>
+#include "TestCommonDefine.h"
 
-#include "CGraph.h"
-
-std::atomic<unsigned int> g_test_node_cnt = {0};
 class TestMaterialAdd1GNode : public CGraph::GNode {
 public:
     CStatus init() override {
