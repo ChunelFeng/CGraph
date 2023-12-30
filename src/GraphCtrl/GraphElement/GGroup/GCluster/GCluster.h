@@ -30,12 +30,6 @@ protected:
      */
     CSize getElementNum();
 
-    /**
-     * 获取绑定信息
-     * @return
-     */
-    CIndex getBindingIndex() const override;
-
 private:
     /**
      * 线程池中的运行函数，依次执行beforeRun，run和afterRun方法，

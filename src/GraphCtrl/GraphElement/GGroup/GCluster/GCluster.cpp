@@ -105,17 +105,6 @@ CBool GCluster::isDone() {
 }
 
 
-CIndex GCluster::getBindingIndex() const {
-    if (group_elements_arr_.empty()) {
-        // 防止未注入的情况发生
-        return CGRAPH_DEFAULT_BINDING_INDEX;
-    }
-
-    // 实际就是返回第一个元素的 binding index 值
-    return group_elements_arr_[0]->getBindingIndex();
-}
-
-
 CVoid GCluster::dump(std::ostream& oss) {
     dumpElement(oss);
     dumpGroupLabelBegin(oss);

@@ -157,12 +157,6 @@ protected:
     virtual CStatus prepareRun();
 
     /**
-     * 判断当前是否超时
-     * @return
-     */
-    CBool isTimeout() const;
-
-    /**
      * 是否持续进行
      * 默认为false，表示执行且仅执行一次
      * @return
@@ -202,18 +196,23 @@ protected:
     CIndex getThreadIndex();
 
     /**
+     * 判断当前是否超时
+     * @return
+     */
+    CBool isTimeout() const;
+
+    /**
      * 获取绑定线程id信息
      * @return
      * @notice 不同的group类型，获取 binding index 的方式不同
      */
-    virtual CIndex getBindingIndex() const;
+    CIndex getBindingIndex() const;
 
     /**
      * 获取当前节点的相关关系信息，包含前驱、后继、从属关系
-     * @param relation
      * @return
      */
-    CStatus buildRelation(GElementRelation& relation);
+    GElementRelation getRelation() const;
 
     CGRAPH_NO_ALLOWED_COPY(GElement);
 

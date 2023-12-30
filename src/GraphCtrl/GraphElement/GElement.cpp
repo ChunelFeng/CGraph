@@ -448,14 +448,13 @@ CIndex GElement::getBindingIndex() const {
 }
 
 
-CStatus GElement::buildRelation(GElementRelation& relation) {
-    CGRAPH_FUNCTION_BEGIN
-
+GElementRelation GElement::getRelation() const {
+    GElementRelation relation;
     relation.predecessors_ = this->dependence_;    // 前驱
     relation.successors_ = this->run_before_;    // 后继
     relation.belong_ = this->belong_;    // 从属信息
 
-    CGRAPH_FUNCTION_END
+    return relation;
 }
 
 
