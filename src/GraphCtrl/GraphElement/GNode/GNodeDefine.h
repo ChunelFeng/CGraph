@@ -30,7 +30,7 @@ enum class GNodeType {
  * 创建GCluster的时候，dependence为空
  * 创建GRegion的时候，dependence不为空。若为空，则表示可直接执行
  */
-struct GNodeInfo : public GraphObject {
+struct GNodeInfo : public CStruct {
     std::string name_;                                   // 名称
     CSize loop_ { CGRAPH_DEFAULT_LOOP_TIMES } ;          // 循环次数
     GElementPtrSet dependence_;                          // 依赖节点
@@ -49,11 +49,6 @@ struct GNodeInfo : public GraphObject {
         this->name_ = name;
         this->loop_ = loop;
         this->dependence_ = dependence;
-    }
-
-private:
-    CStatus run() override {
-        CGRAPH_NO_SUPPORT
     }
 };
 
