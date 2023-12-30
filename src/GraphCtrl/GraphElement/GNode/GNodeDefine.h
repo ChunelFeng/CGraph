@@ -18,10 +18,10 @@
 CGRAPH_NAMESPACE_BEGIN
 
 enum class GNodeType {
-    BASIC = 0,
-    IO = 1,
-    CPU = 2,
-    GPU = 3
+    BASIC = 0,          // 默认情况
+    IO = 1,             // IO节点
+    CPU = 2,            // CPU节点
+    GPU = 3,            // GPU节点
 };
 
 /**
