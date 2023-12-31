@@ -162,7 +162,7 @@ CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
     if (!isMutable()) {
         // 如果是 mutable的逻辑，则可以在 init之后，修改依赖关系
-        CGRAPH_ASSERT_INIT(false);
+        CGRAPH_ASSERT_INIT(false)
     }
 
     for (GElementPtr cur: elements) {
@@ -247,7 +247,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                 }
 
                 trigger_times_++;    // 记录实际上触发了多少次，而不是正式执行了多少次
-                for (CSize i = 0; i < this->loop_ && GElementState::NORMAL == cur_state_.load(std::memory_order_acquire); i++) {
+                for (CSize i = 0; i < this->loop_ && GElementState::NORMAL == this->getCurState(); i++) {
                     /** 执行带切面的run方法 */
                     status = doAspect(GAspectType::BEGIN_RUN);
                     CGRAPH_FUNCTION_CHECK_STATUS
@@ -438,7 +438,7 @@ GElementState GElement::getCurState() const {
      * 如果有超时逻辑的话，优先判断
      * 否则就是当前的状态
      */
-    GElementState state = this->isTimeout() ? GElementState::TIMEOUT : cur_state_.load(std::memory_order_acquire);
+    auto state = this->isTimeout() ? GElementState::TIMEOUT : cur_state_.load(std::memory_order_acquire);
     return state;
 }
 
