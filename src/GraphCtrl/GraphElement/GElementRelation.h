@@ -9,6 +9,8 @@
 #ifndef CGRAPH_GELEMENTRELATION_H
 #define CGRAPH_GELEMENTRELATION_H
 
+#include <set>
+
 #include "GElementObject.h"
 
 CGRAPH_NAMESPACE_BEGIN

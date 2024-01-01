@@ -72,9 +72,9 @@ private:
     ~GElementRepository() override;
 
 private:
-    GElementPtrSet elements_;                                    // 用于记录所有的element信息
-    GElementState cur_state_ = GElementState::CREATE;            // 当前状态信息
-    GElementPtrSet async_elements_;                              // 所有异步执行的逻辑，到后来一次性统一获取执行结果信息
+    GElementPtrSet elements_ {};                                    // 用于记录所有的element信息
+    GElementState cur_state_ { GElementState::CREATE };             // 当前状态信息
+    GElementPtrSet async_elements_ {};                              // 所有异步执行的逻辑，到后来一次性统一获取执行结果信息
 
     friend class GPipeline;
     friend class GPerf;

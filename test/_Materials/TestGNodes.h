@@ -9,7 +9,10 @@
 #ifndef CGRAPH_TESTGNODES_H
 #define CGRAPH_TESTGNODES_H
 
+#include <memory>
+
 #include "TestCommonDefine.h"
+#include "TestGParams.h"
 
 class TestMaterialAdd1GNode : public CGraph::GNode {
 public:
@@ -28,6 +31,23 @@ public:
         if (0 != g_test_node_cnt % 10000) {
             status.setErrorInfo("test node count is " + std::to_string(g_test_node_cnt.load()));
         }
+        return status;
+    }
+};
+
+
+class TestRecvMessageGNode : public CGraph::GNode {
+public:
+    CStatus run() override {
+        std::unique_ptr<TestGMessageParam> mp = nullptr;
+        CStatus status = CGRAPH_RECV_MPARAM_WITH_TIMEOUT(TestGMessageParam, g_test_message_key, mp, 1);
+        if (status.isErr()) {
+            CGraph::CGRAPH_ECHO("error message is : %s",  status.getInfo().c_str());
+            return status;
+        }
+
+        mp.get()->num_++;
+        CGRAPH_SEND_MPARAM(TestGMessageParam, g_test_message_key, mp, CGraph::GMessagePushStrategy::WAIT)
         return status;
     }
 };

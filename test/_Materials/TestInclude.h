@@ -12,5 +12,6 @@
 #include "TestCommonDefine.h"
 #include "TestGNodes.h"
 #include "TestGAspects.h"
+#include "TestGParams.h"
 
 #endif //CGRAPH_TESTINCLUDE_H
