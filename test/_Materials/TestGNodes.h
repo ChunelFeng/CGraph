@@ -40,9 +40,9 @@ class TestRecvMessageGNode : public CGraph::GNode {
 public:
     CStatus run() override {
         std::unique_ptr<TestGMessageParam> mp = nullptr;
-        CStatus status = CGRAPH_RECV_MPARAM_WITH_TIMEOUT(TestGMessageParam, g_test_message_key, mp, 1);
+        CStatus status = CGRAPH_RECV_MPARAM_WITH_TIMEOUT(TestGMessageParam, g_test_message_key, mp, 200);
         if (status.isErr()) {
-            CGraph::CGRAPH_ECHO("error message is : %s",  status.getInfo().c_str());
+            CGraph::CGRAPH_ECHO("error message is [%s]",  status.getInfo().c_str());
             return status;
         }
 
