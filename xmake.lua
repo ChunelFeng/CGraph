@@ -37,7 +37,12 @@ tutorial_list = {
         "T18-Event",
         "T19-Cancel",
         "T20-YieldResume",
-        "T21-MultiCondition"
+        "T21-MultiCondition",
+        "T22-Timeout",
+        "T23-Some",
+        "T24-Fence",
+        "T25-Coordinator",
+        "T26-Mutable"
 }
 
 -- add tutorial target one by one

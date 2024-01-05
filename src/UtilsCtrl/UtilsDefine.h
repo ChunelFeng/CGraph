@@ -69,7 +69,7 @@ CStatus __ASSERT_NOT_NULL(T t, Args... args) {
 template<typename T>
 CVoid __ASSERT_NOT_NULL_THROW_EXCEPTION(T t) {
     if (unlikely(nullptr == t)) {
-        CGRAPH_THROW_EXCEPTION("[CException] " + CGRAPH_INPUT_IS_NULL)
+        CGRAPH_THROW_EXCEPTION("[CException] " + std::string(CGRAPH_INPUT_IS_NULL))
     }
 }
 
