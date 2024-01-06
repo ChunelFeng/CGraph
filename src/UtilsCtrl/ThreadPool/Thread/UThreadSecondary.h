@@ -70,7 +70,7 @@ protected:
         if (popPoolTask(task)) {
             runTask(task);
         } else {
-            // 如果单词无法获取，则稍加等待
+            // 如果单次无法获取，则稍加等待
             waitRunTask(config_->queue_emtpy_interval_);
         }
     }

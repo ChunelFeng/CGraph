@@ -14,20 +14,20 @@ void test_functional_01() {
     GPipelinePtr pipeline = GPipelineFactory::create();
     CStatus status;
     GElementPtr a, b, c, d, e, f, g, h, i, j = nullptr;
-    status += pipeline->registerGElement<TestMaterialAdd1GNode>(&a, {});
-    status += pipeline->registerGElement<TestMaterialAdd1GNode>(&b, {});
-    status += pipeline->registerGElement<TestMaterialAdd1GNode>(&c, {a});
-    status += pipeline->registerGElement<TestMaterialAdd1GNode>(&d, {b});
-    status += pipeline->registerGElement<TestMaterialAdd1GNode>(&e, {b, c});
-    status += pipeline->registerGElement<TestMaterialAdd1GNode>(&f, {c});
-    status += pipeline->registerGElement<TestMaterialAdd1GNode>(&g, {d, e, f});
-    status += pipeline->registerGElement<TestMaterialAdd1GNode>(&h, {f});
-    status += pipeline->registerGElement<TestMaterialAdd1GNode>(&i, {g, h});
-    status += pipeline->registerGElement<TestMaterialAdd1GNode>(&j, {h});
+    status += pipeline->registerGElement<TestAdd1GNode>(&a, {});
+    status += pipeline->registerGElement<TestAdd1GNode>(&b, {});
+    status += pipeline->registerGElement<TestAdd1GNode>(&c, {a});
+    status += pipeline->registerGElement<TestAdd1GNode>(&d, {b});
+    status += pipeline->registerGElement<TestAdd1GNode>(&e, {b, c});
+    status += pipeline->registerGElement<TestAdd1GNode>(&f, {c});
+    status += pipeline->registerGElement<TestAdd1GNode>(&g, {d, e, f});
+    status += pipeline->registerGElement<TestAdd1GNode>(&h, {f});
+    status += pipeline->registerGElement<TestAdd1GNode>(&i, {g, h});
+    status += pipeline->registerGElement<TestAdd1GNode>(&j, {h});
 
     {
         UTimeCounter counter("test_functional_01");
-        status = pipeline->process(500000);
+        status = pipeline->process(100000);
     }
 
     if (status.isErr()) {

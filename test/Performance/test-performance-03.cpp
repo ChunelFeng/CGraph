@@ -27,12 +27,12 @@ void test_performance_03() {
     config.primary_thread_priority_ = 10;
     pipeline->setUniqueThreadPoolConfig(config);
     pipeline->setAutoCheck(false);
-    pipeline->registerGElement<TestMaterialAdd1GNode>(&a);
-    pipeline->registerGElement<TestMaterialAdd1GNode>(&b1, {a});
-    pipeline->registerGElement<TestMaterialAdd1GNode>(&b2, {b1});
-    pipeline->registerGElement<TestMaterialAdd1GNode>(&c1, {a});
-    pipeline->registerGElement<TestMaterialAdd1GNode>(&c2, {c1});
-    pipeline->registerGElement<TestMaterialAdd1GNode>(&d, {b2, c2});
+    pipeline->registerGElement<TestAdd1GNode>(&a);
+    pipeline->registerGElement<TestAdd1GNode>(&b1, {a});
+    pipeline->registerGElement<TestAdd1GNode>(&b2, {b1});
+    pipeline->registerGElement<TestAdd1GNode>(&c1, {a});
+    pipeline->registerGElement<TestAdd1GNode>(&c2, {c1});
+    pipeline->registerGElement<TestAdd1GNode>(&d, {b2, c2});
     status += pipeline->init();
 
     {

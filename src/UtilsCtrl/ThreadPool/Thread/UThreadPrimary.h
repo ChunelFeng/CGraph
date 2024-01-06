@@ -179,6 +179,7 @@ protected:
             return false;
         }
 
+
         /**
          * 窃取的时候，仅从相邻的primary线程中窃取
          * 待窃取相邻的数量，不能超过默认primary线程数
@@ -254,9 +255,6 @@ private:
     UWorkStealingQueue<UTask> secondary_queue_;                    // 第二个队列，用于减少触锁概率，提升性能
     std::vector<UThreadPrimary *>* pool_threads_;                  // 用于存放线程池中的线程信息
     std::vector<int> steal_targets_;                               // 被偷的目标信息
-
-    std::mutex mutex_;
-    std::condition_variable cv_;
 
     friend class UThreadPool;
     friend class UAllocator;

@@ -15,9 +15,9 @@ void test_performance_02() {
     GPipelinePtr pipeline = GPipelineFactory::create();
     CStatus status;
     GElementPtr arr[32];
-    pipeline->registerGElement<TestMaterialAdd1GNode>(&arr[0]);
+    pipeline->registerGElement<TestAdd1GNode>(&arr[0]);
     for (int i = 1; i < 32; i++) {
-        pipeline->registerGElement<TestMaterialAdd1GNode>(&arr[i], {arr[i - 1]});
+        pipeline->registerGElement<TestAdd1GNode>(&arr[i], {arr[i - 1]});
     }
     pipeline->makeSerial();
     pipeline->setAutoCheck(false);

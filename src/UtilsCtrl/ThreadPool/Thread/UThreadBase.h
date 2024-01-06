@@ -110,6 +110,7 @@ protected:
      */
     CVoid reset() {
         done_ = false;
+        cv_.notify_one();    // 防止主线程 wait时间过长，导致的结束缓慢问题
         if (thread_.joinable()) {
             thread_.join();    // 等待线程结束
         }
@@ -237,7 +238,10 @@ protected:
     UAtomicQueue<UTask>* pool_task_queue_;                             // 用于存放线程池中的普通任务
     UAtomicPriorityQueue<UTask>* pool_priority_task_queue_;            // 用于存放线程池中的包含优先级任务的队列，仅辅助线程可以执行
     UThreadPoolConfigPtr config_ = nullptr;                            // 配置参数信息
+
     std::thread thread_;                                               // 线程类
+    std::mutex mutex_;
+    std::condition_variable cv_;
 };
 
 CGRAPH_NAMESPACE_END

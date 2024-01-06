@@ -43,7 +43,9 @@ struct UThreadPoolConfig : public CStruct {
         }
 
         if (default_thread_size_ + secondary_thread_size_ > max_thread_size_) {
-            CGRAPH_RETURN_ERROR_STATUS("max thread size is less than default + secondary thread")
+            CGRAPH_RETURN_ERROR_STATUS("max thread size is less than default + secondary thread. ["     \
+            + std::to_string(max_thread_size_) + "<" + std::to_string(default_thread_size_) + "+"    \
+            + std::to_string(secondary_thread_size_)  + "]");
         }
 
         if (monitor_enable_ && monitor_span_ <= 0) {

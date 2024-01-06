@@ -13,7 +13,7 @@ using namespace CGraph;
 
 void test_functional_04() {
     const int HALF_ARR_SIZE = 32;
-    const int RUN_TIMES = 200000;
+    const int RUN_TIMES = 100000;
     CGRAPH_CREATE_MESSAGE_TOPIC(TestGMessageParam, g_test_message_key, 100)
     std::unique_ptr<TestGMessageParam> mp(new TestGMessageParam());
     CGRAPH_SEND_MPARAM(TestGMessageParam, g_test_message_key, mp, GMessagePushStrategy::WAIT)

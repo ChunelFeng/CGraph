@@ -27,7 +27,7 @@ void test_performance_01() {
     config.monitor_enable_ = false;    // 关闭扩缩容机制
     pipeline->setUniqueThreadPoolConfig(config);
     for (auto& i : arr) {
-        pipeline->registerGElement<TestMaterialAdd1GNode>(&i);
+        pipeline->registerGElement<TestAdd1GNode>(&i);
     }
     pipeline->setAutoCheck(false);
     status += pipeline->init();

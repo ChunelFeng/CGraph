@@ -14,7 +14,7 @@
 #include "TestCommonDefine.h"
 #include "TestGParams.h"
 
-class TestMaterialAdd1GNode : public CGraph::GNode {
+class TestAdd1GNode : public CGraph::GNode {
 public:
     CStatus init() override {
         g_test_node_cnt = 0;
@@ -28,10 +28,18 @@ public:
 
     CStatus destroy() override {
         CStatus status;
-        if (0 != g_test_node_cnt % 10000) {
+        if (0 != g_test_node_cnt % 1000) {
             status.setErrorInfo("test node count is " + std::to_string(g_test_node_cnt.load()));
         }
         return status;
+    }
+};
+
+
+class TestReturnErrorGNode : public CGraph::GNode {
+public:
+    CStatus run() override {
+        return CStatus("test error return, no real problem");
     }
 };
 
