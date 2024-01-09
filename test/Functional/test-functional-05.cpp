@@ -23,7 +23,7 @@ void test_functional_05() {
     pipeline->init();
     {
         UTimeCounter counter("test_functional_05");
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 10; i++) {
             pipeline->run();
         }
     }

@@ -28,7 +28,7 @@ public:
 
     CStatus destroy() override {
         CStatus status;
-        if (0 != g_test_node_cnt % 1000) {
+        if (0 != g_test_node_cnt % 1000 || 0 == g_test_node_cnt) {
             status.setErrorInfo("test node count is " + std::to_string(g_test_node_cnt.load()));
         }
         return status;

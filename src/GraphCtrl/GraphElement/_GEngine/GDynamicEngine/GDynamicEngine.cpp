@@ -94,10 +94,10 @@ CVoid GDynamicEngine::beforeRun() {
 
 CStatus GDynamicEngine::process(GElementPtr element, CBool affinity) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(cur_status_.isErr(), "current status error");
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(cur_status_.isErr(), "current status error")
 
     const auto& exec = [this, element] {
-        auto curStatus = element->fatProcessor(CFunctionType::RUN);
+        const CStatus& curStatus = element->fatProcessor(CFunctionType::RUN);
         if (unlikely(curStatus.isErr())) {
             // 当且仅当整体状正常，且当前状态异常的时候，进入赋值逻辑。确保不重复赋值
             cur_status_ = curStatus;
@@ -121,34 +121,28 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     element->done_ = true;
     run_element_size_.fetch_add(1, std::memory_order_release);
 
-    std::vector<GElementPtr> ready;    // 表示可以执行的列表信息
-    for (auto* cur : element->run_before_) {
-        if (--cur->left_depend_ <= 0) {
-            ready.emplace_back(cur);
-        }
-    }
-
-    for (auto& cur : ready) {
-        process(cur, cur == ready.back());
-    }
-
     if (!element->run_before_.empty() && cur_status_.isOK()) {
-        /**
-         * 为了减少进入下方lock的概率
-         * 如果不是尾部节点，或者没有执行错误，则不进入下面的逻辑
-         */
-        return;
-    }
+        std::vector<GElementPtr> ready;    // 表示可以执行的列表信息
+        for (auto* cur : element->run_before_) {
+            if (--cur->left_depend_ <= 0) {
+                ready.emplace_back(cur);
+            }
+        }
 
-    CGRAPH_LOCK_GUARD lock(lock_);
-    /**
-     * 满足一下条件之一，则通知wait函数停止等待
-     * 1，无后缀节点全部执行完毕
-     * 2，有节点执行状态异常
-     */
-    if ((element->run_before_.empty() && (++finished_end_size_ >= total_end_size_))
-        || cur_status_.isErr()) {
-        cv_.notify_one();
+        for (auto& cur : ready) {
+            process(cur, cur == ready.back());
+        }
+    } else {
+        CGRAPH_LOCK_GUARD lock(lock_);
+        /**
+         * 满足一下条件之一，则通知wait函数停止等待
+         * 1，无后缀节点全部执行完毕(在运行正常的情况下，只有无后缀节点执行完成的时候，才可能整体运行结束)
+         * 2，有节点执行状态异常
+         */
+        if ((element->run_before_.empty() && (++finished_end_size_ >= total_end_size_))
+            || cur_status_.isErr()) {
+            cv_.notify_one();
+        }
     }
 }
 
