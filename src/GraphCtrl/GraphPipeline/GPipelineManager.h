@@ -20,21 +20,21 @@ CGRAPH_NAMESPACE_BEGIN
 class GPipelineManager : public GPipelineObject,
                          public GraphManager<GPipeline> {
 public:
-    CStatus init() override;
+    CStatus init() final;
 
-    CStatus run() override;
+    CStatus run() final;
 
-    CStatus destroy() override;
+    CStatus destroy() final;
 
-    CStatus add(GPipelinePtr ptr) override;
+    CStatus add(GPipelinePtr ptr) final;
 
     CStatus clear() final;
 
-    CBool find(GPipelinePtr ptr) const override;
+    CBool find(GPipelinePtr ptr) const final;
 
-    CStatus remove(GPipelinePtr ptr) override;
+    CStatus remove(GPipelinePtr ptr) final;
 
-    CSize getSize() const override;
+    CSize getSize() const final;
 
     ~GPipelineManager() override;
 

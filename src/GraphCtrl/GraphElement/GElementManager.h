@@ -22,29 +22,29 @@ protected:
     ~GElementManager() override;
     CGRAPH_NO_ALLOWED_COPY(GElementManager);
 
-    CStatus init() override;
-    CStatus run() override;
-    CStatus destroy() override;
+    CStatus init() final;
+    CStatus run() final;
+    CStatus destroy() final;
 
     /**
      * 添加一个元素信息
      * @param element
      * @return
      */
-    CStatus add(GElementPtr element) override;
+    CStatus add(GElementPtr element) final;
 
     /**
      * 删除传入元素
      * @param element
      */
-    CStatus remove(GElementPtr element) override;
+    CStatus remove(GElementPtr element) final;
 
     /**
      * 查找传入元素
      * @param element
      * @return
      */
-    CBool find(GElementPtr element) const override;
+    CBool find(GElementPtr element) const final;
 
     /**
      * 清空信息

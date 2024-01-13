@@ -43,19 +43,19 @@ public:
     CStatus trigger(const std::string &key, GEventType type, GEventAsyncStrategy strategy);
 
 protected:
-    CStatus init() override;
+    CStatus init() final;
 
-    CStatus destroy() override;
+    CStatus destroy() final;
 
     CStatus clear() final;
 
-    GEventObjectPtr setThreadPool(UThreadPoolPtr ptr) override;
+    GEventObjectPtr setThreadPool(UThreadPoolPtr ptr) final;
 
     explicit GEventManager() = default;
 
     ~GEventManager() override;
 
-    CStatus reset() override;
+    CStatus reset() final;
 
     CGRAPH_NO_ALLOWED_COPY(GEventManager)
 

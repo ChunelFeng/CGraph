@@ -23,17 +23,17 @@ protected:
 
     GDaemonManager* setInterval(CMSec interval) override;
 
-    CStatus init() override;
+    CStatus init() final;
 
-    CStatus destroy() override;
+    CStatus destroy() final;
 
-    CStatus add(GDaemonPtr daemon) override;
+    CStatus add(GDaemonPtr daemon) final;
 
-    CStatus remove(GDaemonPtr daemon) override;
+    CStatus remove(GDaemonPtr daemon) final;
 
     CStatus clear() final;
 
-    CSize getSize() const override;
+    CSize getSize() const final;
 
     friend class GPipeline;
     friend class UAllocator;

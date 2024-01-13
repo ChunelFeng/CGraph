@@ -31,11 +31,11 @@ protected:
     CStatus reflect(const GAspectType& type,
                     const CStatus& curStatus = CStatus());
 
-    CStatus add(GAspectPtr aspect) override;
+    CStatus add(GAspectPtr aspect) final;
 
-    GAspectManager* setName(const std::string& name) override;
+    GAspectManager* setName(const std::string& name) final;
 
-    CSize getSize() const override;
+    CSize getSize() const final;
 
     CStatus clear() final;
 
@@ -45,9 +45,9 @@ protected:
      */
     CStatus popLast();
 
-    CVoidPtr setGParamManager(GParamManagerPtr pm) override;
+    CVoidPtr setGParamManager(GParamManagerPtr pm) final;
 
-    CVoidPtr setGEventManager(GEventManagerPtr em) override;
+    CVoidPtr setGEventManager(GEventManagerPtr em) final;
 
     CGRAPH_NO_ALLOWED_COPY(GAspectManager)
 

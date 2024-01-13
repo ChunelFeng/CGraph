@@ -59,8 +59,8 @@ public:
 protected:
     explicit GParamManager();
     ~GParamManager() override;
-    CStatus init() override;
-    CStatus destroy() override;
+    CStatus init() final;
+    CStatus destroy() final;
 
     CStatus clear() final;
 
