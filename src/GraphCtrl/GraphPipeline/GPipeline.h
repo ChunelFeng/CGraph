@@ -105,12 +105,14 @@ public:
     /**
      * 根据传入的info信息，创建node节点
      * @tparam T
+     * @tparam Args
      * @param info
+     * @param args
      * @return
      */
-    template<typename T,
+    template<typename T, typename ...Args,
             c_enable_if_t<std::is_base_of<GNode, T>::value, int> = 0>
-    GNodePtr createGNode(const GNodeInfo &info);
+    GNodePtr createGNode(const GNodeInfo &info, Args... args);
 
     /**
      * 根据传入的信息，创建Group信息

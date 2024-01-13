@@ -92,13 +92,14 @@ CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,
 }
 
 
-template<typename T,
+template<typename T, typename ...Args,
         c_enable_if_t<std::is_base_of<GNode, T>::value, int>>
-GNodePtr GPipeline::createGNode(const GNodeInfo &info) {
+GNodePtr GPipeline::createGNode(const GNodeInfo &info, Args... args) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
-    GNodePtr node = CGRAPH_SAFE_MALLOC_COBJECT(T)
+    GNodePtr node = new(std::nothrow) T(std::forward<Args &&>(args)...);
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(node)
     status = node->addElementInfo(info.dependence_, info.name_, info.loop_);
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
