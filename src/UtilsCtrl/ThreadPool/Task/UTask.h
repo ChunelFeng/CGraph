@@ -29,7 +29,7 @@ class UTask : public UThreadObject {
     struct TaskDerided : TaskBased {
         T func_;
         explicit TaskDerided(F&& func) : func_(std::forward<F>(func)) {}
-        CVoid call() override { func_(); }
+        CVoid call() final { func_(); }
     };
 
 public:
@@ -39,9 +39,8 @@ public:
         , priority_(priority) {}
 
     CVoid operator()() {
-        if (likely(impl_)) {
-            impl_->call();
-        }
+        // impl_ 理论上不可能为空
+        impl_ ? impl_->call() : throw CException("UTask inner function is nullptr");
     }
 
     UTask() = default;
