@@ -18,8 +18,9 @@ ELSEIF(UNIX)
 ELSEIF(WIN32)
     IF(MSVC)
         # windows平台，加入utf-8设置。否则无法通过编译
-        # 直接Download ZIP文件，导致无法编译通过问题的解决方法，参考：https://github.com/ChunelFeng/CGraph/issues/12
         add_definitions(/utf-8)
+        add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+        add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
         # 禁止几处warning级别提示
         add_compile_options(/wd4996)
