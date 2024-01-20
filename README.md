@@ -319,7 +319,7 @@ int main() {
 
 <p align="center"><img src="https://github.com/ChunelFeng/CGraph/blob/main/doc/image/HelloGithub%20Logo.gif"/></p>
 
-* 感谢《Github中文排行榜》介绍和推荐：[Github中文排行榜 增速榜-C++分类](https://github.com/GrowingGit/GitHub-Chinese-Top-Charts/blob/master/content/charts/growth/software/CPP.md)
+* 感谢《Github中文排行榜》介绍和推荐：[Github中文排行榜 总榜-C++分类](https://github.com/GrowingGit/GitHub-Chinese-Top-Charts/blob/master/content/charts/overall/software/CPP.md)
 
 <p align="center"><img src="https://github.com/ChunelFeng/CGraph/blob/main/doc/image/GrowingGit%20Logo.png"/></p>
 
@@ -335,7 +335,7 @@ int main() {
 <details>
 <summary><b>附录-3. 联系方式</b></summary>
 
-* 微信： ChunelFeng (欢迎扫描上方二维码，和项目主要作者成为好友。请简单备注个人信息^_^)
+* 微信： ChunelFeng (欢迎扫描上方二维码，添加作者为好友。请简单备注个人信息^_^)
 * 邮箱： chunel@foxmail.com
 * 源码： https://github.com/ChunelFeng/CGraph
 * 论坛： www.chunel.cn

@@ -163,7 +163,7 @@ CVoid GDynamicEngine::wait() {
 CVoid GDynamicEngine::parallelRunAll() {
     // 特殊判定：如果只有一个节点的话，则直接执行就好了
     if (1 == total_end_size_) {
-        cur_status_ = front_element_arr_[0]->fatProcessor(CFunctionType::RUN);
+        cur_status_ += front_element_arr_[0]->fatProcessor(CFunctionType::RUN);
         return;
     }
 
