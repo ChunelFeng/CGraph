@@ -435,6 +435,7 @@ private:
     friend class GEngine;
     friend class GStaticEngine;
     friend class GDynamicEngine;
+    friend class GTopoEngine;
     friend class GMaxParaOptimizer;
     friend class GElementRepository;
     friend class GPerf;

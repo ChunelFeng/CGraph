@@ -1,0 +1,37 @@
+/***************************
+@Author: Chunel
+@Contact: chunel@foxmail.com
+@File: GTopoEngine.h
+@Time: 2024/1/20 21:56
+@Desc: 
+***************************/
+
+#ifndef CGRAPH_GTOPOENGINE_H
+#define CGRAPH_GTOPOENGINE_H
+
+#include "../GEngine.h"
+#include <vector>
+
+CGRAPH_NAMESPACE_BEGIN
+
+
+class GTopoEngine : GEngine {
+protected:
+    explicit GTopoEngine() = default;
+
+    CStatus setup(const GSortedGElementPtrSet& elements) override;
+
+    CStatus run() override;
+
+    CStatus afterRunCheck() override;
+
+private:
+    GElementPtrArr topo_elements_ {};       // 拓扑排序后的
+
+    friend class UAllocator;
+    friend class GElementManager;
+};
+
+CGRAPH_NAMESPACE_END
+
+#endif //CGRAPH_GTOPOENGINE_H

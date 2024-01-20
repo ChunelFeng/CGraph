@@ -131,6 +131,7 @@ CStatus GElementManager::initEngine() {
     switch (engine_type_) {
         case GEngineType::STATIC : engine_ = CGRAPH_SAFE_MALLOC_COBJECT(GStaticEngine) break;
         case GEngineType::DYNAMIC : engine_ = CGRAPH_SAFE_MALLOC_COBJECT(GDynamicEngine) break;
+        case GEngineType::TOPO: engine_ = CGRAPH_SAFE_MALLOC_COBJECT(GTopoEngine) break;
         default: CGRAPH_RETURN_ERROR_STATUS("unknown engine type")
     }
 

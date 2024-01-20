@@ -13,5 +13,6 @@
 #include "GEngineDefine.h"
 #include "GStaticEngine/GStaticEngine.h"
 #include "GDynamicEngine/GDynamicEngine.h"
+#include "GTopoEngine/GTopoEngine.h"
 
 #endif //CGRAPH_GENGINEINCLUDE_H
