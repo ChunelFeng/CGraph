@@ -14,9 +14,6 @@ CGRAPH_NAMESPACE_BEGIN
 
 CStatus GTopoEngine::setup(const GSortedGElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(std::any_of(elements.begin(), elements.end(), [] (GElementCPtr element) {
-        return element->isGroup();
-    }), "topo engine no support group in pipeline")
 
     topo_elements_.clear();
     std::queue<GElementPtr> readyQueue;

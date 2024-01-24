@@ -16,7 +16,7 @@ GNode::GNode() : GElement() {
 }
 
 
-GNode* GNode::setType(const GNodeType& type) {
+GNodePtr GNode::setType(const GNodeType& type) {
     node_type_ = type;
     return this;
 }
