@@ -117,6 +117,7 @@ CStatus GPipeline::process(CSize runTimes) {
     CGRAPH_FUNCTION_END
 }
 
+
 CStatus GPipeline::registerGNode(GElementPPtr nodeRef, const GElementPtrSet &dependElements,
                                  const std::string &name, CSize loop) {
     CGRAPH_FUNCTION_BEGIN

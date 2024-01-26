@@ -60,7 +60,6 @@ public:
         return ptr;
     }
 
-
     /**
      * 生成unique智能指针信息
      * @tparam T

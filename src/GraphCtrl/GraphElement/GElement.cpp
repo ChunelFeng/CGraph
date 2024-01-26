@@ -165,16 +165,16 @@ CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
         CGRAPH_ASSERT_INIT(false)
     }
 
-    for (GElementPtr cur: elements) {
-        CGRAPH_ASSERT_NOT_NULL(cur)
-        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((cur->belong_ != this->belong_),     \
-        cur->getName() + " cannot depend because not same belong info")
-        if (this == cur) {
+    for (GElementPtr element: elements) {
+        CGRAPH_ASSERT_NOT_NULL(element)
+        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((element->belong_ != this->belong_),     \
+        element->getName() + " cannot depend because not same belong info")
+        if (this == element) {
             continue;
         }
 
-        cur->run_before_.insert(this);
-        this->dependence_.insert(cur);
+        element->run_before_.insert(this);
+        this->dependence_.insert(element);
     }
 
     this->left_depend_.store(this->dependence_.size(), std::memory_order_release);

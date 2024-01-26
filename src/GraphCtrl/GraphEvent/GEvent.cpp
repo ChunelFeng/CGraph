@@ -19,6 +19,7 @@ GEvent::~GEvent() {
     CGRAPH_DELETE_PTR(param_)
 }
 
+
 CStatus GEvent::init() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
