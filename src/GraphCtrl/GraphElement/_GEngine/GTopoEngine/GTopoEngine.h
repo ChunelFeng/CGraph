@@ -9,11 +9,12 @@
 #ifndef CGRAPH_GTOPOENGINE_H
 #define CGRAPH_GTOPOENGINE_H
 
-#include "../GEngine.h"
 #include <vector>
+#include <set>
+
+#include "../GEngine.h"
 
 CGRAPH_NAMESPACE_BEGIN
-
 
 class GTopoEngine : GEngine {
 protected:

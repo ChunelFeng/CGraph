@@ -20,11 +20,7 @@ public:
      * @return
      */
     CIndex choose () override {
-        auto* myParam = CGRAPH_GET_GPARAM(MyParam, "param1")
-        if (nullptr == myParam) {
-            return CGraph::GROUP_LAST_ELEMENT_INDEX;    // 如果没获取到，固定执行最后一个逻辑
-        }
-
+        auto* myParam = CGRAPH_GET_GPARAM_WITH_NO_EMPTY(MyParam, "param1")
         int cnt = 0;
         {
             CGRAPH_PARAM_READ_CODE_BLOCK(myParam)    // 如果当前算子，跟其他相关依赖算子不存在并行关系，则参数可以直接使用，不需要加锁

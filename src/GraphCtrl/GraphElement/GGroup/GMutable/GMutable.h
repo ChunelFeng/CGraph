@@ -49,6 +49,8 @@ private:
     friend class UAllocator;
 };
 
+using GMutablePtr = GMutable *;
+
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GMUTABLE_H
