@@ -69,7 +69,7 @@ CStatus GAspectManager::add(GAspectPtr aspect) {
 }
 
 
-GAspectManager *GAspectManager::setName(const std::string &name) {
+GAspectManagerPtr GAspectManager::setName(const std::string &name) {
     for (GAspectPtr aspect : aspect_arr_) {
         CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(aspect)
         aspect->setName(name);

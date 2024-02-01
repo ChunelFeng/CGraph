@@ -14,7 +14,7 @@ CGRAPH_NAMESPACE_BEGIN
 enum class GEngineType {
     STATIC = 1,             /** 静态图运行 */
     DYNAMIC = 2,            /** 动态图运行 */
-    TOPO = 3,               /** 拓扑运行（针对仅包含node的情况） */
+    TOPO = 3,               /** 拓扑运行 */
 };
 
 CGRAPH_NAMESPACE_END
