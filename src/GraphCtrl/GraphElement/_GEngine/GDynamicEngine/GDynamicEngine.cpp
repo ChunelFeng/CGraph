@@ -100,7 +100,7 @@ CStatus GDynamicEngine::process(GElementPtr element, CBool affinity) {
         const CStatus& curStatus = element->fatProcessor(CFunctionType::RUN);
         if (unlikely(curStatus.isErr())) {
             // 当且仅当整体状正常，且当前状态异常的时候，进入赋值逻辑。确保不重复赋值
-            cur_status_ = curStatus;
+            cur_status_ += curStatus;
         }
         afterElementRun(element);
     };
@@ -122,15 +122,23 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     run_element_size_.fetch_add(1, std::memory_order_release);
 
     if (!element->run_before_.empty() && cur_status_.isOK()) {
-        std::vector<GElementPtr> ready;    // 表示可以执行的列表信息
+        /**
+         * 使用原来 std::vector<GElementPtr> ready 的分配方式，
+         * 在多次（例子为 32次）反复递归调用这里的时候，会造成较多的上下文切换，从而影响整体效率
+         * 具体参考 https://github.com/ChunelFeng/CGraph/issues/343
+         */
+        const CSize maxSize = element->run_before_.size();
+        GElementPtr ready[maxSize];
+        CSize realSize = 0;
         for (auto* cur : element->run_before_) {
             if (--cur->left_depend_ <= 0) {
-                ready.emplace_back(cur);
+                ready[realSize] = cur;
+                realSize++;
             }
         }
 
-        for (auto& cur : ready) {
-            process(cur, cur == ready.back());
+        for (CSize i = 0; i < realSize; i++) {
+            process(ready[i], i == (realSize - 1));
         }
     } else {
         CGRAPH_LOCK_GUARD lock(lock_);
@@ -161,7 +169,7 @@ CVoid GDynamicEngine::wait() {
 
 
 CVoid GDynamicEngine::parallelRunAll() {
-    // 特殊判定：如果只有一个节点的话，则直接执行就好了
+    /** 特殊判定：如果只有一个节点的话，则直接执行就好了 */
     if (1 == total_end_size_) {
         cur_status_ += front_element_arr_[0]->fatProcessor(CFunctionType::RUN);
         return;
