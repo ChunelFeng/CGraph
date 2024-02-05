@@ -118,9 +118,11 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     element->done_ = true;
 
     if (!element->run_before_.empty() && cur_status_.isOK()) {
+#ifndef _WIN32
         /**
          * 使用原来 std::vector<GElementPtr> ready 的分配方式，
          * 在多次（例子为 32次）反复递归调用这里的时候，会造成较多的上下文切换，从而影响整体效率
+         * 故 在 mac 和 linux 环境上，使用 GElementPtr ready[maxSize]; 的方式进行分配
          * 具体参考 https://github.com/ChunelFeng/CGraph/issues/343
          */
         const CSize maxSize = element->run_before_.size();
@@ -136,6 +138,22 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
         for (CSize i = 0; i < realSize; i++) {
             process(ready[i], i == (realSize - 1));
         }
+#else
+        /**
+         * 在 windows 环境下，无法直接使用 GElementPtr ready[maxSize]; 的定义方式
+         * 故在 windows下，保留使用 std::vector<GElementPtr> ready; 的定义方式
+         */
+        std::vector<GElementPtr> ready;    // 表示可以执行的列表信息
+        for (auto* cur : element->run_before_) {
+            if (--cur->left_depend_ <= 0) {
+                ready.emplace_back(cur);
+            }
+        }
+
+        for (auto& cur : ready) {
+            process(cur, cur == ready.back());
+        }
+#endif
     } else {
         CGRAPH_LOCK_GUARD lock(lock_);
         /**
