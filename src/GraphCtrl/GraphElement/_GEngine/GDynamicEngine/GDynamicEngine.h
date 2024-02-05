@@ -10,7 +10,6 @@
 #define CGRAPH_GDYNAMICENGINE_H
 
 #include <mutex>
-#include <atomic>
 
 #include "../GEngine.h"
 
@@ -46,7 +45,7 @@ protected:
      * @param affinity 是否本地执行
      * @return
     */
-    CStatus process(GElementPtr element, CBool affinity);
+    CVoid process(GElementPtr element, CBool affinity);
 
     /**
      * element 运行完成处理
@@ -73,7 +72,6 @@ private:
     GElementPtrArr front_element_arr_;                          // 没有依赖的元素信息
     CSize total_end_size_ = 0;                                  // 图结束节点数量
     CSize finished_end_size_ = 0;                               // 执行结束节点数量
-    std::atomic<CSize> run_element_size_ { 0 };              // 执行元素的个数，用于后期校验。这里和静态不一样，需要加atomic
     CStatus cur_status_;                                        // 当前全局的状态信息
 
     std::mutex lock_;

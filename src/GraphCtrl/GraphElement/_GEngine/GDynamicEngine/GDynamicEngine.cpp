@@ -57,10 +57,9 @@ CStatus GDynamicEngine::afterRunCheck() {
          * 纯并行度逻辑，肯定会所有都跑一遍，并且等待全部结束，
          * 故，不需要判断。
          */
-        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(run_element_size_.load(std::memory_order_acquire) != total_element_arr_.size(),    \
-                                            "dynamic engine run element size not match...")
-        for (GElementPtr element : total_element_arr_) {
-            CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!element->done_, "dynamic engine run check failed...")
+        for (GElementCPtr element : total_element_arr_) {
+            CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!element->done_,    \
+                                                    element->getName() + ": dynamic engine run, check not finished...")
         }
     }
 
@@ -84,7 +83,6 @@ CVoid GDynamicEngine::asyncRunAndWait() {
 
 CVoid GDynamicEngine::beforeRun() {
     finished_end_size_ = 0;
-    run_element_size_.store(0, std::memory_order_release);
     cur_status_.reset();
     for (GElementPtr element : total_element_arr_) {
         element->beforeRun();
@@ -92,9 +90,10 @@ CVoid GDynamicEngine::beforeRun() {
 }
 
 
-CStatus GDynamicEngine::process(GElementPtr element, CBool affinity) {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(cur_status_.isErr(), "current status error")
+CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
+    if (unlikely(cur_status_.isErr())) {
+        return;    // 如果已经有异常逻辑，则直接停止当前流程
+    }
 
     const auto& exec = [this, element] {
         const CStatus& curStatus = element->fatProcessor(CFunctionType::RUN);
@@ -112,14 +111,11 @@ CStatus GDynamicEngine::process(GElementPtr element, CBool affinity) {
     } else {
         thread_pool_->commit(exec, calcIndex(element));
     }
-
-    CGRAPH_FUNCTION_END
 }
 
 
 CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     element->done_ = true;
-    run_element_size_.fetch_add(1, std::memory_order_release);
 
     if (!element->run_before_.empty() && cur_status_.isOK()) {
         /**
