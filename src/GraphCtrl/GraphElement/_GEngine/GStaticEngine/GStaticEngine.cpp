@@ -12,34 +12,8 @@ CGRAPH_NAMESPACE_BEGIN
 
 CStatus GStaticEngine::setup(const GSortedGElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
-    status = mark(elements);
-    CGRAPH_FUNCTION_CHECK_STATUS
-
+    link(elements);
     status = analyse(elements);
-    CGRAPH_FUNCTION_END
-}
-
-
-CStatus GStaticEngine::mark(const GSortedGElementPtrSet& elements) {
-    CGRAPH_FUNCTION_BEGIN
-    total_element_size_ = (CUint)elements.size();    // 仅赋值一次，不会改变了
-
-    /**
-     * 认定图可以连通的判定条件：
-     * 1，当前元素仅有一个依赖
-     * 2，当前元素依赖的节点，只有一个后继
-     * 3，当前元素的依赖的后继，仍是当前节点
-     * 4，前后元素绑定机制是一样的
-     */
-    for (GElementPtr element : elements) {
-        if (1 == element->dependence_.size()
-            && 1 == (*element->dependence_.begin())->run_before_.size()
-            && (*(element->dependence_.begin()))->run_before_.find(element) != (*(element->dependence_.begin()))->run_before_.end()
-            && element->getBindingIndex() == (*(element->dependence_.begin()))->getBindingIndex()) {
-            element->linkable_ = true;
-        }
-    }
-
     CGRAPH_FUNCTION_END
 }
 
@@ -48,6 +22,7 @@ CStatus GStaticEngine::analyse(const GSortedGElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
     run_element_size_ = 0;
     para_cluster_arrs_.clear();
+    total_element_size_ = (CUint)elements.size();    // 仅赋值一次，不会改变了
 
     GClusterArr curClusterArr;    // 记录每一层，可以并行的逻辑
     for (GElementPtr element : elements) {

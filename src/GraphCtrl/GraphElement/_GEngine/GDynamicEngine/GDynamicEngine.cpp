@@ -10,8 +10,11 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
+#define CGRAPH_SMALL_VECTOR_MAX_SIZE 16
+
 CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
+    link(elements);
 
     // 给所有的值清空
     total_element_arr_.clear();
@@ -59,7 +62,7 @@ CStatus GDynamicEngine::afterRunCheck() {
          */
         for (GElementCPtr element : total_element_arr_) {
             CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!element->done_,    \
-                                                    element->getName() + ": dynamic engine run, check not finished...")
+                                                    element->getName() + ": dynamic engine, check not run it...")
         }
     }
 
@@ -91,8 +94,13 @@ CVoid GDynamicEngine::beforeRun() {
 
 
 CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
-    if (unlikely(cur_status_.isErr())) {
-        return;    // 如果已经有异常逻辑，则直接停止当前流程
+    if (unlikely(cur_status_.isErr() || element->done_)) {
+        /**
+         * 如果已经有异常逻辑，
+         * 或者传入的element，是已经执行过的了（理论上不会出现这种情况，由于提升性能的原因，取消了atomic计数的逻辑，故添加这一处判定，防止意外情况）
+         * 则直接停止当前流程
+         */
+        return;
     }
 
     const auto& exec = [this, element] {
@@ -116,44 +124,49 @@ CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
 
 CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     element->done_ = true;
-
     if (!element->run_before_.empty() && cur_status_.isOK()) {
-#ifndef _WIN32
-        /**
-         * 使用原来 std::vector<GElementPtr> ready 的分配方式，
-         * 在多次（例子为 32次）反复递归调用这里的时候，会造成较多的上下文切换，从而影响整体效率
-         * 故 在 mac 和 linux 环境上，使用 GElementPtr ready[maxSize]; 的方式进行分配
-         * 具体参考 https://github.com/ChunelFeng/CGraph/issues/343
-         */
-        const CSize maxSize = element->run_before_.size();
-        GElementPtr ready[maxSize];
-        CSize realSize = 0;
-        for (auto* cur : element->run_before_) {
-            if (--cur->left_depend_ <= 0) {
-                ready[realSize] = cur;
-                realSize++;
+        auto curSize = element->run_before_.size();
+        if (1 == curSize && (*element->run_before_.begin())->linkable_) {
+            // 针对只有唯一后继的情况，做特殊判定
+            process(*(element->run_before_.begin()), true);
+        } else if (curSize < CGRAPH_SMALL_VECTOR_MAX_SIZE) {
+            /**
+            * 使用原来 std::vector<GElementPtr> ready 的分配方式，
+            * 在多次（自行执行的测例为 32 次）反复递归调用这里的时候，会造成较多的上下文切换，从而影响整体效率
+            * 故在有少量依赖的情况下，直接使用 本地数组来实现这个功能。
+            * 理论上大部分逻辑，均会走这个分支逻辑
+            * 后期考虑替换为 small-vector的逻辑实现
+            * 具体参考 https://github.com/ChunelFeng/CGraph/issues/343
+            */
+            GElementPtr ready[CGRAPH_SMALL_VECTOR_MAX_SIZE];
+            CSize realSize = 0;
+            for (auto* cur : element->run_before_) {
+                if (--cur->left_depend_ <= 0) {
+                    ready[realSize] = cur;
+                    realSize++;
+                }
+            }
+
+            for (CSize i = 0; i < realSize; i++) {
+                process(ready[i], i == (realSize - 1));
+            }
+        } else {
+            /**
+             * 同上面的执行逻辑，完全一致
+             * 仅在后继节点较多的情况下，做兜底逻辑处理使用
+             */
+            std::vector<GElementPtr> ready;    // 表示可以执行的列表信息
+            ready.reserve(element->run_before_.size());
+            for (auto* cur : element->run_before_) {
+                if (--cur->left_depend_ <= 0) {
+                    ready.emplace_back(cur);
+                }
+            }
+
+            for (auto& cur : ready) {
+                process(cur, cur == ready.back());
             }
         }
-
-        for (CSize i = 0; i < realSize; i++) {
-            process(ready[i], i == (realSize - 1));
-        }
-#else
-        /**
-         * 在 windows 环境下，无法直接使用 GElementPtr ready[maxSize]; 的定义方式
-         * 故在 windows下，保留使用 std::vector<GElementPtr> ready; 的定义方式
-         */
-        std::vector<GElementPtr> ready;    // 表示可以执行的列表信息
-        for (auto* cur : element->run_before_) {
-            if (--cur->left_depend_ <= 0) {
-                ready.emplace_back(cur);
-            }
-        }
-
-        for (auto& cur : ready) {
-            process(cur, cur == ready.back());
-        }
-#endif
     } else {
         CGRAPH_LOCK_GUARD lock(lock_);
         /**

@@ -47,10 +47,33 @@ protected:
                ? schedule_strategy_ : bindingIndex;
     }
 
+    /**
+     * 分析所有的可以设置 linkable 的数据
+     * @param elements
+     * @return
+     */
+    CVoid link(const GSortedGElementPtrSet& elements) {
+        /**
+         * 认定图可以连通的判定条件：
+         * 1，当前元素仅有一个依赖
+         * 2，当前元素依赖的节点，只有一个后继
+         * 3，当前元素的依赖的后继，仍是当前节点
+         * 4，前后元素绑定机制是一样的
+         */
+        for (GElementPtr element : elements) {
+            element->linkable_ = false;    // 防止出现之前的留存逻辑。确保只有当前链接关系下，需要设置 linkable的，才会设置为 true
+            if (1 == element->dependence_.size()
+                && 1 == (*element->dependence_.begin())->run_before_.size()
+                && (*(element->dependence_.begin()))->run_before_.find(element) != (*(element->dependence_.begin()))->run_before_.end()
+                && element->getBindingIndex() == (*(element->dependence_.begin()))->getBindingIndex()) {
+                element->linkable_ = true;
+            }
+        }
+    }
+
 
 protected:
     UThreadPoolPtr thread_pool_ { nullptr };                    // 内部执行的线程池
-    CUint total_element_size_ = 0;                              // 总的element的数量
     int schedule_strategy_ = CGRAPH_DEFAULT_TASK_STRATEGY;      // 调度策略
 
     friend class GElementManager;

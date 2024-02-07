@@ -25,13 +25,6 @@ protected:
     CStatus afterRunCheck() override;
 
     /**
-     * 对数据进行标记和整理
-     * @param elements
-     * @return
-     */
-    CStatus mark(const GSortedGElementPtrSet& elements);
-
-    /**
      * 将所有注册到 pipeline 中的信息，解析到 para_cluster_arrs_ 中
      * @param elements
      * @return
@@ -41,6 +34,7 @@ protected:
 private:
     ParaWorkedClusterArrs para_cluster_arrs_;        // 可以并行的cluster数组
     CUint run_element_size_ = 0;                     // 当前已经执行的element的数量
+    CUint total_element_size_ = 0;                   // 总的element的数量
 
     friend class UAllocator;
 };
