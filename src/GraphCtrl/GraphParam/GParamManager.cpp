@@ -41,9 +41,6 @@ CStatus GParamManager::destroy() {
         CGRAPH_ASSERT_NOT_NULL(param.second);
         status += param.second->destroy();
     }
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    clear();
     CGRAPH_FUNCTION_END
 }
 
@@ -61,17 +58,17 @@ CStatus GParamManager::clear() {
 
 
 CVoid GParamManager::resetWithStatus(const CStatus& curStatus) {
-    for (auto cur : params_map_) {
-        cur.second->reset(curStatus);
+    for (auto& param : params_map_) {
+        param.second->reset(curStatus);
     }
 }
 
 
 CStatus GParamManager::setup() {
     CGRAPH_FUNCTION_BEGIN
-    for (auto cur : params_map_) {
+    for (auto& param : params_map_) {
         // 这里不需要判断非空，因为在init的时候，已经判断过了
-        status += cur.second->setup();
+        status += param.second->setup();
     }
     CGRAPH_FUNCTION_END
 }
