@@ -247,12 +247,12 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                 }
 
                 trigger_times_++;    // 记录实际上触发了多少次，而不是正式执行了多少次
-                for (CSize i = 0; i < this->loop_ && GElementState::NORMAL == this->getCurState(); i++) {
+                for (CSize i = 0; i < this->loop_ && status.isOK() && GElementState::NORMAL == this->getCurState(); i++) {
                     /** 执行带切面的run方法 */
-                    status = doAspect(GAspectType::BEGIN_RUN);
+                    status += doAspect(GAspectType::BEGIN_RUN);
                     CGRAPH_FUNCTION_CHECK_STATUS
                     do {
-                        status = isAsync() ? asyncRun() : run();
+                        status += isAsync() ? asyncRun() : run();
                         /**
                          * 在实际run结束之后，首先需要判断一下是否进入yield状态了。
                          * 接下来，如果状态是ok的，并且被条件hold住，则循环执行

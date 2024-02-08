@@ -52,6 +52,11 @@ void test_functional_02() {
     if (status.isErr()) {
         std::cout << status.getInfo() << std::endl;
     }
+
+    if (g_test_node_cnt != 50000) {
+        std::cout << "test_functional_02: g_test_node_cnt is not right : " << g_test_node_cnt << std::endl;
+    }
+
     GPipelineFactory::remove(pipeline);
 }
 

@@ -45,14 +45,14 @@ void test_functional_03() {
         status = pipeline->process(2000);
     }
 
-    if (g_test_node_cnt % 58 != 0) {
-        // 58 是单次执行本测例的情况下，i++的次数。包含 aspect和 element
-        std::cout << g_test_node_cnt << " num can not divide 58." << std::endl;
-    }
-
     if (status.isErr()) {
         std::cout << status.getInfo() << std::endl;
     }
+
+    if (g_test_node_cnt != 116000) {
+        std::cout << "test_functional_03: g_test_node_cnt is not right : " << g_test_node_cnt << std::endl;
+    }
+
     GPipelineFactory::remove(pipeline);
 }
 
