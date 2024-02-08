@@ -10,8 +10,6 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-#define CGRAPH_SMALL_VECTOR_MAX_SIZE 16
-
 CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
     link(elements);
@@ -127,45 +125,24 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     if (!element->run_before_.empty() && cur_status_.isOK()) {
         auto curSize = element->run_before_.size();
         if (1 == curSize && (*element->run_before_.begin())->linkable_) {
-            // 针对只有唯一后继的情况，做特殊判定
+            // 针对linkable 的情况，做特殊判定
             process(*(element->run_before_.begin()), true);
-        } else if (curSize < CGRAPH_SMALL_VECTOR_MAX_SIZE) {
-            /**
-            * 使用原来 std::vector<GElementPtr> ready 的分配方式，
-            * 在多次（自行执行的测例为 32 次）反复递归调用这里的时候，会造成较多的上下文切换，从而影响整体效率
-            * 故在有少量依赖的情况下，直接使用 本地数组来实现这个功能。
-            * 理论上大部分逻辑，均会走这个分支逻辑
-            * 后期考虑替换为 small-vector的逻辑实现
-            * 具体参考 https://github.com/ChunelFeng/CGraph/issues/343
-            */
-            GElementPtr ready[CGRAPH_SMALL_VECTOR_MAX_SIZE];
-            CSize realSize = 0;
-            for (auto* cur : element->run_before_) {
-                if (--cur->left_depend_ <= 0) {
-                    ready[realSize] = cur;
-                    realSize++;
-                }
-            }
-
-            for (CSize i = 0; i < realSize; i++) {
-                process(ready[i], i == (realSize - 1));
-            }
         } else {
-            /**
-             * 同上面的执行逻辑，完全一致
-             * 仅在后继节点较多的情况下，做兜底逻辑处理使用
-             */
-            std::vector<GElementPtr> ready;    // 表示可以执行的列表信息
-            ready.reserve(element->run_before_.size());
+            GElementPtr reserved = nullptr;
             for (auto* cur : element->run_before_) {
                 if (--cur->left_depend_ <= 0) {
-                    ready.emplace_back(cur);
+                    /**
+                     * 留下来一个作为亲和性的，在接下来的流程中执行
+                     * 其他的，走 else 后面的逻辑，直接在 process 中异步执行
+                     */
+                    if (!reserved) {
+                        reserved = cur;
+                    } else {
+                        process(cur, false);
+                    }
                 }
             }
-
-            for (auto& cur : ready) {
-                process(cur, cur == ready.back());
-            }
+            reserved ? process(reserved, true) : void();
         }
     } else {
         CGRAPH_LOCK_GUARD lock(lock_);
