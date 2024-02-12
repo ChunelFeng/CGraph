@@ -18,7 +18,7 @@ auto UThreadPool::commit(const FunctionType& task, CIndex index)
 -> std::future<decltype(std::declval<FunctionType>()())> {
     using ResultType = decltype(std::declval<FunctionType>()());
 
-    std::packaged_task<ResultType()> runnableTask(task);
+    std::packaged_task<ResultType()> runnableTask(std::move(task));
     std::future<ResultType> result(runnableTask.get_future());
 
     CIndex realIndex = dispatch(index);
@@ -35,6 +35,23 @@ auto UThreadPool::commit(const FunctionType& task, CIndex index)
     } else {
         // 返回其他结果，放到pool的queue中执行
         task_queue_.push(std::move(runnableTask));
+    }
+    return result;
+}
+
+
+template<typename FunctionType>
+auto UThreadPool::commitWithTid(const FunctionType& task, CIndex tid, CBool enable, CBool lockable)
+-> std::future<decltype(std::declval<FunctionType>()())> {
+    using ResultType = decltype(std::declval<FunctionType>()());
+    std::packaged_task<ResultType()> runnableTask(std::move(task));
+    std::future<ResultType> result(runnableTask.get_future());
+
+    if (tid >= 0 && tid < config_.default_thread_size_) {
+        primary_threads_[tid]->pushTask(std::move(runnableTask), enable, lockable);
+    } else {
+        // 如果超出主线程的范围，则默认写入 pool 通用的任务队列中
+        task_queue_.push(task);
     }
     return result;
 }

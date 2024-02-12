@@ -138,6 +138,21 @@ protected:
         cv_.notify_one();
     }
 
+    /**
+     * 写入 task信息，是否上锁由
+     * @param task
+     * @param enable 确认是否有
+     * @param lockable true 的时候需要上锁，false 的时候会解锁
+     * @return
+     */
+    CVoid pushTask(UTask&& task, CBool enable, CBool lockable) {
+        secondary_queue_.push(std::move(task), enable, lockable);    // 通过 second 写入，主要是方便其他的thread 进行steal操作
+        if (enable && !lockable) {
+            cur_empty_epoch_ = 0;
+            cv_.notify_one();
+        }
+    }
+
 
     /**
      * 从本地弹出一个任务

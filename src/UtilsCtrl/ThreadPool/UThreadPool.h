@@ -68,6 +68,19 @@ public:
     -> std::future<decltype(std::declval<FunctionType>()())>;
 
     /**
+     * 向特定的线程id中，提交任务信息
+     * @tparam FunctionType
+     * @param task
+     * @param tid 线程id。如果超出主线程个数范围，则默认写入pool的通用队列中
+     * @param enable 是否启用上锁/解锁功能
+     * @param lockable 上锁(true) / 解锁(false)
+     * @return
+     */
+    template<typename FunctionType>
+    auto commitWithTid(const FunctionType& task, CIndex tid, CBool enable, CBool lockable)
+    -> std::future<decltype(std::declval<FunctionType>()())>;
+
+    /**
      * 根据优先级，执行任务
      * @tparam FunctionType
      * @param task

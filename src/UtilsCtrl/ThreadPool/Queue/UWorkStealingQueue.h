@@ -37,6 +37,24 @@ public:
 
 
     /**
+     * 有条件的写入数据信息
+     * @param value
+     * @param enable
+     * @param state
+     * @return
+     */
+    CVoid push(T&& value, CBool enable, CBool lockable) {
+        if (enable && lockable) {
+            mutex_.lock();
+        }
+        deque_.emplace_back(std::forward<T>(value));
+        if (enable && !lockable) {
+            mutex_.unlock();
+        }
+    }
+
+
+    /**
      * 尝试往队列里写入信息
      * @param value
      * @return
