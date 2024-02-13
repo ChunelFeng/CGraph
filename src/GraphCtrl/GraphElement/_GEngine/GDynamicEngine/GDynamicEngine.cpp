@@ -124,7 +124,7 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     element->done_ = true;
     if (!element->run_before_.empty() && cur_status_.isOK()) {
         auto curSize = element->run_before_.size();
-        if (1 == curSize && (*element->run_before_.begin())->linkable_) {
+        if (1 == curSize && (*element->run_before_.begin())->isLinkable()) {
             // 针对linkable 的情况，做特殊判定
             process(*(element->run_before_.begin()), true);
         } else {

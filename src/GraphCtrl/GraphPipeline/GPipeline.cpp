@@ -50,7 +50,6 @@ CStatus GPipeline::init() {
 CStatus GPipeline::run() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(true)
-    CGRAPH_ASSERT_NOT_NULL(element_manager_, param_manager_)
 
     /**
      * 1. 将所有 GElement 的状态设定为 NORMAL

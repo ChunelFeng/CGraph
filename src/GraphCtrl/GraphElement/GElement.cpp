@@ -259,7 +259,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                          * 默认所有element的isHold条件均为false，即不hold，即执行一次
                          * 可以根据需求，对任意element类型，添加特定的isHold条件
                          * */
-                    } while (checkYield(), status.isOK() && this->isHold());
+                    } while (checkYield(), this->isHold() && status.isOK());
                     doAspect(GAspectType::FINISH_RUN, status);
                 }
                 break;

@@ -20,8 +20,6 @@ void test_performance_01() {
     config.secondary_thread_size_ = 0;
     config.max_task_steal_range_ = 7;
     config.max_thread_size_ = 8;
-    config.primary_thread_policy_ = CGRAPH_THREAD_SCHED_RR;
-    config.primary_thread_priority_ = 10;
     config.primary_thread_empty_interval_ = 0;
     config.primary_thread_busy_epoch_ = 500;
     config.monitor_enable_ = false;    // 关闭扩缩容机制
