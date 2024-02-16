@@ -120,13 +120,13 @@ CStatus UThreadPool::submit(CGRAPH_DEFAULT_CONST_FUNCTION_REF func, CMSec ttl,
 
 
 CIndex UThreadPool::getThreadIndex(CSize tid) {
-    int threadNum = CGRAPH_SECONDARY_THREAD_COMMON_ID;
+    int index = CGRAPH_SECONDARY_THREAD_COMMON_ID;
     auto result = thread_record_map_.find(tid);
     if (result != thread_record_map_.end()) {
-        threadNum = result->second;
+        index = result->second;
     }
 
-    return threadNum;
+    return index;
 }
 
 
@@ -138,7 +138,7 @@ CStatus UThreadPool::destroy() {
 
     // primary 线程是普通指针，需要delete
     for (auto &pt : primary_threads_) {
-        status += pt->destroy();        
+        status += pt->destroy();
     }
     CGRAPH_FUNCTION_CHECK_STATUS
 
@@ -153,7 +153,6 @@ CStatus UThreadPool::destroy() {
         CGRAPH_DELETE_PTR(pt)
     }
     primary_threads_.clear();
-
     // secondary 线程是智能指针，不需要delete
     for (auto &st : secondary_threads_) {
         status += st->destroy();

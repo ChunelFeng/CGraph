@@ -5,7 +5,6 @@ set(CGRAPH_PERFORMANCE_LIST
         test-performance-03
         )
 
-
 foreach(perf ${CGRAPH_PERFORMANCE_LIST})
     add_executable(${perf}
             # 在自己的工程中引入CGraph功能，仅需引入 CGraph-env-include.cmake 后，加入这一句话即可

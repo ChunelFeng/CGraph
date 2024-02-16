@@ -21,6 +21,11 @@ option(CGRAPH_BUILD_PERFORMANCE_TESTS "Enables builds of performance tests" OFF)
 # 如果开启此宏定义，则CGraph执行过程中，不会在控制台打印任何信息
 # add_definitions(-D_CGRAPH_SILENCE_)
 
+# 如果开启此宏定义，则在结束过程中，会展示thread pool中的调度信息
+# 本信息主要用于作者性能调优使用，不保证所有数据完全正确
+# 不建议作为验证自行逻辑的唯一标准，不建议使用者打开
+# add_definitions(-D_CGRAPH_SHOW_THREAD_METRICS_)
+
 # add CGraph environment info
 include(cmake/CGraph-env-include.cmake)
 

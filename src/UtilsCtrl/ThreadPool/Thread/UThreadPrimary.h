@@ -31,6 +31,7 @@ protected:
         CGRAPH_ASSERT_NOT_NULL(config_)
 
         is_init_ = true;
+        metrics_.reset();
         buildStealTargets();
         thread_ = std::move(std::thread(&UThreadPrimary::run, this));
         setSchedParam();
@@ -115,10 +116,12 @@ protected:
      */
     CVoid fatWait() {
         cur_empty_epoch_++;
+        metrics_.fleet_wait_times_++;
         CGRAPH_YIELD();
         if (cur_empty_epoch_ >= config_->primary_thread_busy_epoch_) {
             CGRAPH_UNIQUE_LOCK lk(mutex_);
             cv_.wait_for(lk, std::chrono::milliseconds(config_->primary_thread_empty_interval_));
+            metrics_.deep_wait_times_++;
             cur_empty_epoch_ = 0;
         }
     }
@@ -132,9 +135,11 @@ protected:
     CVoid pushTask(UTask&& task) {
         while (!(primary_queue_.tryPush(std::move(task))
                  || secondary_queue_.tryPush(std::move(task)))) {
+            metrics_.local_push_yield_times_++;
             CGRAPH_YIELD();
         }
         cur_empty_epoch_ = 0;
+        metrics_.local_push_real_num_++;
         cv_.notify_one();
     }
 
@@ -152,6 +157,8 @@ protected:
             cur_empty_epoch_ = 0;
             cv_.notify_one();
         }
+        metrics_.local_push_yield_times_++;
+        metrics_.local_push_real_num_++;
     }
 
 
@@ -160,8 +167,10 @@ protected:
      * @param task
      * @return
      */
-    bool popTask(UTaskRef task) {
-        return primary_queue_.tryPop(task) || secondary_queue_.tryPop(task);
+    CBool popTask(UTaskRef task) {
+        auto result = primary_queue_.tryPop(task) || secondary_queue_.tryPop(task);
+        metrics_.calcLocal(result, 1);
+        return result;
     }
 
 
@@ -170,13 +179,14 @@ protected:
      * @param tasks
      * @return
      */
-    bool popTask(UTaskArrRef tasks) {
+    CBool popTask(UTaskArrRef tasks) {
         CBool result = primary_queue_.tryPop(tasks, config_->max_local_batch_size_);
         auto leftSize = config_->max_local_batch_size_ - tasks.size();
         if (leftSize > 0) {
             // 如果凑齐了，就不需要了。没凑齐的话，就继续
             result |= (secondary_queue_.tryPop(tasks, leftSize));
         }
+        metrics_.calcLocal(result, tasks.size());
         return result;
     }
 
@@ -186,7 +196,7 @@ protected:
      * @param task
      * @return
      */
-    bool stealTask(UTaskRef task) {
+    CBool stealTask(UTaskRef task) {
         if (unlikely(pool_threads_->size() < config_->default_thread_size_)) {
             /**
              * 线程池还未初始化完毕的时候，无法进行steal。
@@ -195,11 +205,11 @@ protected:
             return false;
         }
 
-
         /**
          * 窃取的时候，仅从相邻的primary线程中窃取
          * 待窃取相邻的数量，不能超过默认primary线程数
          */
+        CBool result = false;
         for (auto& target : steal_targets_) {
             /**
             * 从线程中周围的thread中，窃取任务。
@@ -209,11 +219,13 @@ protected:
             if (likely((*pool_threads_)[target])
                 && (((*pool_threads_)[target])->secondary_queue_.trySteal(task))
                     || ((*pool_threads_)[target])->primary_queue_.trySteal(task)) {
-                return true;
+                result = true;
+                break;
             }
         }
 
-        return false;
+        metrics_.calcSteal(result, 1);
+        return result;
     }
 
 
@@ -222,14 +234,15 @@ protected:
      * @param tasks
      * @return
      */
-    bool stealTask(UTaskArrRef tasks) {
+    CBool stealTask(UTaskArrRef tasks) {
         if (unlikely(pool_threads_->size() != config_->default_thread_size_)) {
             return false;
         }
 
+        CBool result = false;
         for (auto& target : steal_targets_) {
             if (likely((*pool_threads_)[target])) {
-                bool result = ((*pool_threads_)[target])->secondary_queue_.trySteal(tasks, config_->max_steal_batch_size_);
+                result = ((*pool_threads_)[target])->secondary_queue_.trySteal(tasks, config_->max_steal_batch_size_);
                 auto leftSize = config_->max_steal_batch_size_ - tasks.size();
                 if (leftSize > 0) {
                     result |= ((*pool_threads_)[target])->primary_queue_.trySteal(tasks, leftSize);
@@ -242,12 +255,13 @@ protected:
                      * 如果从某一个邻居中，获取了 y(<=x) 个task，则也终止steal的流程
                      * 且如果如果有一次批量steal成功，就认定成功
                      */
-                    return true;
+                    break;
                 }
             }
         }
 
-        return false;
+        metrics_.calcSteal(result, tasks.size());
+        return result;
     }
 
 
@@ -262,6 +276,15 @@ protected:
             steal_targets_.push_back(target);
         }
         steal_targets_.shrink_to_fit();
+    }
+
+
+    ~UThreadPrimary() override {
+        /**
+         * 在开启展示宏的时候，会在主线程退出的时候，打印相关内容
+         * 默认情况下，不会开启
+         */
+        metrics_.show("thread" + std::to_string(index_));
     }
 
 private:
