@@ -112,7 +112,24 @@ public:
      */
     template<typename T, typename ...Args,
             c_enable_if_t<std::is_base_of<GNode, T>::value, int> = 0>
-    GNodePtr createGNode(const GNodeInfo &info, Args... args);
+    GNodePtr createGNode(const GNodeInfo &info, Args&&... args);
+
+    /**
+     * 根据传入的信息，创建node节点
+     * @tparam T
+     * @tparam Args
+     * @param name
+     * @param loop
+     * @param dependence
+     * @param args
+     * @return
+     */
+    template<typename T, typename ...Args,
+            c_enable_if_t<std::is_base_of<GNode, T>::value, int> = 0>
+    GNodePtr createGNode(const GElementPtrSet& dependence = std::initializer_list<GElementPtr>(),
+                         const std::string& name = CGRAPH_EMPTY,
+                         CSize loop = CGRAPH_DEFAULT_LOOP_TIMES,
+                         Args&&... args);
 
     /**
      * 根据传入的信息，创建Group信息
@@ -276,7 +293,7 @@ public:
      */
     template<typename TDaemon, typename ...Args,
             c_enable_if_t<std::is_base_of<GTemplateDaemon<Args...>, TDaemon>::value, int> = 0>
-    GPipeline* addGDaemon(CMSec ms, Args... args);
+    GPipeline* addGDaemon(CMSec ms, Args&&... args);
 
     /**
      * 添加一个事件

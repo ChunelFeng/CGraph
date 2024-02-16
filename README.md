@@ -7,6 +7,7 @@
 
 [![awesome-cpp](https://badgen.net/badge/icon/awesome-cpp/purple?icon=awesome&label&color)](https://github.com/fffaraz/awesome-cpp)
 [![HelloGithub](https://badgen.net/badge/icon/HelloGithub/purple?icon=awesome&label&color)](https://github.com/521xueweihan/HelloGitHub/blob/master/content/HelloGitHub70.md)
+[![GitHub-Chinese-Top-Charts](https://badgen.net/badge/icon/GitHub-Chinese-Top-Charts/purple?icon=awesome&label&color)](https://github.com/GrowingGit/GitHub-Chinese-Top-Charts/blob/master/content/charts/overall/software/CPP.md)
 
 中文 | [English Readme](README_en.md)
 

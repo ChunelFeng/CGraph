@@ -29,6 +29,10 @@ void test_performance_02() {
         }
     }
 
+    if (32000000 != g_test_node_cnt) {
+        std::cout << "test_performance_02: g_test_node_cnt is not right : " << g_test_node_cnt << std::endl;
+    }
+
     status += pipeline->destroy();
     GPipelineFactory::remove(pipeline);
 }

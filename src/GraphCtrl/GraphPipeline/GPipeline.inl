@@ -94,7 +94,7 @@ CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,
 
 template<typename T, typename ...Args,
         c_enable_if_t<std::is_base_of<GNode, T>::value, int>>
-GNodePtr GPipeline::createGNode(const GNodeInfo &info, Args... args) {
+GNodePtr GPipeline::createGNode(const GNodeInfo &info, Args&&... args) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
@@ -108,6 +108,15 @@ GNodePtr GPipeline::createGNode(const GNodeInfo &info, Args... args) {
 }
 
 
+template<typename T, typename ...Args,
+        c_enable_if_t<std::is_base_of<GNode, T>::value, int>>
+GNodePtr GPipeline::createGNode(const GElementPtrSet& dependence, const std::string& name,
+                                CSize loop, Args&&... args) {
+    const GNodeInfo& info = GNodeInfo(dependence, name, loop);
+    return createGNode<T>(info, std::forward<Args &&>(args)...);
+}
+
+
 template<typename T,
         c_enable_if_t<std::is_base_of<GGroup, T>::value, int>>
 GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
@@ -118,15 +127,12 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     // 如果不是所有的都非空，则创建失败
-    if (std::any_of(elements.begin(), elements.end(),
-                    [](GElementPtr element) { return (nullptr == element); })) {
-        CGRAPH_THROW_EXCEPTION("createGGroup elements have nullptr.")
-    }
-
-    if (std::any_of(dependElements.begin(), dependElements.end(),
-                    [](GElementPtr element) { return (nullptr == element); })) {
-        CGRAPH_THROW_EXCEPTION("createGGroup dependElements have nullptr.")
-    }
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION(std::any_of(elements.begin(), elements.end(),
+                                                    [](GElementPtr element) { return (nullptr == element); }),
+                                        "createGGroup elements have nullptr.")
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION(std::any_of(dependElements.begin(), dependElements.end(),
+                                                    [](GElementPtr element) { return (nullptr == element); }),
+                                        "createGGroup dependElements have nullptr.")
 
     GGroupPtr group = CGRAPH_SAFE_MALLOC_COBJECT(T)
     for (GElementPtr element : elements) {
@@ -152,15 +158,12 @@ GPipelinePtr GPipeline::addGAspect(const GElementPtrSet& elements, TParam* param
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
     // 如果传入的是空的话，则默认将所有的element添加aspect信息
-    const GElementPtrSet& curElements = elements.empty()
-                                        ? repository_.elements_
-                                        : elements;
+    auto curElements = elements.empty() ? repository_.elements_ : elements;
     for (GElementPtr element : curElements) {
         if (repository_.find(element)) {
             element->addGAspect<TAspect, TParam>(param);
         }
     }
-    CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
     return this;
 }
@@ -187,12 +190,12 @@ GPipeline* GPipeline::addGDaemon(CMSec ms, TParam* param) {
 
 template<typename TDaemon, typename ...Args,
         c_enable_if_t<std::is_base_of<GTemplateDaemon<Args...>, TDaemon>::value, int>>
-GPipeline* GPipeline::addGDaemon(CMSec ms, Args... args) {
+GPipeline* GPipeline::addGDaemon(CMSec ms, Args&&... args) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_, daemon_manager_)
 
-    auto daemon = UAllocator::safeMallocTemplateCObject<TDaemon>(std::forward<Args>(args)...);
+    auto daemon = UAllocator::safeMallocTemplateCObject<TDaemon>(std::forward<Args &&>(args)...);
     daemon->setInterval(ms);
     daemon->setGParamManager(this->param_manager_);
     daemon->setGEventManager(this->event_manager_);
