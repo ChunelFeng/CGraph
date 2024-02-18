@@ -44,6 +44,7 @@ CGRAPH_NAMESPACE_BEGIN
         CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_)                              \
         auto param = param_manager_->get<TGParam>(key);                                 \
         if (nullptr != param) {                                                         \
+            concerned_params_.insert(param);                                           \
             param->addBacktrace(name_.empty() ? session_ : name_);                      \
         }                                                                               \
         return param;                                                                   \
@@ -80,9 +81,22 @@ CGRAPH_NAMESPACE_BEGIN
      * @param keys
      * @return
      */                                                                                 \
-    CStatus getGParamKeys(std::vector<std::string>& keys) {                             \
-        CGRAPH_ASSERT_NOT_NULL(param_manager_)                                          \
-        return param_manager_->getKeys(keys);                                           \
+    std::vector<std::string> getGParamKeys() {                                          \
+        CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_)                              \
+        return param_manager_->getKeys();                                               \
+    }                                                                                   \
+                                                                                        \
+     /**
+     * 获取所有的keys信息
+     * @param keys
+     * @return
+     */                                                                                 \
+    std::vector<std::string> getConcernedGParamKeys() const {                           \
+        std::vector<std::string> keys;                                                  \
+        for (auto param : concerned_params_) {                                          \
+            keys.emplace_back(param->getKey());                                         \
+        }                                                                               \
+        return keys;                                                                    \
     }                                                                                   \
                                                                                         \
 private:                                                                                \
@@ -96,9 +110,10 @@ private:                                                                        
         return this;                                                                    \
     }                                                                                   \
                                                                                         \
+    GParamPtrSet concerned_params_;    /* 记录链路上使用过GParam信息 */                   \
+                                                                                        \
 protected:                                                                              \
                                                                                         \
-
 
 #define CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER_WITH_MEMBER                               \
 private:                                                                                \

@@ -54,7 +54,7 @@ public:
      * @param keys
      * @return
      */
-    CStatus getKeys(std::vector<std::string>& keys);
+    std::vector<std::string> getKeys();
 
 protected:
     explicit GParamManager();

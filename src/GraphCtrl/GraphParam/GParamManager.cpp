@@ -88,14 +88,14 @@ CStatus GParamManager::removeByKey(const std::string& key) {
 }
 
 
-CStatus GParamManager::getKeys(std::vector<std::string>& keys) {
-    CGRAPH_FUNCTION_BEGIN
+std::vector<std::string> GParamManager::getKeys() {
+    std::vector<std::string> keys;
     CGRAPH_LOCK_GUARD lock(this->mutex_);
     for (const auto& iter : params_map_) {
         keys.emplace_back(iter.first);
     }
 
-    CGRAPH_FUNCTION_END
+    return keys;
 }
 
 CGRAPH_NAMESPACE_END

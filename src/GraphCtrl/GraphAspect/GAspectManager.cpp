@@ -63,7 +63,8 @@ CStatus GAspectManager::reflect(const GAspectType &type,
 
 
 CStatus GAspectManager::add(GAspectPtr aspect) {
-    CGRAPH_FUNCTION_BEGIN CGRAPH_ASSERT_NOT_NULL(aspect)
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(aspect)
     aspect_arr_.emplace_back(aspect);
     CGRAPH_FUNCTION_END
 }

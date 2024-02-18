@@ -9,6 +9,8 @@
 #ifndef CGRAPH_GPARAM_H
 #define CGRAPH_GPARAM_H
 
+#include <set>
+
 #include "GParamObject.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -23,23 +25,28 @@ public:
 
     /**
      * 获取参数的调用栈信息
-     * @param traces
      * @return
      */
-    CStatus getBacktrace(std::vector<std::string>& traces);
+    std::vector<std::string> getBacktrace();
 
     /**
      * 添加trace信息
      * @param trace
      * @return
      */
-    CVoid addBacktrace(const std::string& trace);
+    CStatus addBacktrace(const std::string& trace);
 
     /**
      * 清空trace信息
      * @return
      */
     CVoid cleanBacktrace();
+
+    /**
+     * 获取key信息
+     * @return
+     */
+    std::string getKey() const;
 
 protected:
     /**
@@ -59,6 +66,7 @@ protected:
 
 private:
     CBool backtrace_enable_ = false;                             // 是否使能backtrace功能
+    std::string key_;                                            // 名称信息
     USerialUniqueArray<std::string> backtrace_;                  // 记录参数的调用栈信息，仅记录get 此参数的地方。不包括 create和remove的地方。
     USpinLock backtrace_lock_;                                   // 针对backtrace的自旋锁
 
@@ -66,6 +74,7 @@ private:
 };
 
 using GParamPtr = GParam *;
+using GParamPtrSet = std::set<GParamPtr>;
 
 CGRAPH_NAMESPACE_END
 

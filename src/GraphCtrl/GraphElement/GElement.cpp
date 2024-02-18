@@ -265,11 +265,12 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                 break;
             }
             case CFunctionType::INIT: {
+                concerned_params_.clear();    // 仅需要记录这一轮使用到的 GParam 信息
+                trigger_times_ = 0;
                 status = doAspect(GAspectType::BEGIN_INIT);
                 CGRAPH_FUNCTION_CHECK_STATUS
                 status = init();
                 doAspect(GAspectType::FINISH_INIT, status);
-                trigger_times_ = 0;
                 break;
             }
             case CFunctionType::DESTROY: {
@@ -277,7 +278,6 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                 CGRAPH_FUNCTION_CHECK_STATUS
                 status = destroy();
                 doAspect(GAspectType::FINISH_DESTROY, status);
-                trigger_times_ = 0;
                 break;
             }
             default:
