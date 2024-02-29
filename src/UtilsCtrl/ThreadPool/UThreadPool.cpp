@@ -50,12 +50,12 @@ CStatus UThreadPool::init() {
         monitor_thread_ = std::move(std::thread(&UThreadPool::monitor, this));
     }
     thread_record_map_.clear();
+    thread_record_map_[(CSize)std::hash<std::thread::id>{}(std::this_thread::get_id())] = CGRAPH_MAIN_THREAD_ID;
     primary_threads_.reserve(config_.default_thread_size_);
     for (int i = 0; i < config_.default_thread_size_; i++) {
         auto* pt = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary);    // 创建核心线程数
         pt->setThreadPoolInfo(i, &task_queue_, &primary_threads_, &config_);
         // 记录线程和匹配id信息
-        thread_record_map_[(CSize)std::hash<std::thread::id>{}(pt->thread_.get_id())] = i;
         primary_threads_.emplace_back(pt);
     }
 
@@ -64,9 +64,10 @@ CStatus UThreadPool::init() {
      * 避免在个别的平台上，可能出现 thread竞争访问其他线程、并且导致异常的情况
      * 参考： https://github.com/ChunelFeng/CGraph/issues/309
      */
-    for (auto* pt : primary_threads_) {
-        status += pt->init();
-    }
+    for (int i = 0; i < config_.default_thread_size_; i++) {
+         status += primary_threads_[i]->init();
+         thread_record_map_[(CSize)std::hash<std::thread::id>{}(primary_threads_[i]->thread_.get_id())] = i;
+     }
     CGRAPH_FUNCTION_CHECK_STATUS
 
     /**

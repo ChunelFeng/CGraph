@@ -38,7 +38,8 @@ static const CInt CGRAPH_THREAD_MIN_PRIORITY = 0;                               
 static const CInt CGRAPH_THREAD_MAX_PRIORITY = 99;                                          // 线程最高优先级
 static const CMSec CGRAPH_MAX_BLOCK_TTL = 1999999999;                                       // 最大阻塞时间，单位为ms
 static const CUint CGRAPH_DEFAULT_RINGBUFFER_SIZE = 64;                                     // 默认环形队列的大小
-static const CIndex CGRAPH_SECONDARY_THREAD_COMMON_ID = -1;                                 // 辅助线程统一id标识
+static const CIndex CGRAPH_MAIN_THREAD_ID = -1;                                             // 启动线程id标识（非上述主线程）
+static const CIndex CGRAPH_SECONDARY_THREAD_COMMON_ID = -2;                                 // 辅助线程统一id标识
 static const CInt CGRAPH_DEFAULT_PRIORITY = 0;                                              // 默认优先级
 
 
