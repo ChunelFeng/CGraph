@@ -122,7 +122,7 @@ int main() {
 * [以图优图：CGraph中计算dag最大并发度思路总结](http://www.chunel.cn/archives/cgraph-max-para-size)
 * [一文带你了解练习时长两年半的CGraph](http://www.chunel.cn/archives/cgraph-kunanniversary-introduce)
 * [CGraph作者想知道，您是否需要一款eDAG调度框架](http://www.chunel.cn/archives/cgraph-extended-dag)  
-<br><br>
+<br>
 
 ## 四. 关联项目
 

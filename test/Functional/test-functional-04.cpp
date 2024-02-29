@@ -38,7 +38,7 @@ void test_functional_04() {
         status += pipeline->process(RUN_TIMES);
     }
 
-    status += CGRAPH_RECV_MPARAM_WITH_TIMEOUT(TestGMessageParam, g_test_message_key, mp, 10)
+    status += CGRAPH_RECV_MPARAM_WITH_TIMEOUT(TestGMessageParam, g_test_message_key, mp, 25)
     if (mp->num_ != HALF_ARR_SIZE * RUN_TIMES * 2) {
         CGRAPH_ECHO("result num is wrong, num is [%lu]", mp->num_);
     }

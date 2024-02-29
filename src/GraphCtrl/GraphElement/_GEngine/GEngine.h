@@ -10,6 +10,7 @@
 #define CGRAPH_GENGINE_H
 
 #include "GEngineObject.h"
+#include "GEngineDefine.h"
 #include "../GElementSorter.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -52,7 +53,7 @@ protected:
      * @param elements
      * @return
      */
-    CVoid link(const GSortedGElementPtrSet& elements) {
+    static CVoid link(const GSortedGElementPtrSet& elements) {
         /**
          * 认定图可以连通的判定条件：
          * 1，当前元素仅有一个依赖

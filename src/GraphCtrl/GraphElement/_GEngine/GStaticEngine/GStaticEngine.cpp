@@ -12,7 +12,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 CStatus GStaticEngine::setup(const GSortedGElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
-    link(elements);
+    GEngine::link(elements);
     status = analyse(elements);
     CGRAPH_FUNCTION_END
 }

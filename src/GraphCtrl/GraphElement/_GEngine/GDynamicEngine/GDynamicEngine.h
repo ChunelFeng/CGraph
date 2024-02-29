@@ -26,6 +26,12 @@ protected:
     CStatus afterRunCheck() override;
 
     /**
+     * 分析当前的信息，主要用于区分dag的类型
+     * @return
+     */
+    CVoid analysisDagType(const GSortedGElementPtrSet& elements);
+
+    /**
      * 动态图运行
      * @param
      * @return
@@ -62,17 +68,24 @@ protected:
     CVoid wait();
 
     /**
-     * 并发的执行所有的节点
+     * 并发的执行所有的element
      * @return
      */
     CVoid parallelRunAll();
 
+    /**
+     * 串行的执行所有element
+     * @return
+     */
+    CVoid serialRunAll();
+
 private:
-    GElementPtrArr total_element_arr_;                          // pipeline中所有的元素信息集合
-    GElementPtrArr front_element_arr_;                          // 没有依赖的元素信息
-    CSize total_end_size_ = 0;                                  // 图结束节点数量
-    CSize finished_end_size_ = 0;                               // 执行结束节点数量
-    CStatus cur_status_;                                        // 当前全局的状态信息
+    GElementPtrArr total_element_arr_;                                                   // pipeline中所有的元素信息集合
+    GElementPtrArr front_element_arr_;                                                   // 没有依赖的元素信息
+    CSize total_end_size_ = 0;                                                           // 图结束节点数量
+    CSize finished_end_size_ = 0;                                                        // 执行结束节点数量
+    CStatus cur_status_;                                                                 // 当前全局的状态信息
+    internal::GEngineDagType dag_type_ = { internal::GEngineDagType::COMMON };           // 当前元素的排布形式
 
     std::mutex lock_;
     std::condition_variable cv_;

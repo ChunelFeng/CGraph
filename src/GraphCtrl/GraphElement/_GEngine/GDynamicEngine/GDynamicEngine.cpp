@@ -6,13 +6,14 @@
 @Desc: 
 ***************************/
 
+#include <algorithm>
+
 #include "GDynamicEngine.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
 CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
-    link(elements);
 
     // 给所有的值清空
     total_element_arr_.clear();
@@ -32,6 +33,8 @@ CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
         total_element_arr_.emplace_back(element);
     }
 
+    GEngine::link(elements);
+    analysisDagType(elements);
     CGRAPH_FUNCTION_END
 }
 
@@ -39,11 +42,20 @@ CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
 CStatus GDynamicEngine::run() {
     CGRAPH_FUNCTION_BEGIN
 
-    if (likely(total_end_size_ != total_element_arr_.size())) {
-        beforeRun();
-        asyncRunAndWait();
-    } else {
-        parallelRunAll();
+    switch (dag_type_) {
+        case internal::GEngineDagType::COMMON: {
+            beforeRun();
+            asyncRunAndWait();
+            break;
+        }
+        case internal::GEngineDagType::ALL_SERIAL: {
+            serialRunAll();
+            break;
+        }
+        case internal::GEngineDagType::ALL_PARALLEL: {
+            parallelRunAll();
+            break;
+        }
     }
     status = cur_status_;
     CGRAPH_FUNCTION_END
@@ -52,12 +64,12 @@ CStatus GDynamicEngine::run() {
 
 CStatus GDynamicEngine::afterRunCheck() {
     CGRAPH_FUNCTION_BEGIN
-    if (likely(total_end_size_ != total_element_arr_.size())) {
-        /**
-         * 非纯并行的逻辑下，才需要判断。
-         * 纯并行度逻辑，肯定会所有都跑一遍，并且等待全部结束，
-         * 故，不需要判断。
-         */
+    /**
+     * 纯串行和纯并行 是不需要做结果校验的
+     * 但是普通的dag，后期还是校验一下为好
+     * 这里也可以通过外部接口来关闭
+     */
+    if (internal::GEngineDagType::COMMON == dag_type_) {
         for (GElementCPtr element : total_element_arr_) {
             CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!element->done_,    \
                                                     element->getName() + ": dynamic engine, check not run it...")
@@ -87,6 +99,24 @@ CVoid GDynamicEngine::beforeRun() {
     cur_status_.reset();
     for (GElementPtr element : total_element_arr_) {
         element->beforeRun();
+    }
+}
+
+
+CVoid GDynamicEngine::analysisDagType(const GSortedGElementPtrSet& elements) {
+    CSize linkedSize = std::count_if(elements.begin(), elements.end(), [](GElementPtr element) {
+        return element->linkable_;
+    });
+
+    if (1 == front_element_arr_.size() && linkedSize == total_element_arr_.size() - 1) {
+        /**
+         * 如果所有的信息中，只有一个是非linkable。则说明只有开头的那个是的，且只有一个开头
+         * 故，这里将其认定为一条 lineal 的情况
+         * ps: 只有一element的情况，也会被算到 ALL_SERIAL 中去
+         */
+        dag_type_ = internal::GEngineDagType::ALL_SERIAL;
+    } else if (total_end_size_ == total_element_arr_.size()) {
+        dag_type_ = internal::GEngineDagType::ALL_PARALLEL;
     }
 }
 
@@ -173,12 +203,6 @@ CVoid GDynamicEngine::wait() {
 
 
 CVoid GDynamicEngine::parallelRunAll() {
-    /** 特殊判定：如果只有一个节点的话，则直接执行就好了 */
-    if (1 == total_end_size_) {
-        cur_status_ += front_element_arr_[0]->fatProcessor(CFunctionType::RUN);
-        return;
-    }
-
     /**
      * 主要适用于dag是纯并发逻辑的情况
      * 直接并发的执行所有的流程，从而减少调度损耗
@@ -195,6 +219,22 @@ CVoid GDynamicEngine::parallelRunAll() {
 
     for (auto& fut : futures) {
         cur_status_ += fut.get();
+    }
+}
+
+
+void GDynamicEngine::serialRunAll() {
+    /**
+     * 如果分析出来 dag是一个链式的，则直接依次执行element
+     * 直到所有element都执行完成，或者有出现错误的返回值
+     */
+    GElementPtr cur = (front_element_arr_.empty()) ? nullptr : front_element_arr_.front();
+    while (cur) {
+        cur_status_ += cur->fatProcessor(CFunctionType::RUN);
+        if (cur->run_before_.empty() || cur_status_.isErr()) {
+            break;
+        }
+        cur = *(cur->run_before_.begin());
     }
 }
 
