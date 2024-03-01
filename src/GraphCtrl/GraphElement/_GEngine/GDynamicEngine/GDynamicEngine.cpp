@@ -14,25 +14,12 @@ CGRAPH_NAMESPACE_BEGIN
 
 CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
-
-    // 给所有的值清空
-    total_element_arr_.clear();
-    front_element_arr_.clear();
-    total_end_size_ = 0;
-
-    // 确定所有的信息
-    for (GElementPtr element : elements) {
-        CGRAPH_ASSERT_NOT_NULL(element)
-        if (element->run_before_.empty()) {
-            total_end_size_++;
-        }
-
-        if (element->dependence_.empty()) {
-            front_element_arr_.emplace_back(element);
-        }
-        total_element_arr_.emplace_back(element);
-    }
-
+    /**
+     * 1. 标记数据，比如有多少个结束element等
+     * 2. 标记哪些数据，是linkable 的
+     * 3. 分析当前dag类型信息
+     */
+    mark(elements);
     GEngine::link(elements);
     analysisDagType(elements);
     CGRAPH_FUNCTION_END
@@ -56,6 +43,8 @@ CStatus GDynamicEngine::run() {
             parallelRunAll();
             break;
         }
+        default:
+            CGRAPH_RETURN_ERROR_STATUS("unknown engine dag type")
     }
     status = cur_status_;
     CGRAPH_FUNCTION_END
@@ -99,6 +88,24 @@ CVoid GDynamicEngine::beforeRun() {
     cur_status_.reset();
     for (GElementPtr element : total_element_arr_) {
         element->beforeRun();
+    }
+}
+
+
+CVoid GDynamicEngine::mark(const GSortedGElementPtrSet& elements) {
+    total_element_arr_.clear();
+    front_element_arr_.clear();
+    total_end_size_ = 0;
+
+    for (GElementPtr element : elements) {
+        if (element->run_before_.empty()) {
+            total_end_size_++;
+        }
+
+        if (element->dependence_.empty()) {
+            front_element_arr_.emplace_back(element);
+        }
+        total_element_arr_.emplace_back(element);
     }
 }
 
@@ -210,20 +217,22 @@ CVoid GDynamicEngine::parallelRunAll() {
      * 非纯并行逻辑，不走此函数
      */
     std::vector<std::future<CStatus>> futures;
-    futures.reserve(total_end_size_);
-    for (auto* element : front_element_arr_) {
-        futures.emplace_back(thread_pool_->commit([element] {
-            return element->fatProcessor(CFunctionType::RUN);
-        }, calcIndex(element)));
+    futures.reserve(total_end_size_ - 1);
+    for (int i = 1; i < total_end_size_; i++) {
+        futures.emplace_back(std::move(thread_pool_->commit([this, i] {
+            return total_element_arr_[i]->fatProcessor(CFunctionType::RUN);
+        }, calcIndex(total_element_arr_[i]))));
     }
 
+    // 将 1~n 的数据，放入线程池。第0个，本地直接执行即可，类似亲和性处理
+    cur_status_ += (*front_element_arr_.begin())->fatProcessor(CFunctionType::RUN);
     for (auto& fut : futures) {
         cur_status_ += fut.get();
     }
 }
 
 
-void GDynamicEngine::serialRunAll() {
+CVoid GDynamicEngine::serialRunAll() {
     /**
      * 如果分析出来 dag是一个链式的，则直接依次执行element
      * 直到所有element都执行完成，或者有出现错误的返回值

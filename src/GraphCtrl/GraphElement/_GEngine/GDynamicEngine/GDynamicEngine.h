@@ -26,6 +26,13 @@ protected:
     CStatus afterRunCheck() override;
 
     /**
+     * 记录当前 elements 数据信息
+     * @param elements
+     * @return
+     */
+    CVoid mark(const GSortedGElementPtrSet& elements);
+
+    /**
      * 分析当前的信息，主要用于区分dag的类型
      * @return
      */
