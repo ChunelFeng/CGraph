@@ -20,7 +20,7 @@ CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
      * 3. 分析当前dag类型信息
      */
     mark(elements);
-    GEngine::link(elements);
+    link(elements);
     analysisDagType(elements);
     CGRAPH_FUNCTION_END
 }
@@ -111,18 +111,14 @@ CVoid GDynamicEngine::mark(const GSortedGElementPtrSet& elements) {
 
 
 CVoid GDynamicEngine::analysisDagType(const GSortedGElementPtrSet& elements) {
-    CSize linkedSize = std::count_if(elements.begin(), elements.end(), [](GElementPtr element) {
-        return element->linkable_;
-    });
-
-    if (1 == front_element_arr_.size() && linkedSize == total_element_arr_.size() - 1) {
+    if (front_element_arr_.size() == 1 && total_element_arr_.size() - 1 == linked_size_) {
         /**
          * 如果所有的信息中，只有一个是非linkable。则说明只有开头的那个是的，且只有一个开头
          * 故，这里将其认定为一条 lineal 的情况
          * ps: 只有一element的情况，也会被算到 ALL_SERIAL 中去
          */
         dag_type_ = internal::GEngineDagType::ALL_SERIAL;
-    } else if (total_end_size_ == total_element_arr_.size()) {
+    } else if (total_element_arr_.size() == total_end_size_ && front_element_arr_.size() == total_end_size_) {
         dag_type_ = internal::GEngineDagType::ALL_PARALLEL;
     }
 }
@@ -138,7 +134,7 @@ CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
         return;
     }
 
-    const auto& exec = [this, element] {
+    const auto& execute = [this, element] {
         const CStatus& curStatus = element->fatProcessor(CFunctionType::RUN);
         if (unlikely(curStatus.isErr())) {
             // 当且仅当整体状正常，且当前状态异常的时候，进入赋值逻辑。确保不重复赋值
@@ -150,9 +146,9 @@ CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
     if (affinity
         && CGRAPH_DEFAULT_BINDING_INDEX == element->getBindingIndex()) {
         // 如果 affinity=true，表示用当前的线程，执行这个逻辑。以便增加亲和性
-        exec();
+        execute();
     } else {
-        thread_pool_->commit(exec, calcIndex(element));
+        thread_pool_->commit(execute, calcIndex(element));
     }
 }
 

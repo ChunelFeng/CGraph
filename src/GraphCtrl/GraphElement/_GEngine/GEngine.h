@@ -53,7 +53,7 @@ protected:
      * @param elements
      * @return
      */
-    static CVoid link(const GSortedGElementPtrSet& elements) {
+    CVoid link(const GSortedGElementPtrSet& elements) {
         /**
          * 认定图可以连通的判定条件：
          * 1，当前元素仅有一个依赖
@@ -61,6 +61,7 @@ protected:
          * 3，当前元素的依赖的后继，仍是当前节点
          * 4，前后元素绑定机制是一样的
          */
+        linked_size_ = 0;
         for (GElementPtr element : elements) {
             element->linkable_ = false;    // 防止出现之前的留存逻辑。确保只有当前链接关系下，需要设置 linkable的，才会设置为 true
             if (1 == element->dependence_.size()
@@ -68,6 +69,7 @@ protected:
                 && (*(element->dependence_.begin()))->run_before_.find(element) != (*(element->dependence_.begin()))->run_before_.end()
                 && element->getBindingIndex() == (*(element->dependence_.begin()))->getBindingIndex()) {
                 element->linkable_ = true;
+                linked_size_++;
             }
         }
     }
@@ -76,6 +78,7 @@ protected:
 protected:
     UThreadPoolPtr thread_pool_ { nullptr };                    // 内部执行的线程池
     int schedule_strategy_ = CGRAPH_DEFAULT_TASK_STRATEGY;      // 调度策略
+    CSize linked_size_ = 0;                                     // 标记有多少个element，是 linkable 的数据
 
     friend class GElementManager;
     friend class GPipeline;

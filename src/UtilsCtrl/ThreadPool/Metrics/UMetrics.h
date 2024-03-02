@@ -106,9 +106,6 @@ protected:
      * @return
      */
     CVoid reset() {
-#ifndef _CGRAPH_SHOW_THREAD_METRICS_
-        return;
-#endif
         local_pop_real_num_ = 0;
         local_pop_times_ = 0;
         pool_pop_real_num_ = 0;
@@ -122,16 +119,16 @@ protected:
     }
 
 private:
-    CSize local_pop_real_num_ = 0;
-    CSize local_pop_times_ = 0;
-    CSize pool_pop_real_num_ = 0;
-    CSize pool_pop_times_ = 0;
-    CSize steal_pop_real_num_ = 0;
-    CSize steal_pop_times_ = 0;
-    CSize local_push_real_num_ = 0;
-    CSize local_push_yield_times_ = 0;
-    CSize fleet_wait_times_ = 0;
-    CSize deep_wait_times_ = 0;
+    CSize local_pop_real_num_ = 0;        // 本地pop出来数据个数
+    CSize local_pop_times_ = 0;           // 本地尝试pop的次数
+    CSize pool_pop_real_num_ = 0;         // 从pool中pop出来的数据个数
+    CSize pool_pop_times_ = 0;            // 从pool中尝试pop的次数
+    CSize steal_pop_real_num_ = 0;        // 偷盗获取的数据的个数
+    CSize steal_pop_times_ = 0;           // 偷盗的次数
+    CSize local_push_real_num_ = 0;       // 写入的真实次数
+    CSize local_push_yield_times_ = 0;    // 写入冲突导致yield的次数
+    CSize fleet_wait_times_ = 0;          // 轻量级等待的次数
+    CSize deep_wait_times_ = 0;           // 深度等待的次数（触发了cv的wait机制）
 
     friend class UThreadBase;
     friend class UThreadPrimary;
