@@ -32,6 +32,7 @@ CStatus GMutable::addElement(GElementPtr element) {
 
 CStatus GMutable::init() {
     CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(manager_)
     manager_->setThreadPool(thread_pool_);
     status = manager_->initEngine();
     CGRAPH_FUNCTION_CHECK_STATUS
@@ -43,7 +44,6 @@ CStatus GMutable::init() {
 
 CStatus GMutable::run() {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(manager_)
 
     /**
      * 1. 初始化内容
@@ -68,6 +68,12 @@ CStatus GMutable::destroy() {
 
     status = GGroup::destroy();
     CGRAPH_FUNCTION_END
+}
+
+
+CBool GMutable::isSerializable() const {
+    // 情况随时可能发生变化，直接设定不可以 serialize 即可
+    return false;
 }
 
 

@@ -36,6 +36,8 @@ private:
 
     CStatus destroy() final;
 
+    CBool isSerializable() const override;
+
     /**
      * 将数据进行恢复
      * @return
