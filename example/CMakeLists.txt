@@ -8,7 +8,7 @@ set(CGRAPH_EXAMPLE_LIST
 
 foreach(example ${CGRAPH_EXAMPLE_LIST})
     add_executable(${example}
-            $<TARGET_OBJECTS:CGraph>
             ${example}.cpp
             )
+    target_link_libraries(${example} PRIVATE CGraph)
 endforeach()
