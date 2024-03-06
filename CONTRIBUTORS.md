@@ -20,5 +20,6 @@ Contributors:
 - [baoguo-ma1](https://github.com/baoguo-ma1)
 - [naonao](https://github.com/naonao-cola)
 - [xin zong](https://github.com/zongxin1993)
+- [SGSSGene](https://github.com/SGSSGene)
 
 感谢以上朋友，为CGraph项目做出的贡献，排名以贡献时间前后为顺序。
