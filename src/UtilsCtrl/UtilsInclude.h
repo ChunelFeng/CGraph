@@ -15,6 +15,7 @@
 #include "Singleton/USingleton.h"
 #include "Lru/ULru.h"
 #include "Trie/UTrie.h"
+#include "Trie/UTrieV2.h"
 #include "Timer/UTimerInclude.h"
 #include "Distance/UDistanceInclude.h"
 #include "Random/URandom.h"

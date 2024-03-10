@@ -37,6 +37,7 @@ private:
     UTrieNode* children_[MAX_TRIE_NODE_SIZE]{};
 
     friend class UTrie;
+    friend class UTrieV2;
 };
 
 using UTrieNodePtr = UTrieNode *;
