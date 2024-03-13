@@ -27,7 +27,27 @@ void tutorial_trie() {
 }
 
 
+void tutorial_trie_v2() {
+    UTrieV2 trieV2;
+    trieV2.insert("hello");
+    trieV2.insert("help");
+    trieV2.insert("cgraph");    // 插入几个单词
+
+    CGRAPH_ECHO("find [hello] result is : [%i]", trieV2.find("hello"));
+    CGRAPH_ECHO("find [cgraph] result is : [%i]", trieV2.find("cgraph"));
+
+    trieV2.eraser("hello");    // 删去hello信息
+    CGRAPH_ECHO("eraser [hello], then find it, result is : [%i]", trieV2.find("hello"));
+
+    trieV2.insert("hello");    // 重新插入hello信息
+    CGRAPH_ECHO("insert [hello] again, then find it, result is : [%i]", trieV2.find("hello"));
+}
+
+
 int main() {
+    printf("----------------- trie -----------------\n");
     tutorial_trie();
+    printf("----------------- trie v2 -----------------\n");
+    tutorial_trie_v2();
     return 0;
 }

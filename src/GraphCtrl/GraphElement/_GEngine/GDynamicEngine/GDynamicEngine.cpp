@@ -111,11 +111,11 @@ CVoid GDynamicEngine::mark(const GSortedGElementPtrSet& elements) {
 
 
 CVoid GDynamicEngine::analysisDagType(const GSortedGElementPtrSet& elements) {
-    if (front_element_arr_.size() == 1 && total_element_arr_.size() - 1 == linked_size_) {
+    if (total_element_arr_.empty() || front_element_arr_.size() == 1 && total_element_arr_.size() - 1 == linked_size_) {
         /**
          * 如果所有的信息中，只有一个是非linkable。则说明只有开头的那个是的，且只有一个开头
          * 故，这里将其认定为一条 lineal 的情况
-         * ps: 只有一element的情况，也会被算到 ALL_SERIAL 中去
+         * ps: 只有一个或者没有 element的情况，也会被算到 ALL_SERIAL 中去
          */
         dag_type_ = internal::GEngineDagType::ALL_SERIAL;
     } else if (total_element_arr_.size() == total_end_size_ && front_element_arr_.size() == total_end_size_) {

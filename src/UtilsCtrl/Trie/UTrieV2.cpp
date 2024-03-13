@@ -6,16 +6,17 @@
 @Desc: 
 ***************************/
 
+#include <stack>
+
 #include "UTrieV2.h"
 #include "UTrieNode.h"
-#include <cstddef>
-#include <stack>
 
 CGRAPH_NAMESPACE_BEGIN
 
 UTrieV2::UTrieV2() {
     head_ = CGRAPH_SAFE_MALLOC_COBJECT(UTrieNode)
 }
+
 
 UTrieV2::~UTrieV2() {
     clear();
@@ -86,7 +87,7 @@ void UTrieV2::clear() {
 
 
 void UTrieV2::eraser(const std::string& path) {
-    if(head_ == nullptr || path.empty()) return;
+    if (head_ == nullptr || path.empty()) return;
     auto *node = head_;
     for(const auto &c : path) {
         int i = (int)c;
