@@ -21,8 +21,6 @@ protected:
 
     ~GDaemonManager() override;
 
-    GDaemonManager* setInterval(CMSec interval) override;
-
     CStatus init() final;
 
     CStatus destroy() final;
@@ -40,7 +38,7 @@ protected:
     CGRAPH_NO_ALLOWED_COPY(GDaemonManager)
 
 private:
-    GDaemonSet daemons_;                    // daemon信息集合
+    GDaemonSet daemons_ {};                    // daemon信息集合
 };
 
 using GDaemonManagerPtr = GDaemonManager *;

@@ -80,22 +80,18 @@ CVoid GEvent::asyncWait(GEventAsyncStrategy strategy) {
     switch (strategy) {
         case GEventAsyncStrategy::PIPELINE_RUN_FINISH: {
             for (auto& cur : async_run_finish_futures_) {
-                if (cur.valid()) {
-                    cur.wait();
-                }
+                cur.valid() ? cur.wait() : void();
             }
             async_run_finish_futures_.clear();
-        }
             break;
+        }
         case GEventAsyncStrategy::PIPELINE_DESTROY: {
             for (auto& cur : async_destroy_futures_) {
-                if (cur.valid()) {
-                    cur.wait();
-                }
+                cur.valid() ? cur.wait() : void();
             }
             async_destroy_futures_.clear();
-        }
             break;
+        }
         default:
             CGRAPH_THROW_EXCEPTION("unknown event async strategy type")
     }

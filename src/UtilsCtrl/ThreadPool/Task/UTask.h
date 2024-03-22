@@ -17,7 +17,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class UTask : public UThreadObject {
+class UTask : public CStruct {
     struct TaskBased {
         explicit TaskBased() = default;
         virtual CVoid call() = 0;

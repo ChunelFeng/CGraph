@@ -68,22 +68,7 @@ CStatus GDaemonManager::clear() {
 
 
 CSize GDaemonManager::getSize() const {
-    CSize size = daemons_.size();
-    return size;
-}
-
-
-GDaemonManagerPtr GDaemonManager::setInterval(CMSec interval) {
-    if (0 == interval) {
-        return this;
-    }
-
-    for (auto daemon : daemons_) {
-        CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(daemon)
-        daemon->setInterval(interval);
-    }
-
-    return this;
+    return daemons_.size();
 }
 
 CGRAPH_NAMESPACE_END

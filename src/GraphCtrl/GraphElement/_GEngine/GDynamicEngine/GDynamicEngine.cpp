@@ -111,7 +111,8 @@ CVoid GDynamicEngine::mark(const GSortedGElementPtrSet& elements) {
 
 
 CVoid GDynamicEngine::analysisDagType(const GSortedGElementPtrSet& elements) {
-    if (total_element_arr_.empty() || front_element_arr_.size() == 1 && total_element_arr_.size() - 1 == linked_size_) {
+    if (total_element_arr_.empty()
+       || (front_element_arr_.size() == 1 && total_element_arr_.size() - 1 == linked_size_)) {
         /**
          * 如果所有的信息中，只有一个是非linkable。则说明只有开头的那个是的，且只有一个开头
          * 故，这里将其认定为一条 lineal 的情况
@@ -213,15 +214,13 @@ CVoid GDynamicEngine::parallelRunAll() {
      * 非纯并行逻辑，不走此函数
      */
     std::vector<std::future<CStatus>> futures;
-    futures.reserve(total_end_size_ - 1);
-    for (int i = 1; i < total_end_size_; i++) {
+    futures.reserve(total_end_size_);
+    for (int i = 0; i < total_end_size_; i++) {
         futures.emplace_back(std::move(thread_pool_->commit([this, i] {
             return total_element_arr_[i]->fatProcessor(CFunctionType::RUN);
         }, calcIndex(total_element_arr_[i]))));
     }
 
-    // 将 1~n 的数据，放入线程池。第0个，本地直接执行即可，类似亲和性处理
-    cur_status_ += (*front_element_arr_.begin())->fatProcessor(CFunctionType::RUN);
     for (auto& fut : futures) {
         cur_status_ += fut.get();
     }
