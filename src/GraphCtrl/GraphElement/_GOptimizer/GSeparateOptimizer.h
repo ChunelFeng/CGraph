@@ -49,8 +49,7 @@ protected:
      * @notice 如果没有最近从属节点，即不在同一个 group中，则返回 nullptr
      */
     static GElementPtr getNearestAncestor(GElementCPtr fst, GElementCPtr snd,
-                                          GElementPPtr fstPatch,
-                                          GElementPPtr sndPatch) {
+                                          GElementPPtr fstPatch, GElementPPtr sndPatch) {
         GElementPtr ancestor = nullptr;
         const auto& fstPath = fst->getDeepPath(false);
         const auto& sndPath = snd->getDeepPath(false);
@@ -61,12 +60,6 @@ protected:
 
         (*fstPatch) = getPatch(fstPath, ancestor, fst);
         (*sndPatch) = getPatch(sndPath, ancestor, snd);
-
-        if (ancestor) {
-            std::cout << ancestor->getSession() << std::endl;
-        } else {
-            std::cout << "ancestor is pipeline \n";
-        }
         return ancestor;
     }
 

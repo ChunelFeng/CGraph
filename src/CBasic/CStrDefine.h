@@ -9,8 +9,6 @@
 #ifndef CGRAPH_CSTRDEFINE_H
 #define CGRAPH_CSTRDEFINE_H
 
-#include <string>
-
 #include "CBasicDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
