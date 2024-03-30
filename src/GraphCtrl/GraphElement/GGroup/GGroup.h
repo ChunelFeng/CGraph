@@ -52,6 +52,15 @@ private:
      */
     CVoid dumpGroupLabelEnd(std::ostream& oss);
 
+    /**
+     * 判断两个element，是否相互独立
+     * @param a
+     * @param b
+     * @return
+     * @notice 如果返回 true，则表示一定有前后依赖关系，不可能并发执行。否则表示不确定，原因是并发情况无法完全确定
+     */
+    virtual CBool isSeparate(GElementCPtr a, GElementCPtr b) const;
+
 private:
     GElementPtrArr group_elements_arr_;    // 存放 element的数组
 

@@ -17,7 +17,6 @@
 
 #include "GPipelineObject.h"
 #include "_GSchedule/GScheduleInclude.h"
-#include "_GPerf/GPerfInclude.h"
 #include "../GraphElement/GElementInclude.h"
 #include "../GraphDaemon/GDaemonInclude.h"
 #include "../GraphEvent/GEventInclude.h"
@@ -335,11 +334,10 @@ public:
 
     /**
      * 获取最大并发度
-     * @param size
      * @return
      * @notice 暂时仅支持dag中所有内容均为 node的情况下计算。返回的值，是理论最大线程数，不是最优值
      */
-    CStatus calcMaxPara(CSize& size);
+    CSize getMaxPara();
 
     /**
      * 将符合串行执行条件的pipeline，设定为串行执行的模式。可以大幅度提升运行性能。
@@ -353,6 +351,15 @@ public:
      * @return
      */
     GPipelineState getCurState() const;
+
+    /**
+     * 判断两个element，是否有依赖关系
+     * @param fst
+     * @param snd
+     * @return
+     * @notice 如果返回 true，则表示不可能并发执行；否则表示可能并发执行
+     */
+    CBool checkSeparate(GElementPtr fst, GElementPtr snd) const;
 
     /**
      * 注册GParam 交互类集合

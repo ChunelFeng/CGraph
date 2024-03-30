@@ -130,4 +130,9 @@ CVoid GCluster::dump(std::ostream& oss) {
     }
 }
 
+
+CBool GCluster::isSeparate(GElementCPtr a, GElementCPtr b) const {
+    return true;
+}
+
 CGRAPH_NAMESPACE_END

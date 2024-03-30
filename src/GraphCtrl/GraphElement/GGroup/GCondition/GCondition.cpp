@@ -70,4 +70,9 @@ CVoid GCondition::dump(std::ostream& oss) {
     }
 }
 
+
+CBool GCondition::isSeparate(GElementCPtr a, GElementCPtr b) const {
+    return true;
+}
+
 CGRAPH_NAMESPACE_END

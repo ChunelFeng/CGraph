@@ -95,4 +95,9 @@ CStatus GGroup::addManagers(GParamManagerPtr paramManager,
     CGRAPH_FUNCTION_END
 }
 
+
+CBool GGroup::isSeparate(GElementCPtr a, GElementCPtr b) const {
+    return false;
+}
+
 CGRAPH_NAMESPACE_END

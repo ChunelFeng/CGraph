@@ -37,7 +37,7 @@ protected:
      * @param element
      * @return
      */
-    CIndex calcIndex(GElementPtr element) const {
+    inline CIndex calcIndex(GElementPtr element) const {
         /**
          * 如果没有设定绑定线程的话，就用默认调度策略
          * 否则的话，会走绑定的thread。

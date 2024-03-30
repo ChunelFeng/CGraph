@@ -7,6 +7,8 @@
 ***************************/
 
 #include "GPipeline.h"
+#include "_GPerf/GPerfInclude.h"
+#include "../GraphElement/_GOptimizer/GOptimizerInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -259,12 +261,9 @@ GPipelinePtr GPipeline::setAutoCheck(CBool enable) {
 }
 
 
-CStatus GPipeline::calcMaxPara(CSize& size) {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(element_manager_)
-
-    status = element_manager_->calcMaxParaSize(size);
-    CGRAPH_FUNCTION_END
+CSize GPipeline::getMaxPara() {
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element_manager_)
+    return element_manager_->calcMaxParaSize();
 }
 
 
@@ -273,7 +272,7 @@ CStatus GPipeline::makeSerial() {
     CGRAPH_ASSERT_INIT(false)
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
 
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((schedule_.type_ != GScheduleType::UNIQUE),    \
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((schedule_.type_ != internal::GScheduleType::UNIQUE),    \
                                             "cannot set serial config without UNIQUE schedule")
 
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!element_manager_->checkSerializable(),    \
@@ -292,6 +291,30 @@ CStatus GPipeline::makeSerial() {
 
 GPipelineState GPipeline::getCurState() const {
     return repository_.cur_state_;
+}
+
+
+CBool GPipeline::checkSeparate(GElementPtr fst, GElementPtr snd) const {
+    CBool result = false;
+    if ((fst == snd) || (!repository_.find(fst)) || (!repository_.find(snd))) {
+        return result;
+    }
+
+    GElementPtr fstPatch, sndPatch = nullptr;
+    GElementPtr ancestor = GSeparateOptimizer::getNearestAncestor(fst, snd, &fstPatch, &sndPatch);
+    if (ancestor == fst || ancestor == snd) {
+        // 其中一个是另外一个的祖先，则直接认为是分离的
+        result = true;
+    } else if (ancestor) {
+        // 两个同属于一个 group 的情况，则根据 group 的属性来决定
+        CGRAPH_THROW_EXCEPTION_BY_CONDITION(!ancestor->isGroup(), "calculate ancestor failed, not a group.")
+        result = (dynamic_cast<GGroupPtr>(ancestor))->isSeparate(fstPatch, sndPatch);
+    } else {
+        // ancestor == nullptr，则认定fst 和 snd 的 ancestor 是pipeline
+        result = GSeparateOptimizer::checkSeparate(element_manager_->manager_elements_, fstPatch, sndPatch);
+    }
+
+    return result;
 }
 
 

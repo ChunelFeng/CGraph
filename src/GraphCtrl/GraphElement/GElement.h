@@ -382,6 +382,13 @@ private:
      */
     virtual CStatus checkSuitable();
 
+    /**
+     * 获取链路所有的 belong信息
+     * @param reverse
+     * @return
+     */
+    std::vector<GElement *> getDeepPath(CBool reverse) const;
+
 private:
     /** 状态相关信息 */
     CBool done_ { false };                                                    // 判定被执行结束
@@ -436,7 +443,9 @@ private:
     friend class GStaticEngine;
     friend class GDynamicEngine;
     friend class GTopoEngine;
+    friend class GOptimizerObject;
     friend class GMaxParaOptimizer;
+    friend class GSeparateOptimizer;
     friend class GElementRepository;
     friend class GPerf;
 

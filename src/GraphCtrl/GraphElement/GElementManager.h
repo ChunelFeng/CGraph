@@ -82,10 +82,9 @@ protected:
 
     /**
      * 获取最大的并发数
-     * @param size
      * @return
      */
-    CStatus calcMaxParaSize(CSize& size);
+    CSize calcMaxParaSize();
 
     /**
      * 查看是否可以串行执行

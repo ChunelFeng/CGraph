@@ -13,14 +13,14 @@ CGRAPH_NAMESPACE_BEGIN
 CStatus GSchedule::init() {
     CGRAPH_FUNCTION_BEGIN
 
-    if (GScheduleType::UNIQUE == type_) {
+    if (internal::GScheduleType::UNIQUE == type_) {
         /**
          * 如果是 unique 的数据，则在这里初始化一下
          * 如果是 shared 的数据，则不做任何操作
          */
         CGRAPH_DELETE_PTR(unique_tp_)
         unique_tp_ = UAllocator::safeMallocTemplateCObject<UThreadPool>(true, config_);
-    } else if (GScheduleType::SHARED == type_) {
+    } else if (internal::GScheduleType::SHARED == type_) {
         CGRAPH_ASSERT_NOT_NULL(shared_tp_)
         // 首先，要确定外部传入的线程池，已经初始化过了
         if (!shared_tp_->isInit()) {
@@ -35,7 +35,7 @@ CStatus GSchedule::init() {
 CStatus GSchedule::destroy() {
     CGRAPH_FUNCTION_BEGIN
 
-    if (GScheduleType::UNIQUE == type_) {
+    if (internal::GScheduleType::UNIQUE == type_) {
         // unique 模式下，init的时候创建线程，就在destroy的时候，给析构掉了
         CGRAPH_DELETE_PTR(this->unique_tp_)
     }
@@ -55,7 +55,7 @@ CStatus GSchedule::makeType(UThreadPoolPtr tp) {
     shared_tp_ = tp;    // 用外部传入的线程池，来代替内部原有的线程池
 
     // 如果是nullptr的话，就当做是恢复使用默认本地线程池
-    type_ = (nullptr == tp) ? GScheduleType::UNIQUE : GScheduleType::SHARED;
+    type_ = (nullptr == tp) ? internal::GScheduleType::UNIQUE : internal::GScheduleType::SHARED;
     CGRAPH_FUNCTION_END
 }
 

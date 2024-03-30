@@ -6,6 +6,8 @@
 @Desc: 
 ***************************/
 
+#include <algorithm>
+
 #include "GElement.h"
 #include "../GraphPipeline/_GPerf/GPerfInclude.h"
 
@@ -522,6 +524,22 @@ CStatus GElement::checkSuitable() {
     }
 
     CGRAPH_FUNCTION_END
+}
+
+
+GElementPtrArr GElement::getDeepPath(CBool reverse) const {
+    GElementPtrArr path;
+    auto* cur = const_cast<GElementPtr>(this);    // 这个是肯定可以转移的
+    while (cur) {
+        path.push_back(cur);
+        cur = cur->belong_;
+    }
+
+    if (!reverse) {
+        // 如果 reverse=false，则 pipeline(nullptr)->a->b->this
+        std::reverse(path.begin(), path.end());
+    }
+    return path;
 }
 
 CGRAPH_NAMESPACE_END

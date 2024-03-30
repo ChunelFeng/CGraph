@@ -49,6 +49,8 @@ private:
 
     CVoid dump(std::ostream& oss) final;
 
+    CBool isSeparate(GElementCPtr a, GElementCPtr b) const final;
+
     /**
      * 判断是否所有element均执行结束了
      * @return

@@ -148,17 +148,10 @@ GElementManagerPtr GElementManager::setThreadPool(UThreadPoolPtr ptr) {
 }
 
 
-CStatus GElementManager::calcMaxParaSize(CSize& size) {
-    CGRAPH_FUNCTION_BEGIN
-    GMaxParaOptimizer op;
-    if (op.match(manager_elements_)) {
-        size = op.getMaxParaSize(manager_elements_);
-    } else {
-        // 遇到不可以解析的情况，将size赋值为0，告知上游
-        size = 0;
-        status = CErrStatus("cannot calculate max parallel size within groups");
-    }
-    CGRAPH_FUNCTION_END
+CSize GElementManager::calcMaxParaSize() {
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION(!GMaxParaOptimizer::match(manager_elements_),
+                                        "cannot calculate max parallel size within groups")
+    return GMaxParaOptimizer::getMaxParaSize(manager_elements_);
 }
 
 

@@ -37,6 +37,8 @@ private:
 
     CBool isSerializable() const override;
 
+    CBool isSeparate(GElementCPtr a, GElementCPtr b) const final;
+
     friend class GPipeline;
     friend class UAllocator;
 };

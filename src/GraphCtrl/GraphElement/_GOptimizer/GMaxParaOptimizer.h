@@ -18,9 +18,12 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GMaxParaOptimizer : public GOptimizerObject {
 protected:
-    GMaxParaOptimizer() = default;
-
-    CBool match(const GSortedGElementPtrSet& elements) override {
+    /**
+     * 判定是否match计算条件
+     * @param elements
+     * @return
+     */
+    static CBool match(const GSortedGElementPtrSet& elements) {
         return !std::any_of(elements.begin(), elements.end(), [](GElementCPtr ptr) {
             return ptr->isGroup();
         });
@@ -31,7 +34,7 @@ protected:
      * @param elements
      * @return
      */
-    CSize getMaxParaSize(const GSortedGElementPtrSet& elements) {
+    static CSize getMaxParaSize(const GSortedGElementPtrSet& elements) {
         /**
          * 计算思路如下：
          * 1. 列出来所有的可行路径(paths)
@@ -39,51 +42,13 @@ protected:
          * 3. 计算补图的最大团中元素个数(maxCliqueSize)，即为当前dag的最大并行度
          */
         const CSize size = elements.size();
-        std::vector<std::vector<GElementPtr>> paths;
-        collectPaths(elements, paths);    // 根据传入的elements 的关系，分析出所有完整路径信息
+        const auto& paths = GOptimizerObject::collectPaths(elements);    // 根据传入的elements 的关系，分析出所有完整路径信息
 
         std::vector<std::vector<int>> reGraph(size, std::vector<int>(size, 1));
         buildReverseGraph(elements, paths, reGraph);    // 根据路径信息，求出全连接图的补图
 
         CSize maxCliqueSize = calcMaxCliqueSize(reGraph);    // 计算最大团信息
         return maxCliqueSize;
-    }
-
-    /**
-     * 记录所有的path信息
-     * @param paths
-     * @return
-     */
-    CVoid collectPaths(const GSortedGElementPtrSet& elements,
-                       std::vector<std::vector<GElementPtr>>& paths) {
-        for (auto& element : elements) {
-            std::vector<GElementPtr> curPath;
-            if (element->dependence_.empty()) {
-                collect(element, curPath, paths);
-            }
-        }
-    }
-
-    /**
-     * 记录 path 信息
-     * @param element
-     * @param curPath
-     * @param paths
-     * @return
-     */
-    CVoid collect(GElementPtr element,
-                  std::vector<GElementPtr>& curPath,
-                  std::vector<std::vector<GElementPtr>>& paths) {
-        curPath.emplace_back(element);
-        if (element->run_before_.empty()) {
-            // 如果是最后一个信息了，则记录下来
-            paths.emplace_back(curPath);
-        } else {
-            for (auto& cur : element->run_before_) {
-                collect(cur, curPath, paths);
-            }
-        }
-        curPath.pop_back();
     }
 
     /**

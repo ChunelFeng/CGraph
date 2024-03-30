@@ -16,14 +16,42 @@ CGRAPH_NAMESPACE_BEGIN
 class GOptimizerObject : public GElementObject {
 protected:
     /**
-     * 判定是否满足优化的条件
+     * 记录 path 信息
+     * @param element
+     * @param curPath
+     * @param paths
+     * @return
+     */
+    static CVoid collect(GElementPtr element,
+                         std::vector<GElementPtr>& curPath,
+                         std::vector<std::vector<GElementPtr>>& paths) {
+        curPath.emplace_back(element);
+        if (element->run_before_.empty()) {
+            // 如果是最后一个信息了，则记录下来
+            paths.emplace_back(curPath);
+        } else {
+            for (auto& cur : element->run_before_) {
+                collect(cur, curPath, paths);
+            }
+        }
+        curPath.pop_back();
+    }
+
+    /**
+     * 记录所有的path信息
      * @param elements
      * @return
      */
-    virtual CBool match(const GSortedGElementPtrSet& elements) = 0;
+    static std::vector<std::vector<GElementPtr>> collectPaths(const GSortedGElementPtrSet& elements) {
+        std::vector<std::vector<GElementPtr>> paths;
+        for (const auto& element : elements) {
+            std::vector<GElementPtr> curPath;
+            if (element->dependence_.empty()) {
+                collect(element, curPath, paths);
+            }
+        }
 
-    CStatus run() override {
-        CGRAPH_EMPTY_FUNCTION
+        return paths;
     }
 };
 

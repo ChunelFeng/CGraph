@@ -10,5 +10,6 @@
 #define CGRAPH_GOPTIMIZERINCLUDE_H
 
 #include "GMaxParaOptimizer.h"
+#include "GSeparateOptimizer.h"
 
 #endif //CGRAPH_GOPTIMIZERINCLUDE_H

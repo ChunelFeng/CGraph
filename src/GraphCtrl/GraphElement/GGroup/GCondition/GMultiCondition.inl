@@ -104,6 +104,23 @@ CBool GMultiCondition<type>::isSerializable() const {
     return GGroup::isSerializable();
 }
 
+
+template<GMultiConditionType type>
+CBool GMultiCondition<type>::isSeparate(GElementCPtr a, GElementCPtr b) const {
+    CBool result = false;
+    switch (type) {
+        case GMultiConditionType::SERIAL:
+            result = true;
+            break;
+        case GMultiConditionType::PARALLEL:
+            result = false;
+            break;
+        default:
+            CGRAPH_THROW_EXCEPTION("unknown multi condition type in isSeparateWith function")
+    }
+    return result;
+}
+
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GMULTICONDITION_INL

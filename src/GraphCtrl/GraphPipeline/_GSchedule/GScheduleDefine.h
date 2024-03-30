@@ -12,12 +12,14 @@
 #include "../../GraphDefine.h"
 
 CGRAPH_NAMESPACE_BEGIN
+CGRAPH_INTERNAL_NAMESPACE_BEGIN
 
 enum class GScheduleType {
     UNIQUE = 0,        // 独占式，一个pipeline 独占一个 thread pool，默认的类型
     SHARED = 1,        // 共享式，n个pipeline 共享m个 thread pool
 };
 
+CGRAPH_INTERNAL_NAMESPACE_END
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GSCHEDULEDEFINE_H

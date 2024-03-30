@@ -29,9 +29,9 @@ private:
      */
     UThreadPoolPtr getThreadPool();
 
-    CStatus init() override;
+    CStatus init() final;
 
-    CStatus run() override;
+    CStatus run() final;
 
     CStatus destroy() final;
 
@@ -40,10 +40,10 @@ private:
     ~GSchedule() override;
 
 private:
-    UThreadPoolPtr unique_tp_ = nullptr;            // 内部独占的线程池
-    UThreadPoolPtr shared_tp_ = nullptr;            // 外部输入的线程池
-    UThreadPoolConfig config_;                      // 线程池的配置信息
-    GScheduleType type_ = GScheduleType::UNIQUE;    // 调度类型
+    UThreadPoolPtr unique_tp_ = nullptr;                                  // 内部独占的线程池
+    UThreadPoolPtr shared_tp_ = nullptr;                                  // 外部输入的线程池
+    UThreadPoolConfig config_;                                            // 线程池的配置信息
+    internal::GScheduleType type_ = internal::GScheduleType::UNIQUE;      // 调度类型
 
     friend class GPipeline;
 };

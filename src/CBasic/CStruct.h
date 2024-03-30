@@ -15,9 +15,11 @@ CGRAPH_NAMESPACE_BEGIN
 
 /**
  * 所有框架内部结构体定义的基类
- * 仅针对类似 bean 数据类型的定义
+ * 仅针对类似 pod 数据类型的定义
  */
 class CStruct {
+public:
+    ~CStruct() = default;
 };
 
 CGRAPH_NAMESPACE_END

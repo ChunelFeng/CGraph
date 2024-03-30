@@ -9,6 +9,7 @@
 #include <functional>
 
 #include "GRegion.h"
+#include "GraphCtrl/GraphElement/_GOptimizer/GOptimizerInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -121,6 +122,11 @@ CStatus GRegion::addManagers(GParamManagerPtr paramManager,
     }
 
     CGRAPH_FUNCTION_END
+}
+
+
+CBool GRegion::isSeparate(GElementCPtr a, GElementCPtr b) const {
+    return GSeparateOptimizer::checkSeparate(manager_->manager_elements_, a, b);
 }
 
 CGRAPH_NAMESPACE_END
