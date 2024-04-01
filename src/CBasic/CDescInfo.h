@@ -21,7 +21,7 @@ public:
      * 获取名称信息
      * @return
      */
-    const std::string& getName() const {
+    virtual const std::string& getName() const {
         return name_.empty() ? session_ : name_;
     }
 

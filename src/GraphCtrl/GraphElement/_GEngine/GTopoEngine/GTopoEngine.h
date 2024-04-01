@@ -16,7 +16,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GTopoEngine : GEngine {
+class GTopoEngine : public GEngine {
 protected:
     explicit GTopoEngine() = default;
 

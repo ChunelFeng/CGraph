@@ -18,16 +18,14 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
+class GElement;
+
 class GAspectObject : public GraphObject,
                       public CDescInfo {
 protected:
-    explicit GAspectObject() {
-        session_ = URandom<>::generateSession(CGRAPH_STR_ASPECT);
-    }
+    explicit GAspectObject();
 
-    ~GAspectObject() override {
-        CGRAPH_DELETE_PTR(param_)
-    }
+    ~GAspectObject() override;
 
     /**
      * 获取切面参数内容
@@ -44,6 +42,15 @@ protected:
     template <typename T,
               c_enable_if_t<std::is_base_of<GAspectParam, T>::value, int> = 0>
     GAspectObject* setAParam(T* param);
+
+    /**
+     * 设置从属的 element信息
+     * @param belong
+     * @return
+     */
+    auto setBelong(GElement* belong)-> decltype(this);
+
+    const std::string& getName() const override;
 
     CGRAPH_NO_ALLOWED_COPY(GAspectObject)
 
@@ -64,8 +71,10 @@ private:
     GAspectParamPtr param_ { nullptr };                       // 参数信息
     GParamManagerPtr param_manager_ { nullptr };              // GParam参数管理类
     GEventManagerPtr event_manager_ { nullptr };              // 事件管理类
+    GElement* belong_ { nullptr };                            // 从属的 element信息
 
     friend class GAspectManager;
+    friend class GAspect;
     friend class GElement;
 };
 

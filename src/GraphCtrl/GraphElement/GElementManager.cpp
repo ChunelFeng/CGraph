@@ -57,7 +57,6 @@ CStatus GElementManager::destroy() {
 
 CStatus GElementManager::run() {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(engine_)
 
     status = engine_->run();    // 通过引擎来执行全部的逻辑
     CGRAPH_FUNCTION_CHECK_STATUS
