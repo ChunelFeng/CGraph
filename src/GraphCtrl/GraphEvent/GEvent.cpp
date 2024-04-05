@@ -62,8 +62,10 @@ CStatus GEvent::process(GEventType type, GEventAsyncStrategy strategy) {
                  * 在特定的时间点，等待执行结束
                  */
                 if (GEventAsyncStrategy::PIPELINE_RUN_FINISH == strategy) {
+                    CGRAPH_LOCK_GUARD lock(async_run_finished_lock_);
                     async_run_finish_futures_.emplace_back(std::move(future));
                 } else if (GEventAsyncStrategy::PIPELINE_DESTROY == strategy) {
+                    CGRAPH_LOCK_GUARD lock(async_destroy_lock_);
                     async_destroy_futures_.emplace_back(std::move(future));
                 }
             }
@@ -79,6 +81,7 @@ CStatus GEvent::process(GEventType type, GEventAsyncStrategy strategy) {
 CVoid GEvent::asyncWait(GEventAsyncStrategy strategy) {
     switch (strategy) {
         case GEventAsyncStrategy::PIPELINE_RUN_FINISH: {
+            CGRAPH_LOCK_GUARD lock(async_run_finished_lock_);
             for (auto& cur : async_run_finish_futures_) {
                 cur.valid() ? cur.wait() : void();
             }
@@ -86,6 +89,7 @@ CVoid GEvent::asyncWait(GEventAsyncStrategy strategy) {
             break;
         }
         case GEventAsyncStrategy::PIPELINE_DESTROY: {
+            CGRAPH_LOCK_GUARD lock(async_destroy_lock_);
             for (auto& cur : async_destroy_futures_) {
                 cur.valid() ? cur.wait() : void();
             }
