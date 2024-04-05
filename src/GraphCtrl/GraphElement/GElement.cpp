@@ -265,8 +265,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                     doAspect(GAspectType::FINISH_RUN, status);
                 }
 
-                status += checkRunResult();
-                CGRAPH_FUNCTION_CHECK_STATUS
+                CGRAPH_THROW_EXCEPTION_BY_STATUS(checkRunResult())
                 break;
             }
             case CFunctionType::INIT: {
