@@ -249,7 +249,7 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                     is_prepared_ = true;
                 }
 
-                for (CSize i = 0; i < this->loop_ && GElementState::NORMAL == this->getCurState(); i++) {
+                for (CSize i = 0; i < this->loop_ && status.isOK() && GElementState::NORMAL == this->getCurState(); i++) {
                     /** 执行带切面的run方法 */
                     status += doAspect(GAspectType::BEGIN_RUN);
                     CGRAPH_FUNCTION_CHECK_STATUS
@@ -263,8 +263,10 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                          * */
                     } while (checkYield(), this->isHold() && status.isOK());
                     doAspect(GAspectType::FINISH_RUN, status);
-                    CGRAPH_FUNCTION_CHECK_STATUS
                 }
+
+                status += checkRunResult();
+                CGRAPH_FUNCTION_CHECK_STATUS
                 break;
             }
             case CFunctionType::INIT: {
@@ -296,6 +298,11 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
 
 
 CStatus GElement::prepareRun() {
+    CGRAPH_EMPTY_FUNCTION
+}
+
+
+CStatus GElement::checkRunResult() {
     CGRAPH_EMPTY_FUNCTION
 }
 

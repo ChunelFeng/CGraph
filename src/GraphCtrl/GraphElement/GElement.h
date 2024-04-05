@@ -157,6 +157,13 @@ protected:
     virtual CStatus prepareRun();
 
     /**
+     * run() 方法完成之后（包含所有循环次数和 isHold逻辑）的校验函数
+     * @return
+     * @notice 不建议在异步element中使用
+     */
+    virtual CStatus checkRunResult();
+
+    /**
      * 是否持续进行
      * 默认为false，表示执行且仅执行一次
      * @return
