@@ -39,11 +39,6 @@ CVoid GElement::afterRun() {
 GElementPtr GElement::setName(const std::string& name) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     this->name_ = name.empty() ? this->session_ : name;
-
-    // 设置name信息的时候，顺便给 aspect_manager_ 一起设置了
-    if (aspect_manager_) {
-        aspect_manager_->setName(name_);
-    }
     return this;
 }
 

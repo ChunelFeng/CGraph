@@ -33,8 +33,6 @@ protected:
 
     CStatus add(GAspectPtr aspect) final;
 
-    GAspectManager* setName(const std::string& name) final;
-
     CSize getSize() const final;
 
     CStatus clear() final;

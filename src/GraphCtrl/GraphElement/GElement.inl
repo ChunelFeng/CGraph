@@ -24,8 +24,6 @@ GElementPtr GElement::addGAspect(TParam* param) {
 
     GAspectPtr aspect = CGRAPH_SAFE_MALLOC_COBJECT(TAspect)
     aspect->setAParam<TParam>(param);
-    aspect->setGParamManager(this->param_manager_);
-    aspect->setGEventManager(this->event_manager_);
     aspect->setBelong(this);
     aspect_manager_->add(aspect);
     return this;
@@ -40,8 +38,6 @@ GElementPtr GElement::addGAspect(Args... args) {
     }
 
     auto aspect = UAllocator::safeMallocTemplateCObject<TAspect>(std::forward<Args>(args)...);
-    aspect->setGParamManager(this->param_manager_);
-    aspect->setGEventManager(this->event_manager_);
     aspect->setBelong(this);
     aspect_manager_->add(aspect);
     return this;

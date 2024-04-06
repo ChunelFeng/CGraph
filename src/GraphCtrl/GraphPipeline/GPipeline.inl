@@ -172,7 +172,7 @@ GPipelinePtr GPipeline::addGAspect(const GElementPtrSet& elements, TParam* param
 template<typename TDaemon, typename TParam,
         c_enable_if_t<std::is_base_of<GDaemon, TDaemon>::value, int>,
         c_enable_if_t<std::is_base_of<GDaemonParam, TParam>::value, int>>
-GPipeline* GPipeline::addGDaemon(CMSec ms, TParam* param) {
+GPipelinePtr GPipeline::addGDaemon(CMSec ms, TParam* param) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_, daemon_manager_)
@@ -190,7 +190,7 @@ GPipeline* GPipeline::addGDaemon(CMSec ms, TParam* param) {
 
 template<typename TDaemon, typename ...Args,
         c_enable_if_t<std::is_base_of<GTemplateDaemon<Args...>, TDaemon>::value, int>>
-GPipeline* GPipeline::addGDaemon(CMSec ms, Args&&... args) {
+GPipelinePtr GPipeline::addGDaemon(CMSec ms, Args&&... args) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_, daemon_manager_)
@@ -209,7 +209,7 @@ GPipeline* GPipeline::addGDaemon(CMSec ms, Args&&... args) {
 template<typename TEvent, typename TParam,
         c_enable_if_t<std::is_base_of<GEvent, TEvent>::value, int>,
         c_enable_if_t<std::is_base_of<GEventParam, TParam>::value, int>>
-GPipeline* GPipeline::addGEvent(const std::string& key, TParam* param) {
+GPipelinePtr GPipeline::addGEvent(const std::string& key, TParam* param) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_, event_manager_)

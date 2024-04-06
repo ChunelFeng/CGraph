@@ -70,16 +70,6 @@ CStatus GAspectManager::add(GAspectPtr aspect) {
 }
 
 
-GAspectManagerPtr GAspectManager::setName(const std::string &name) {
-    for (GAspectPtr aspect : aspect_arr_) {
-        CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(aspect)
-        aspect->setName(name);
-    }
-
-    return this;
-}
-
-
 CSize GAspectManager::getSize() const {
     auto size = aspect_arr_.size();
     return size;

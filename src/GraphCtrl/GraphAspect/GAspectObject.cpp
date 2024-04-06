@@ -30,7 +30,11 @@ GAspectObject::~GAspectObject() {
 auto GAspectObject::setBelong(GElementPtr belong)
 -> decltype(this) {
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(belong)
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION(!belong->isRegistered(), \
+                                        "[" + belong->getName() + "] can not add aspect for the reason of no register");
     belong_ = belong;
+    this->setGParamManager(belong->param_manager_);
+    this->setGEventManager(belong->event_manager_);
     return this;
 }
 

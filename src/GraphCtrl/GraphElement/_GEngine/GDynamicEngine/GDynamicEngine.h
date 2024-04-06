@@ -72,7 +72,7 @@ protected:
      * @param
      * @return
     */
-    CVoid wait();
+    CVoid fatWait();
 
     /**
      * 并发的执行所有的element

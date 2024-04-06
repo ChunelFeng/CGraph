@@ -79,7 +79,7 @@ CVoid GDynamicEngine::asyncRunAndWait() {
         process(element, element == front_element_arr_.back());
     }
 
-    wait();
+    fatWait();
 }
 
 
@@ -157,22 +157,17 @@ CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
 CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     element->done_ = true;
     if (!element->run_before_.empty() && cur_status_.isOK()) {
-        auto curSize = element->run_before_.size();
-        if (1 == curSize && (*element->run_before_.begin())->isLinkable()) {
+        if (1 == element->run_before_.size() && (*element->run_before_.begin())->isLinkable()) {
             // 针对linkable 的情况，做特殊判定
             process(*(element->run_before_.begin()), true);
         } else {
             GElementPtr reserved = nullptr;
             for (auto* cur : element->run_before_) {
                 if (--cur->left_depend_ <= 0) {
-                    /**
-                     * 留下来一个作为亲和性的，在接下来的流程中执行
-                     * 其他的，走 else 后面的逻辑，直接在 process 中异步执行
-                     */
-                    if (!reserved) {
-                        reserved = cur;
-                    } else {
+                    if (reserved) {
                         process(cur, false);
+                    } else {
+                        reserved = cur;    // 留一个作为亲和性的，在当前线程运行
                     }
                 }
             }
@@ -193,7 +188,7 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
 }
 
 
-CVoid GDynamicEngine::wait() {
+CVoid GDynamicEngine::fatWait() {
     CGRAPH_UNIQUE_LOCK lock(lock_);
     cv_.wait(lock, [this] {
         /**
