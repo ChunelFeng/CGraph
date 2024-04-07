@@ -9,13 +9,13 @@
 #ifndef CGRAPH_GENGINE_H
 #define CGRAPH_GENGINE_H
 
-#include "GEngineObject.h"
 #include "GEngineDefine.h"
+#include "../GElementObject.h"
 #include "../GElementSorter.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GEngine : public GEngineObject {
+class GEngine : public GElementObject {
 protected:
     explicit GEngine() = default;
 

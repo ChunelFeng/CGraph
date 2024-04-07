@@ -12,11 +12,11 @@
 #include <algorithm>
 #include <vector>
 
-#include "GOptimzerObject.h"
+#include "GOptimizer.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GMaxParaOptimizer : public GOptimizerObject {
+class GMaxParaOptimizer : public GOptimizer {
 protected:
     /**
      * 判定是否match计算条件
@@ -42,7 +42,7 @@ protected:
          * 3. 计算补图的最大团中元素个数(maxCliqueSize)，即为当前dag的最大并行度
          */
         const CSize size = elements.size();
-        const auto& paths = GOptimizerObject::collectPaths(elements);    // 根据传入的elements 的关系，分析出所有完整路径信息
+        const auto& paths = GOptimizer::collectPaths(elements);    // 根据传入的elements 的关系，分析出所有完整路径信息
 
         std::vector<std::vector<int>> reGraph(size, std::vector<int>(size, 1));
         buildReverseGraph(elements, paths, reGraph);    // 根据路径信息，求出全连接图的补图

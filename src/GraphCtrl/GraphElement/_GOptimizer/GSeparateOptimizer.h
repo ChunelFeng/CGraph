@@ -11,11 +11,11 @@
 
 #include <algorithm>
 
-#include "GOptimzerObject.h"
+#include "GOptimizer.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GSeparateOptimizer : public GOptimizerObject {
+class GSeparateOptimizer : public GOptimizer {
 protected:
     /**
      * 判断两个 element 是否是独立运行的
@@ -27,7 +27,7 @@ protected:
     static CBool checkSeparate(const GSortedGElementPtrSet& elements,
                                GElementCPtr fst, GElementCPtr snd) {
         CBool result = false;
-        const auto& paths = GOptimizerObject::collectPaths(elements);
+        const auto& paths = GOptimizer::collectPaths(elements);
         for (const auto& path : paths) {
             if (std::find(path.begin(), path.end(), fst) != path.end()
                 && std::find(path.begin(), path.end(), snd) != path.end()) {

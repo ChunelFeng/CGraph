@@ -9,6 +9,8 @@
 #ifndef CGRAPH_GENGINEDEFINE_H
 #define CGRAPH_GENGINEDEFINE_H
 
+#include "../GElementDefine.h"
+
 CGRAPH_NAMESPACE_BEGIN
 
 enum class GEngineType {

@@ -451,7 +451,7 @@ private:
     friend class GDynamicEngine;
     friend class GTopoEngine;
     friend class GAspectObject;
-    friend class GOptimizerObject;
+    friend class GOptimizer;
     friend class GMaxParaOptimizer;
     friend class GSeparateOptimizer;
     friend class GElementRepository;

@@ -1,19 +1,19 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: GOptimzerObject.h
-@Time: 2023/5/14 14:28
+@File: GOptimizer.h
+@Time: 2024/4/7 21:27
 @Desc: 
 ***************************/
 
-#ifndef CGRAPH_GOPTIMZEROBJECT_H
-#define CGRAPH_GOPTIMZEROBJECT_H
+#ifndef CGRAPH_GOPTIMIZER_H
+#define CGRAPH_GOPTIMIZER_H
 
 #include "../GElementObject.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GOptimizerObject : public GElementObject {
+class GOptimizer : public GElementObject {
 protected:
     /**
      * 记录 path 信息
@@ -57,5 +57,4 @@ protected:
 
 CGRAPH_NAMESPACE_END
 
-
-#endif //CGRAPH_GOPTIMZEROBJECT_H
+#endif //CGRAPH_GOPTIMIZER_H

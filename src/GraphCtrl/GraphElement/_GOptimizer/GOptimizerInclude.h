@@ -9,6 +9,7 @@
 #ifndef CGRAPH_GOPTIMIZERINCLUDE_H
 #define CGRAPH_GOPTIMIZERINCLUDE_H
 
+#include "GOptimizer.h"
 #include "GMaxParaOptimizer.h"
 #include "GSeparateOptimizer.h"
 
