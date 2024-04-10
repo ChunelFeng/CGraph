@@ -108,7 +108,7 @@ int main() {
     status += pipeline->registerGElement<MyNode1>(&c, {a}, "nodeC");
     status += pipeline->registerGElement<MyNode2>(&d, {b, c}, "nodeD");    // d depends b and c
     if (!status.isOK()) {
-        return;
+        return -1;
     }
 
     /* run dag pipeline */
