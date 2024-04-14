@@ -103,18 +103,14 @@ int main() {
     GElementPtr a, b, c, d = nullptr;
 
     /* register node with dependency info */
-    CStatus status = pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");    // register nodeA with no dependency
-    status += pipeline->registerGElement<MyNode2>(&b, {a}, "nodeB");    // b depends a
-    status += pipeline->registerGElement<MyNode1>(&c, {a}, "nodeC");
-    status += pipeline->registerGElement<MyNode2>(&d, {b, c}, "nodeD");    // d depends b and c
-    if (!status.isOK()) {
-        return;
-    }
+    pipeline->registerGElement<MyNode1>(&a, {}, "nodeA");    // register nodeA with no dependency
+    pipeline->registerGElement<MyNode2>(&b, {a}, "nodeB");    // b depends a
+    pipeline->registerGElement<MyNode1>(&c, {a}, "nodeC");
+    pipeline->registerGElement<MyNode2>(&d, {b, c}, "nodeD");    // d depends b and c
 
     /* run dag pipeline */
     status = pipeline->process();
     GPipelineFactory::remove(pipeline);
-
     return 0;
 }
 ```

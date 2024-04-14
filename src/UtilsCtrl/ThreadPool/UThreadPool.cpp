@@ -39,6 +39,11 @@ CStatus UThreadPool::setConfig(const UThreadPoolConfig &config) {
 }
 
 
+UThreadPoolConfig UThreadPool::getConfig() const {
+    return config_;
+}
+
+
 CStatus UThreadPool::init() {
     CGRAPH_FUNCTION_BEGIN
     if (is_init_) {

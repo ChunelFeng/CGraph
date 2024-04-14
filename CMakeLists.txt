@@ -26,6 +26,9 @@ option(CGRAPH_BUILD_PERFORMANCE_TESTS "Enables builds of performance tests" OFF)
 # 不建议作为验证自行逻辑的唯一标准，不建议使用者打开
 # add_definitions(-D_CGRAPH_SHOW_THREAD_METRICS_)
 
+# 此宏可以在纯并发的微小任务下，用于提升整体。主要用于在性能测试的情况下使用，一般情况不推荐打开
+# add_definitions(-D_CGRAPH_PARALLEL_MICRO_BATCH_ENABLE_)
+
 # add CGraph environment info
 include(cmake/CGraph-env-include.cmake)
 

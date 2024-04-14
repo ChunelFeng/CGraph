@@ -50,6 +50,12 @@ public:
     CStatus setConfig(const UThreadPoolConfig &config);
 
     /**
+     * 获取线程池配置信息
+     * @return
+     */
+    UThreadPoolConfig getConfig() const;
+
+    /**
      * 开启所有的线程信息
      * @return
      */
