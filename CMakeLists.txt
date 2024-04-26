@@ -37,12 +37,12 @@ add_subdirectory(./example)
 
 # 功能测试相关内容
 if(CGRAPH_BUILD_FUNCTIONAL_TESTS)
-    message("-- [CGraph] build functional tests")
+    message(STATUS "[CGraph] build functional tests")
     add_subdirectory(./test/Functional)
 endif(CGRAPH_BUILD_FUNCTIONAL_TESTS)
 
 # 性能测试相关内容
 if(CGRAPH_BUILD_PERFORMANCE_TESTS)
-    message("-- [CGraph] build performance tests")
+    message(STATUS "[CGraph] build performance tests")
     add_subdirectory(./test/Performance)
 endif(CGRAPH_BUILD_PERFORMANCE_TESTS)
