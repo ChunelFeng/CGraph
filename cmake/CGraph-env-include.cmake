@@ -30,8 +30,6 @@ ELSEIF(WIN32)
     # 本工程也支持在windows平台上的mingw环境使用
 ENDIF()
 
-#打开这个选项，就会出现一大波warning
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 include_directories(${CGRAPH_PROJECT_ROOT_DIR}/src/)    # 直接加入"CGraph.h"文件对应的位置
 
 # 以下三选一，本地编译执行，推荐OBJECT方式
