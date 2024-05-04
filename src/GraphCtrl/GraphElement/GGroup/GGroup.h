@@ -64,7 +64,6 @@ private:
 private:
     GElementPtrArr group_elements_arr_;    // 存放 element的数组
 
-    friend class GStaticEngine;
     friend class GPipeline;
     friend class GCluster;
     friend class GRegion;

@@ -18,13 +18,12 @@ class GSingleton : public GAdapter {
 private:
     explicit GSingleton();
 
-    CStatus init() override;
-    CStatus run() override;
-    CStatus destroy() override;
+    CStatus init() final;
+    CStatus run() final;
+    CStatus destroy() final;
 
     CStatus addElementInfo(const std::set<GElementPtr> &dependElements,
-                           const std::string &name,
-                           CSize loop) final;
+                           const std::string &name, CSize loop) final;
 
     CStatus addManagers(GParamManagerPtr paramManager,
                         GEventManagerPtr eventManager) final;
@@ -34,6 +33,8 @@ private:
     CBool isMatch() final;
 
     CBool isRegistered() const final;
+
+    const std::string& getName() const final;
 
 private:
     static USingleton<T> s_singleton_;                    // 单例

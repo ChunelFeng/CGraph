@@ -134,11 +134,6 @@ GElement& GElement::operator*(CSize loop) noexcept {
 }
 
 
-CBool GElement::isRunnable() const {
-    return 0 >= this->left_depend_.load(std::memory_order_acquire) && !this->done_;
-}
-
-
 CBool GElement::isLinkable() const {
     return this->linkable_;
 }

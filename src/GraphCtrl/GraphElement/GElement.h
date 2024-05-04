@@ -240,13 +240,6 @@ private:
     virtual CVoid afterRun();
 
     /**
-     * 判定element是否可以运行
-     * 可执行的条件为：自身未被执行且依赖节点全部被执行
-     * @return
-     */
-    CBool isRunnable() const;
-
-    /**
      * 判定node是否可以和前面节点一起执行
      * @return
      */
@@ -447,7 +440,6 @@ private:
     template<CInt> friend class GCoordinator;
     template<typename T> friend class GSingleton;
     friend class GEngine;
-    friend class GStaticEngine;
     friend class GDynamicEngine;
     friend class GTopoEngine;
     friend class GAspectObject;

@@ -44,7 +44,6 @@ private:
     std::condition_variable cv_;
 
     friend class GPipeline;
-    friend class GStaticEngine;
     friend class GDynamicEngine;
     friend class UAllocator;
 };
