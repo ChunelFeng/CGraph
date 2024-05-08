@@ -16,21 +16,6 @@ GCluster::GCluster() {
 }
 
 
-GCluster::GCluster(const GCluster& cluster) {
-    this->group_elements_arr_ = cluster.group_elements_arr_;
-}
-
-
-GCluster& GCluster::operator=(const GCluster& cluster) {
-    if (this == &cluster) {
-        return *this;
-    }
-
-    this->group_elements_arr_ = cluster.group_elements_arr_;
-    return *this;
-}
-
-
 CStatus GCluster::run() {
     CGRAPH_FUNCTION_BEGIN
     for (GElementPtr element : this->group_elements_arr_) {

@@ -17,9 +17,6 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GCluster : public GGroup {
 protected:
-    /** 涉及到与线程池的联动，cluster类无法将构造函数申明成protected类型 */
-    GCluster(const GCluster& cluster);
-    GCluster& operator=(const GCluster& cluster);
     explicit GCluster();
 
 private:
