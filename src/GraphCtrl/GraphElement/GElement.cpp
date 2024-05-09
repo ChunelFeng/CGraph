@@ -175,8 +175,7 @@ CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
 
 
 CStatus GElement::addElementInfo(const GElementPtrSet& dependElements,
-                                 const std::string& name,
-                                 CSize loop) {
+                                 const std::string& name, CSize loop) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 

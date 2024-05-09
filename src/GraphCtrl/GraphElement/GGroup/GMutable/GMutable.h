@@ -28,8 +28,6 @@ protected:
     ~GMutable() override;
 
 private:
-    CStatus addElement(GElementPtr element) final;
-
     CStatus init() final;
 
     CStatus run() final;

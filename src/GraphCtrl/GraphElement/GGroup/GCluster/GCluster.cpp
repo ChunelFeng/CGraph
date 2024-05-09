@@ -27,16 +27,6 @@ CStatus GCluster::run() {
 }
 
 
-CStatus GCluster::addElement(GElementPtr element) {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(element)
-
-    this->group_elements_arr_.emplace_back(element);
-
-    CGRAPH_FUNCTION_END
-}
-
-
 CVoid GCluster::dump(std::ostream& oss) {
     dumpElement(oss);
     dumpGroupLabelBegin(oss);

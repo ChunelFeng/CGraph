@@ -22,8 +22,6 @@ protected:
 private:
     CStatus run() final;
 
-    CStatus addElement(GElementPtr element) final;
-
     CVoid dump(std::ostream& oss) final;
 
     CBool isSeparate(GElementCPtr a, GElementCPtr b) const final;

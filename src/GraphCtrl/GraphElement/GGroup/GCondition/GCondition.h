@@ -36,8 +36,6 @@ private:
 
     CStatus run() override;
 
-    CStatus addElement(GElementPtr element) final;
-
     CBool isSeparate(GElementCPtr a, GElementCPtr b) const override;
 
     friend class GPipeline;

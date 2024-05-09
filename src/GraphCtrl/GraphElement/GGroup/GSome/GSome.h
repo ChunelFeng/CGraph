@@ -22,7 +22,7 @@ class GSome : public GGroup {
 protected:
     explicit GSome();
 
-    CStatus addElement(GElementPtr element) override;
+    CStatus addElement(GElementPtr element) final;
 
     CStatus run() final;
 

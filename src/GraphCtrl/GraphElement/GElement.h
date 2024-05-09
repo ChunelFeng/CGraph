@@ -231,13 +231,13 @@ private:
      * run方法执行之前的执行函数
      * @return
      */
-    virtual CVoid beforeRun();
+    CVoid beforeRun();
 
     /**
      * run方法执行之后的执行函数
      * @return
      */
-    virtual CVoid afterRun();
+    CVoid afterRun();
 
     /**
      * 判定node是否可以和前面节点一起执行
@@ -280,8 +280,7 @@ private:
      * @return
      */
     virtual CStatus addElementInfo(const std::set<GElement *>& dependElements,
-                                   const std::string& name,
-                                   CSize loop);
+                                   const std::string& name, CSize loop);
 
     /**
      * 设置manager信息
@@ -321,9 +320,7 @@ private:
      * @param label
      * @return
     */
-    CVoid dumpEdge(std::ostream& oss,
-                   GElement* src,
-                   GElement* dst,
+    CVoid dumpEdge(std::ostream& oss, GElement* src, GElement* dst,
                    const std::string& label = CGRAPH_EMPTY);
 
     /**

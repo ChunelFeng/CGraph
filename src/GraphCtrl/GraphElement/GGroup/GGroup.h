@@ -24,7 +24,7 @@ protected:
      * @param element
      * @return
      */
-    virtual CStatus addElement(GElementPtr element) = 0;
+    virtual CStatus addElement(GElementPtr element);
 
     CBool isSerializable() const override;
 
