@@ -231,20 +231,13 @@ private:
      * run方法执行之前的执行函数
      * @return
      */
-    virtual CVoid beforeRun();
+    CVoid beforeRun();
 
     /**
      * run方法执行之后的执行函数
      * @return
      */
-    virtual CVoid afterRun();
-
-    /**
-     * 判定element是否可以运行
-     * 可执行的条件为：自身未被执行且依赖节点全部被执行
-     * @return
-     */
-    CBool isRunnable() const;
+    CVoid afterRun();
 
     /**
      * 判定node是否可以和前面节点一起执行
@@ -287,8 +280,7 @@ private:
      * @return
      */
     virtual CStatus addElementInfo(const std::set<GElement *>& dependElements,
-                                   const std::string& name,
-                                   CSize loop);
+                                   const std::string& name, CSize loop);
 
     /**
      * 设置manager信息
@@ -328,9 +320,7 @@ private:
      * @param label
      * @return
     */
-    CVoid dumpEdge(std::ostream& oss,
-                   GElement* src,
-                   GElement* dst,
+    CVoid dumpEdge(std::ostream& oss, GElement* src, GElement* dst,
                    const std::string& label = CGRAPH_EMPTY);
 
     /**
@@ -447,7 +437,6 @@ private:
     template<CInt> friend class GCoordinator;
     template<typename T> friend class GSingleton;
     friend class GEngine;
-    friend class GStaticEngine;
     friend class GDynamicEngine;
     friend class GTopoEngine;
     friend class GAspectObject;

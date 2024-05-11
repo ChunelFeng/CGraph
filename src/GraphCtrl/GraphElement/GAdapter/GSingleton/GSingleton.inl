@@ -36,7 +36,7 @@ CStatus GSingleton<T>::init() {
     }
 
     /* 因为采取的是饥汉模式，不需要判断ptr是否为空了 */
-    auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
+    auto element = dynamic_cast<T *>(s_singleton_.get());
     status = element->init();
     if (status.isOK()) {
         s_is_init_ = true;
@@ -63,7 +63,7 @@ CStatus GSingleton<T>::destroy() {
         CGRAPH_FUNCTION_END
     }
 
-    auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
+    auto element = dynamic_cast<T *>(s_singleton_.get());
     status = element->destroy();
     if (status.isOK()) {
         s_is_init_ = false;
@@ -75,8 +75,7 @@ CStatus GSingleton<T>::destroy() {
 
 template <typename T>
 CStatus GSingleton<T>::addElementInfo(const std::set<GElementPtr> &dependElements,
-                                      const std::string &name,
-                                      CSize loop) {
+                                      const std::string &name, CSize loop) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
 
@@ -86,7 +85,7 @@ CStatus GSingleton<T>::addElementInfo(const std::set<GElementPtr> &dependElement
     // 这里，内部和外部均需要设定name信息
     this->setName(name)->setLoop(loop);
     // 获取单例信息，然后将信息node中信息
-    auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
+    auto element = dynamic_cast<T *>(s_singleton_.get());
     element->name_ = name;
     CGRAPH_FUNCTION_END
 }
@@ -99,7 +98,7 @@ CStatus GSingleton<T>::addManagers(GParamManagerPtr paramManager,
 
     CGRAPH_ASSERT_INIT(false)
     CGRAPH_ASSERT_NOT_NULL(paramManager, eventManager)
-    auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
+    auto element = dynamic_cast<T *>(s_singleton_.get());
     status = element->addManagers(paramManager, eventManager);
 
     CGRAPH_FUNCTION_END
@@ -108,22 +107,29 @@ CStatus GSingleton<T>::addManagers(GParamManagerPtr paramManager,
 
 template <typename T>
 CBool GSingleton<T>::isHold(){
-    auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
+    auto element = dynamic_cast<T *>(s_singleton_.get());
     return element->isHold();
 }
 
 
 template <typename T>
 CBool GSingleton<T>::isMatch() {
-    auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
+    auto element = dynamic_cast<T *>(s_singleton_.get());
     return element->isMatch();
 }
 
 
 template <typename T>
 CBool GSingleton<T>::isRegistered() const {
-    auto element = dynamic_cast<GElementPtr>(s_singleton_.get());
+    auto element = dynamic_cast<T *>(s_singleton_.get());
     return element->isRegistered();
+}
+
+
+template <typename T>
+const std::string& GSingleton<T>::getName() const {
+    auto element = dynamic_cast<T *>(s_singleton_.get());
+    return element->getName();
 }
 
 CGRAPH_NAMESPACE_END

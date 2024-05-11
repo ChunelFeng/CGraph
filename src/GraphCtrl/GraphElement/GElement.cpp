@@ -134,11 +134,6 @@ GElement& GElement::operator*(CSize loop) noexcept {
 }
 
 
-CBool GElement::isRunnable() const {
-    return 0 >= this->left_depend_.load(std::memory_order_acquire) && !this->done_;
-}
-
-
 CBool GElement::isLinkable() const {
     return this->linkable_;
 }
@@ -180,8 +175,7 @@ CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
 
 
 CStatus GElement::addElementInfo(const GElementPtrSet& dependElements,
-                                 const std::string& name,
-                                 CSize loop) {
+                                 const std::string& name, CSize loop) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 

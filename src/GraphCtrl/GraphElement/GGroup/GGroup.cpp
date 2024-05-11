@@ -42,6 +42,15 @@ CStatus GGroup::destroy() {
 }
 
 
+CStatus GGroup::addElement(GElementPtr element) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(element)
+
+    this->group_elements_arr_.emplace_back(element);
+    CGRAPH_FUNCTION_END
+}
+
+
 CVoid GGroup::dumpGroupLabelBegin(std::ostream& oss) {
     oss << "subgraph ";
     oss << "cluster_p" << this;    // cluster_ 是 graphviz的关键字，和CGraph中GCluster逻辑无关

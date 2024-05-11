@@ -126,12 +126,7 @@ CVoid GDynamicEngine::analysisDagType(const GSortedGElementPtrSet& elements) {
 
 
 CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
-    if (unlikely(cur_status_.isErr() || element->done_)) {
-        /**
-         * 如果已经有异常逻辑，
-         * 或者传入的element，是已经执行过的了（理论上不会出现这种情况，由于提升性能的原因，取消了atomic计数的逻辑，故添加这一处判定，防止意外情况）
-         * 则直接停止当前流程
-         */
+    if (unlikely(cur_status_.isErr())) {
         return;
     }
 

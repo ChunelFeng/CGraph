@@ -22,14 +22,6 @@ GMutable::~GMutable() {
 }
 
 
-CStatus GMutable::addElement(GElementPtr element) {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(element)
-    this->group_elements_arr_.emplace_back(element);
-    CGRAPH_FUNCTION_END
-}
-
-
 CStatus GMutable::init() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(manager_)

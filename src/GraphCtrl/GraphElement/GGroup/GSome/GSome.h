@@ -22,7 +22,7 @@ class GSome : public GGroup {
 protected:
     explicit GSome();
 
-    CStatus addElement(GElementPtr element) override;
+    CStatus addElement(GElementPtr element) final;
 
     CStatus run() final;
 
@@ -44,7 +44,6 @@ private:
     std::condition_variable cv_;
 
     friend class GPipeline;
-    friend class GStaticEngine;
     friend class GDynamicEngine;
     friend class UAllocator;
 };
