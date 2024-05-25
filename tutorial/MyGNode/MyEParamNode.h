@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYEPARAMNODE_H
 #define CGRAPH_MYEPARAMNODE_H
 
-#include "CGraph.h"
+#include "../../src/CGraph.h"
 #include "../MyParams/MyVersionParam.h"
 #include "../MyParams/MyConnParam.h"
 

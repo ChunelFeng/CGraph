@@ -11,3 +11,10 @@
 /.scannerwork/
 .vscode/
 /.cache/
+/bazel-bin/
+/bazel-CGraph/
+/bazel-out/
+/bazel-testlogs/
+/MODULE.bazel
+/MODULE.bazel.lock
+

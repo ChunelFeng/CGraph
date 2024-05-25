@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYPARAMDAEMON_H
 #define CGRAPH_MYPARAMDAEMON_H
 
-#include "CGraph.h"
+#include "../../src/CGraph.h"
 #include "../MyParams/MyParam.h"
 #include "../MyParams/MyConnParam.h"
 

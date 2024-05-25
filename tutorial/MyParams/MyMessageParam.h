@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYMESSAGEPARAM_H
 #define CGRAPH_MYMESSAGEPARAM_H
 
-#include "CGraph.h"
+#include "../../src/CGraph.h"
 
 struct MyMessageParam : public CGraph::GMessageParam {
     int num = 0;

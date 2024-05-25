@@ -9,8 +9,8 @@
 #include <functional>
 
 #include "GRegion.h"
-#include "GraphCtrl/GraphElement/_GOptimizer/GOptimizerInclude.h"
-
+// #include "GraphCtrl/GraphElement/_GOptimizer/GOptimizerInclude.h"
+#include "../../_GOptimizer/GOptimizerInclude.h"
 CGRAPH_NAMESPACE_BEGIN
 
 GRegion::GRegion() : GGroup() {
