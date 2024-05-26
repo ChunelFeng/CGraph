@@ -22,5 +22,6 @@ Contributors:
 - [xin zong](https://github.com/zongxin1993)
 - [SGSSGene](https://github.com/SGSSGene)
 - [Lowpower](https://github.com/Lowpower)
+- [PaPaPig-Melody](https://github.com/PaPaPig-Melody)
 
 感谢以上朋友，为CGraph项目做出的贡献，排名以贡献时间前后为顺序。

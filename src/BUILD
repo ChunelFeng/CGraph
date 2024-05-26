@@ -6,7 +6,6 @@ cc_library(
     hdrs = glob(["**/*.h", "**/*.inl"]),
     copts = [
              "-D_CGRAPH_SILENCE",
-             "-D_CGRAPH_SHOW_THREAD_METRICS_",
              "-D_ENABLE_LIKELY_",
             ],
     linkstatic = 0,
