@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYPARAMCONDITION_H
 #define CGRAPH_MYPARAMCONDITION_H
 
-#include "CGraph.h"
+#include "../../src/CGraph.h"
 #include "../MyParams/MyParam.h"
 
 class MyParamCondition : public CGraph::GCondition {

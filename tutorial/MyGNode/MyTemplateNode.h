@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYTEMPLATENODE_H
 #define CGRAPH_MYTEMPLATENODE_H
 
-#include "CGraph.h"
+#include "../../src/CGraph.h"
 
 template <typename ...Args>
 class MyTemplateNode : public CGraph::GTemplateNode<Args ...> {

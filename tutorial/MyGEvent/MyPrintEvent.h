@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYPRINTEVENT_H
 #define CGRAPH_MYPRINTEVENT_H
 
-#include "CGraph.h"
+#include "../../src/CGraph.h"
 #include "../MyParams/MyParam.h"
 
 class MyPrintEvent : public CGraph::GEvent {

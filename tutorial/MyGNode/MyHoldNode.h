@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYHOLDNODE_H
 #define CGRAPH_MYHOLDNODE_H
 
-#include "CGraph.h"
+#include "../../src/CGraph.h"
 #include "../MyParams/MyParam.h"
 
 static const char* HOLD_PARAM_NAME = "hold-param";

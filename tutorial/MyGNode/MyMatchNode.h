@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYMATCHNODE_H
 #define CGRAPH_MYMATCHNODE_H
 
-#include "CGraph.h"
+#include "../../src/CGraph.h"
 #include "../MyParams/MyParam.h"
 
 class MyMatchNode : public CGraph::GNode {

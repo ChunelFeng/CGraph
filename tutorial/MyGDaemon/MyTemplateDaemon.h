@@ -11,7 +11,7 @@
 
 #include <string>
 
-#include "CGraph.h"
+#include "../../src/CGraph.h"
 
 template<class ...Args>
 class MyTemplateDaemon : public CGraph::GTemplateDaemon<Args...> {

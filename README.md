@@ -45,7 +45,7 @@
 
 #### MyNode.h
 ```cpp
-#include "CGraph.h"
+#include "../src/CGraph.h"
 
 class MyNode1 : public CGraph::GNode {
 public:

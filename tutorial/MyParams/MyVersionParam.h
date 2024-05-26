@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYVERSIONPARAM_H
 #define CGRAPH_MYVERSIONPARAM_H
 
-#include "CGraph.h"
+#include "../../src/CGraph.h"
 
 const static char* VERSION_PARAM_KEY = "version";
 

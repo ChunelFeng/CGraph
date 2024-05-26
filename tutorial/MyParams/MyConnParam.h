@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYCONNPARAM_H
 #define CGRAPH_MYCONNPARAM_H
 
-#include "CGraph.h"
+#include "../../src/CGraph.h"
 
 const static char* CONN_PARAM_KEY = "conn";
 

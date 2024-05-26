@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYEVENTNODE_H
 #define CGRAPH_MYEVENTNODE_H
 
-#include "CGraph.h"
+#include "../../src/CGraph.h"
 
 class MyEventNode : public CGraph::GNode {
 public:

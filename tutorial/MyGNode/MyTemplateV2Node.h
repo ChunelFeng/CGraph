@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYTEMPLATEV2NODE_H
 #define CGRAPH_MYTEMPLATEV2NODE_H
 
-#include "CGraph.h"
+#include "../../src/CGraph.h"
 
 template<int TID>
 class MyTemplateV2Node : public CGraph::GNode {

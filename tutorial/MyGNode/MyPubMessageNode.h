@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYPUBMESSAGENODE_H
 #define CGRAPH_MYPUBMESSAGENODE_H
 
-#include "CGraph.h"
+#include "../../src/CGraph.h"
 #include "../MyParams/MyMessageParam.h"
 
 class MyPubMessageNode : public CGraph::GNode {
