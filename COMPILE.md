@@ -38,3 +38,14 @@
   $ ./CGraph-build.sh                      # 编译CGraph工程，生成的内容在同级/build/文件夹中
   $ ./build/tutorial/T00-HelloCGraph       # 运行第一个实例程序，并且在终端输出 Hello, CGraph.
   ```
+
+* Bazel编译指令说明（Win/Linux/MacOS均保持一致）
+  ```shell
+  $ cd CGraph
+  $ bazel build //...                      # 以debug方式，编译CGraph工程中的所有target
+  $ bazel build //... -c dbg               # 以debug方式，编译CGraph工程中的所有target(二者皆可)
+  $ bazel build //src/...  -c opt          # 以release方式，编译src文件夹下的所有target
+  $ bazel build //example:E01-AutoPilot    # 编译example文件夹下的E01-AutoPilot target
+  $ cd test && bazel test //test/Functional:test-functional-01 # 运行test文件夹下的test-functional-01 target（直接test的情况下，
+                                                               # bazel会先确认是否target已构建；若未构建，则先依据最新的工程文件，构建出对应的target）
+  ```
