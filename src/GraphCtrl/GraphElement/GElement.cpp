@@ -208,8 +208,7 @@ CStatus GElement::doAspect(const GAspectType& aspectType, const CStatus& curStat
     CGRAPH_FUNCTION_BEGIN
 
     // 如果切面管理类为空，或者未添加切面，直接返回
-    if (this->aspect_manager_
-        && 0 != this->aspect_manager_->getSize()) {
+    if (0 != this->aspect_manager_->getSize()) {
         status = aspect_manager_->reflect(aspectType, curStatus);
     }
 
@@ -240,7 +239,9 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
 
                 for (CSize i = 0; i < this->loop_ && status.isOK() && GElementState::NORMAL == this->getCurState(); i++) {
                     /** 执行带切面的run方法 */
-                    status += doAspect(GAspectType::BEGIN_RUN);
+                    if (this->aspect_manager_) {
+                        status += doAspect(GAspectType::BEGIN_RUN);
+                    }
                     CGRAPH_FUNCTION_CHECK_STATUS
                     do {
                         status += isAsync() ? asyncRun() : run();
@@ -251,7 +252,9 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                          * 可以根据需求，对任意element类型，添加特定的isHold条件
                          * */
                     } while (checkYield(), this->isHold() && status.isOK());
-                    doAspect(GAspectType::FINISH_RUN, status);
+                    if (this->aspect_manager_) {
+                        doAspect(GAspectType::FINISH_RUN, status);
+                    }
                 }
 
                 CGRAPH_THROW_EXCEPTION_BY_STATUS(checkRunResult())
@@ -260,24 +263,34 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
             case CFunctionType::INIT: {
                 concerned_params_.clear();    // 仅需要记录这一轮使用到的 GParam 信息
                 is_prepared_ = false;
-                status = doAspect(GAspectType::BEGIN_INIT);
+                if (this->aspect_manager_) {
+                    status = doAspect(GAspectType::BEGIN_INIT);
+                }
                 CGRAPH_FUNCTION_CHECK_STATUS
                 status = init();
-                doAspect(GAspectType::FINISH_INIT, status);
+                if (this->aspect_manager_) {
+                    doAspect(GAspectType::FINISH_INIT, status);
+                }
                 break;
             }
             case CFunctionType::DESTROY: {
-                status = doAspect(GAspectType::BEGIN_DESTROY);
+                if (this->aspect_manager_) {
+                    status = doAspect(GAspectType::BEGIN_DESTROY);
+                }
                 CGRAPH_FUNCTION_CHECK_STATUS
                 status = destroy();
-                doAspect(GAspectType::FINISH_DESTROY, status);
+                if (this->aspect_manager_) {
+                    doAspect(GAspectType::FINISH_DESTROY, status);
+                }
                 break;
             }
             default:
                 CGRAPH_RETURN_ERROR_STATUS("get function type error")
         }
     } catch (const CException& ex) {
-        doAspect(GAspectType::ENTER_CRASHED);
+        if (this->aspect_manager_) {
+            doAspect(GAspectType::ENTER_CRASHED);
+        }
         status = crashed(ex);
     }
 
