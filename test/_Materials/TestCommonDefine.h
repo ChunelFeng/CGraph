@@ -11,7 +11,7 @@
 
 #include <atomic>
 
-#include "src/CGraph.h"
+#include "CGraph.h"
 
 std::atomic<unsigned int> g_test_node_cnt = {0};
 static const char* g_test_message_key = "test-message-key";

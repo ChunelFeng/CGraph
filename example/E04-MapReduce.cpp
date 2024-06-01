@@ -9,7 +9,7 @@
 #include <random>
 #include <vector>
 
-#include "src/CGraph.h"
+#include "CGraph.h"
 
 using namespace CGraph;
 

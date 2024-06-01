@@ -11,7 +11,7 @@
 
 #include <chrono>
 
-#include "../../src/CGraph.h"
+#include "CGraph.h"
 
 class MyTimerAspect : public CGraph::GAspect {
 public:

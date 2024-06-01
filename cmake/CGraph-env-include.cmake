@@ -30,7 +30,6 @@ ELSEIF(WIN32)
     # 本工程也支持在windows平台上的mingw环境使用
 ENDIF()
 
-include_directories(${CGRAPH_PROJECT_ROOT_DIR})
 include_directories(${CGRAPH_PROJECT_ROOT_DIR}/src/)    # 直接加入"CGraph.h"文件对应的位置
 
 # 以下三选一，本地编译执行，推荐OBJECT方式

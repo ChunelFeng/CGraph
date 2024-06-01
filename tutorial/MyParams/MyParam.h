@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYPARAM_H
 #define CGRAPH_MYPARAM_H
 
-#include "../../src/CGraph.h"
+#include "CGraph.h"
 
 /**
  * MyParam 是GParam的具体实现类

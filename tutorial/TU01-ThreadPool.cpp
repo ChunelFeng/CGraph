@@ -6,7 +6,7 @@
 @Desc: 本例主要演示，threadpool工具的使用方法
 ***************************/
 
-#include "../src/CGraph.h"
+#include "CGraph.h"
 #include "MyUtils/MyFunction.h"
 
 using namespace CGraph;

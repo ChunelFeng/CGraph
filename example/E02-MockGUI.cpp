@@ -12,7 +12,7 @@
 #include <cmath>
 #include <set>
 
-#include "src/CGraph.h"
+#include "CGraph.h"
 
 using namespace CGraph;
 

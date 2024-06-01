@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYMUTABLE_H
 #define CGRAPH_MYMUTABLE_H
 
-#include "../../src/CGraph.h"
+#include "CGraph.h"
 #include "../MyParams/MyParam.h"
 
 class MyMutable : public CGraph::GMutable {

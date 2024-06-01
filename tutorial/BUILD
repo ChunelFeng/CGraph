@@ -1,6 +1,6 @@
 cc_library(
     name = "Tutorial_header",
-    hdrs = glob(["MyGAspect/**/*.h",
+    srcs = glob(["MyGAspect/**/*.h",
                 "MyGCondition/**/*.h",
                 "MyGDaemon/**/*.h",
                 "MyGEvent/**/*.h",
@@ -8,7 +8,6 @@ cc_library(
                 "MyGNode/**/*.h",
                 "MyParams/**/*.h",
                 "MyUtils/**/*.h",]),
-    linkstatic = 0,
     visibility = ["//visibility:public"],
 )
 
@@ -43,10 +42,11 @@ CGRAPH_TUTORIAL_LIST = [
         ]
 
 [
-    cc_test(
+    cc_binary(
         name = "%s" % tutorial_name,
         srcs = ["%s.cpp" % tutorial_name],
-        deps = [":Tutorial_header","//src:CGraph",],
+        copts = ["-Isrc/"],
+        deps = [":Tutorial_header","//src:CGraph"],
     )
     for tutorial_name in CGRAPH_TUTORIAL_LIST
 ]
