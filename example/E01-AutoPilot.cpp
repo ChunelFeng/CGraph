@@ -12,7 +12,7 @@
 #include <cstring>
 #include <memory>
 
-#include "src/CGraph.h"
+#include "CGraph.h"
 
 using namespace CGraph;
 

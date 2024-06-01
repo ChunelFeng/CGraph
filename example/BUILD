@@ -8,6 +8,7 @@ test_suite(
 cc_test (
     name = "E01-AutoPilot",
     srcs = ["E01-AutoPilot.cpp"],
+    copts = ["-Isrc/"],
     deps = ["//src:CGraph",],
 )
 
@@ -15,6 +16,7 @@ cc_test (
 cc_test (
     name = "E02-MockGUI",
     srcs = ["E02-MockGUI.cpp"],
+    copts = ["-Isrc/"],
     deps = ["//src:CGraph",],
 )
 
@@ -22,6 +24,7 @@ cc_test (
 cc_test (
     name = "E03-ThirdFlow",
     srcs = ["E03-ThirdFlow.cpp"],
+    copts = ["-Isrc/"],
     deps = ["//src:CGraph",],
 )
 
@@ -29,12 +32,6 @@ cc_test (
 cc_test (
     name = "E04-MapReduce",
     srcs = ["E04-MapReduce.cpp"],
+    copts = ["-Isrc/"],
     deps = ["//src:CGraph",],
 )
-
-# import the CGraph.h from src dir
-# cc_import(
-#     name = "CGraph_h",
-#     hdrs = ["src/CGraph.h"],
-#     visibility = ["//visibility:public"],
-# )

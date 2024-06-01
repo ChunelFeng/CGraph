@@ -9,7 +9,7 @@
 #ifndef CGRAPH_MYTEMPLATEASPECT_H
 #define CGRAPH_MYTEMPLATEASPECT_H
 
-#include "../../src/CGraph.h"
+#include "CGraph.h"
 
 template<class ...Args>
 class MyTemplateAspect : public CGraph::GTemplateAspect<Args...> {

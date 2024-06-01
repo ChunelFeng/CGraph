@@ -10,7 +10,7 @@ CGRAPH_FUNCTIONAL_LIST = [
     cc_test(
         name = "%s" % fun_name,
         srcs = ["%s.cpp" % fun_name],
-
+        copts = ["-Isrc/"],
         deps = ["//src:CGraph",
                 "//test/_Materials:test_materials",],
     )

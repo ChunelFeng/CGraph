@@ -6,7 +6,7 @@
 @Desc: 本例主要演示，Timer的使用方法
 ***************************/
 
-#include "../src/CGraph.h"
+#include "CGraph.h"
 
 using namespace CGraph;
 

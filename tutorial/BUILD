@@ -8,7 +8,6 @@ cc_library(
                 "MyGNode/**/*.h",
                 "MyParams/**/*.h",
                 "MyUtils/**/*.h",]),
-    linkstatic = 0,
     visibility = ["//visibility:public"],
 )
 
@@ -46,6 +45,7 @@ CGRAPH_TUTORIAL_LIST = [
     cc_test(
         name = "%s" % tutorial_name,
         srcs = ["%s.cpp" % tutorial_name],
+        copts = ["-Isrc/"],
         deps = [":Tutorial_header","//src:CGraph",],
     )
     for tutorial_name in CGRAPH_TUTORIAL_LIST

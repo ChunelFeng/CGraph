@@ -8,6 +8,5 @@ cc_library(
              "-D_CGRAPH_SILENCE",
              "-D_ENABLE_LIKELY_",
             ],
-    linkstatic = 0,
     visibility = ["//visibility:public"],
 )

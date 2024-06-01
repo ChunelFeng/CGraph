@@ -67,7 +67,7 @@ You can transfer your params in many scenes. It is also possible to extend the f
 
 #### MyNode.h
 ```cpp
-#include "../src/CGraph.h"
+#include "CGraph.h"
 
 class MyNode1 : public CGraph::GNode {
 public:
