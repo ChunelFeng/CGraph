@@ -7,7 +7,7 @@ CGRAPH_FUNCTIONAL_LIST = [
         ]
 
 [
-    cc_test(
+    cc_binary(
         name = "%s" % fun_name,
         srcs = ["%s.cpp" % fun_name],
         copts = ["-Isrc/"],

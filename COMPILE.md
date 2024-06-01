@@ -38,3 +38,11 @@
   $ ./CGraph-build.sh                      # 编译CGraph工程，生成的内容在同级/build/文件夹中
   $ ./build/tutorial/T00-HelloCGraph       # 运行第一个实例程序，并且在终端输出 Hello, CGraph.
   ```
+
+* Bazel编译方式(Linux/MacOS/Windows)
+  ```shell
+  $ git clone https://github.com/ChunelFeng/CGraph.git
+  $ cd CGraph
+  $ bazel build //tutorial:T01-Simple -c dbg && bazel run //tutorial:T01-Simple  # 编译并运行tutorial路径下的T01-Simple（debug版本）
+  $ bazel build //tutorial/... -c opt      # 编译tutorial路径下的所有targets（release版本）
+  ```

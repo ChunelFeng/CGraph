@@ -5,7 +5,7 @@ CGRAPH_PERFORMANCE_LIST = [
         ]
 
 [
-    cc_test(
+    cc_binary(
         name = "%s" % perf_name,
         srcs = ["%s.cpp" % perf_name],
         copts = ["-Isrc/"],

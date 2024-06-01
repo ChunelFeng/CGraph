@@ -1,6 +1,6 @@
 cc_library(
     name = "Tutorial_header",
-    hdrs = glob(["MyGAspect/**/*.h",
+    srcs = glob(["MyGAspect/**/*.h",
                 "MyGCondition/**/*.h",
                 "MyGDaemon/**/*.h",
                 "MyGEvent/**/*.h",
@@ -42,11 +42,11 @@ CGRAPH_TUTORIAL_LIST = [
         ]
 
 [
-    cc_test(
+    cc_binary(
         name = "%s" % tutorial_name,
         srcs = ["%s.cpp" % tutorial_name],
         copts = ["-Isrc/"],
-        deps = [":Tutorial_header","//src:CGraph",],
+        deps = [":Tutorial_header","//src:CGraph"],
     )
     for tutorial_name in CGRAPH_TUTORIAL_LIST
 ]
