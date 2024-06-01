@@ -40,6 +40,7 @@
 * [【B站视频】CGraph 应用篇](https://www.bilibili.com/video/BV1B84y1D7Hs) <br>
 * [【B站视频】CGraph 分享篇](https://www.bilibili.com/video/BV1dh4y1i78u) <br>
 
+> 注：本项目从创建至今，一直以MIT协议对外提供，但不承诺今后不会修改开源协议。如有使用需求，欢迎和我们取得联系，以获取更多帮助和建议。
 
 ## 二. 使用Demo
 

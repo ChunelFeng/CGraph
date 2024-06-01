@@ -43,6 +43,6 @@
   ```shell
   $ git clone https://github.com/ChunelFeng/CGraph.git
   $ cd CGraph
-  $ bazel build //tutorial:T01-Simple -c dbg && bazel run //tutorial:T01-Simple  # 编译并运行tutorial路径下的T01-Simple（debug版本）
-  $ bazel build //tutorial/... -c opt      # 编译tutorial路径下的所有targets（release版本）
+  $ bazel build //example/...    # 编译example路径下的所有targets
+  $ bazel build //tutorial:T01-Simple -c dbg && bazel run //tutorial:T01-Simple  # 编译并运行tutorial路径下的T01-Simple
   ```
