@@ -34,6 +34,13 @@ protected:
     static CStatus inject(GPipeline* pipeline);
 
     /**
+     * 查询最长链路信息
+     * @param pipeline
+     * @return
+     */
+    static CStatus markLongestPath(GPipeline* pipeline);
+
+    /**
      * 恢复原来的pipeline信息
      * @param pipeline
      * @return

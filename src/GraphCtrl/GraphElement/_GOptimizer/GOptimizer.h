@@ -53,6 +53,8 @@ protected:
 
         return paths;
     }
+
+    friend class GPerf;
 };
 
 CGRAPH_NAMESPACE_END

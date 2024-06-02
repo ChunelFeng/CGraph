@@ -251,6 +251,7 @@ CVoid GDynamicEngine::parallelRunAll() {
 }
 #endif
 
+
 CVoid GDynamicEngine::serialRunAll() {
     /**
      * 如果分析出来 dag是一个链式的，则直接依次执行element

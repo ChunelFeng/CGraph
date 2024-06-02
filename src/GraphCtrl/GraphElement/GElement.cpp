@@ -370,14 +370,20 @@ CVoid GElement::dump(std::ostream& oss) {
 CVoid GElement::dumpEdge(std::ostream& oss, GElementPtr src, GElementPtr dst, const std::string& label) {
     if (src->isGroup() && dst->isGroup()) {
         // 在group的逻辑中，添加 cluster_ 的信息
-        oss << 'p' << src << " -> p" << dst << label << "[ltail=cluster_p" << src << " lhead=cluster_p" << dst << "];\n";
+        oss << 'p' << src << " -> p" << dst << label << "[ltail=cluster_p" << src << " lhead=cluster_p" << dst << "]";
     } else if (src->isGroup() && !dst->isGroup()) {
-        oss << 'p' << src << " -> p" << dst << label << "[ltail=cluster_p" << src << "];\n";
+        oss << 'p' << src << " -> p" << dst << label << "[ltail=cluster_p" << src << "]";
     } else if (!src->isGroup() && dst->isGroup()) {
-        oss << 'p' << src << " -> p" << dst << label << "[lhead=cluster_p" << dst << "];\n";
+        oss << 'p' << src << " -> p" << dst << label << "[lhead=cluster_p" << dst << "]";
     } else {
-        oss << 'p' << src << " -> p" << dst << label << ";\n";
+        oss << 'p' << src << " -> p" << dst << label;
     }
+
+    if (src->perf_info_ && src->perf_info_->in_longest_path_
+        && dst->perf_info_ && dst->perf_info_->in_longest_path_) {
+        oss << "[color=red]";
+    }
+    oss << ";\n";
 }
 
 
