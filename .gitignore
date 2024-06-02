@@ -11,10 +11,6 @@
 /.scannerwork/
 .vscode/
 /.cache/
-/bazel-bin
-/bazel-CGraph
-/bazel-out
-/bazel-testlogs
+/bazel-*
 /MODULE.bazel
 /MODULE.bazel.lock
-

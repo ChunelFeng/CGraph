@@ -21,7 +21,7 @@ public:
         return status;
     }
 
-    CStatus run () override {
+    CStatus run() override {
         CStatus status;
         CGraph::CGRAPH_ECHO("[%s], enter MyNode2 run function. Sleep for 2 second ... ", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(2)

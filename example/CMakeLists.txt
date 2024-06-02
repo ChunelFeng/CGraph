@@ -4,7 +4,6 @@ set(CGRAPH_EXAMPLE_LIST
         E02-MockGUI
         E03-ThirdFlow
         E04-MapReduce
-        E05-per_test
         )
 
 foreach(example ${CGRAPH_EXAMPLE_LIST})

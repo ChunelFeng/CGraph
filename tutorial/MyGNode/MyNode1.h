@@ -13,7 +13,7 @@
 
 class MyNode1 : public CGraph::GNode {
 public:
-    CStatus run () override {
+    CStatus run() override {
         CStatus status;
         CGraph::CGRAPH_ECHO("[%s], enter MyNode1 run function. Sleep for 1 second ... ", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(1)
