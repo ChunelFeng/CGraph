@@ -11,7 +11,7 @@
 using namespace CGraph;
 
 void test_performance_02() {
-    // 串行执行32次，对应第二个例子，1thread，32串行，1000w次
+    // 串行执行32次，对应第二个例子，1thread，32串行，100w次
     GPipelinePtr pipeline = GPipelineFactory::create();
     CStatus status;
     GElementPtr arr[32];
