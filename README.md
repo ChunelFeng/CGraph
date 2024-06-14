@@ -38,9 +38,9 @@
 * [【B站视频】CGraph 入门篇](https://www.bilibili.com/video/BV1mk4y1v7XJ) <br>
 * [【B站视频】CGraph 功能篇 (buy me a cup of coffee?)](https://www.bilibili.com/cheese/play/ss22264) <br>
 * [【B站视频】CGraph 应用篇](https://www.bilibili.com/video/BV1B84y1D7Hs) <br>
-* [【B站视频】CGraph 分享篇](https://www.bilibili.com/video/BV1dh4y1i78u) <br>
+* [【B站视频】CGraph 分享篇](https://www.bilibili.com/video/BV1dh4y1i78u) <br><br>
 
-> 注：本项目从创建至今，一直以MIT协议对外提供，但不承诺今后不会修改开源协议。如有使用需求，欢迎和我们取得联系，以获取更多帮助和建议。
+> 本项目从创建至今，一直以 [MIT开源协议](https://github.com/ChunelFeng/CGraph/blob/main/LICENSE) 对外提供，但不承诺今后不会修改开源协议。如有使用场景和需求，欢迎联系我们，以获取更多帮助和建议。
 
 ## 二. 使用Demo
 
@@ -312,9 +312,11 @@ int main() {
 * 提供`test`内容，包含性能和功能方面的测试用例
 * 优化`event`(事件)机制，支持异步等待功能
 
-[2024.01.24 - v2.6.0 - Chunel]
+[2024.06.14 - v2.6.0 - [PaPaPig-Melody](https://github.com/PaPaPig-Melody), Chunel]
 * 提供`pipeline`的拓扑执行的方式
 * 提供判定`element`之间是否有依赖关系的方法
+* 提供bazel编译方式
+* 优化perf功能
 
 </details>
 
