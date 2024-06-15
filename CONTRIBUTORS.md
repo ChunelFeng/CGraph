@@ -25,5 +25,6 @@ Contributors:
 - [PaPaPig-Melody](https://github.com/PaPaPig-Melody)
 - [jiangliu123456](https://github.com/jiangliu123456)
 - [PolarLinda6](https://github.com/PolarLinda6)
+- [pujiangxin](https://github.com/pujiangxin)
 
 感谢以上朋友，为CGraph项目做出的贡献，排名以贡献时间前后为顺序。
