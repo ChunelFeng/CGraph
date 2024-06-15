@@ -48,7 +48,7 @@ protected:
      * @param belong
      * @return
      */
-    GAspectObject* setBelong(GElement* belong) ;
+    GAspectObject* setBelong(GElement* belong);
 
     const std::string& getName() const override;
 

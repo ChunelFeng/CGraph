@@ -8,7 +8,7 @@ message("*  \\____/   \\____/   /_/     \\__,_/   / .___/ /_/ /_/   *")
 message("*                                    /_/ by Chunel Feng *")
 message("* * * * * * * * * * * * * * * * * * * * * * * * * * * * *")
 
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.5.0)
 
 project(CGraph VERSION 2.6.0)
 
