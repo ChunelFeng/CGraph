@@ -10,7 +10,7 @@ message("* * * * * * * * * * * * * * * * * * * * * * * * * * * * *")
 
 cmake_minimum_required(VERSION 3.5.0)
 
-project(CGraph VERSION 2.6.0)
+project(CGraph VERSION 2.6.1)
 
 # CGraph默认使用C++11版本，推荐使用C++17版本。暂不支持C++11以下版本
 set(CMAKE_CXX_STANDARD 11)
@@ -26,7 +26,7 @@ option(CGRAPH_BUILD_PERFORMANCE_TESTS "Enables builds of performance tests" OFF)
 # 不建议作为验证自行逻辑的唯一标准，不建议使用者打开
 # add_definitions(-D_CGRAPH_SHOW_THREAD_METRICS_)
 
-# 此宏可以在纯并发的微小任务下，用于提升整体。主要用于在性能测试的情况下使用，一般情况不推荐打开
+# 此宏可以在纯并发的微小任务下，用于提升整体性能。主要用于在性能测试的情况下使用，一般情况不推荐打开
 # add_definitions(-D_CGRAPH_PARALLEL_MICRO_BATCH_ENABLE_)
 
 # add CGraph environment info
