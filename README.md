@@ -38,9 +38,7 @@
 * [【B站视频】CGraph 入门篇](https://www.bilibili.com/video/BV1mk4y1v7XJ) <br>
 * [【B站视频】CGraph 功能篇 (buy me a cup of coffee?)](https://www.bilibili.com/cheese/play/ss22264) <br>
 * [【B站视频】CGraph 应用篇](https://www.bilibili.com/video/BV1B84y1D7Hs) <br>
-* [【B站视频】CGraph 分享篇](https://www.bilibili.com/video/BV1dh4y1i78u) <br><br>
-
-> 本项目从创建至今，一直以 [MIT开源协议](https://github.com/ChunelFeng/CGraph/blob/main/LICENSE) 对外提供，但不承诺今后不会修改开源协议。如有使用场景和需求，欢迎联系我们，以获取更多帮助和建议。
+* [【B站视频】CGraph 分享篇](https://www.bilibili.com/video/BV1dh4y1i78u) <br>
 
 ## 二. 使用Demo
 
@@ -134,6 +132,8 @@ int main() {
 * [awesome-workflow-engines](https://github.com/meirwah/awesome-workflow-engines) : A curated list of awesome open source workflow engines
 * [nndeploy](https://github.com/DeployAI/nndeploy) : nndeploy是一款模型端到端部署框架。以多端推理以及基于有向无环图模型部署为内核，致力为用户提供跨平台、简单易用、高性能的模型部署体验。
 * [KuiperInfer](https://github.com/zjhellofss/KuiperInfer) : 带你从零实现一个高性能的深度学习推理库，支持大模型 llama2 、Unet、Yolov5、Resnet等模型的推理。Implement a high-performance deep learning inference library step by step
+
+[![Star History Chart](https://api.star-history.com/svg?repos=ChunelFeng/CGraph&type=Date)](https://star-history.com/#ChunelFeng/CGraph&Date)
 
 ------------
 <details>
