@@ -45,7 +45,7 @@ CGRAPH_INTERNAL_NAMESPACE_END
     using CGRAPH_READ_LOCK = std::shared_lock<std::shared_mutex>;
     using CGRAPH_WRITE_LOCK = std::unique_lock<std::shared_mutex>;
 #else
-    using CGRAPH_READ_LOCK = CGRAPH_LOCK_GUARD;    // C++14不支持读写锁，使用mutex替代
+    using CGRAPH_READ_LOCK = CGRAPH_LOCK_GUARD;    // C++11和14不支持读写锁，使用mutex替代
     using CGRAPH_WRITE_LOCK = CGRAPH_LOCK_GUARD;
 #endif
 

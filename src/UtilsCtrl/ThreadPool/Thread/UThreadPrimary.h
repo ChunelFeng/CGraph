@@ -33,7 +33,7 @@ protected:
         is_init_ = true;
         metrics_.reset();
         buildStealTargets();
-        thread_ = std::move(std::thread(&UThreadPrimary::run, this));
+        thread_ = std::thread(&UThreadPrimary::run, this);
         setSchedParam();
         setAffinity(index_);
         CGRAPH_FUNCTION_END
@@ -217,8 +217,8 @@ protected:
              * steal 的时候，先从第二个队列里偷，从而降低触碰锁的概率
             */
             if (likely((*pool_threads_)[target])
-                && (((*pool_threads_)[target])->secondary_queue_.trySteal(task))
-                    || ((*pool_threads_)[target])->primary_queue_.trySteal(task)) {
+                && (((*pool_threads_)[target])->secondary_queue_.trySteal(task)
+                    || ((*pool_threads_)[target])->primary_queue_.trySteal(task))) {
                 result = true;
                 break;
             }

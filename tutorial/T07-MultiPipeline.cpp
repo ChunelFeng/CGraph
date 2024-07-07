@@ -89,9 +89,9 @@ void tutorial_multi_pipeline() {
      * 经过上述的设置，pipeline1 和 pipeline2 共享同一个线程池，去调度其中的dag逻辑
      * pipeline3 没有设定，故使用自带的默认线程池完成自己的调度逻辑
      */
-    std::thread thd1 = std::move(std::thread(tutorial_pipeline_1, pipeline_1));
-    std::thread thd2 = std::move(std::thread(tutorial_pipeline_2, pipeline_2));
-    std::thread thd3 = std::move(std::thread(tutorial_pipeline_3, pipeline_3));
+    std::thread thd1 = std::thread(tutorial_pipeline_1, pipeline_1);
+    std::thread thd2 = std::thread(tutorial_pipeline_2, pipeline_2);
+    std::thread thd3 = std::thread(tutorial_pipeline_3, pipeline_3);
 
     thd1.join();
     thd2.join();
