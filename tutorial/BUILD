@@ -1,5 +1,5 @@
 cc_library(
-    name = "Tutorial_header",
+    name = "tutorial_header",
     srcs = glob(["MyGAspect/**/*.h",
                 "MyGCondition/**/*.h",
                 "MyGDaemon/**/*.h",
@@ -46,7 +46,7 @@ CGRAPH_TUTORIAL_LIST = [
         name = "%s" % tutorial_name,
         srcs = ["%s.cpp" % tutorial_name],
         copts = ["-Isrc/"],
-        deps = [":Tutorial_header","//src:CGraph"],
+        deps = [":tutorial_header","//src:CGraph"],
     )
     for tutorial_name in CGRAPH_TUTORIAL_LIST
 ]

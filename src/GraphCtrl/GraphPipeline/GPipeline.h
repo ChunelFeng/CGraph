@@ -26,22 +26,10 @@ CGRAPH_NAMESPACE_BEGIN
 class GPipeline : public GPipelineObject,
                   public CDescInfo {
 public:
-    /**
-     * 初始化pipeline信息
-     * @return
-     */
     CStatus init() override;
 
-    /**
-     * 执行pipeline信息
-     * @return
-     */
     CStatus run() override;
 
-    /**
-     * 逆初始化pipeline信息
-     * @return
-     */
     CStatus destroy() override;
 
     /**

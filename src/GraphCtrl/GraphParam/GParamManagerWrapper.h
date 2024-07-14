@@ -78,7 +78,6 @@ CGRAPH_NAMESPACE_BEGIN
                                                                                         \
     /**
      * 获取所有的keys信息
-     * @param keys
      * @return
      */                                                                                 \
     std::vector<std::string> getGParamKeys() {                                          \
@@ -87,8 +86,7 @@ CGRAPH_NAMESPACE_BEGIN
     }                                                                                   \
                                                                                         \
      /**
-     * 获取所有的keys信息
-     * @param keys
+     * 获取所有被使用的keys信息
      * @return
      */                                                                                 \
     std::vector<std::string> getConcernedGParamKeys() const {                           \
@@ -110,7 +108,7 @@ private:                                                                        
         return this;                                                                    \
     }                                                                                   \
                                                                                         \
-    GParamPtrSet concerned_params_;    /* 记录链路上使用过GParam信息 */                   \
+    GParamPtrSet concerned_params_;    /* 记录链路上使用过GParam信息 */                    \
                                                                                         \
 protected:                                                                              \
                                                                                         \

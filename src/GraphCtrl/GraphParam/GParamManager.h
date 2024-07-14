@@ -51,7 +51,6 @@ public:
 
     /**
      * 获取所有的 GParam keys 信息
-     * @param keys
      * @return
      */
     std::vector<std::string> getKeys();
