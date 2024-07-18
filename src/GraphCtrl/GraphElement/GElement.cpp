@@ -28,14 +28,6 @@ CVoid GElement::beforeRun() {
 }
 
 
-CVoid GElement::afterRun() {
-    for (auto& element : this->run_before_) {
-        element->left_depend_--;
-    }
-    this->done_ = true;
-}
-
-
 GElementPtr GElement::setName(const std::string& name) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     this->name_ = name.empty() ? this->session_ : name;

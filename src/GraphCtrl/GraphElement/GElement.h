@@ -234,12 +234,6 @@ private:
     CVoid beforeRun();
 
     /**
-     * run方法执行之后的执行函数
-     * @return
-     */
-    CVoid afterRun();
-
-    /**
      * 判定node是否可以和前面节点一起执行
      * @return
      */
