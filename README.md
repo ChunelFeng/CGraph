@@ -312,7 +312,7 @@ int main() {
 * 提供`test`内容，包含性能和功能方面的测试用例
 * 优化`event`(事件)机制，支持异步等待功能
 
-[2024.06.14 - v2.6.0 - [PaPaPig-Melody](https://github.com/PaPaPig-Melody), Chunel]
+[2024.07.18 - v2.6.0 - [PaPaPig-Melody](https://github.com/PaPaPig-Melody), Chunel]
 * 提供`pipeline`的拓扑执行的方式
 * 提供判定`element`之间是否有依赖关系的方法
 * 提供bazel编译方式
