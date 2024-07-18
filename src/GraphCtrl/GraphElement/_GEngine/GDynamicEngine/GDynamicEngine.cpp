@@ -121,6 +121,8 @@ CVoid GDynamicEngine::analysisDagType(const GSortedGElementPtrSet& elements) {
         dag_type_ = internal::GEngineDagType::ALL_SERIAL;
     } else if (total_element_arr_.size() == total_end_size_ && front_element_arr_.size() == total_end_size_) {
         dag_type_ = internal::GEngineDagType::ALL_PARALLEL;
+    } else{
+        dag_type_ = internal::GEngineDagType::COMMON;
     }
 }
 
