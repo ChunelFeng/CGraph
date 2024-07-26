@@ -42,14 +42,23 @@ CStatus GEventManager::clear() {
 CStatus GEventManager::trigger(const std::string &key, GEventType type, GEventAsyncStrategy strategy) {
     CGRAPH_FUNCTION_BEGIN
     auto result = events_map_.find(key);
-    if (events_map_.end() == result) {
-        CGRAPH_RETURN_ERROR_STATUS("event key [" + key + "] no find")
-    }
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(events_map_.end() == result,
+                                            "event key [" + key + "] no find")
 
     auto event = result->second;
     CGRAPH_ASSERT_NOT_NULL(event)
     status = event->process(type, strategy);
     CGRAPH_FUNCTION_END
+}
+
+
+std::shared_future<CVoid> GEventManager::asyncTrigger(const std::string &key, GEventAsyncStrategy strategy) {
+    auto result = events_map_.find(key);
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION(events_map_.end() == result || !result->second,
+                                        "event key [" + key + "] no find");
+
+    auto event = result->second;
+    return event->asyncProcess(strategy);
 }
 
 

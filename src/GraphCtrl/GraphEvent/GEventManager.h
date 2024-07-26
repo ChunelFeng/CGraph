@@ -11,6 +11,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <future>
 
 #include "GEvent.h"
 #include "../GraphManager.h"
@@ -41,6 +42,14 @@ public:
      * @return
      */
     CStatus trigger(const std::string &key, GEventType type, GEventAsyncStrategy strategy);
+
+    /**
+     * 异步事件触发
+     * @param key
+     * @param strategy
+     * @return
+     */
+    std::shared_future<CVoid> asyncTrigger(const std::string &key, GEventAsyncStrategy strategy);
 
 protected:
     CStatus init() final;
