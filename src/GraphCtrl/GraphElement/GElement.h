@@ -126,6 +126,16 @@ public:
     GElementState getCurState() const;
 
     /**
+     * 获取对应的ptr类型
+     * @tparam T
+     * @param ptr
+     * @return
+     */
+    template<typename T,
+            c_enable_if_t<std::is_base_of<GElement, T>::value, int> = 0>
+    T* getPtr();
+
+    /**
      * 实现连续注册的语法糖，形如：
      *  (*a)-->b&c;
      *  (*b)-->d;
