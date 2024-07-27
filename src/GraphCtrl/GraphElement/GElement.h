@@ -433,6 +433,7 @@ private:
     friend class GEngine;
     friend class GDynamicEngine;
     friend class GTopoEngine;
+    friend class GStaticEngine;
     friend class GAspectObject;
     friend class GOptimizer;
     friend class GMaxParaOptimizer;
@@ -449,6 +450,7 @@ using GElementPtr = GElement *;
 using GElementCPtr = const GElement *;
 using GElementPPtr = GElementPtr *;
 using GElementPtrArr = std::vector<GElementPtr>;
+using GElementPtrMat2D = std::vector<GElementPtrArr>;
 using GElementPtrSet = std::set<GElementPtr>;
 
 CGRAPH_NAMESPACE_END

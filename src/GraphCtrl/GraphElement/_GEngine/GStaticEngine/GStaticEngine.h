@@ -1,31 +1,28 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: GTopoEngine.h
-@Time: 2024/1/20 21:56
+@File: GStaticEngine.h
+@Time: 2024/7/27 10:40
 @Desc: 
 ***************************/
 
-#ifndef CGRAPH_GTOPOENGINE_H
-#define CGRAPH_GTOPOENGINE_H
-
-#include <vector>
-#include <set>
+#ifndef CGRAPH_GSTATICENGINE_H
+#define CGRAPH_GSTATICENGINE_H
 
 #include "../GEngine.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GTopoEngine : public GEngine {
+class GStaticEngine : public GEngine {
 protected:
-    explicit GTopoEngine() = default;
+    explicit GStaticEngine() = default;
 
     CStatus setup(const GSortedGElementPtrSet& elements) override;
 
     CStatus run() override;
 
 private:
-    GElementPtrArr topo_elements_ {};       // 拓扑排序后的
+    GElementPtrMat2D element_mat_ {};        // 解图后的elements信息
 
     friend class UAllocator;
     friend class GElementManager;
@@ -33,4 +30,4 @@ private:
 
 CGRAPH_NAMESPACE_END
 
-#endif //CGRAPH_GTOPOENGINE_H
+#endif //CGRAPH_GSTATICENGINE_H

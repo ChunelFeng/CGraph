@@ -30,7 +30,9 @@ protected:
      * 执行完毕后，确认运行是否正常
      * @return
      */
-    virtual CStatus afterRunCheck() = 0;
+    virtual CStatus afterRunCheck() {
+        CGRAPH_EMPTY_FUNCTION
+    }
 
     /**
      * 计算出来最终计算的index值

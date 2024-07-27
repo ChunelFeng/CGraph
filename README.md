@@ -318,7 +318,8 @@ int main() {
 * 提供bazel编译方式
 * 优化perf功能
 
-[2024.07.26 - v2.6.1 - Chunel]
+[2024.07.27 - v2.6.1 - Chunel]
+* 提供`pipeline`的静态执行的方式
 * 优化`event`(事件)机制，异步事件可以等待结束
 
 </details>

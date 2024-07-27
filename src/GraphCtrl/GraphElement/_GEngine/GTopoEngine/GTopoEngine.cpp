@@ -52,13 +52,4 @@ CStatus GTopoEngine::run() {
     CGRAPH_FUNCTION_END
 }
 
-
-CStatus GTopoEngine::afterRunCheck() {
-    /**
-     * topology 纯靠顺序执行。如果有异常，会直接爆出
-     * 故，不在这里做判定了
-     */
-    CGRAPH_EMPTY_FUNCTION
-}
-
 CGRAPH_NAMESPACE_END
