@@ -17,7 +17,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T, CUint capacity = CGRAPH_DEFAULT_RINGBUFFER_SIZE>
+template<typename T, CUInt capacity = CGRAPH_DEFAULT_RINGBUFFER_SIZE>
 class UAtomicRingBufferQueue : public UQueueObject {
 public:
     explicit UAtomicRingBufferQueue() {
@@ -37,7 +37,7 @@ public:
      * @return
      * @notice 谨慎使用，push信息之后，不推荐使用
      */
-    UAtomicRingBufferQueue* setCapacity(CUint size) {
+    UAtomicRingBufferQueue* setCapacity(CUInt size) {
         capacity_ = size;
         ring_buffer_queue_.resize(capacity_);
         return this;
@@ -47,7 +47,7 @@ public:
      * 获取容量信息
      * @return
      */
-    CUint getCapacity() const {
+    CUInt getCapacity() const {
         return capacity_;
     }
 
@@ -199,9 +199,9 @@ protected:
     CGRAPH_NO_ALLOWED_COPY(UAtomicRingBufferQueue)
 
 private:
-    CUint head_;                                                    // 头结点位置
-    CUint tail_;                                                    // 尾结点位置
-    CUint capacity_;                                                // 环形缓冲的容量大小
+    CUInt head_;                                                    // 头结点位置
+    CUInt tail_;                                                    // 尾结点位置
+    CUInt capacity_;                                                // 环形缓冲的容量大小
 
     std::condition_variable push_cv_;                               // 写入的条件变量。为了保持语义完整，也考虑今后多入多出的可能性，不使用 父类中的 cv_了
     std::condition_variable pop_cv_;                                // 读取的条件变量

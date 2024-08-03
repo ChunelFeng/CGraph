@@ -15,7 +15,7 @@
 
 using CChar = CGraph::internal::CCHAR;
 using CCharPtr = CGraph::internal::CCHAR *;
-using CUint = CGraph::internal::CUINT;
+using CUInt = CGraph::internal::CUINT;
 using CSize = CGraph::internal::CSIZE;
 using CVoid = CGraph::internal::CVOID;
 using CVoidPtr = CGraph::internal::CVOID *;

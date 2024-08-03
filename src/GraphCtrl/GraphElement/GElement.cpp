@@ -169,7 +169,7 @@ CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
 CStatus GElement::addElementInfo(const GElementPtrSet& dependElements,
                                  const std::string& name, CSize loop) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    CGRAPH_ASSERT_INIT(false)
 
     // 添加依赖的时候，可能会出现异常情况。故在这里提前添加 && 做判定
     status = this->addDependGElements(dependElements);

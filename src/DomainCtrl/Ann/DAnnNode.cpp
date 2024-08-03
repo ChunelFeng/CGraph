@@ -14,14 +14,14 @@ DAnnNode::DAnnNode() {
     setType(GNodeType::CPU);    // 计算密集型算子
 
     /** 初始化函数映射关系 */
-    ann_func_arr_[static_cast<CUint>(DAnnFuncType::ANN_TRAIN)] = &DAnnNode::train;
-    ann_func_arr_[static_cast<CUint>(DAnnFuncType::ANN_SEARCH)] = &DAnnNode::search;
-    ann_func_arr_[static_cast<CUint>(DAnnFuncType::ANN_INSERT)] = &DAnnNode::insert;
-    ann_func_arr_[static_cast<CUint>(DAnnFuncType::ANN_UPDATE)] = &DAnnNode::update;
-    ann_func_arr_[static_cast<CUint>(DAnnFuncType::ANN_REMOVE)] = &DAnnNode::remove;
-    ann_func_arr_[static_cast<CUint>(DAnnFuncType::ANN_LOAD_MODEL)] = &DAnnNode::loadModel;
-    ann_func_arr_[static_cast<CUint>(DAnnFuncType::ANN_SAVE_MODEL)] = &DAnnNode::saveModel;
-    ann_func_arr_[static_cast<CUint>(DAnnFuncType::ANN_EDITION)] = &DAnnNode::edition;
+    ann_func_arr_[static_cast<CUInt>(DAnnFuncType::ANN_TRAIN)] = &DAnnNode::train;
+    ann_func_arr_[static_cast<CUInt>(DAnnFuncType::ANN_SEARCH)] = &DAnnNode::search;
+    ann_func_arr_[static_cast<CUInt>(DAnnFuncType::ANN_INSERT)] = &DAnnNode::insert;
+    ann_func_arr_[static_cast<CUInt>(DAnnFuncType::ANN_UPDATE)] = &DAnnNode::update;
+    ann_func_arr_[static_cast<CUInt>(DAnnFuncType::ANN_REMOVE)] = &DAnnNode::remove;
+    ann_func_arr_[static_cast<CUInt>(DAnnFuncType::ANN_LOAD_MODEL)] = &DAnnNode::loadModel;
+    ann_func_arr_[static_cast<CUInt>(DAnnFuncType::ANN_SAVE_MODEL)] = &DAnnNode::saveModel;
+    ann_func_arr_[static_cast<CUInt>(DAnnFuncType::ANN_EDITION)] = &DAnnNode::edition;
 }
 
 
@@ -39,7 +39,7 @@ CStatus DAnnNode::run() {
         CGRAPH_RETURN_ERROR_STATUS("error ann function type")
     }
 
-    status = (this->*ann_func_arr_[static_cast<CUint>(funcType)])();
+    status = (this->*ann_func_arr_[static_cast<CUInt>(funcType)])();
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status = refreshParam();

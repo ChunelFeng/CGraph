@@ -16,11 +16,11 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<typename T, CUint capacity = CGRAPH_DEFAULT_RINGBUFFER_SIZE,
+template<typename T, CUInt capacity = CGRAPH_DEFAULT_RINGBUFFER_SIZE,
         c_enable_if_t<std::is_base_of<GMessageParam, T>::value, int> = 0>
 class GMessage : public GMessageObject {
 public:
-    explicit GMessage(CUint size = capacity) {
+    explicit GMessage(CUInt size = capacity) {
         queue_.setCapacity(size);
     }
 
@@ -86,7 +86,7 @@ public:
      * 获取容量大小
      * @return
      */
-    CUint getCapacity() const {
+    CUInt getCapacity() const {
         return queue_.getCapacity();
     }
 
@@ -95,7 +95,7 @@ private:
 };
 
 
-template<typename T, CUint capacity = CGRAPH_DEFAULT_RINGBUFFER_SIZE>
+template<typename T, CUInt capacity = CGRAPH_DEFAULT_RINGBUFFER_SIZE>
 using GMessagePtr = GMessage<T, capacity> *;
 
 CGRAPH_NAMESPACE_END

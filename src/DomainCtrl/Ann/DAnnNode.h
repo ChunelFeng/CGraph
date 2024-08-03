@@ -91,7 +91,7 @@ protected:
 
 private:
     typedef	CStatus (DAnnNode::*DAnnNodeFuncPtr)();
-    DAnnNodeFuncPtr ann_func_arr_[static_cast<CUint>(DAnnFuncType::ANN_MAX_SIZE)]{};    // ann函数映射关系
+    DAnnNodeFuncPtr ann_func_arr_[static_cast<CUInt>(DAnnFuncType::ANN_MAX_SIZE)]{};    // ann函数映射关系
 };
 
 CGRAPH_NAMESPACE_END
