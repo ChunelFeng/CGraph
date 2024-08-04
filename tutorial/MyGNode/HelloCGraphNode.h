@@ -13,7 +13,7 @@
 
 class HelloCGraphNode : public CGraph::GNode {
 public:
-    CStatus run () override {
+    CStatus run() override {
         CStatus status;
         std::cout << "Hello, CGraph." << std::endl;
         return status;

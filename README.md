@@ -36,7 +36,10 @@
 
 详细功能介绍和用法，请参考 **推荐阅读** 中的文章内容。项目相关视频在B站持续更新中，欢迎观看交流和一键三连：<br>
 * [【B站视频】CGraph 入门篇](https://www.bilibili.com/video/BV1mk4y1v7XJ) <br>
-* [【B站视频】CGraph 功能篇 (buy me a cup of coffee?)](https://www.bilibili.com/cheese/play/ss22264) <br>
+* [【B站视频】CGraph 功能篇](https://www.bilibili.com/cheese/play/ss22264) <br>
+  * 全面介绍CGraph项目中，所有的名词术语和功能模块
+  * 结合实际coding过程，详细介绍了每个功能的具体的使用场景、用法、以及解决的问题
+  * 适合想要全面了解功能、或快速上手使用CGraph的童鞋
 * [【B站视频】CGraph 应用篇](https://www.bilibili.com/video/BV1B84y1D7Hs) <br>
 * [【B站视频】CGraph 分享篇](https://www.bilibili.com/video/BV1dh4y1i78u) <br>
 
@@ -132,7 +135,7 @@ int main() {
 * [awesome-workflow-engines](https://github.com/meirwah/awesome-workflow-engines) : A curated list of awesome open source workflow engines
 * [nndeploy](https://github.com/DeployAI/nndeploy) : nndeploy是一款模型端到端部署框架。以多端推理以及基于有向无环图模型部署为内核，致力为用户提供跨平台、简单易用、高性能的模型部署体验。
 * [KuiperInfer](https://github.com/zjhellofss/KuiperInfer) : 带你从零实现一个高性能的深度学习推理库，支持大模型 llama2 、Unet、Yolov5、Resnet等模型的推理。Implement a high-performance deep learning inference library step by step
-* [ograph](https://github.com/symphony09/ograph) : A simple way to build a pipeline with Go.
+* [OGraph](https://github.com/symphony09/ograph) : A simple way to build a pipeline with Go.
 
 [![Star History Chart](https://api.star-history.com/svg?repos=ChunelFeng/CGraph&type=Date)](https://star-history.com/#ChunelFeng/CGraph&Date)
 
