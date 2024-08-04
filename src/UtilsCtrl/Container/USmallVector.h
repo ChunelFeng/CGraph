@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <memory>
+#include <cstring>
 
 #include "UtilsCtrl/UtilsObject.h"
 
@@ -26,7 +27,7 @@ public:
     }
 
     ~USmallVector() override {
-        CGRAPH_DELETE_PTR_ARRAY(data_);
+        CGRAPH_DELETE_PTR_ARRAY(data_)
     }
 
     /**
@@ -107,7 +108,7 @@ protected:
             UIter& operator++() { ++ptr_; return *this; }
             UIter operator++(int) { UIter iter = *this; ++(*this); return iter; }
             CBool operator==(const UIter& iter) const { return ptr_ == iter.ptr_; }
-            CBool operator!=(const UIter& iter) const { return !(*this == iter); }
+            CBool operator!=(const UIter& iter) const { return ptr_ != iter.ptr_; }
 
         private:
             T* ptr_ { nullptr };
@@ -118,9 +119,9 @@ public:
     UIter end() const { return UIter(data_ + cur_index_); }
 
 private:
-    T* data_ = nullptr;          // 存放具体数据
-    CSize cur_index_ = 0;        // 当前元素数量
-    CSize capacity_ = 0;         // 数组容量
+    T* data_ { nullptr };          // 存放具体数据
+    CSize cur_index_ { 0 };        // 当前元素数量
+    CSize capacity_ { 0 };         // 数组容量
 };
 
 CGRAPH_NAMESPACE_END
