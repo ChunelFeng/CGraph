@@ -9,7 +9,7 @@
 #ifndef CGRAPH_GELEMENTRELATION_H
 #define CGRAPH_GELEMENTRELATION_H
 
-#include <set>
+#include <vector>
 
 #include "GElementObject.h"
 
@@ -19,9 +19,9 @@ class GElement;
 
 struct GElementRelation : public CStruct {
 public:
-    std::set<GElement *> predecessors_;       // 前驱信息
-    std::set<GElement *> successors_;         // 后继信息
-    GElement* belong_ = nullptr;              // 从属信息。如果从属于group，则为该group的值；如果从属于pipeline，则为nullptr
+    std::vector<GElement *> predecessors_ {};       // 前驱信息
+    std::vector<GElement *> successors_ {};         // 后继信息
+    GElement* belong_ = nullptr;                    // 从属信息。如果从属于group，则为该group的值；如果从属于pipeline，则为nullptr
 };
 
 CGRAPH_NAMESPACE_END

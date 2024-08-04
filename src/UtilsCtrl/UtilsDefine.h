@@ -102,6 +102,13 @@ CVoid __ASSERT_NOT_NULL_THROW_EXCEPTION(T t, Args... args) {
         (ptr) = nullptr;                                                        \
     }                                                                           \
 
+#define CGRAPH_DELETE_PTR_ARRAY(arr)                                            \
+    if (unlikely((arr) != nullptr)) {                                           \
+        delete[] arr;                                                           \
+        (arr) = nullptr;                                                        \
+    }                                                                           \
+                                                                                \
+
 #define CGRAPH_ASSERT_INIT(isInit)                                              \
     if (unlikely((isInit) != is_init_)) {                                       \
         CGRAPH_RETURN_ERROR_STATUS("init status is not suitable")               \

@@ -68,7 +68,6 @@ protected:
             element->linkable_ = false;    // 防止出现之前的留存逻辑。确保只有当前链接关系下，需要设置 linkable的，才会设置为 true
             if (1 == element->dependence_.size()
                 && 1 == (*element->dependence_.begin())->run_before_.size()
-                && (*(element->dependence_.begin()))->run_before_.find(element) != (*(element->dependence_.begin()))->run_before_.end()
                 && element->getBindingIndex() == (*(element->dependence_.begin()))->getBindingIndex()) {
                 element->linkable_ = true;
                 linked_size_++;

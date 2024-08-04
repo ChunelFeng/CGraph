@@ -136,6 +136,7 @@ CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
         const CStatus& curStatus = element->fatProcessor(CFunctionType::RUN);
         if (unlikely(curStatus.isErr())) {
             // 当且仅当整体状正常，且当前状态异常的时候，进入赋值逻辑。确保不重复赋值
+            CGRAPH_LOCK_GUARD lk(status_lock_);
             cur_status_ += curStatus;
         }
         afterElementRun(element);

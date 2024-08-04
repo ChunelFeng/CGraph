@@ -446,8 +446,8 @@ CIndex GElement::getBindingIndex() const {
 
 GElementRelation GElement::getRelation() const {
     GElementRelation relation;
-    relation.predecessors_ = this->dependence_;    // 前驱
-    relation.successors_ = this->run_before_;    // 后继
+    relation.predecessors_ = this->dependence_.asVector();    // 前驱
+    relation.successors_ = this->run_before_.asVector();    // 后继
     relation.belong_ = this->belong_;    // 从属信息
 
     return relation;

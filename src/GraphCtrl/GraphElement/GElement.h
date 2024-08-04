@@ -415,8 +415,8 @@ private:
 
     /** 图相关信息 */
     std::atomic<CSize> left_depend_ { 0 };                                 // 当 left_depend_ 值为0的时候，即可以执行该element信息
-    std::set<GElement *> run_before_;                                         // 被依赖的节点（后继）
-    std::set<GElement *> dependence_;                                         // 依赖的节点信息（前驱）
+    USmallVector<GElement *> run_before_;                                         // 被依赖的节点（后继）
+    USmallVector<GElement *> dependence_;                                         // 依赖的节点信息（前驱）
     GElement* belong_ { nullptr };                                            // 从属的element 信息，如为nullptr，则表示从属于 pipeline
 
     /** 异步执行相关信息 */
