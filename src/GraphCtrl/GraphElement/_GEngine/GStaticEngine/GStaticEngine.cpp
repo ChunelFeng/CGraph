@@ -48,13 +48,24 @@ CStatus GStaticEngine::setup(const GSortedGElementPtrSet& elements) {
 CStatus GStaticEngine::run() {
     CGRAPH_FUNCTION_BEGIN
 
-    for (auto& arr : element_mat_) {
+    for (const auto& arr : element_mat_) {
         std::vector<std::future<CStatus>> futures;
+        GElementPtrArr macros;
         for (auto* element : arr) {
-            auto fut = thread_pool_->commit([element] {
-                return element->fatProcessor(CFunctionType::RUN);
-            }, element->getBindingIndex());
-            futures.emplace_back(std::move(fut));
+            if (element->isMacro()
+                && CGRAPH_DEFAULT_BINDING_INDEX == element->getBindingIndex()) {
+                // 未绑定线程的微任务，直接放到 macros 中，减少线程切换
+                macros.emplace_back(element);
+            } else {
+                auto fut = thread_pool_->commit([element] {
+                    return element->fatProcessor(CFunctionType::RUN);
+                }, element->getBindingIndex());
+                futures.emplace_back(std::move(fut));
+            }
+        }
+
+        for (GElementPtr macro : macros) {
+            status += macro->fatProcessor(CFunctionType::RUN);
         }
 
         for (auto& future : futures) {

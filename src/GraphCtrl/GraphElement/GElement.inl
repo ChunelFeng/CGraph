@@ -71,9 +71,9 @@ T* GElement::getEParam(const std::string& key) {
 
 template<typename T,
         c_enable_if_t<std::is_base_of<GElement, T>::value, int>>
-T* GElement::getPtr() {
+T* GElement::getPtr(CBool allowEmpty) {
     T* ptr = dynamic_cast<T *>(this);
-    CGRAPH_THROW_EXCEPTION_BY_CONDITION(!ptr, "input type is not suitable")
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION(!allowEmpty && !ptr, "change ptr type failed")
     return ptr;
 }
 

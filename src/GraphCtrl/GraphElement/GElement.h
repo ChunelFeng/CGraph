@@ -114,6 +114,14 @@ public:
                          GElementTimeoutStrategy strategy = GElementTimeoutStrategy::AS_ERROR);
 
     /**
+     * 设置为微任务
+     * @param macro
+     * @return
+     * @notice 当前仅对 GNode 类型数据生效
+     */
+    GElement* setMacro(CBool macro);
+
+    /**
      * 当前element是否是一个 group逻辑
      * @return
      */
@@ -129,11 +137,12 @@ public:
      * 获取对应的ptr类型
      * @tparam T
      * @param ptr
+     * @param allowEmpty
      * @return
      */
     template<typename T,
             c_enable_if_t<std::is_base_of<GElement, T>::value, int> = 0>
-    T* getPtr();
+    T* getPtr(CBool allowEmpty = true);
 
     /**
      * 实现连续注册的语法糖，形如：
@@ -260,6 +269,12 @@ private:
      * @return
      */
     CBool isMutable() const;
+
+    /**
+     * 判断当前是否是微节点
+     * @return
+     */
+    CBool isMacro() const;
 
     /**
      * 判断当前element是否已经被注册到特定pipeline中了。避免反复注册的问题
@@ -405,6 +420,7 @@ private:
     CIndex binding_index_ { CGRAPH_DEFAULT_BINDING_INDEX };                   // 用于设定绑定线程id
     CMSec timeout_ { CGRAPH_DEFAULT_ELEMENT_TIMEOUT };                        // 超时时间信息（0表示不计算超时）
     GElementTimeoutStrategy timeout_strategy_ { GElementTimeoutStrategy::AS_ERROR };    // 判定超时的情况下，是否返回错误
+    CBool is_marco_ { false };                                                // 微任务
 
     /** 执行期间相关信息 */
     GElementParamMap local_params_;                                           // 用于记录当前element的内部参数
@@ -415,8 +431,8 @@ private:
 
     /** 图相关信息 */
     std::atomic<CSize> left_depend_ { 0 };                                 // 当 left_depend_ 值为0的时候，即可以执行该element信息
-    USmallVector<GElement *> run_before_;                                         // 被依赖的节点（后继）
-    USmallVector<GElement *> dependence_;                                         // 依赖的节点信息（前驱）
+    USmallVector<GElement *> run_before_;                                     // 被依赖的节点（后继）
+    USmallVector<GElement *> dependence_;                                     // 依赖的节点信息（前驱）
     GElement* belong_ { nullptr };                                            // 从属的element 信息，如为nullptr，则表示从属于 pipeline
 
     /** 异步执行相关信息 */

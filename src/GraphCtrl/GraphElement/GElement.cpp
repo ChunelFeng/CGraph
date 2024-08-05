@@ -86,6 +86,16 @@ GElementPtr GElement::setTimeout(CMSec timeout, GElementTimeoutStrategy strategy
 }
 
 
+GElementPtr GElement::setMacro(CBool macro) {
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    if (GElementType::NODE == element_type_) {
+        // 目前仅针对 node 生效
+        is_marco_ = macro;
+    }
+    return this;
+}
+
+
 GElementRef GElement::operator--(int) noexcept {
     try {
         this->setVisible(true);
@@ -325,6 +335,11 @@ CBool GElement::isTimeout() const {
 CBool GElement::isMutable() const {
     // 写入 GMutable的 element，属于 mutable，可以在运行时，修改依赖关系
     return belong_ && GElementType::MUTABLE == belong_->element_type_;
+}
+
+
+CBool GElement::isMacro() const {
+    return is_marco_;
 }
 
 
