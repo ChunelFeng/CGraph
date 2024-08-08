@@ -91,14 +91,14 @@ public:
 
     /**
      * 根据传入的info信息，创建node节点
-     * @tparam T
+     * @tparam TNode
      * @tparam Args
      * @param info
      * @param args
      * @return
      */
-    template<typename T, typename ...Args,
-            c_enable_if_t<std::is_base_of<GNode, T>::value, int> = 0>
+    template<typename TNode, typename ...Args,
+            c_enable_if_t<std::is_base_of<GNode, TNode>::value, int> = 0>
     GNodePtr createGNode(const GNodeInfo &info, Args&&... args);
 
     /**
@@ -135,7 +135,7 @@ public:
                            CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
-     * 在图中注册一个Element信息
+     * 在图中注册一个 GElement信息
      * 如果注册的是GNode信息，则内部自动生成
      * 如果注册的是GGroup信息，则需外部提前生成，然后注册进来
      * @tparam T
@@ -151,6 +151,73 @@ public:
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = CGRAPH_EMPTY,
                              CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
+
+    /**
+     * 在图中注册一个模板Element信息
+     * @tparam TNode
+     * @tparam Args
+     * @param elementRef
+     * @param dependElements
+     * @return
+     */
+    template<typename TNode, typename ...Args,
+            c_enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int> = 0>
+    CStatus registerGElement(GTemplateNodePtr<Args ...> *elementRef,
+                             const GElementPtrSet &dependElements,
+                             Args... args);
+
+    /**
+     * 注册一个 node
+     * @tparam T
+     * @param dependElements
+     * @param name
+     * @param loop
+     * @return
+     */
+    template<typename TNode,
+            c_enable_if_t<std::is_base_of<GNode, TNode>::value, int> = 0>
+    TNode* registerGNode(const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
+                     const std::string &name = CGRAPH_EMPTY,
+                     CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
+
+    /**
+     * 注册一个 node
+     * @tparam TNode
+     * @tparam Args
+     * @param dependElements
+     * @param args
+     * @return
+     */
+    template<typename TNode, typename ...Args,
+            c_enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int> = 0>
+    TNode* registerGNode(const GElementPtrSet &dependElements,
+                         Args... args);
+
+    /**
+     * 注册一个节点信息
+     * @param nodeRef
+     * @param dependElements
+     * @param name
+     * @param loop
+     * @return
+     */
+    CStatus registerGNode(GElementPPtr nodeRef,
+                          const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
+                          const std::string &name = CGRAPH_EMPTY,
+                          CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
+
+    /**
+     * 注册一个组信息（推荐使用）
+     * @param groupRef
+     * @param dependElements
+     * @param name
+     * @param loop
+     * @return
+     */
+    CStatus registerGGroup(GElementPPtr groupRef,
+                           const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
+                           const std::string &name = CGRAPH_EMPTY,
+                           CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
      * 注册function类型的内容，模板特化
@@ -197,46 +264,6 @@ public:
                              const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
                              const std::string &name = CGRAPH_EMPTY,
                              CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
-
-    /**
-     * 在图中注册一个模板Element信息
-     * @tparam TNode
-     * @tparam Args
-     * @param elementRef
-     * @param dependElements
-     * @return
-     */
-    template<typename TNode, typename ...Args,
-            c_enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int> = 0>
-    CStatus registerGElement(GTemplateNodePtr<Args ...> *elementRef,
-                             const GElementPtrSet &dependElements,
-                             Args... args);
-
-    /**
-     * 注册一个节点信息
-     * @param nodeRef
-     * @param dependElements
-     * @param name
-     * @param loop
-     * @return
-     */
-    CStatus registerGNode(GElementPPtr nodeRef,
-                          const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
-                          const std::string &name = CGRAPH_EMPTY,
-                          CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
-
-    /**
-     * 注册一个组信息（推荐使用）
-     * @param groupRef
-     * @param dependElements
-     * @param name
-     * @param loop
-     * @return
-     */
-    CStatus registerGGroup(GElementPPtr groupRef,
-                           const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
-                           const std::string &name = CGRAPH_EMPTY,
-                           CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
      * 添加切面

@@ -24,7 +24,7 @@ void tutorial_template() {
      * 也可以参考 MyTemplateV2Node 的方式进行构造
      */
     pipeline->registerGElement<MyTemplateNode<int, float>>(&a, {}, 3, 3.5f);
-    pipeline->registerGElement<MyTemplateNode<int, float>>(&b, {a},5, 3.75f);
+    pipeline->registerGElement<MyTemplateNode<int, float>>(&b, {a}, 5, 3.75f);
     pipeline->registerGElement<MyTemplateNode<int>>(&c, {b}, 8);
     pipeline->registerGElement<MyTemplateV2Node<4>>(&d, {c});    // 也可以通过模板，传递参数数据
 

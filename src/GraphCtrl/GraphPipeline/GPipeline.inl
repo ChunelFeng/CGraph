@@ -40,9 +40,48 @@ CStatus GPipeline::registerGElement(GElementPPtr elementRef,
          * 则直接内部创建该信息
          */
         (*elementRef) = new(std::nothrow) T();
+    } else {
+        CGRAPH_RETURN_ERROR_STATUS("resister error type")
     }
 
     status = innerRegister(*elementRef, dependElements, name, loop);
+    CGRAPH_FUNCTION_END
+}
+
+
+template<typename TNode,
+        c_enable_if_t<std::is_base_of<GNode, TNode>::value, int>>
+TNode* GPipeline::registerGNode(const GElementPtrSet &dependElements,
+                            const std::string &name, CSize loop) {
+    GElementPtr node = nullptr;
+    CGRAPH_THROW_EXCEPTION_BY_STATUS(registerGElement<TNode>(&node, dependElements, name, loop))
+    return (TNode *)node;
+}
+
+
+template<typename TNode, typename ...Args,
+        c_enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int>>
+TNode* GPipeline::registerGNode(const GElementPtrSet &dependElements,
+                                Args... args) {
+    GTemplateNodePtr<Args ...> node = nullptr;
+    CGRAPH_THROW_EXCEPTION_BY_STATUS(registerGElement<TNode>(&node, dependElements, args...))
+    return (TNode *)node;
+}
+
+
+template<typename TNode, typename ...Args,
+        c_enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int>>
+CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,
+                                    const GElementPtrSet &dependElements,
+                                    Args... args) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(false)
+
+    // 构建模板node信息
+    (*elementRef) = new(std::nothrow) TNode(std::forward<Args &&>(args)...);
+    CGRAPH_ASSERT_NOT_NULL(*elementRef)
+
+    status = innerRegister(*elementRef, dependElements, CGRAPH_EMPTY, CGRAPH_DEFAULT_LOOP_TIMES);
     CGRAPH_FUNCTION_END
 }
 
@@ -68,37 +107,20 @@ CStatus GPipeline::registerGElement(GFencePPtr fenceRef,
 
 template<typename GCoordinator, CInt SIZE>
 CStatus GPipeline::registerGElement(GCoordinatorPPtr<SIZE> coordinatorRef,
-                                     const GElementPtrSet &dependElements,
-                                     const std::string &name,
-                                     CSize loop) {
+                                    const GElementPtrSet &dependElements,
+                                    const std::string &name,
+                                    CSize loop) {
     return this->registerGElement<GCoordinator, SIZE>((GElementPtr *)(coordinatorRef), dependElements, name, loop);
 }
 
 
 template<typename TNode, typename ...Args,
-        c_enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int>>
-CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,
-                                    const GElementPtrSet &dependElements,
-                                    Args... args) {
-    CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_INIT(false)
-
-    // 构建模板node信息
-    (*elementRef) = new(std::nothrow) TNode(std::forward<Args &&>(args)...);
-    CGRAPH_ASSERT_NOT_NULL(*elementRef)
-
-    status = innerRegister(*elementRef, dependElements, CGRAPH_EMPTY, CGRAPH_DEFAULT_LOOP_TIMES);
-    CGRAPH_FUNCTION_END
-}
-
-
-template<typename T, typename ...Args,
-        c_enable_if_t<std::is_base_of<GNode, T>::value, int>>
+        c_enable_if_t<std::is_base_of<GNode, TNode>::value, int>>
 GNodePtr GPipeline::createGNode(const GNodeInfo &info, Args&&... args) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
-    GNodePtr node = new(std::nothrow) T(std::forward<Args &&>(args)...);
+    GNodePtr node = new(std::nothrow) TNode(std::forward<Args &&>(args)...);
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(node)
     status = node->addElementInfo(info.dependence_, info.name_, info.loop_);
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
