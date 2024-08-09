@@ -88,10 +88,10 @@ GElementPtr GElement::setTimeout(CMSec timeout, GElementTimeoutStrategy strategy
 
 GElementPtr GElement::setMacro(CBool macro) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
-    if (GElementType::NODE == element_type_) {
-        // 目前仅针对 node 生效
-        is_marco_ = macro;
-    }
+
+    // 目前仅针对非group逻辑生效
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION(isGGroup(), "cannot set group as macro")
+    is_marco_ = macro;
     return this;
 }
 
@@ -375,12 +375,12 @@ CVoid GElement::dump(std::ostream& oss) {
 
 
 CVoid GElement::dumpEdge(std::ostream& oss, GElementPtr src, GElementPtr dst, const std::string& label) {
-    if (src->isGroup() && dst->isGroup()) {
+    if (src->isGGroup() && dst->isGGroup()) {
         // 在group的逻辑中，添加 cluster_ 的信息
         oss << 'p' << src << " -> p" << dst << label << "[ltail=cluster_p" << src << " lhead=cluster_p" << dst << "]";
-    } else if (src->isGroup() && !dst->isGroup()) {
+    } else if (src->isGGroup() && !dst->isGGroup()) {
         oss << 'p' << src << " -> p" << dst << label << "[ltail=cluster_p" << src << "]";
-    } else if (!src->isGroup() && dst->isGroup()) {
+    } else if (!src->isGGroup() && dst->isGGroup()) {
         oss << 'p' << src << " -> p" << dst << label << "[lhead=cluster_p" << dst << "]";
     } else {
         oss << 'p' << src << " -> p" << dst << label;
@@ -399,7 +399,7 @@ CVoid GElement::dumpElement(std::ostream& oss) {
     dumpPerfInfo(oss);
 
     oss << "\"];\n";
-    if (this->loop_ > 1 && !this->isGroup()) {
+    if (this->loop_ > 1 && !this->isGGroup()) {
         oss << 'p' << this << " -> p" << this << "[label=\"" << this->loop_ << "\"]" << ";\n";
     }
 }
@@ -438,9 +438,19 @@ CVoid GElement::checkYield() {
 }
 
 
-CBool GElement::isGroup() const {
+CBool GElement::isGGroup() const {
     // 按位与 GROUP有值，表示是 GROUP的逻辑
     return (long(element_type_) & long(GElementType::GROUP)) > 0;
+}
+
+
+CBool GElement::isGAdaptor() const {
+    return (long(element_type_) & long(GElementType::ADAPTER)) > 0;
+}
+
+
+CBool GElement::isGNode() const {
+    return GElementType::NODE == element_type_;
 }
 
 

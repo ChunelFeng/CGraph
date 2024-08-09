@@ -307,7 +307,7 @@ CBool GPipeline::checkSeparate(GElementPtr fst, GElementPtr snd) const {
         result = true;
     } else if (ancestor) {
         // 两个同属于一个 group 的情况，则根据 group 的属性来决定
-        CGRAPH_THROW_EXCEPTION_BY_CONDITION(!ancestor->isGroup(), "calculate ancestor failed, not a group.")
+        CGRAPH_THROW_EXCEPTION_BY_CONDITION(!ancestor->isGGroup(), "calculate ancestor failed, not a group.")
         result = (dynamic_cast<GGroupPtr>(ancestor))->isSeparate(fstPatch, sndPatch);
     } else {
         // ancestor == nullptr，则认定fst 和 snd 的 ancestor 是pipeline

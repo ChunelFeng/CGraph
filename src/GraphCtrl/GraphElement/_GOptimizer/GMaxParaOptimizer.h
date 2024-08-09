@@ -25,7 +25,7 @@ protected:
      */
     static CBool match(const GSortedGElementPtrSet& elements) {
         return !std::any_of(elements.begin(), elements.end(), [](GElementCPtr ptr) {
-            return ptr->isGroup();
+            return ptr->isGGroup();
         });
     }
 

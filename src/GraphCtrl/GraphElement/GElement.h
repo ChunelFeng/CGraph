@@ -117,7 +117,6 @@ public:
      * 设置为微任务
      * @param macro
      * @return
-     * @notice 当前仅对 GNode 类型数据生效
      */
     GElement* setMacro(CBool macro);
 
@@ -125,7 +124,19 @@ public:
      * 当前element是否是一个 group逻辑
      * @return
      */
-    CBool isGroup() const;
+    CBool isGGroup() const;
+
+    /**
+     * 当前element是否是一个 adaptor逻辑
+     * @return
+     */
+    CBool isGAdaptor() const;
+
+    /**
+     * 当前element是否是一个 node逻辑
+     * @return
+     */
+    CBool isGNode() const;
 
     /**
      * 获取当前节点状态信息
