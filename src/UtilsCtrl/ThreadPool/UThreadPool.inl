@@ -75,14 +75,13 @@ auto UThreadPool::commitWithPriority(const FunctionType& task, int priority)
 
 
 template<typename FunctionType>
-void UThreadPool::execute(const FunctionType& task, CIndex index) {
+CVoid UThreadPool::execute(const FunctionType& task, CIndex index) {
     CIndex realIndex = dispatch(index);
     if (realIndex >= 0 && realIndex < config_.default_thread_size_) {
         primary_threads_[realIndex]->pushTask(std::move(task));
     } else if (CGRAPH_LONG_TIME_TASK_STRATEGY == realIndex) {
         priority_task_queue_.push(std::move(task), CGRAPH_LONG_TIME_TASK_STRATEGY);
     } else {
-        // 返回其他结果，放到pool的queue中执行
         task_queue_.push(std::move(task));
     }
 }

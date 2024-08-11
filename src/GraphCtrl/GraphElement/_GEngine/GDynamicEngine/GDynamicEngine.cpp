@@ -6,8 +6,6 @@
 @Desc: 
 ***************************/
 
-#include <algorithm>
-
 #include "GDynamicEngine.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -147,7 +145,7 @@ CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
         // 如果 affinity=true，表示用当前的线程，执行这个逻辑。以便增加亲和性
         exec();
     } else {
-        thread_pool_->commit(exec, calcIndex(element));
+        thread_pool_->execute(exec, calcIndex(element));
     }
 }
 

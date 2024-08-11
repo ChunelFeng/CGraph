@@ -106,8 +106,8 @@ public:
      * @param index
      */
     template<typename FunctionType>
-    void execute(const FunctionType& task,
-                 CIndex index = CGRAPH_DEFAULT_TASK_STRATEGY);
+    CVoid execute(const FunctionType& task,
+                  CIndex index = CGRAPH_DEFAULT_TASK_STRATEGY);
 
     /**
      * 执行任务组信息
