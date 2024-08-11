@@ -132,7 +132,7 @@ CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
         return;
     }
 
-    const auto& execute = [this, element] {
+    const auto& exec = [this, element] {
         const CStatus& curStatus = element->fatProcessor(CFunctionType::RUN);
         if (unlikely(curStatus.isErr())) {
             // 当且仅当整体状正常，且当前状态异常的时候，进入赋值逻辑。确保不重复赋值
@@ -145,9 +145,9 @@ CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
     if (affinity
         && CGRAPH_DEFAULT_BINDING_INDEX == element->getBindingIndex()) {
         // 如果 affinity=true，表示用当前的线程，执行这个逻辑。以便增加亲和性
-        execute();
+        exec();
     } else {
-        thread_pool_->commit(execute, calcIndex(element));
+        thread_pool_->commit(exec, calcIndex(element));
     }
 }
 

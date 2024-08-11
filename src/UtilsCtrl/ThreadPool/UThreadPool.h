@@ -100,6 +100,16 @@ public:
     -> std::future<decltype(std::declval<FunctionType>()())>;
 
     /**
+     * 异步执行任务
+     * @tparam FunctionType
+     * @param task
+     * @param index
+     */
+    template<typename FunctionType>
+    void execute(const FunctionType& task,
+                 CIndex index = CGRAPH_DEFAULT_TASK_STRATEGY);
+
+    /**
      * 执行任务组信息
      * 取taskGroup内部ttl和入参ttl的最小值，为计算ttl标准
      * @param taskGroup
