@@ -20,7 +20,7 @@ static const char* PARAM_KEY = "param-key";
 
 struct NumsGParam : public GParam {
     std::vector<int> random_nums_ {};                   // 随机生成的数字信息
-    int map_results_[MAP_SIZE][MAX_NUM] = {0};          // 用于记录 map 处理结果的信息
+    int map_results_[MAP_SIZE][MAX_NUM] = {};           // 用于记录 map 处理结果的信息
 };
 
 

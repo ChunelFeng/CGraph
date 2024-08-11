@@ -14,7 +14,7 @@ void test_performance_01() {
     // 并行的执行32次，对应第1个例子，8thread，32并发，50w次
     GPipelinePtr pipeline = GPipelineFactory::create();
     CStatus status;
-    GElementPtr arr[32];
+    GElementPtr arr[32] = {};
     UThreadPoolConfig config;
     config.default_thread_size_ = 8;
     config.secondary_thread_size_ = 0;
@@ -22,7 +22,6 @@ void test_performance_01() {
     config.max_thread_size_ = 8;
     config.primary_thread_empty_interval_ = 0;
     config.primary_thread_busy_epoch_ = 500;
-    config.monitor_enable_ = false;    // 关闭扩缩容机制
     pipeline->setUniqueThreadPoolConfig(config);
     for (auto& i : arr) {
         pipeline->registerGElement<TestAdd1GNode>(&i);

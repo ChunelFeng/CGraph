@@ -52,7 +52,7 @@ CStatus GPipeline::registerGElement(GElementPPtr elementRef,
 template<typename TNode,
         c_enable_if_t<std::is_base_of<GNode, TNode>::value, int>>
 TNode* GPipeline::registerGNode(const GElementPtrSet &dependElements,
-                            const std::string &name, CSize loop) {
+                                const std::string &name, CSize loop) {
     GElementPtr node = nullptr;
     CGRAPH_THROW_EXCEPTION_BY_STATUS(registerGElement<TNode>(&node, dependElements, name, loop))
     return (TNode *)node;
