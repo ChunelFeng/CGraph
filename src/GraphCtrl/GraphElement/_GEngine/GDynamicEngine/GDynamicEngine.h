@@ -43,14 +43,7 @@ protected:
      * @param
      * @return
     */
-    CVoid asyncRunAndWait();
-
-    /**
-     * 动态图运行前重置
-     * @param
-     * @return
-    */
-    CVoid beforeRun();
+    CVoid commonRunAll();
 
     /**
      * element 运行element

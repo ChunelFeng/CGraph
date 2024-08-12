@@ -26,11 +26,11 @@ CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
 
 CStatus GDynamicEngine::run() {
     CGRAPH_FUNCTION_BEGIN
+    cur_status_.reset();
 
     switch (dag_type_) {
         case internal::GEngineDagType::COMMON: {
-            beforeRun();
-            asyncRunAndWait();
+            commonRunAll();
             break;
         }
         case internal::GEngineDagType::ALL_SERIAL: {
@@ -67,26 +67,18 @@ CStatus GDynamicEngine::afterRunCheck() {
 }
 
 
-CVoid GDynamicEngine::asyncRunAndWait() {
+CVoid GDynamicEngine::commonRunAll() {
     /**
      * 1. 执行没有任何依赖的element
      * 2. 在element执行完成之后，进行裂变，直到所有的element执行完成
      * 3. 等待异步执行结束
      */
+    finished_end_size_ = 0;
     for (const auto& element : front_element_arr_) {
         process(element, element == front_element_arr_.back());
     }
 
     fatWait();
-}
-
-
-CVoid GDynamicEngine::beforeRun() {
-    finished_end_size_ = 0;
-    cur_status_.reset();
-    for (GElementPtr element : total_element_arr_) {
-        element->beforeRun();
-    }
 }
 
 
@@ -131,6 +123,7 @@ CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
     }
 
     const auto& exec = [this, element] {
+        element->beforeRun();
         const CStatus& curStatus = element->fatProcessor(CFunctionType::RUN);
         if (unlikely(curStatus.isErr())) {
             // 当且仅当整体状正常，且当前状态异常的时候，进入赋值逻辑。确保不重复赋值
