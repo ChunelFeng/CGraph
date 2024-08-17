@@ -64,9 +64,9 @@ CStatus GMultiCondition<type>::parallelRun() {
             continue;    // 不满足条件，则不执行
         }
 
-        futures.emplace_back(this->thread_pool_->commit([cur] {
+        futures.emplace_back(std::move(this->thread_pool_->commit([cur] {
             return cur->fatProcessor(CFunctionType::RUN);
-        }, cur->getBindingIndex()));
+        }, cur->binding_index_)));
     }
 
     for (auto& fut: futures) {

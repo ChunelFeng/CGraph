@@ -416,6 +416,12 @@ private:
      */
     std::vector<GElement *> getDeepPath(CBool reverse) const;
 
+    /**
+     * 判断是否是默认绑定策略
+     * @return
+     */
+    CBool isDefaultBinding() const;
+
 private:
     /** 状态相关信息 */
     CBool done_ { false };                                                    // 判定被执行结束

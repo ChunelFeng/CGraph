@@ -39,15 +39,14 @@ protected:
      * @param element
      * @return
      */
-    inline CIndex calcIndex(GElementPtr element) const {
+    CIndex calcIndex(GElementCPtr element) const {
         /**
          * 如果没有设定绑定线程的话，就用默认调度策略
          * 否则的话，会走绑定的thread。
          * 如果设定的 binding_index_ >= thread 总数，会在 threadpool 层做统一判定
          */
-        auto bindingIndex = element->getBindingIndex();
-        return CGRAPH_DEFAULT_BINDING_INDEX == bindingIndex
-               ? schedule_strategy_ : bindingIndex;
+        return element->isDefaultBinding()
+               ? schedule_strategy_ : element->binding_index_;
     }
 
     /**
@@ -68,7 +67,7 @@ protected:
             element->linkable_ = false;    // 防止出现之前的留存逻辑。确保只有当前链接关系下，需要设置 linkable的，才会设置为 true
             if (1 == element->dependence_.size()
                 && 1 == (*element->dependence_.begin())->run_before_.size()
-                && element->getBindingIndex() == (*(element->dependence_.begin()))->getBindingIndex()) {
+                && element->binding_index_ == (*(element->dependence_.begin()))->binding_index_) {
                 element->linkable_ = true;
                 linked_size_++;
             }

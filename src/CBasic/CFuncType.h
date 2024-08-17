@@ -56,7 +56,7 @@ enum class CFunctionType {
  * 这里这样实现，是为了符合 CStatus 类似写法
  * */
 #define CErrStatus(info)                                                \
-    CStatus(info, CGRAPH_GET_LOCATE)                                    \
+    CStatus(info)                                                       \
 
 /** 返回异常信息和状态 */
 #define CGRAPH_RETURN_ERROR_STATUS(info)                                \
@@ -87,7 +87,6 @@ enum class CFunctionType {
 /** 根据条件判断是否抛出异常 */
 #define CGRAPH_THROW_EXCEPTION_BY_CONDITION(cond, info)                 \
     if (unlikely(cond)) { CGRAPH_THROW_EXCEPTION(info); }               \
-
 
 CGRAPH_NAMESPACE_END
 

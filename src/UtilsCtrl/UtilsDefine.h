@@ -35,12 +35,6 @@ CGRAPH_NAMESPACE_BEGIN
 using CGRAPH_LOCK_GUARD = std::lock_guard<std::mutex>;
 using CGRAPH_UNIQUE_LOCK = std::unique_lock<std::mutex>;
 
-/* 判断函数流程是否可以继续 */
-CGRAPH_INTERNAL_NAMESPACE_BEGIN
-    static std::mutex g_check_status_mtx;
-    static std::mutex g_echo_mtx;
-CGRAPH_INTERNAL_NAMESPACE_END
-
 #if __cplusplus >= 201703L
     using CGRAPH_READ_LOCK = std::shared_lock<std::shared_mutex>;
     using CGRAPH_WRITE_LOCK = std::unique_lock<std::shared_mutex>;
@@ -48,7 +42,6 @@ CGRAPH_INTERNAL_NAMESPACE_END
     using CGRAPH_READ_LOCK = CGRAPH_LOCK_GUARD;    // C++11和14不支持读写锁，使用mutex替代
     using CGRAPH_WRITE_LOCK = CGRAPH_LOCK_GUARD;
 #endif
-
 
 template<typename T>
 CStatus __ASSERT_NOT_NULL(T t) {
@@ -82,14 +75,12 @@ CVoid __ASSERT_NOT_NULL_THROW_EXCEPTION(T t, Args... args) {
     __ASSERT_NOT_NULL_THROW_EXCEPTION(args...);
 }
 
-
 /** 判断传入的多个指针信息，是否为空 */
 #define CGRAPH_ASSERT_NOT_NULL(ptr, ...)                                                     \
     {                                                                                        \
         const CStatus& __cur_status__ = __ASSERT_NOT_NULL(ptr, ##__VA_ARGS__);               \
         if (unlikely(__cur_status__.isErr())) { return __cur_status__; }                     \
     }                                                                                        \
-
 
 /** 判断传入的多个指针，是否为空。如果为空，则抛出异常信息 */
 #define CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr, ...)                                         \
@@ -128,14 +119,13 @@ CVoid __ASSERT_NOT_NULL_THROW_EXCEPTION(T t, Args... args) {
 #define CGRAPH_SLEEP_MILLISECOND(ms)                                            \
     std::this_thread::sleep_for(std::chrono::milliseconds(ms));                 \
 
-#define CGRAPH_FUNCTION_CHECK_STATUS                                                         \
-    if (unlikely(status.isErr())) {                                                          \
-        if (status.isCrash()) { throw CException(status.getInfo()); }                        \
-        CGRAPH_LOCK_GUARD lock{ internal::g_check_status_mtx };                              \
-        CGRAPH_ECHO("%s, errorCode = [%d], errorInfo = [%s].",                               \
-            status.getLocate().c_str(), status.getCode(), status.getInfo().c_str());         \
-        return status;                                                                       \
-    }                                                                                        \
+#define CGRAPH_FUNCTION_CHECK_STATUS                                            \
+    if (unlikely(status.isErr())) {                                             \
+        if (status.isCrash()) { throw CException(status.getInfo()); }           \
+        CGRAPH_ECHO("errorCode = [%d], errorInfo = [%s].",                      \
+            status.getCode(), status.getInfo().c_str());                        \
+        return status;                                                          \
+    }                                                                           \
 
 /**
 * 定制化输出
@@ -148,7 +138,8 @@ inline CVoid CGRAPH_ECHO(const char *cmd, ...) {
     return;
 #endif
 
-    std::lock_guard<std::mutex> lock{ internal::g_echo_mtx };
+    static std::mutex echo_mtx;
+    std::lock_guard<std::mutex> lock{ echo_mtx };
     auto now = std::chrono::system_clock::now();
     auto time = std::chrono::system_clock::to_time_t(now);
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count() % 1000;

@@ -133,8 +133,7 @@ CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
         afterElementRun(element);
     };
 
-    if (affinity
-        && CGRAPH_DEFAULT_BINDING_INDEX == element->getBindingIndex()) {
+    if (affinity && element->isDefaultBinding()) {
         // 如果 affinity=true，表示用当前的线程，执行这个逻辑。以便增加亲和性
         exec();
     } else {
@@ -234,9 +233,9 @@ CVoid GDynamicEngine::parallelRunAll() {
     std::vector<std::future<CStatus>> futures;
     futures.reserve(total_end_size_);
     for (int i = 0; i < total_end_size_; i++) {
-        futures.emplace_back(thread_pool_->commit([this, i] {
+        futures.emplace_back(std::move(thread_pool_->commit([this, i] {
             return total_element_arr_[i]->fatProcessor(CFunctionType::RUN);
-        }, calcIndex(total_element_arr_[i])));
+        }, calcIndex(total_element_arr_[i]))));
     }
 
     for (auto& fut : futures) {

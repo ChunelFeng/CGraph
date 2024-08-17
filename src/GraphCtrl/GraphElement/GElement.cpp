@@ -344,13 +344,13 @@ CBool GElement::isMacro() const {
 
 
 CStatus GElement::crashed(const CException& ex) {
-    return CStatus(internal::STATUS_CRASH, ex.what(), CGRAPH_GET_LOCATE);
+    return CStatus(internal::STATUS_CRASH, ex.what());
 }
 
 
 CIndex GElement::getThreadIndex() {
     CGRAPH_THROW_EXCEPTION_BY_CONDITION((nullptr == thread_pool_),    \
-        this->getName() + " getThreadIndex with no threadpool")    // 理论不可能出现的情况
+        this->getName() + " getThreadIndex with no thread pool")    // 理论不可能出现的情况
 
     auto tid = (CSize)std::hash<std::thread::id>{}(std::this_thread::get_id());
     return thread_pool_->getThreadIndex(tid);
@@ -559,6 +559,11 @@ GElementPtrArr GElement::getDeepPath(CBool reverse) const {
         std::reverse(path.begin(), path.end());
     }
     return path;
+}
+
+
+CBool GElement::isDefaultBinding() const {
+    return CGRAPH_DEFAULT_BINDING_INDEX == binding_index_;
 }
 
 CGRAPH_NAMESPACE_END

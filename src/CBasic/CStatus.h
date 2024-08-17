@@ -31,18 +31,14 @@ class CSTATUS {
 public:
     explicit CSTATUS() = default;
 
-    explicit CSTATUS(const std::string &errorInfo,
-                     const std::string &locateInfo = CGRAPH_EMPTY) {
+    explicit CSTATUS(const std::string &errorInfo) {
         this->error_code_ = STATUS_ERR;    // 默认的error code信息
         this->error_info_ = errorInfo;
-        this->error_locate_ = locateInfo;
     }
 
-    explicit CSTATUS(int errorCode, const std::string &errorInfo,
-                     const std::string &locateInfo = CGRAPH_EMPTY) {
+    explicit CSTATUS(int errorCode, const std::string &errorInfo) {
         this->error_code_ = errorCode;
         this->error_info_ = errorInfo;
-        this->error_locate_ = locateInfo;
     }
 
     CSTATUS(const CSTATUS &status) {
@@ -52,7 +48,6 @@ public:
 
         this->error_code_ = status.error_code_;
         this->error_info_ = status.error_info_;
-        this->error_locate_ = status.error_locate_;
     }
 
     CSTATUS(const CSTATUS &&status) noexcept {
@@ -62,7 +57,6 @@ public:
 
         this->error_code_ = status.error_code_;
         this->error_info_ = status.error_info_;
-        this->error_locate_ = status.error_locate_;
     }
 
     CSTATUS& operator=(const CSTATUS& status) {
@@ -70,7 +64,6 @@ public:
             // 如果status是正常的话，则所有数据保持不变
             this->error_code_ = status.error_code_;
             this->error_info_ = status.error_info_;
-            this->error_locate_ = status.error_locate_;
         }
         return (*this);
     }
@@ -83,7 +76,6 @@ public:
         if (!this->isErr() && cur.isErr()) {
             this->error_code_ = cur.error_code_;
             this->error_info_ = cur.error_info_;
-            this->error_locate_ = cur.error_locate_;
         }
 
         return (*this);
@@ -96,7 +88,6 @@ public:
         if (this->error_code_ != STATUS_OK) {
             this->error_code_ = STATUS_OK;
             this->error_info_.clear();
-            this->error_locate_.clear();
         }
     }
 
@@ -114,14 +105,6 @@ public:
      */
     const std::string& getInfo() const {
         return this->error_info_;
-    }
-
-    /**
-     * 获取报错位置
-     * @return
-     */
-    const std::string& getLocate() const {
-        return this->error_locate_;
     }
 
     /**
@@ -174,7 +157,6 @@ public:
 private:
     int error_code_ = STATUS_OK;                     // 错误码信息
     std::string error_info_;                         // 错误信息描述
-    std::string error_locate_;                       // 错误发生的具体位置，形如：file|function|line
 };
 
 CGRAPH_INTERNAL_NAMESPACE_END
