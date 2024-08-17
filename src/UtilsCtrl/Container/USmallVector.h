@@ -42,7 +42,7 @@ public:
 
         if (cur_index_ >= capacity_) {
             // 插入超限的时候，开始扩容
-            CSize curCapacity = capacity_ + CAPACITY;
+            const CSize curCapacity = capacity_ + CAPACITY;
             T* curData = new T[curCapacity];
             CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(curData)
 

@@ -543,7 +543,7 @@ CStatus GElement::checkSuitable() {
 
 GElementPtrArr GElement::getDeepPath(CBool reverse) const {
     GElementPtrArr path;
-    auto* cur = const_cast<GElementPtr>(this);    // 这个是肯定可以转移的
+    auto* cur = const_cast<GElementPtr>(this);
     while (cur) {
         path.push_back(cur);
         cur = cur->belong_;

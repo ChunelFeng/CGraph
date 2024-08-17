@@ -370,7 +370,7 @@ private:
      * 判断是否进入 yield状态。如果是的话，则等待恢复。未进入yield状态，则继续运行
      * @return
      */
-    inline CVoid checkYield();
+    CVoid checkYield();
 
     /**
      * 判断当前元素，是否可以线性执行。默认返回true

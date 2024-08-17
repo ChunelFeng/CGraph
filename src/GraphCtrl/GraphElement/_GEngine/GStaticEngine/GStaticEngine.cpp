@@ -52,14 +52,13 @@ CStatus GStaticEngine::run() {
         std::vector<std::future<CStatus>> futures;
         GElementPtrArr macros;
         for (auto* element : arr) {
-            if (element->isMacro()
-                && CGRAPH_DEFAULT_BINDING_INDEX == element->getBindingIndex()) {
+            if (element->isMacro() && element->isDefaultBinding()) {
                 // 未绑定线程的微任务，直接放到 macros 中，减少线程切换
                 macros.emplace_back(element);
             } else {
                 auto fut = thread_pool_->commit([element] {
                     return element->fatProcessor(CFunctionType::RUN);
-                }, element->getBindingIndex());
+                }, element->binding_index_);
                 futures.emplace_back(std::move(fut));
             }
         }
