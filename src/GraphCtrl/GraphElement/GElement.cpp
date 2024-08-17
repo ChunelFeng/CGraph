@@ -136,11 +136,6 @@ GElement& GElement::operator*(CSize loop) noexcept {
 }
 
 
-CBool GElement::isLinkable() const {
-    return this->linkable_;
-}
-
-
 CBool GElement::isAsync() const {
     // 如果timeout != 0, 则异步执行
     return this->timeout_ != CGRAPH_DEFAULT_ELEMENT_TIMEOUT;

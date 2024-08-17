@@ -21,8 +21,7 @@ template<class T, CSize CAPACITY=8>
 class USmallVector : public UtilsObject {
 public:
     explicit USmallVector() {
-        capacity_ = CAPACITY;
-        data_ = new T[capacity_];
+        capacity_ = 0;
         cur_index_ = 0;
     }
 
@@ -75,8 +74,8 @@ public:
      * @return
      */
     CBool hasValue(const T& val) const {
-        CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(data_)
         CBool result = false;
+        if (!data_) { return result; }
         for (CSize i = 0; i < cur_index_; i++) {
             if (val == data_[i]) {
                 result = true;
@@ -93,6 +92,10 @@ public:
      */
     std::vector<T> asVector() const {
         std::vector<T> vec;
+        if (!data_) {
+            return vec;
+        }
+
         for (const auto& x : *this) {
             vec.emplace_back(x);
         }
@@ -117,6 +120,8 @@ protected:
 public:
     UIter begin() const { return UIter(data_); }
     UIter end() const { return UIter(data_ + cur_index_); }
+    T front() const { data_[0]; }
+    T back() const { data_[cur_index_ - 1]; }
 
 private:
     T* data_ { nullptr };          // 存放具体数据

@@ -211,9 +211,8 @@ protected:
      * 崩溃流程处理
      * @param ex
      * @return
-     * @notice 可以自行覆写crashed方法，但不推荐。如果需要复写的话，返回值需要填写 STATUS_CRASH，否则可能出现执行异常
      */
-    virtual CStatus crashed(const CException& ex);
+    CStatus crashed(const CException& ex);
 
     /**
      * 获取当前element内部参数
@@ -262,12 +261,6 @@ private:
      * @return
      */
     CVoid beforeRun();
-
-    /**
-     * 判定node是否可以和前面节点一起执行
-     * @return
-     */
-    CBool isLinkable() const;
 
     /**
      * 判定当前的内容，是否需要异步执行
@@ -425,11 +418,11 @@ private:
 private:
     /** 状态相关信息 */
     CBool done_ { false };                                                    // 判定被执行结束
-    CBool linkable_ { false };                                                // 判定是否可以连通计算
     CBool visible_ { true };                                                  // 判定可见的，如果被删除的话，则认为是不可见的
     CBool is_init_ { false };                                                 // 判断是否init
     GElementType element_type_ { GElementType::ELEMENT };                     // 用于区分element 内部类型
     std::atomic<GElementState> cur_state_ { GElementState::CREATE };       // 当前执行状态
+    internal::GElementShape shape_ { internal::GElementShape::NORMAL };       // 元素位置类型
 
     /** 配置相关信息 */
     CSize loop_ { CGRAPH_DEFAULT_LOOP_TIMES };                                // 元素执行次数

@@ -145,7 +145,7 @@ CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
 CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     element->done_ = true;
     if (!element->run_before_.empty() && cur_status_.isOK()) {
-        if (1 == element->run_before_.size() && (*element->run_before_.begin())->isLinkable()) {
+        if (internal::GElementShape::LINKABLE == element->shape_) {
             // 针对linkable 的情况，做特殊判定
             process(*(element->run_before_.begin()), true);
         } else {

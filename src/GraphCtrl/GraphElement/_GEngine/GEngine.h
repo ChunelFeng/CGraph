@@ -57,18 +57,17 @@ protected:
     CVoid link(const GSortedGElementPtrSet& elements) {
         /**
          * 认定图可以连通的判定条件：
-         * 1，当前元素仅有一个依赖
-         * 2，当前元素依赖的节点，只有一个后继
-         * 3，当前元素的依赖的后继，仍是当前节点
-         * 4，前后元素绑定机制是一样的
+         * 1，当前元素仅有一个后继
+         * 2，当前元素的唯一后继，仅有一个前驱
+         * 3，前后元素绑定机制是一样的
          */
         linked_size_ = 0;
         for (GElementPtr element : elements) {
-            element->linkable_ = false;    // 防止出现之前的留存逻辑。确保只有当前链接关系下，需要设置 linkable的，才会设置为 true
-            if (1 == element->dependence_.size()
-                && 1 == (*element->dependence_.begin())->run_before_.size()
-                && element->binding_index_ == (*(element->dependence_.begin()))->binding_index_) {
-                element->linkable_ = true;
+            element->shape_ = internal::GElementShape::NORMAL;
+            if (1 == element->run_before_.size()
+                && 1 == (*element->run_before_.begin())->dependence_.size()
+                && element->binding_index_ == (*(element->run_before_.begin()))->binding_index_) {
+                element->shape_ = internal::GElementShape::LINKABLE;
                 linked_size_++;
             }
         }
