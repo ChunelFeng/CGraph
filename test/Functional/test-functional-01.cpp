@@ -13,6 +13,8 @@ using namespace CGraph;
 void test_functional_01() {
     GPipelinePtr pipeline = GPipelineFactory::create();
     CStatus status;
+    const int runTimes = 500000;
+
     GElementPtr a, b, c, d, e, f, g, h, i, j = nullptr;
     status += pipeline->registerGElement<TestAdd1GNode>(&a, {});
     status += pipeline->registerGElement<TestAdd1GNode>(&b, {});
@@ -27,14 +29,14 @@ void test_functional_01() {
 
     {
         UTimeCounter counter("test_functional_01");
-        status = pipeline->process(100000);
+        status = pipeline->process(runTimes);
     }
 
     if (status.isErr()) {
         std::cout << status.getInfo() << std::endl;
     }
 
-    if (g_test_node_cnt != 1000000) {
+    if (g_test_node_cnt != runTimes * 10) {
         std::cout << "test_functional_01: g_test_node_cnt is not right : " << g_test_node_cnt << std::endl;
     }
 

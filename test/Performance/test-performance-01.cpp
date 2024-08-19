@@ -14,7 +14,10 @@ void test_performance_01() {
     // 并行的执行32次，对应第1个例子，8thread，32并发，50w次
     GPipelinePtr pipeline = GPipelineFactory::create();
     CStatus status;
-    GElementPtr arr[32] = {};
+    const int runTimes = 500000;
+    const int size = 32;
+    GElementPtr arr[size] = {};
+
     UThreadPoolConfig config;
     config.default_thread_size_ = 8;
     config.secondary_thread_size_ = 0;
@@ -31,12 +34,12 @@ void test_performance_01() {
 
     {
         UTimeCounter counter("test_performance_01");
-        for (int t = 0; t < 500000; t++) {
+        for (int t = 0; t < runTimes; t++) {
             pipeline->run();
         }
     }
 
-    if (16000000 != g_test_node_cnt) {
+    if ((runTimes * size) != g_test_node_cnt) {
         std::cout << "test_performance_01: g_test_node_cnt is not right : " << g_test_node_cnt << std::endl;
     }
 

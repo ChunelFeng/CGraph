@@ -93,6 +93,7 @@ CStatus UThreadPool::submit(const UTaskGroup& taskGroup, CMSec ttl) {
     CGRAPH_ASSERT_INIT(true)
 
     std::vector<std::future<CVoid>> futures;
+    futures.reserve(taskGroup.getSize());
     for (const auto& task : taskGroup.task_arr_) {
         futures.emplace_back(commit(task));
     }

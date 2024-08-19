@@ -21,6 +21,7 @@ void test_performance_04() {
     config.default_thread_size_ = nodePerLayer;
     config.max_thread_size_ = nodePerLayer;
     config.max_task_steal_range_ = nodePerLayer - 1;
+    config.primary_thread_busy_epoch_ = 500;
     pipeline->setUniqueThreadPoolConfig(config);
     pipeline->setAutoCheck(false);
 

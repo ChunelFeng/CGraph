@@ -15,6 +15,8 @@ void test_performance_03() {
     GPipelinePtr pipeline = GPipelineFactory::create();
     CStatus status;
     GElementPtr a,b1,b2,c1,c2,d = nullptr;
+    const int runTimes = 1000000;
+
     UThreadPoolConfig config;
     config.default_thread_size_ = 2;
     config.secondary_thread_size_ = 0;
@@ -35,12 +37,12 @@ void test_performance_03() {
 
     {
         UTimeCounter counter("test_performance_03");
-        for (int t = 0; t < 1000000; t++) {
+        for (int t = 0; t < runTimes; t++) {
             pipeline->run();
         }
     }
 
-    if (6000000 != g_test_node_cnt) {
+    if ((runTimes * 6) != g_test_node_cnt) {
         std::cout << "test_performance_03: g_test_node_cnt is not right : " << g_test_node_cnt << std::endl;
     }
 

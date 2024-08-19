@@ -14,6 +14,8 @@ using namespace CGraph;
 void test_functional_03() {
     CStatus status;
     GPipelinePtr pipeline = GPipelineFactory::create();
+    const int runTimes = 100000;
+
     GElementPtr a, b_cluster, c, d_region, e = nullptr;
 
     b_cluster = pipeline->createGGroup<GCluster>({
@@ -35,21 +37,22 @@ void test_functional_03() {
     status += pipeline->registerGElement<TestAdd1GNode>(&c, {a, b_cluster}, "nodeC", 1);
     status += pipeline->registerGGroup(&d_region, {a, b_cluster}, "regionD", 2);    // 将名为regionD，依赖{a,b_cluster}执行且自循环2次的region信息，注册入pipeline中
     status += pipeline->registerGElement<TestAdd1GNode>(&e, {c, d_region}, "nodeE", 1);
+    pipeline->addGAspect<TestMaterialAdd1GAspect>();
+
     if (!status.isOK()) {
         return;
     }
 
     {
         UTimeCounter counter("test_functional_03");
-        pipeline->addGAspect<TestMaterialAdd1GAspect>();
-        status = pipeline->process(2000);
+        status = pipeline->process(runTimes);
     }
 
     if (status.isErr()) {
         std::cout << status.getInfo() << std::endl;
     }
 
-    if (g_test_node_cnt != 116000) {
+    if (g_test_node_cnt != (runTimes * 58)) {
         std::cout << "test_functional_03: g_test_node_cnt is not right : " << g_test_node_cnt << std::endl;
     }
 

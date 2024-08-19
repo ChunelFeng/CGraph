@@ -14,9 +14,12 @@ void test_performance_02() {
     // 串行执行32次，对应第二个例子，1thread，32串行，100w次
     GPipelinePtr pipeline = GPipelineFactory::create();
     CStatus status;
-    GElementPtr arr[32];
+    const int runTimes = 1000000;
+    const int size = 32;
+    GElementPtr arr[size];
+
     pipeline->registerGElement<TestAdd1GNode>(&arr[0]);
-    for (int i = 1; i < 32; i++) {
+    for (int i = 1; i < size; i++) {
         pipeline->registerGElement<TestAdd1GNode>(&arr[i], {arr[i - 1]});
     }
     pipeline->makeSerial();
@@ -24,12 +27,12 @@ void test_performance_02() {
     status += pipeline->init();
     {
         UTimeCounter counter("test_performance_02");
-        for (int t = 0; t < 1000000; t++) {
+        for (int t = 0; t < runTimes; t++) {
             pipeline->run();
         }
     }
 
-    if (32000000 != g_test_node_cnt) {
+    if ((runTimes * size) != g_test_node_cnt) {
         std::cout << "test_performance_02: g_test_node_cnt is not right : " << g_test_node_cnt << std::endl;
     }
 
