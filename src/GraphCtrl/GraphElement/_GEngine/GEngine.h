@@ -35,21 +35,6 @@ protected:
     }
 
     /**
-     * 计算出来最终计算的index值
-     * @param element
-     * @return
-     */
-    CIndex calcIndex(GElementCPtr element) const {
-        /**
-         * 如果没有设定绑定线程的话，就用默认调度策略
-         * 否则的话，会走绑定的thread。
-         * 如果设定的 binding_index_ >= thread 总数，会在 threadpool 层做统一判定
-         */
-        return element->isDefaultBinding()
-               ? schedule_strategy_ : element->binding_index_;
-    }
-
-    /**
      * 分析所有的可以设置 linkable 的数据
      * @param elements
      * @return
@@ -76,7 +61,6 @@ protected:
 
 protected:
     UThreadPoolPtr thread_pool_ { nullptr };                    // 内部执行的线程池
-    int schedule_strategy_ = CGRAPH_DEFAULT_TASK_STRATEGY;      // 调度策略
     CSize linked_size_ = 0;                                     // 标记有多少个element，是 linkable 的数据
 
     friend class GElementManager;

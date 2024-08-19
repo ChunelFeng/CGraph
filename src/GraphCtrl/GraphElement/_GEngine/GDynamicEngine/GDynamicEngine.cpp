@@ -137,7 +137,7 @@ CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
         // 如果 affinity=true，表示用当前的线程，执行这个逻辑。以便增加亲和性
         exec();
     } else {
-        thread_pool_->execute(exec, calcIndex(element));
+        thread_pool_->execute(exec, element->binding_index_);
     }
 }
 
@@ -235,7 +235,7 @@ CVoid GDynamicEngine::parallelRunAll() {
     for (int i = 0; i < total_end_size_; i++) {
         futures.emplace_back(std::move(thread_pool_->commit([this, i] {
             return total_element_arr_[i]->fatProcessor(CFunctionType::RUN);
-        }, calcIndex(total_element_arr_[i]))));
+        }, total_element_arr_[i]->binding_index_)));
     }
 
     for (auto& fut : futures) {

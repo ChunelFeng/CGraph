@@ -53,13 +53,6 @@ protected:
     CStatus clear() final;
 
     /**
-     * 设置调度策略
-     * @param type
-     * @return
-     */
-    GElementManager* setScheduleStrategy(int strategy);
-
-    /**
      * 设置图引擎运行模式
      * @param engineType
      * @return
