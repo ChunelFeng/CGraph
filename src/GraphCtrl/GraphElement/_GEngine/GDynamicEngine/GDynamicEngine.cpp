@@ -28,22 +28,16 @@ CStatus GDynamicEngine::run() {
     CGRAPH_FUNCTION_BEGIN
     cur_status_.reset();
 
-    switch (dag_type_) {
-        case internal::GEngineDagType::COMMON: {
-            commonRunAll();
-            break;
-        }
-        case internal::GEngineDagType::ALL_SERIAL: {
-            serialRunAll();
-            break;
-        }
-        case internal::GEngineDagType::ALL_PARALLEL: {
-            parallelRunAll();
-            break;
-        }
-        default:
-            CGRAPH_RETURN_ERROR_STATUS("unknown engine dag type")
+    if (internal::GEngineDagType::COMMON == dag_type_) {
+        commonRunAll();
+    } else if (internal::GEngineDagType::ALL_SERIAL == dag_type_) {
+        serialRunAll();
+    } else if (internal::GEngineDagType::ALL_PARALLEL == dag_type_) {
+        parallelRunAll();
+    } else {
+        CGRAPH_RETURN_ERROR_STATUS("unknown engine dag type")
     }
+
     status = cur_status_;
     CGRAPH_FUNCTION_END
 }

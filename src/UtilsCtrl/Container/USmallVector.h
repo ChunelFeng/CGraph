@@ -13,7 +13,7 @@
 #include <memory>
 #include <cstring>
 
-#include "UtilsCtrl/UtilsObject.h"
+#include "../UtilsObject.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -120,8 +120,8 @@ protected:
 public:
     UIter begin() const { return UIter(data_); }
     UIter end() const { return UIter(data_ + cur_index_); }
-    T front() const { data_[0]; }
-    T back() const { data_[cur_index_ - 1]; }
+    T front() const { return data_[0]; }
+    T back() const { return data_[cur_index_ - 1]; }
 
 private:
     T* data_ { nullptr };          // 存放具体数据
