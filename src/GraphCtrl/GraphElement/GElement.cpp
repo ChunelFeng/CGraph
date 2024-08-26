@@ -180,7 +180,8 @@ CStatus GElement::addElementInfo(const GElementPtrSet& dependElements,
     status = this->addDependGElements(dependElements);
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    this->setName(name)->setLoop(loop);
+    this->setLoop(loop);
+    this->setName(name);
     CGRAPH_FUNCTION_END
 }
 
