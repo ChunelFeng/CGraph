@@ -30,7 +30,8 @@ void test_performance_04() {
     GElementPtrSet beforeLayer {};
     for (int i = 0; i < layer; i++) {
         for (int j = 0; j < nodePerLayer; j++) {
-            auto* ptr = pipeline->registerGNode<TestAdd1GNode>(beforeLayer);
+            GElementPtr ptr = nullptr;
+            pipeline->registerGElement<TestAdd1GNode>(&ptr, beforeLayer);
             curLayer.insert(ptr);
         }
 

@@ -116,11 +116,11 @@ CStatus GPipeline::registerGElement(GCoordinatorPPtr<SIZE> coordinatorRef,
 
 template<typename TNode, typename ...Args,
         c_enable_if_t<std::is_base_of<GNode, TNode>::value, int>>
-GNodePtr GPipeline::createGNode(const GNodeInfo &info, Args&&... args) {
+TNode* GPipeline::createGNode(const GNodeInfo &info, Args&&... args) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
-    GNodePtr node = new(std::nothrow) TNode(std::forward<Args &&>(args)...);
+    auto* node = new(std::nothrow) TNode(std::forward<Args &&>(args)...);
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(node)
     status = node->addElementInfo(info.dependence_, info.name_, info.loop_);
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
@@ -130,21 +130,21 @@ GNodePtr GPipeline::createGNode(const GNodeInfo &info, Args&&... args) {
 }
 
 
-template<typename T, typename ...Args,
-        c_enable_if_t<std::is_base_of<GNode, T>::value, int>>
-GNodePtr GPipeline::createGNode(const GElementPtrSet& dependence, const std::string& name,
+template<typename TNode, typename ...Args,
+        c_enable_if_t<std::is_base_of<GNode, TNode>::value, int>>
+TNode* GPipeline::createGNode(const GElementPtrSet& dependence, const std::string& name,
                                 CSize loop, Args&&... args) {
     const GNodeInfo& info = GNodeInfo(dependence, name, loop);
-    return createGNode<T>(info, std::forward<Args &&>(args)...);
+    return createGNode<TNode>(info, std::forward<Args &&>(args)...);
 }
 
 
-template<typename T,
-        c_enable_if_t<std::is_base_of<GGroup, T>::value, int>>
-GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
-                                  const GElementPtrSet &dependElements,
-                                  const std::string &name,
-                                  CSize loop) {
+template<typename TGroup,
+        c_enable_if_t<std::is_base_of<GGroup, TGroup>::value, int>>
+TGroup* GPipeline::createGGroup(const GElementPtrArr &elements,
+                           const GElementPtrSet &dependElements,
+                           const std::string &name,
+                           CSize loop) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
@@ -156,7 +156,7 @@ GGroupPtr GPipeline::createGGroup(const GElementPtrArr &elements,
                                                     [](GElementPtr element) { return (nullptr == element); }),
                                         "createGGroup dependElements have nullptr.")
 
-    GGroupPtr group = CGRAPH_SAFE_MALLOC_COBJECT(T)
+    auto* group = CGRAPH_SAFE_MALLOC_COBJECT(TGroup)
     for (GElementPtr element : elements) {
         status += group->addElement(element);
         element->belong_ = group;    // 从属于这个group的信息

@@ -99,7 +99,7 @@ public:
      */
     template<typename TNode, typename ...Args,
             c_enable_if_t<std::is_base_of<GNode, TNode>::value, int> = 0>
-    GNodePtr createGNode(const GNodeInfo &info, Args&&... args);
+    TNode* createGNode(const GNodeInfo &info, Args&&... args);
 
     /**
      * 根据传入的信息，创建node节点
@@ -111,12 +111,12 @@ public:
      * @param args
      * @return
      */
-    template<typename T, typename ...Args,
-            c_enable_if_t<std::is_base_of<GNode, T>::value, int> = 0>
-    GNodePtr createGNode(const GElementPtrSet& dependence = std::initializer_list<GElementPtr>(),
-                         const std::string& name = CGRAPH_EMPTY,
-                         CSize loop = CGRAPH_DEFAULT_LOOP_TIMES,
-                         Args&&... args);
+    template<typename TNode, typename ...Args,
+            c_enable_if_t<std::is_base_of<GNode, TNode>::value, int> = 0>
+    TNode* createGNode(const GElementPtrSet& dependence = std::initializer_list<GElementPtr>(),
+                       const std::string& name = CGRAPH_EMPTY,
+                       CSize loop = CGRAPH_DEFAULT_LOOP_TIMES,
+                       Args&&... args);
 
     /**
      * 根据传入的信息，创建Group信息
@@ -127,12 +127,12 @@ public:
      * @param loop
      * @return
      */
-    template<typename T,
-            c_enable_if_t<std::is_base_of<GGroup, T>::value, int> = 0>
-    GGroupPtr createGGroup(const GElementPtrArr &elements,
-                           const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
-                           const std::string &name = CGRAPH_EMPTY,
-                           CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
+    template<typename TGroup,
+            c_enable_if_t<std::is_base_of<GGroup, TGroup>::value, int> = 0>
+    TGroup* createGGroup(const GElementPtrArr &elements,
+                    const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
+                    const std::string &name = CGRAPH_EMPTY,
+                    CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
      * 在图中注册一个 GElement信息
@@ -177,8 +177,8 @@ public:
     template<typename TNode,
             c_enable_if_t<std::is_base_of<GNode, TNode>::value, int> = 0>
     TNode* registerGNode(const GElementPtrSet &dependElements = std::initializer_list<GElementPtr>(),
-                     const std::string &name = CGRAPH_EMPTY,
-                     CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
+                         const std::string &name = CGRAPH_EMPTY,
+                         CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
      * 注册一个 node
