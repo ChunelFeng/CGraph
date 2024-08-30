@@ -45,9 +45,13 @@ public:
      * 设置名称信息
      * @param name
      * @return
+     * @notice 部分windows编译器不支持函数继承改变返回值类型，故做此区分
      */
-    virtual auto setName(const std::string& name)
-    -> decltype(this) {
+#ifdef _WIN32
+    virtual CVoidPtr setName(const std::string& name) {
+#else
+    virtual auto setName(const std::string& name) -> decltype(this) {
+#endif
         name_ = name;
         return this;
     }

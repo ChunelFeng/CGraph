@@ -28,7 +28,11 @@ CVoid GElement::beforeRun() {
 }
 
 
+    #ifdef _WIN32
+CVoidPtr GElement::setName(const std::string& name) {
+    #else
 GElementPtr GElement::setName(const std::string& name) {
+    #endif
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     this->name_ = name.empty() ? this->session_ : name;
     return this;

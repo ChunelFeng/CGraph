@@ -72,7 +72,11 @@ public:
      * @param name
      * @return
      */
+#ifdef _WIN32
+    CVoidPtr setName(const std::string& name) override;
+#else
     GElement* setName(const std::string& name) override;
+#endif
 
     /**
      * 设置循环次数
