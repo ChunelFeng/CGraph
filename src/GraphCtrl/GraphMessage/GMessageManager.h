@@ -45,7 +45,7 @@ public:
                      ? CStatus() : CErrStatus("create topic [" + topic + "] duplicate");
         } else {
             // 创建一个 topic信息
-            auto message = UAllocator::safeMallocTemplateCObject<GMessage<TImpl>, CUInt>(size);
+            auto message = UAllocator::safeMallocTemplateCObject<GMessage<TImpl>>(size);
             send_recv_message_map_.insert(std::pair<const std::string&, GMessagePtr<T> >(innerTopic, GMessagePtr<T>(message)));
         }
 
