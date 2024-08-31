@@ -9,6 +9,7 @@
 #ifndef CGRAPH_UALLOCATOR_H
 #define CGRAPH_UALLOCATOR_H
 
+#include <new>
 #include <mutex>
 #include <memory>
 
@@ -52,12 +53,12 @@ public:
      */
     template<typename T, typename ...Args,
             c_enable_if_t<std::is_base_of<CObject, T>::value, int> = 0>
-    static T* safeMallocTemplateCObject(Args... args) {
-        T* ptr = nullptr;
-        while (!ptr) {
-            ptr = new T(std::forward<Args>(args)...);
+    static T* safeMallocTemplateCObject(Args&&... args) {
+        T* result{};
+        while (!result) {
+            ptr = new(std::nothrow) T(std::forward<Args&&>(args)...);
         }
-        return ptr;
+        return result;
     }
 
     /**
