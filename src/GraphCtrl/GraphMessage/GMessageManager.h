@@ -45,7 +45,7 @@ public:
                      ? CStatus() : CErrStatus("create topic [" + topic + "] duplicate");
         } else {
             // 创建一个 topic信息
-            auto message = UAllocator::safeMallocTemplateCObject<GMessage<TImpl>, CUInt>(size);
+            auto message = UAllocator::safeMallocTemplateCObject<GMessage<TImpl>>(size);
             send_recv_message_map_.insert(std::pair<const std::string&, GMessagePtr<T> >(innerTopic, GMessagePtr<T>(message)));
         }
 
@@ -192,7 +192,7 @@ public:
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CIndex bindTopic(const std::string& topic, CUInt size) {
         auto innerTopic = internal::PUB_SUB_PREFIX + topic;
-        auto message = UAllocator::safeMallocTemplateCObject<GMessage<TImpl>, CUInt>(size);
+        auto message = UAllocator::safeMallocTemplateCObject<GMessage<TImpl>>(size);
 
         CGRAPH_LOCK_GUARD lock(bind_mutex_);
         CIndex connId = (++cur_conn_id_);
