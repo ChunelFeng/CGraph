@@ -56,7 +56,7 @@ public:
     static T* safeMallocTemplateCObject(Args&&... args) {
         T* result{};
         while (!result) {
-            ptr = new(std::nothrow) T(std::forward<Args&&>(args)...);
+            result = new(std::nothrow) T(std::forward<Args&&>(args)...);
         }
         return result;
     }
