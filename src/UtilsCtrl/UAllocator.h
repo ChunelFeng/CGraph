@@ -54,7 +54,7 @@ public:
     template<typename T, typename ...Args,
             c_enable_if_t<std::is_base_of<CObject, T>::value, int> = 0>
     static T* safeMallocTemplateCObject(Args&&... args) {
-        T* result{};
+        T* result = nullptr;
         while (!result) {
             result = new(std::nothrow) T(std::forward<Args&&>(args)...);
         }
