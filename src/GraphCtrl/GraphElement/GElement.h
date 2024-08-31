@@ -296,7 +296,7 @@ private:
      * @param curStatus
      * @return
      */
-    CStatus doAspect(const GAspectType& aspectType,
+    CStatus doAspect(const internal::GAspectType& aspectType,
                      const CStatus& curStatus = CStatus());
 
     /**

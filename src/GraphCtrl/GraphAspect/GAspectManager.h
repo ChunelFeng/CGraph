@@ -28,7 +28,7 @@ protected:
      * @param curStatus
      * @return
      */
-    CStatus reflect(const GAspectType& type,
+    CStatus reflect(const internal::GAspectType& type,
                     const CStatus& curStatus = CStatus());
 
     CStatus add(GAspectPtr aspect) final;

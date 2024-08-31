@@ -12,6 +12,7 @@
 #include "../GraphObject.h"
 
 CGRAPH_NAMESPACE_BEGIN
+CGRAPH_INTERNAL_NAMESPACE_BEGIN
 
 enum class GAspectType {
     BEGIN_INIT = 0,
@@ -23,6 +24,7 @@ enum class GAspectType {
     ENTER_CRASHED = 99,
 };
 
+CGRAPH_INTERNAL_NAMESPACE_END
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GASPECTDEFINE_H
