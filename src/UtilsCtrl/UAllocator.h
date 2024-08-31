@@ -25,7 +25,7 @@ public:
     /**
      * 生成一个 CObject 对象
      * @tparam T
-     * @return
+     * @return T*
      */
     template<typename T,
             c_enable_if_t<std::is_base_of<CObject, T>::value, int> = 0>
@@ -36,7 +36,7 @@ public:
     /**
      * 生成一个 CStruct 的对象
      * @tparam T
-     * @return
+     * @return T*
      */
     template<typename T,
             c_enable_if_t<std::is_base_of<CStruct, T>::value, int> = 0>
@@ -49,7 +49,7 @@ public:
      * @tparam T
      * @tparam Args
      * @param args
-     * @return
+     * @return T*
      */
     template<typename T, typename ...Args,
             c_enable_if_t<std::is_base_of<CObject, T>::value, int> = 0>
@@ -64,7 +64,7 @@ public:
     /**
      * 生成unique智能指针信息
      * @tparam T
-     * @return
+     * @return std::unique_ptr<T>
      */
     template<typename T,
             c_enable_if_t<std::is_base_of<CObject, T>::value, int> = 0>
@@ -76,7 +76,7 @@ private:
     /**
      * 生成T类型的对象
      * @tparam T
-     * @return
+     * @return T*
      */
     template<class T>
     static T* safeMalloc() {
