@@ -566,4 +566,18 @@ CBool GElement::isDefaultBinding() const {
     return CGRAPH_DEFAULT_BINDING_INDEX == binding_index_;
 }
 
+
+CBool GElement::removeDepend(GElementPtr element) {
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element)
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    if (!dependence_.hasValue(element)) {
+        return false;
+    }
+
+    dependence_.remove(element);
+    element->run_before_.remove(this);
+    left_depend_.store(dependence_.size(), std::memory_order_release);
+    return true;
+}
+
 CGRAPH_NAMESPACE_END

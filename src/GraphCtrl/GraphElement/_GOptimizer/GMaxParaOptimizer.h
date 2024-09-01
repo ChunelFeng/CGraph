@@ -41,37 +41,10 @@ protected:
          * 2. 根据路径，生成一张全连通图，然后将图取反，得到对应的补图(reGraph)
          * 3. 计算补图的最大团中元素个数(maxCliqueSize)，即为当前dag的最大并行度
          */
-        const CSize size = elements.size();
-        const auto& paths = GOptimizer::collectPaths(elements);    // 根据传入的elements 的关系，分析出所有完整路径信息
-
-        std::vector<std::vector<int>> reGraph(size, std::vector<int>(size, 1));
-        buildReverseGraph(elements, paths, reGraph);    // 根据路径信息，求出全连接图的补图
-
-        CSize maxCliqueSize = calcMaxCliqueSize(reGraph);    // 计算最大团信息
+        const auto& paths = collectPaths(elements);
+        const auto& reGraph = buildGraph(elements, paths, 0, 0, 1);
+        CSize maxCliqueSize = calcMaxCliqueSize(reGraph);
         return maxCliqueSize;
-    }
-
-    /**
-     * 基于原有dag，计算出所有链路的全连接的补图，记作graph
-     * @param elements
-     * @param paths
-     * @param graph
-     * @return
-     */
-    static CVoid buildReverseGraph(const GSortedGElementPtrSet& elements,
-                                   const std::vector<std::vector<GElementPtr>>& paths,
-                                   std::vector<std::vector<int>>& graph) {
-        for (auto& path : paths) {
-            for (int i = 0; i < path.size() - 1; i++) {
-                // 这里的 find是一定能找到的。因为path的数据，是从elements中记录的
-                int height = (int)std::distance(elements.begin(), elements.find(path[i]));
-                for (int j = i + 1; j < path.size(); j++) {
-                    int column = (int)std::distance(elements.begin(), elements.find(path[j]));
-                    graph[height][column] = 0;
-                    graph[column][height] = 0;    // 因为需要记录的是补图，所以将默认值设置为1，符合条件的设置为0
-                }
-            }
-        }
     }
 
     /**

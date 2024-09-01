@@ -9,6 +9,8 @@
 #ifndef CGRAPH_GOPTIMIZER_H
 #define CGRAPH_GOPTIMIZER_H
 
+#include <vector>
+
 #include "../GElementObject.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -52,6 +54,34 @@ protected:
         }
 
         return paths;
+    }
+
+    /**
+     * 构造对应的二维矩阵图
+     * @param elements
+     * @param paths
+     * @param father
+     * @param son
+     * @param unlink
+     * @return
+     */
+    static std::vector<std::vector<int>> buildGraph(const GSortedGElementPtrSet& elements,
+                            const std::vector<std::vector<GElementPtr>>& paths,
+                            int father, int son, int unlink) {
+        const CSize size = elements.size();
+        std::vector<std::vector<int>> graph(size, std::vector<int>(size, unlink));
+        for (auto& path : paths) {
+            for (int i = 0; i < path.size() - 1; i++) {
+                // 这里的 find是一定能找到的。因为path的数据，是从elements中记录的
+                int height = (int)std::distance(elements.begin(), elements.find(path[i]));
+                for (int j = i + 1; j < path.size(); j++) {
+                    int column = (int)std::distance(elements.begin(), elements.find(path[j]));
+                    graph[height][column] = father;
+                    graph[column][height] = son;
+                }
+            }
+        }
+        return graph;
     }
 
     friend class GPerf;

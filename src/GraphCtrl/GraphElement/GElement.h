@@ -419,6 +419,13 @@ private:
      */
     CBool isDefaultBinding() const;
 
+    /**
+     * 删除一个依赖的节点信息
+     * @param element
+     * @return
+     */
+    CBool removeDepend(GElement* element);
+
 private:
     /** 状态相关信息 */
     CBool done_ { false };                                                    // 判定被执行结束
@@ -444,7 +451,7 @@ private:
     CBool is_prepared_ { false };                                             // 判断是否已经执行过 prepareRun() 方法
 
     /** 图相关信息 */
-    std::atomic<CSize> left_depend_ { 0 };                                 // 当 left_depend_ 值为0的时候，即可以执行该element信息
+    std::atomic<CSize> left_depend_ { 0 };                                    // 当 left_depend_ 值为0的时候，即可以执行该element信息
     USmallVector<GElement *> run_before_;                                     // 被依赖的节点（后继）
     USmallVector<GElement *> dependence_;                                     // 依赖的节点信息（前驱）
     GElement* belong_ { nullptr };                                            // 从属的element 信息，如为nullptr，则表示从属于 pipeline
@@ -477,6 +484,7 @@ private:
     friend class GAspectObject;
     friend class GOptimizer;
     friend class GMaxParaOptimizer;
+    friend class GTrimOptimizer;
     friend class GSeparateOptimizer;
     friend class GElementRepository;
     friend class GPerf;

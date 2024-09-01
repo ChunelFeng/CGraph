@@ -86,6 +86,12 @@ protected:
     CBool checkSerializable();
 
     /**
+     * 剪裁多余的连边信息
+     * @return
+     */
+    CSize trim();
+
+    /**
      * 加入数据，并且执行
      * @param elements
      * @return

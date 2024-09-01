@@ -12,5 +12,6 @@
 #include "GOptimizer.h"
 #include "GMaxParaOptimizer.h"
 #include "GSeparateOptimizer.h"
+#include "GTrimOptimizer.h"
 
 #endif //CGRAPH_GOPTIMIZERINCLUDE_H

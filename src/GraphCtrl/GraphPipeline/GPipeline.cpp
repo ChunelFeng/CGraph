@@ -262,8 +262,16 @@ GPipelinePtr GPipeline::setAutoCheck(CBool enable) {
 
 
 CSize GPipeline::getMaxPara() {
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element_manager_)
     return element_manager_->calcMaxParaSize();
+}
+
+
+CSize GPipeline::trim() {
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element_manager_)
+    return element_manager_->trim();
 }
 
 

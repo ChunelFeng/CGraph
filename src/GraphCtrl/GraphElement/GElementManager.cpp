@@ -176,6 +176,11 @@ CBool GElementManager::checkSerializable() {
 }
 
 
+CSize GElementManager::trim() {
+    return GTrimOptimizer::trim(manager_elements_);
+}
+
+
 CStatus GElementManager::process(const GSortedGElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(engine_)
