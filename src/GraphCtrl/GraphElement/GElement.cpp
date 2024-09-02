@@ -344,6 +344,7 @@ CBool GElement::isMacro() const {
 
 
 CStatus GElement::crashed(const CException& ex) {
+    (void)(this);
     return CStatus(internal::STATUS_CRASH, ex.what());
 }
 
@@ -375,6 +376,7 @@ CVoid GElement::dump(std::ostream& oss) {
 
 
 CVoid GElement::dumpEdge(std::ostream& oss, GElementPtr src, GElementPtr dst, const std::string& label) {
+    (void)(this);
     if (src->isGGroup() && dst->isGGroup()) {
         // 在group的逻辑中，添加 cluster_ 的信息
         oss << 'p' << src << " -> p" << dst << label << "[ltail=cluster_p" << src << " lhead=cluster_p" << dst << "]";

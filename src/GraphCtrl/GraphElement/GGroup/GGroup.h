@@ -61,6 +61,12 @@ private:
      */
     virtual CBool isSeparate(GElementCPtr a, GElementCPtr b) const;
 
+    /**
+     * 剪裁逻辑
+     * @return
+     */
+    virtual CSize trim() const;
+
 private:
     GElementPtrArr group_elements_arr_;    // 存放 element的数组
 
@@ -71,6 +77,7 @@ private:
     friend class GMutable;
     template<GMultiConditionType> friend class GMultiCondition;
     template<CInt> friend class GSome;
+    friend class GTrimOptimizer;
 };
 
 using GGroupPtr = GGroup *;

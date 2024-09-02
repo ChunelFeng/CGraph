@@ -72,6 +72,7 @@ CVoid GGroup::dumpGroupLabelBegin(std::ostream& oss) {
 
 
 CVoid GGroup::dumpGroupLabelEnd(std::ostream& oss) {
+    (void)(this);
     oss << "}\n";
 }
 
@@ -107,6 +108,11 @@ CStatus GGroup::addManagers(GParamManagerPtr paramManager,
 
 CBool GGroup::isSeparate(GElementCPtr a, GElementCPtr b) const {
     return false;
+}
+
+
+CSize GGroup::trim() const {
+    return 0;
 }
 
 CGRAPH_NAMESPACE_END

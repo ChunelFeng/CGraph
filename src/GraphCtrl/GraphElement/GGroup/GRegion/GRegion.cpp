@@ -124,4 +124,13 @@ CBool GRegion::isSeparate(GElementCPtr a, GElementCPtr b) const {
     return GSeparateOptimizer::checkSeparate(manager_->manager_elements_, a, b);
 }
 
+
+CSize GRegion::trim() const {
+    CSize result = 0;
+    if (manager_) {
+        result = GTrimOptimizer::trim(manager_->manager_elements_);
+    }
+    return result;
+}
+
 CGRAPH_NAMESPACE_END

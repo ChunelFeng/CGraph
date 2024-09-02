@@ -44,6 +44,8 @@ private:
 
     CBool isSeparate(GElementCPtr a, GElementCPtr b) const final;
 
+    CSize trim() const override;
+
 private:
     GElementManagerPtr manager_ = nullptr;    // region 内部通过 manager来管理其中的 element 信息
 
@@ -51,6 +53,7 @@ private:
 
     friend class GPipeline;
     friend class UAllocator;
+    friend class GTrimOptimizer;
 };
 
 using GRegionPtr = GRegion *;

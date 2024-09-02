@@ -13,6 +13,7 @@
 #include <iterator>
 
 #include "GOptimizer.h"
+#include "../GGroup/GGroupInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -28,12 +29,13 @@ class GTrimOptimizer : public GOptimizer {
         auto graph = buildGraph(elements, paths, 1, 0, 0);
 
         for (auto* cur : elements) {
-            int idx = (int)std::distance(elements.begin(), elements.find(cur));
+            CSize idx = std::distance(elements.begin(), elements.find(cur));
             GElementPtrArr candidates;
-            for (int i = 0; i < (int)cur->dependence_.size(); i++) {
-                int x = (int)std::distance(elements.begin(), elements.find(cur->dependence_[i]));
-                for (int j = i; j < (int)cur->dependence_.size(); j++) {
-                    int y = (int)std::distance(elements.begin(), elements.find(cur->dependence_[j]));
+            for (CSize i = 0; i < cur->dependence_.size(); i++) {
+                CSize x = std::distance(elements.begin(), elements.find(cur->dependence_[i]));
+                for (CSize j = 0; j < cur->dependence_.size(); j++) {
+                    // 这里必须是 n^2 的循环
+                    CSize y = std::distance(elements.begin(), elements.find(cur->dependence_[j]));
                     if (1 == graph[x][y]) {
                         graph[x][idx] = 0;
                         candidates.push_back(cur->dependence_[i]);
@@ -46,12 +48,17 @@ class GTrimOptimizer : public GOptimizer {
                     trimNum++;
                 }
             }
+
+            if (cur->isGGroup()) {
+                trimNum += ((GGroupPtr)cur)->trim();
+            }
         }
 
         return trimNum;
     }
 
     friend class GElementManager;
+    friend class GRegion;
 };
 
 CGRAPH_NAMESPACE_END
