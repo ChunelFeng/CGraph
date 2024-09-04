@@ -110,9 +110,4 @@ CBool GGroup::isSeparate(GElementCPtr a, GElementCPtr b) const {
     return false;
 }
 
-
-CSize GGroup::trim() const {
-    return 0;
-}
-
 CGRAPH_NAMESPACE_END

@@ -125,7 +125,8 @@ CBool GRegion::isSeparate(GElementCPtr a, GElementCPtr b) const {
 }
 
 
-CSize GRegion::trim() const {
+CSize GRegion::trim() {
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CSize result = 0;
     if (manager_) {
         result = GTrimOptimizer::trim(manager_->manager_elements_);

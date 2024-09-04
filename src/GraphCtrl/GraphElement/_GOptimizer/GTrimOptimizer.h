@@ -49,8 +49,8 @@ class GTrimOptimizer : public GOptimizer {
                 }
             }
 
-            if (cur->isGGroup()) {
-                trimNum += ((GGroupPtr)cur)->trim();
+            if (GElementType::REGION == cur->element_type_) {
+                trimNum += ((GRegionPtr)cur)->trim();
             }
         }
 

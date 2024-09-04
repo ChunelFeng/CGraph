@@ -3,6 +3,7 @@
   <a href="https://github.com/ChunelFeng/CGraph"><img src="https://badgen.net/badge/os/MacOS,Linux,Windows/cyan?list=1" alt="os"></a>
   <a href="https://github.com/ChunelFeng/CGraph/stargazers"><img src="https://badgen.net/github/stars/ChunelFeng/CGraph?color=cyan" alt="stars"></a>
   <a href="https://github.com/ChunelFeng/CGraph/network/members"><img src="https://badgen.net/github/forks/ChunelFeng/CGraph?color=cyan" alt="forks"></a>
+  <a href="https://www.codefactor.io/repository/github/chunelfeng/cgraph/overview/main"><img src="https://www.codefactor.io/repository/github/chunelfeng/cgraph/badge/main" alt="CodeFactor" /></a>
 </p>
 
 [![awesome-cpp](https://badgen.net/badge/icon/awesome-cpp/purple?icon=awesome&label&color)](https://github.com/fffaraz/awesome-cpp)
@@ -39,9 +40,11 @@
 * [【B站视频】CGraph 功能篇](https://www.bilibili.com/cheese/play/ss22264) <br>
   * 全面介绍CGraph项目中，所有的名词术语和功能模块
   * 结合实际coding过程，详细介绍了每个功能的具体的使用场景、用法、以及解决的问题
-  * 适合想要全面了解功能、或快速上手使用CGraph的童鞋
+  * 适合想要全面了解功能和快速上手使用CGraph的童鞋
+  * 适合对多线程编程感兴趣的童鞋
 * [【B站视频】CGraph 应用篇](https://www.bilibili.com/video/BV1B84y1D7Hs) <br>
 * [【B站视频】CGraph 分享篇](https://www.bilibili.com/video/BV1dh4y1i78u) <br>
+* [【B站视频】CGraph 和 taskflow 性能对比实测](https://www.bilibili.com/video/BV1gwWAekEAy/?spm_id_from=333.337.search-card.all.click&vd_source=2c7baed805c6cb33d630d5d4546cf0be) <br>
 
 ## 二. 使用Demo
 

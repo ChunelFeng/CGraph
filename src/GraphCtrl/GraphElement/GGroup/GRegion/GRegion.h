@@ -24,6 +24,12 @@ public:
      */
     GRegion* setGEngineType(GEngineType type);
 
+    /**
+     * 修剪冗余的连边信息
+     * @return
+     */
+    CSize trim();
+
 protected:
     explicit GRegion();
     ~GRegion() override;
@@ -43,8 +49,6 @@ private:
                         GEventManagerPtr eventManager) final;
 
     CBool isSeparate(GElementCPtr a, GElementCPtr b) const final;
-
-    CSize trim() const override;
 
 private:
     GElementManagerPtr manager_ = nullptr;    // region 内部通过 manager来管理其中的 element 信息
