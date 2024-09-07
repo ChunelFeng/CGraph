@@ -35,7 +35,7 @@
 
 本工程使用纯C++11标准库编写，无任何第三方依赖。兼容`MacOS`、`Linux`、`Windows`和`Android`系统，支持通过 `CLion`、`VSCode`、`Xcode`、`Visual Studio`、`Code::Blocks`、`Qt Creator`等多款IDE进行本地编译和二次开发，具体编译方式请参考 [CGraph 编译说明](https://github.com/ChunelFeng/CGraph/blob/main/COMPILE.md ) <br>
 
-详细功能介绍和用法，请参考 **推荐阅读** 中的文章内容。项目相关视频在B站持续更新中，欢迎观看交流和一键三连：<br>
+详细功能介绍和用法，请参考 [一面之猿网](http://www.chunel.cn/) 中的文章内容。相关视频在B站持续更新中，欢迎观看交流和一键三连：<br>
 * [【B站视频】CGraph 入门篇](https://www.bilibili.com/video/BV1mk4y1v7XJ) <br>
 * [【B站视频】CGraph 功能篇](https://www.bilibili.com/cheese/play/ss22264) <br>
   * 全面介绍CGraph项目中，所有的名词术语和功能模块
@@ -44,7 +44,6 @@
   * 适合对多线程编程感兴趣的童鞋
 * [【B站视频】CGraph 应用篇](https://www.bilibili.com/video/BV1B84y1D7Hs) <br>
 * [【B站视频】CGraph 分享篇](https://www.bilibili.com/video/BV1dh4y1i78u) <br>
-* [【B站视频】CGraph 和 taskflow 性能对比实测](https://www.bilibili.com/video/BV1gwWAekEAy/?spm_id_from=333.337.search-card.all.click&vd_source=2c7baed805c6cb33d630d5d4546cf0be) <br>
 
 ## 二. 使用Demo
 
@@ -55,7 +54,7 @@
 class MyNode1 : public CGraph::GNode {
 public:
     CStatus run() override {
-        printf("[%s], Sleep for 1 second ...\n", this->getName().c_str());
+        printf("[%s], sleep for 1 second ...\n", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(1)
         return CStatus();
     }
@@ -64,7 +63,7 @@ public:
 class MyNode2 : public CGraph::GNode {
 public:
     CStatus run() override {
-        printf("[%s], Sleep for 2 second ...\n", this->getName().c_str());
+        printf("[%s], sleep for 2 second ...\n", this->getName().c_str());
         CGRAPH_SLEEP_SECOND(2)
         return CStatus();
     }
@@ -133,7 +132,9 @@ int main() {
 
 * [GraphANNS](https://github.com/whenever5225/GraphANNS) : Graph-based Approximate Nearest Neighbor Search Working off CGraph
 * [CThreadPool](https://github.com/ChunelFeng/CThreadPool) : 一个简单好用、功能强大、性能优异、跨平台的C++线程池
+* [CGraph-lite](https://github.com/ChunelFeng/CGraph-lite) : head-only, simplest CGraph, with DAG executor and param translate function
 * [taskflow](https://github.com/taskflow/taskflow) : A General-purpose Parallel and Heterogeneous Task Programming System
+  * [【B站视频】CGraph 和 taskflow 性能对比实测](https://www.bilibili.com/video/BV1gwWAekEAy/?spm_id_from=333.337.search-card.all.click&vd_source=2c7baed805c6cb33d630d5d4546cf0be) <br>
 * [awesome-cpp](https://github.com/fffaraz/awesome-cpp) : A curated list of awesome C++ (or C) frameworks, libraries, resources, and shiny things. Inspired by awesome-... stuff.
 * [awesome-workflow-engines](https://github.com/meirwah/awesome-workflow-engines) : A curated list of awesome open source workflow engines
 * [nndeploy](https://github.com/DeployAI/nndeploy) : nndeploy是一款模型端到端部署框架。以多端推理以及基于有向无环图模型部署为内核，致力为用户提供跨平台、简单易用、高性能的模型部署体验。
@@ -325,10 +326,11 @@ int main() {
 * 提供bazel编译方式
 * 优化perf功能
 
-[2024.07.27 - v2.6.1 - Chunel]
+[2024.09.07 - v2.6.1 - Chunel]
 * 提供`pipeline`的静态执行的方式，提供微任务机制
 * 优化`event`(事件)机制，异步事件可以等待结束
 * 提供`pipeline`剪裁功能，用于删除`element`之间重复的依赖
+* 发布 [CGraph-lite](https://github.com/ChunelFeng/CGraph-lite) 项目，提供简单DAG构图和参数传递功能。接口完全兼容，可无缝切换至本项目
 
 </details>
 
