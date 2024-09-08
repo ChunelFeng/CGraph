@@ -22,7 +22,7 @@ private:
     CStatus run() final;
     CStatus destroy() final;
 
-    CStatus addElementInfo(const std::set<GElementPtr> &dependElements,
+    CStatus addElementInfo(const std::set<GElementPtr> &depends,
                            const std::string &name, CSize loop) final;
 
     CStatus addManagers(GParamManagerPtr paramManager,

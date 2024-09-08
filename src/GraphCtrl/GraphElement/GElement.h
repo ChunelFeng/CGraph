@@ -149,6 +149,14 @@ public:
     GElementState getCurState() const;
 
     /**
+     * 删除一个依赖的节点信息
+     * @param element
+     * @return
+     * @notice 删除依赖关系之后，可能会出现 dag 无法连通的情况
+     */
+    CStatus removeDepend(GElement* element);
+
+    /**
      * 获取对应的ptr类型
      * @tparam T
      * @param ptr
@@ -301,12 +309,12 @@ private:
 
     /**
      * 设置element信息
-     * @param dependElements
+     * @param depends
      * @param name
      * @param loop
      * @return
      */
-    virtual CStatus addElementInfo(const std::set<GElement *>& dependElements,
+    virtual CStatus addElementInfo(const std::set<GElement *>& depends,
                                    const std::string& name, CSize loop);
 
     /**
@@ -418,13 +426,6 @@ private:
      * @return
      */
     CBool isDefaultBinding() const;
-
-    /**
-     * 删除一个依赖的节点信息
-     * @param element
-     * @return
-     */
-    CBool removeDepend(GElement* element);
 
 private:
     /** 状态相关信息 */

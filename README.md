@@ -331,6 +331,7 @@ int main() {
 * 提供`pipeline`的静态执行的方式，提供微任务机制
 * 优化`event`(事件)机制，异步事件可以等待结束
 * 提供`pipeline`剪裁功能，用于删除`element`之间重复的依赖
+* 提供`element`删除依赖的方法
 * 发布 [CGraph-lite](https://github.com/ChunelFeng/CGraph-lite) 项目，提供简单DAG构图和参数传递功能。接口完全兼容，可无缝切换至本项目
 
 </details>

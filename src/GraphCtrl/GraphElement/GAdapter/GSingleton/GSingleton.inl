@@ -74,12 +74,12 @@ CStatus GSingleton<T>::destroy() {
 
 
 template <typename T>
-CStatus GSingleton<T>::addElementInfo(const std::set<GElementPtr> &dependElements,
+CStatus GSingleton<T>::addElementInfo(const std::set<GElementPtr> &depends,
                                       const std::string &name, CSize loop) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
 
-    status = this->addDependGElements(dependElements);
+    status = this->addDependGElements(depends);
     CGRAPH_FUNCTION_CHECK_STATUS
 
     // 这里，内部和外部均需要设定name信息

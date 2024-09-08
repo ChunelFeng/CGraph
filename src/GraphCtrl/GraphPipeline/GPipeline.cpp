@@ -119,7 +119,7 @@ CStatus GPipeline::process(CSize runTimes) {
 }
 
 
-CStatus GPipeline::registerGNode(GElementPPtr nodeRef, const GElementPtrSet &dependElements,
+CStatus GPipeline::registerGNode(GElementPPtr nodeRef, const GElementPtrSet &depends,
                                  const std::string &name, CSize loop) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
@@ -130,12 +130,12 @@ CStatus GPipeline::registerGNode(GElementPPtr nodeRef, const GElementPtrSet &dep
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr != node->belong_, "[" + node->getName() + "] can not register to pipeline for its belong to [" + node->belong_->getName() + "]")
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(node->isRegistered(), "[" + node->getName() + "] register duplicate")
 
-    status = innerRegister(node, dependElements, name, loop);
+    status = innerRegister(node, depends, name, loop);
     CGRAPH_FUNCTION_END
 }
 
 
-CStatus GPipeline::registerGGroup(GElementPPtr groupRef, const GElementPtrSet &dependElements,
+CStatus GPipeline::registerGGroup(GElementPPtr groupRef, const GElementPtrSet &depends,
                                   const std::string &name, CSize loop) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
@@ -146,7 +146,7 @@ CStatus GPipeline::registerGGroup(GElementPPtr groupRef, const GElementPtrSet &d
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(nullptr != group->belong_, "[" + group->getName() + "] can not register to pipeline for its belong to [" + group->belong_->getName() + "]")
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(group->isRegistered(), "[" + group->getName() + "] register duplicate")
 
-    status = innerRegister(group, dependElements, name, loop);
+    status = innerRegister(group, depends, name, loop);
     CGRAPH_FUNCTION_END
 }
 
@@ -345,14 +345,14 @@ CStatus GPipeline::initEnv() {
 }
 
 
-CStatus GPipeline::innerRegister(GElementPtr element, const GElementPtrSet &dependElements,
+CStatus GPipeline::innerRegister(GElementPtr element, const GElementPtrSet &depends,
                                  const std::string &name, CSize loop) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(element)
     CGRAPH_ASSERT_INIT(false)
 
     const std::string& curName = name.empty() ? element->getName() : name;
-    status = element->addElementInfo(dependElements, curName, loop);
+    status = element->addElementInfo(depends, curName, loop);
     CGRAPH_FUNCTION_CHECK_STATUS
 
     status = element->addManagers(param_manager_, event_manager_);

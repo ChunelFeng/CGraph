@@ -175,13 +175,13 @@ CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
 }
 
 
-CStatus GElement::addElementInfo(const GElementPtrSet& dependElements,
+CStatus GElement::addElementInfo(const GElementPtrSet& depends,
                                  const std::string& name, CSize loop) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
 
     // 添加依赖的时候，可能会出现异常情况。故在这里提前添加 && 做判定
-    status = this->addDependGElements(dependElements);
+    status = this->addDependGElements(depends);
     CGRAPH_FUNCTION_CHECK_STATUS
 
     this->setLoop(loop);
@@ -481,6 +481,20 @@ GElementRelation GElement::getRelation() const {
 }
 
 
+CStatus GElement::removeDepend(GElementPtr element) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(element)
+    CGRAPH_ASSERT_INIT(false)
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!dependence_.hasValue(element),
+                                            element->getName() + " is not in [" + getName() + "]'s depends.")
+
+    dependence_.remove(element);
+    element->run_before_.remove(this);
+    left_depend_.store(dependence_.size(), std::memory_order_release);
+    CGRAPH_FUNCTION_END
+}
+
+
 CBool GElement::isSerializable() const {
     return true;
 }
@@ -566,20 +580,6 @@ GElementPtrArr GElement::getDeepPath(CBool reverse) const {
 
 CBool GElement::isDefaultBinding() const {
     return CGRAPH_DEFAULT_BINDING_INDEX == binding_index_;
-}
-
-
-CBool GElement::removeDepend(GElementPtr element) {
-    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element)
-    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
-    if (!dependence_.hasValue(element)) {
-        return false;
-    }
-
-    dependence_.remove(element);
-    element->run_before_.remove(this);
-    left_depend_.store(dependence_.size(), std::memory_order_release);
-    return true;
 }
 
 CGRAPH_NAMESPACE_END

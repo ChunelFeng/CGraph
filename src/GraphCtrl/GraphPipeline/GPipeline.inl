@@ -18,7 +18,7 @@ CGRAPH_NAMESPACE_BEGIN
 template<typename T,
         c_enable_if_t<std::is_base_of<GElement, T>::value, int>>
 CStatus GPipeline::registerGElement(GElementPPtr elementRef,
-                                    const GElementPtrSet &dependElements,
+                                    const GElementPtrSet &depends,
                                     const std::string &name,
                                     CSize loop) {
     CGRAPH_FUNCTION_BEGIN
@@ -44,27 +44,27 @@ CStatus GPipeline::registerGElement(GElementPPtr elementRef,
         CGRAPH_RETURN_ERROR_STATUS("resister error type")
     }
 
-    status = innerRegister(*elementRef, dependElements, name, loop);
+    status = innerRegister(*elementRef, depends, name, loop);
     CGRAPH_FUNCTION_END
 }
 
 
 template<typename TNode,
         c_enable_if_t<std::is_base_of<GNode, TNode>::value, int>>
-TNode* GPipeline::registerGNode(const GElementPtrSet &dependElements,
+TNode* GPipeline::registerGNode(const GElementPtrSet &depends,
                                 const std::string &name, CSize loop) {
     GElementPtr node = nullptr;
-    CGRAPH_THROW_EXCEPTION_BY_STATUS(registerGElement<TNode>(&node, dependElements, name, loop))
+    CGRAPH_THROW_EXCEPTION_BY_STATUS(registerGElement<TNode>(&node, depends, name, loop))
     return (TNode *)node;
 }
 
 
 template<typename TNode, typename ...Args,
         c_enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int>>
-TNode* GPipeline::registerGNode(const GElementPtrSet &dependElements,
+TNode* GPipeline::registerGNode(const GElementPtrSet &depends,
                                 Args... args) {
     GTemplateNodePtr<Args ...> node = nullptr;
-    CGRAPH_THROW_EXCEPTION_BY_STATUS(registerGElement<TNode>(&node, dependElements, args...))
+    CGRAPH_THROW_EXCEPTION_BY_STATUS(registerGElement<TNode>(&node, depends, args...))
     return (TNode *)node;
 }
 
@@ -72,7 +72,7 @@ TNode* GPipeline::registerGNode(const GElementPtrSet &dependElements,
 template<typename TNode, typename ...Args,
         c_enable_if_t<std::is_base_of<GTemplateNode<Args ...>, TNode>::value, int>>
 CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,
-                                    const GElementPtrSet &dependElements,
+                                    const GElementPtrSet &depends,
                                     Args... args) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
@@ -81,36 +81,36 @@ CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,
     (*elementRef) = new(std::nothrow) TNode(std::forward<Args &&>(args)...);
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
 
-    status = innerRegister(*elementRef, dependElements, CGRAPH_EMPTY, CGRAPH_DEFAULT_LOOP_TIMES);
+    status = innerRegister(*elementRef, depends, CGRAPH_EMPTY, CGRAPH_DEFAULT_LOOP_TIMES);
     CGRAPH_FUNCTION_END
 }
 
 
 template<typename GFunction>
 CStatus GPipeline::registerGElement(GFunctionPPtr functionRef,
-                                    const GElementPtrSet &dependElements,
+                                    const GElementPtrSet &depends,
                                     const std::string &name,
                                     CSize loop) {
     // 通过模板特化的方式，简化 GFunction 的注册方式
-    return this->registerGElement<GFunction>((GElementPtr *)(functionRef), dependElements, name, loop);
+    return this->registerGElement<GFunction>((GElementPtr *)(functionRef), depends, name, loop);
 }
 
 
 template<typename GFence>
 CStatus GPipeline::registerGElement(GFencePPtr fenceRef,
-                                    const GElementPtrSet &dependElements,
+                                    const GElementPtrSet &depends,
                                     const std::string &name,
                                     CSize loop) {
-    return this->registerGElement<GFence>((GElementPtr *)(fenceRef), dependElements, name, loop);
+    return this->registerGElement<GFence>((GElementPtr *)(fenceRef), depends, name, loop);
 }
 
 
 template<typename GCoordinator, CInt SIZE>
 CStatus GPipeline::registerGElement(GCoordinatorPPtr<SIZE> coordinatorRef,
-                                    const GElementPtrSet &dependElements,
+                                    const GElementPtrSet &depends,
                                     const std::string &name,
                                     CSize loop) {
-    return this->registerGElement<GCoordinator, SIZE>((GElementPtr *)(coordinatorRef), dependElements, name, loop);
+    return this->registerGElement<GCoordinator, SIZE>((GElementPtr *)(coordinatorRef), depends, name, loop);
 }
 
 
@@ -142,7 +142,7 @@ TNode* GPipeline::createGNode(const GElementPtrSet& dependence, const std::strin
 template<typename TGroup,
         c_enable_if_t<std::is_base_of<GGroup, TGroup>::value, int>>
 TGroup* GPipeline::createGGroup(const GElementPtrArr &elements,
-                           const GElementPtrSet &dependElements,
+                           const GElementPtrSet &depends,
                            const std::string &name,
                            CSize loop) {
     CGRAPH_FUNCTION_BEGIN
@@ -152,9 +152,9 @@ TGroup* GPipeline::createGGroup(const GElementPtrArr &elements,
     CGRAPH_THROW_EXCEPTION_BY_CONDITION(std::any_of(elements.begin(), elements.end(),
                                                     [](GElementPtr element) { return (nullptr == element); }),
                                         "createGGroup elements have nullptr.")
-    CGRAPH_THROW_EXCEPTION_BY_CONDITION(std::any_of(dependElements.begin(), dependElements.end(),
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION(std::any_of(depends.begin(), depends.end(),
                                                     [](GElementPtr element) { return (nullptr == element); }),
-                                        "createGGroup dependElements have nullptr.")
+                                        "createGGroup depends have nullptr.")
 
     auto* group = CGRAPH_SAFE_MALLOC_COBJECT(TGroup)
     for (GElementPtr element : elements) {
@@ -164,7 +164,7 @@ TGroup* GPipeline::createGGroup(const GElementPtrArr &elements,
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
     // 加入group的时候，是不设定manager信息的
-    status = group->addElementInfo(dependElements, name, loop);
+    status = group->addElementInfo(depends, name, loop);
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
     this->repository_.insert(group);

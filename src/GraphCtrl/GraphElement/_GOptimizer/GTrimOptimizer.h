@@ -29,7 +29,7 @@ class GTrimOptimizer : public GOptimizer {
         auto graph = buildGraph(elements, paths, 1, 0, 0);
 
         for (auto* cur : elements) {
-            CSize idx = std::distance(elements.begin(), elements.find(cur));
+            CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(cur)
             GElementPtrArr candidates;
             for (CSize i = 0; i < cur->dependence_.size(); i++) {
                 CSize x = std::distance(elements.begin(), elements.find(cur->dependence_[i]));
@@ -43,7 +43,7 @@ class GTrimOptimizer : public GOptimizer {
             }
 
             for (auto* candidate : candidates) {
-                if (cur->removeDepend(candidate)) {
+                if (cur->removeDepend(candidate).isOK()) {
                     trimNum++;
                 }
             }
