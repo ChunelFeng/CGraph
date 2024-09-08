@@ -37,7 +37,6 @@ class GTrimOptimizer : public GOptimizer {
                     // 这里必须是 n^2 的循环
                     CSize y = std::distance(elements.begin(), elements.find(cur->dependence_[j]));
                     if (1 == graph[x][y]) {
-                        graph[x][idx] = 0;
                         candidates.push_back(cur->dependence_[i]);
                     }
                 }
