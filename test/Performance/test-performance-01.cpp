@@ -29,7 +29,6 @@ void test_performance_01() {
     for (auto& i : arr) {
         pipeline->registerGElement<TestAdd1GNode>(&i);
     }
-    pipeline->setAutoCheck(false);
     status += pipeline->init();
 
     {

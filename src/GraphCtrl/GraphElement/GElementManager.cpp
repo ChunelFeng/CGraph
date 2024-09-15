@@ -59,12 +59,6 @@ CStatus GElementManager::run() {
     CGRAPH_FUNCTION_BEGIN
 
     status = engine_->run();    // 通过引擎来执行全部的逻辑
-    CGRAPH_FUNCTION_CHECK_STATUS
-
-    if (auto_check_enable_) {
-        // 默认是需要check一下执行结果的。如果为了增加一点效率，也可以通过外部设置不检查
-        status = engine_->afterRunCheck();
-    }
     CGRAPH_FUNCTION_END
 }
 

@@ -24,7 +24,10 @@ void test_functional_05() {
     {
         UTimeCounter counter("test_functional_05");
         for (int i = 0; i < 10; i++) {
-            pipeline->run();
+            status = pipeline->run();
+            if (!status.isOK()) {
+                CGRAPH_ECHO("%s", status.getInfo().c_str());
+            }
         }
     }
 

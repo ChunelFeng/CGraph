@@ -9,6 +9,9 @@
 #ifndef CGRAPH_GENGINE_H
 #define CGRAPH_GENGINE_H
 
+#include <vector>
+#include <queue>
+
 #include "GEngineDefine.h"
 #include "../GElementObject.h"
 #include "../GElementSorter.h"
@@ -25,14 +28,6 @@ protected:
      * @return
      */
     virtual CStatus setup(const GSortedGElementPtrSet& elements) = 0;
-
-    /**
-     * 执行完毕后，确认运行是否正常
-     * @return
-     */
-    virtual CStatus afterRunCheck() {
-        CGRAPH_EMPTY_FUNCTION
-    }
 
     /**
      * 分析所有的可以设置 linkable 的数据
@@ -58,6 +53,49 @@ protected:
         }
     }
 
+    /**
+     * 计算当前elements的 拓扑排序信息
+     * @param elements
+     * @return
+     */
+    static GElementPtrArr getTopo(const GSortedGElementPtrSet& elements) {
+        GElementPtrArr result;
+        std::queue<GElementPtr> readyQueue;
+        for (auto* element : elements) {
+            element->left_depend_ = element->dependence_.size();
+            if (0 == element->left_depend_) {
+                readyQueue.push(element);
+            }
+        }
+
+        while(!readyQueue.empty()) {
+            auto* cur = readyQueue.front();
+            readyQueue.pop();
+            result.push_back(cur);
+
+            for (auto* element : cur->run_before_) {
+                if (0 == --element->left_depend_) {
+                    readyQueue.push(element);
+                }
+            }
+        }
+
+        for (auto element : elements) {
+            // 计算技术之后，需要恢复一下 depend的信息，以免引入误差
+            element->left_depend_ = element->dependence_.size();
+        }
+        return result;
+    }
+
+    /**
+    * 判断是否是dag的逻辑
+    * @param elements
+    * @return
+    */
+    static CBool isDag(const GSortedGElementPtrSet& elements) {
+        const auto& result = getTopo(elements);
+        return result.size() == elements.size();
+    }
 
 protected:
     UThreadPoolPtr thread_pool_ { nullptr };                    // 内部执行的线程池

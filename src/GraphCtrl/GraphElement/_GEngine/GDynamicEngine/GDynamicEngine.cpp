@@ -13,10 +13,13 @@ CGRAPH_NAMESPACE_BEGIN
 CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
     CGRAPH_FUNCTION_BEGIN
     /**
-     * 1. 标记数据，比如有多少个结束element等
-     * 2. 标记哪些数据，是linkable 的
-     * 3. 分析当前dag类型信息
+     * 1. 判断是否是 dag 结构
+     * 2. 标记数据，比如有多少个结束element等
+     * 3. 标记哪些数据，是linkable 的
+     * 4. 分析当前dag类型信息
      */
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!GEngine::isDag(elements),
+                                            "it is not a dag struct");
     mark(elements);
     link(elements);
     analysisDagType(elements);
@@ -39,24 +42,6 @@ CStatus GDynamicEngine::run() {
     }
 
     status = cur_status_;
-    CGRAPH_FUNCTION_END
-}
-
-
-CStatus GDynamicEngine::afterRunCheck() {
-    CGRAPH_FUNCTION_BEGIN
-    /**
-     * 纯串行和纯并行 是不需要做结果校验的
-     * 但是普通的dag，后期还是校验一下为好
-     * 这里也可以通过外部接口来关闭
-     */
-    if (internal::GEngineDagType::COMMON == dag_type_) {
-        for (GElementCPtr element : total_element_arr_) {
-            CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!element->done_,    \
-                                                    element->getName() + ": dynamic engine, check not run it...")
-        }
-    }
-
     CGRAPH_FUNCTION_END
 }
 

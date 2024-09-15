@@ -23,7 +23,6 @@ void test_performance_02() {
         pipeline->registerGElement<TestAdd1GNode>(&arr[i], {arr[i - 1]});
     }
     pipeline->makeSerial();
-    pipeline->setAutoCheck(false);
     status += pipeline->init();
     {
         UTimeCounter counter("test_performance_02");

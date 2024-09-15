@@ -23,8 +23,6 @@ protected:
 
     CStatus run() override;
 
-    CStatus afterRunCheck() override;
-
     /**
      * 记录当前 elements 数据信息
      * @param elements

@@ -26,7 +26,6 @@ void test_performance_03() {
     config.primary_thread_busy_epoch_ = 500;
     config.monitor_enable_ = false;    // 关闭扩缩容机制
     pipeline->setUniqueThreadPoolConfig(config);
-    pipeline->setAutoCheck(false);
     pipeline->registerGElement<TestAdd1GNode>(&a);
     pipeline->registerGElement<TestAdd1GNode>(&b1, {a});
     pipeline->registerGElement<TestAdd1GNode>(&b2, {b1});
