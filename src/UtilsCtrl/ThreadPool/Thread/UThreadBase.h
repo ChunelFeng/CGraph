@@ -135,10 +135,8 @@ protected:
      * 循环处理任务
      * @return
      */
-    CStatus loopProcess() {
-        CGRAPH_FUNCTION_BEGIN
-        CGRAPH_ASSERT_NOT_NULL(config_)
-
+    CVoid loopProcess() {
+        CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(config_)
         if (config_->batch_task_enable_) {
             while (done_) {
                 processTasks();    // 批量任务获取执行接口
@@ -148,8 +146,6 @@ protected:
                 processTask();    // 单个任务获取执行接口
             }
         }
-
-        CGRAPH_FUNCTION_END
     }
 
 
@@ -206,7 +202,7 @@ private:
      * @param policy
      * @return
      */
-    static int calcPolicy(int policy) {
+    static CInt calcPolicy(int policy) {
         return (CGRAPH_THREAD_SCHED_OTHER == policy
                 || CGRAPH_THREAD_SCHED_RR == policy
                 || CGRAPH_THREAD_SCHED_FIFO == policy)
@@ -220,7 +216,7 @@ private:
      * @param priority
      * @return
      */
-    static int calcPriority(int priority) {
+    static CInt calcPriority(int priority) {
         return (priority >= CGRAPH_THREAD_MIN_PRIORITY
                 && priority <= CGRAPH_THREAD_MAX_PRIORITY)
                ? priority : CGRAPH_THREAD_MIN_PRIORITY;
@@ -228,11 +224,11 @@ private:
 
 
 protected:
-    bool done_;                                                        // 线程状态标记
-    bool is_init_;                                                     // 标记初始化状态
-    bool is_running_;                                                  // 是否正在执行
-    int type_ = 0;                                                     // 用于区分线程类型（主线程、辅助线程）
-    unsigned long total_task_num_ = 0;                                 // 处理的任务的数字
+    CBool done_;                                                       // 线程状态标记
+    CBool is_init_;                                                    // 标记初始化状态
+    CBool is_running_;                                                 // 是否正在执行
+    CInt type_ = 0;                                                    // 用于区分线程类型（主线程、辅助线程）
+    CULong total_task_num_ = 0;                                        // 处理的任务的数字
 
     UAtomicQueue<UTask>* pool_task_queue_;                             // 用于存放线程池中的普通任务
     UAtomicPriorityQueue<UTask>* pool_priority_task_queue_;            // 用于存放线程池中的包含优先级任务的队列，仅辅助线程可以执行

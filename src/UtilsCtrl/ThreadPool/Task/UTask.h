@@ -40,7 +40,7 @@ public:
 
     CVoid operator()() {
         // impl_ 理论上不可能为空
-        impl_ ? impl_->call() : throw CException("UTask inner function is nullptr");
+        impl_->call();
     }
 
     UTask() = default;
@@ -67,7 +67,7 @@ public:
 
 private:
     std::unique_ptr<TaskBased> impl_ = nullptr;
-    int priority_ = 0;                                 // 任务的优先级信息
+    CInt priority_ = 0;                                 // 任务的优先级信息
 };
 
 

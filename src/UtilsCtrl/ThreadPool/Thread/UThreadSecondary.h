@@ -60,7 +60,7 @@ protected:
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(true)
 
-        status = loopProcess();
+        loopProcess();
         CGRAPH_FUNCTION_END
     }
 

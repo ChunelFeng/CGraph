@@ -84,14 +84,14 @@ protected:
             CGRAPH_RETURN_ERROR_STATUS("primary thread is null")
         }
 
-        status = loopProcess();
+        loopProcess();
         CGRAPH_FUNCTION_END
     }
 
 
     CVoid processTask() override {
         UTask task;
-        if (popTask(task) || popPoolTask(task) || stealTask(task)) {
+        if (popTask(task) || stealTask(task) || popPoolTask(task)) {
             runTask(task);
         } else {
             fatWait();
@@ -101,7 +101,7 @@ protected:
 
     CVoid processTasks() override {
         UTaskArr tasks;
-        if (popTask(tasks) || popPoolTask(tasks) || stealTask(tasks)) {
+        if (popTask(tasks) || stealTask(tasks) || popPoolTask(tasks)) {
             // 尝试从主线程中获取/盗取批量task，如果成功，则依次执行
             runTasks(tasks);
         } else {
@@ -288,12 +288,12 @@ protected:
     }
 
 private:
-    int index_;                                                    // 线程index
-    int cur_empty_epoch_ = 0;                                      // 当前空转的轮数信息
+    CInt index_;                                                   // 线程index
+    CInt cur_empty_epoch_ = 0;                                     // 当前空转的轮数信息
     UWorkStealingQueue<UTask> primary_queue_;                      // 内部队列信息
     UWorkStealingQueue<UTask> secondary_queue_;                    // 第二个队列，用于减少触锁概率，提升性能
     std::vector<UThreadPrimary *>* pool_threads_;                  // 用于存放线程池中的线程信息
-    std::vector<int> steal_targets_;                               // 被偷的目标信息
+    std::vector<CInt> steal_targets_;                              // 被偷的目标信息
 
     friend class UThreadPool;
     friend class UAllocator;
