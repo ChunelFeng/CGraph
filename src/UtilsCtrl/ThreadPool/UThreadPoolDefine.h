@@ -15,7 +15,6 @@
     #else
 # include <mutex>
     #endif
-#include <memory>
 
 #include "../UtilsDefine.h"
 
@@ -41,7 +40,6 @@ static const CUInt CGRAPH_DEFAULT_RINGBUFFER_SIZE = 64;                         
 static const CIndex CGRAPH_MAIN_THREAD_ID = -1;                                             // 启动线程id标识（非上述主线程）
 static const CIndex CGRAPH_SECONDARY_THREAD_COMMON_ID = -2;                                 // 辅助线程统一id标识
 
-
 static const CInt CGRAPH_DEFAULT_TASK_STRATEGY = -1;                                         // 默认线程调度策略
 static const CInt CGRAPH_POOL_TASK_STRATEGY = -2;                                            // 固定用pool中的队列的调度策略
 static const CInt CGRAPH_LONG_TIME_TASK_STRATEGY = -101;                                     // 长时间任务调度策略
@@ -57,8 +55,8 @@ static const CBool CGRAPH_BATCH_TASK_ENABLE = false;                            
 static const CInt CGRAPH_MAX_LOCAL_BATCH_SIZE = 2;                                           // 批量执行本地任务最大值
 static const CInt CGRAPH_MAX_POOL_BATCH_SIZE = 2;                                            // 批量执行通用任务最大值
 static const CInt CGRAPH_MAX_STEAL_BATCH_SIZE = 2;                                           // 批量盗取任务最大值
-static const CInt CGRAPH_PRIMARY_THREAD_BUSY_EPOCH = 10;                                     // 主线程进入wait状态的轮数，数值越大，理论性能越高，但空转可能性也越大
-static const CMSec CGRAPH_PRIMARY_THREAD_EMPTY_INTERVAL = 10;                                // 主线程进入休眠状态的默认时间
+static const CInt CGRAPH_PRIMARY_THREAD_BUSY_EPOCH = 5;                                      // 主线程进入wait状态的轮数，数值越大，理论性能越高，但空转可能性也越大
+static const CMSec CGRAPH_PRIMARY_THREAD_EMPTY_INTERVAL = 1000;                              // 主线程进入休眠状态的默认时间
 static const CSec CGRAPH_SECONDARY_THREAD_TTL = 10;                                          // 辅助线程ttl，单位为s
 static const CBool CGRAPH_MONITOR_ENABLE = false;                                            // 是否开启监控程序
 static const CSec CGRAPH_MONITOR_SPAN = 5;                                                   // 监控线程执行间隔，单位为s
