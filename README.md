@@ -24,9 +24,9 @@
 
 ## 一. 简介
 
-`CGraph`中文名为【色丶图】，是一套无任何第三方依赖的跨平台图流程执行框架。通过`GPipeline`(流水线)底层调度，实现了依赖元素依次顺序执行、非依赖元素并发执行的调度功能。
+`CGraph`中文名为【色丶图】，是一套无任何第三方依赖的跨平台图流程执行框架。通过`GPipeline`(流水线)底层调度，提供了包含依赖元素依次执行、非依赖元素并发执行在 eDAG 调度功能。
 
-使用者只需继承`GNode`(节点)类，实现子类的run()方法，并根据需要设定依赖关系，即可实现任务的图化执行或流水线执行。还可以通过设定各种包含多节点信息的`GGroup`(组)，自行控制图的条件判断、循环和并发执行逻辑。
+使用者只需继承`GNode`(节点)类，实现子类的`run()`方法，并根据需要设定依赖关系，即可实现任务的图化执行或流水线执行。还可以通过设定各种包含多节点信息的`GGroup`(组)，自行控制图的条件判断、循环和并发执行逻辑。
 
 项目提供了丰富的`Param`(参数)类型，用于不同应用场景下的数据互通。此外，还可以通过添加`GAspect`(切面)的方式，实现以上各种元素功能的横向扩展；通过引入`GAdapter`(适配器)对单个节点功能进行加强；或者通过添加`GEvent`(信号)，丰富和优化执行逻辑。
 
@@ -35,7 +35,7 @@
 
 本工程使用纯C++11标准库编写，无任何第三方依赖。兼容`MacOS`、`Linux`、`Windows`和`Android`系统，支持通过 `CLion`、`VSCode`、`Xcode`、`Visual Studio`、`Code::Blocks`、`Qt Creator`等多款IDE进行本地编译和二次开发，具体编译方式请参考 [CGraph 编译说明](https://github.com/ChunelFeng/CGraph/blob/main/COMPILE.md ) <br>
 
-详细功能介绍和用法，请参考 [一面之猿网](http://www.chunel.cn/) 中的文章内容。相关视频在B站持续更新中，欢迎观看交流和一键三连：<br>
+详细功能介绍和用法，请参考 [一面之猿网](http://www.chunel.cn/) 中的文章内容。相关视频在B站持续更新中，欢迎观看和交流：<br>
 * [【B站视频】CGraph 入门篇](https://www.bilibili.com/video/BV1mk4y1v7XJ) <br>
 * [【B站视频】CGraph 功能篇](https://www.bilibili.com/cheese/play/ss22264) <br>
   * 全面介绍CGraph项目中，所有的名词术语和功能模块
@@ -333,11 +333,11 @@ int main() {
 * 提供bazel编译方式
 * 优化perf功能
 
-[2024.09.15 - v2.6.1 - Chunel]
+[2024.09.17 - v2.6.1 - Chunel]
 * 提供`pipeline`的静态执行的方式，提供基于静态执行的微任务机制
-* 优化`event`(事件)机制，异步事件可以等待结束
 * 提供`pipeline`剪裁功能，用于删除`element`之间重复的依赖
 * 提供`element`删除依赖的方法
+* 优化`event`(事件)机制，异步事件可以等待结束
 * 发布 [CGraph-lite](https://github.com/ChunelFeng/CGraph-lite) 项目，提供简单DAG构图和参数传递功能。接口完全兼容，可无缝切换至本项目
 
 </details>
