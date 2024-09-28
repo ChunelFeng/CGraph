@@ -28,6 +28,7 @@ set(CGRAPH_TUTORIAL_LIST
          T24-Fence
          T25-Coordinator
          T26-Mutable
+         T27-Trim
         )
 
 

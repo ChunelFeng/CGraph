@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: T26-Mutable.cpp
 @Time: 2023/11/15 21:18
-@Desc: 
+@Desc: 本例主要演示，通过 GMutable 在pipeline执行的过程中，修改 GMutable 中的依赖关系逻辑
 ***************************/
 
 #include "MyGMutable/MyMutable.h"
