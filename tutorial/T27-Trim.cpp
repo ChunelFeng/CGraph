@@ -27,7 +27,7 @@ void tutorial_trim() {
     pipeline->registerGElement<MyNode2>(&d, {a, b, c}, "nodeD");
 
     auto trimSize = pipeline->trim();
-    CGRAPH_ECHO("trim size is: %u", trimSize);
+    CGRAPH_ECHO("trim size is: %d", (int)trimSize);
 
     // 查看 trim后的效果
     pipeline->dump();

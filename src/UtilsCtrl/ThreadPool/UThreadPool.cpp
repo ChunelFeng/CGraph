@@ -106,9 +106,9 @@ CStatus UThreadPool::submit(const UTaskGroup& taskGroup, CMSec ttl) {
         const auto& futStatus = fut.wait_until(deadline);
         switch (futStatus) {
             case std::future_status::ready: break;    // 正常情况，直接返回了
-            case std::future_status::timeout: status += CErrStatus("thread status timeout"); break;
-            case std::future_status::deferred: status += CErrStatus("thread status deferred"); break;
-            default: status += CErrStatus("thread status unknown");
+            case std::future_status::timeout: status += CStatus("thread status timeout"); break;
+            case std::future_status::deferred: status += CStatus("thread status deferred"); break;
+            default: status += CStatus("thread status unknown");
         }
     }
 

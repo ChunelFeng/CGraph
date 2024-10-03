@@ -52,15 +52,9 @@ enum class CFunctionType {
     + " | line = [" + ::std::to_string( __LINE__) + "]")
 
 
-/** 生成一个包含异常位置的 CStatus
- * 这里这样实现，是为了符合 CStatus 类似写法
- * */
-#define CErrStatus(info)                                                \
-    CStatus(info)                                                       \
-
 /** 返回异常信息和状态 */
 #define CGRAPH_RETURN_ERROR_STATUS(info)                                \
-    return CErrStatus(info);                                            \
+    return CStatus(info);                                               \
 
 /** 根据条件判断是否返回错误状态 */
 #define CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(cond, info)             \
@@ -68,7 +62,7 @@ enum class CFunctionType {
 
 /** 不支持当前功能 */
 #define CGRAPH_NO_SUPPORT                                               \
-    return CErrStatus(CGRAPH_FUNCTION_NO_SUPPORT);                      \
+    return CStatus(CGRAPH_FUNCTION_NO_SUPPORT);                         \
 
 /** 定义为不能赋值和拷贝的对象类型 */
 #define CGRAPH_NO_ALLOWED_COPY(CType)                                   \

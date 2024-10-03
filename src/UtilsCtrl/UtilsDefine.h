@@ -46,7 +46,7 @@ using CGRAPH_UNIQUE_LOCK = std::unique_lock<std::mutex>;
 template<typename T>
 CStatus __ASSERT_NOT_NULL(T t) {
     return (unlikely(nullptr == t))
-           ? CErrStatus(CGRAPH_INPUT_IS_NULL)
+           ? CStatus(CGRAPH_INPUT_IS_NULL)
            : CStatus();
 }
 

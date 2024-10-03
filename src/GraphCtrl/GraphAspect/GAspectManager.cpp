@@ -52,7 +52,7 @@ CStatus GAspectManager::reflect(const internal::GAspectType &type,
                 aspect->enterCrashed();
                 break;
             default:
-                status = CErrStatus("unknown aspect type");
+                status = CStatus("unknown aspect type");
         }
 
         CGRAPH_FUNCTION_CHECK_STATUS
