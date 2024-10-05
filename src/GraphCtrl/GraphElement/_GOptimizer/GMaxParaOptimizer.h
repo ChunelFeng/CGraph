@@ -57,16 +57,16 @@ protected:
         CSize maxCliqueSize = 0;    // 最大团size
         std::vector<CSize> curClique;    // 当前团
 
-        std::function<void(CSize, CSize)> backtrace = [&](CSize start, CSize depth) {
+        std::function<void(CSize, CSize)> backtrace = [&](CSize start, CSize curCliqueSize) {
             for (CSize i = start; i < eleSize; i++) {
-                if (depth + eleSize - i <= maxCliqueSize) { return; }    // 剪枝策略：剩余的元素数量，已经不足以超过 max 值了
+                if (curCliqueSize + eleSize - i <= maxCliqueSize) { return; }    // 剪枝策略：剩余的元素数量，已经不足以超过 max 值了
 
                 if (std::all_of(curClique.begin(), curClique.end(), [&](const int j) {
                     // 如果跟当前团的node，均为连接状态，则标记为可以进入当前团中
                     return 1 == graph[j][i];
                 })) {
                     curClique.push_back(i);
-                    backtrace(i + 1, depth + 1);    // depth 表示，团里已有元素的个数
+                    backtrace(i + 1, curCliqueSize + 1);    // depth 表示，团里已有元素的个数
                     curClique.pop_back();
                 }
             }

@@ -95,7 +95,7 @@ CVoid __ASSERT_NOT_NULL_THROW_EXCEPTION(T t, Args... args) {
 
 #define CGRAPH_DELETE_PTR_ARRAY(arr)                                            \
     if (unlikely((arr) != nullptr)) {                                           \
-        delete[] arr;                                                           \
+        delete[] (arr);                                                         \
         (arr) = nullptr;                                                        \
     }                                                                           \
                                                                                 \
