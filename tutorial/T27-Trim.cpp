@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: T27-Trim.cpp
 @Time: 2024/9/28 21:43
-@Desc: 本例主要演示，通过 Trim() 方法，修剪pipeline中的冗余依赖逻辑
+@Desc: 本例主要演示，通过 trim() 方法，修剪pipeline中的冗余依赖逻辑
 ***************************/
 
 #include "MyGNode/MyNode1.h"

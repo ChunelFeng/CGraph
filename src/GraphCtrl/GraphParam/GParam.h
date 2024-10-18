@@ -10,6 +10,7 @@
 #define CGRAPH_GPARAM_H
 
 #include <set>
+#include <mutex>
 
 #include "GParamObject.h"
 
@@ -20,7 +21,7 @@ public:
 #if __cplusplus >= 201703L
     std::shared_mutex _param_shared_lock_;    // 用于参数互斥的锁信息
 #else
-    std::mutex _param_shared_lock_;
+    std::recursive_mutex _param_shared_lock_;
 #endif
 
     /**
