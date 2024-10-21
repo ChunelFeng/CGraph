@@ -204,12 +204,8 @@ CStatus UThreadPool::releaseSecondaryThread(CInt size) {
 CIndex UThreadPool::dispatch(CIndex origIndex) {
     CIndex realIndex = 0;
     if (CGRAPH_DEFAULT_TASK_STRATEGY == origIndex) {
-        /**
-         * 如果是默认策略信息，在[0, default_thread_size_) 之间的，通过 thread 中queue来调度
-         * 在[default_thread_size_, max_thread_size_) 之间的，通过 pool 中的queue来调度
-         */
         realIndex = cur_index_++;
-        if (cur_index_ >= config_.max_thread_size_ || cur_index_ < 0) {
+        if (cur_index_ >= config_.default_thread_size_ || cur_index_ < 0) {
             cur_index_ = 0;
         }
     } else {
