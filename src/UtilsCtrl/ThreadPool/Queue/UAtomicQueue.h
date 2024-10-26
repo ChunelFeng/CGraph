@@ -135,6 +135,15 @@ public:
         return queue_.empty();
     }
 
+
+    /**
+     * 唤醒所有等待的
+     * @return
+     */
+    CVoid notifyAll() {
+        cv_.notify_all();
+    }
+
     CGRAPH_NO_ALLOWED_COPY(UAtomicQueue)
 
 private:

@@ -95,7 +95,7 @@ protected:
     CVoid waitRunTask(CMSec ms) {
         auto task = this->pool_task_queue_->popWithTimeout(ms);
         if (nullptr != task) {
-            (*task)();
+            runTask(*task);
         }
     }
 

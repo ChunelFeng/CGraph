@@ -160,6 +160,8 @@ CStatus UThreadPool::destroy() {
         CGRAPH_DELETE_PTR(pt)
     }
     primary_threads_.clear();
+
+    task_queue_.notifyAll();
     // secondary 线程是智能指针，不需要delete
     for (auto &st : secondary_threads_) {
         status += st->destroy();
