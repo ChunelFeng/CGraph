@@ -83,7 +83,12 @@ public:
      */
     std::unique_ptr<T> popWithTimeout(CMSec ms) {
         CGRAPH_UNIQUE_LOCK lk(mutex_);
-        if (!cv_.wait_for(lk, std::chrono::milliseconds(ms), [this] { return !queue_.empty(); })) {
+        if (!cv_.wait_for(lk, std::chrono::milliseconds(ms),
+                          [this] { return (!queue_.empty()) || (!ready_flag_); })) {
+            return nullptr;
+        }
+
+        if (queue_.empty() || !ready_flag_) {
             return nullptr;
         }
 
@@ -135,10 +140,31 @@ public:
         return queue_.empty();
     }
 
+
+    /**
+     * 功能是通知所有的辅助线程停止工作
+     * @return
+     */
+    CVoid reset() {
+        ready_flag_ = false;
+        cv_.notify_all();
+    }
+
+
+    /**
+     * 初始化状态
+     * @return
+     */
+    CVoid setup() {
+        ready_flag_ = true;
+        queue_ = {};
+    }
+
     CGRAPH_NO_ALLOWED_COPY(UAtomicQueue)
 
 private:
     std::queue<std::unique_ptr<T>> queue_ {};    // 任务队列
+    CBool ready_flag_ { true };                  // 执行标记，主要用于快速释放 destroy 逻辑中，多个辅助线程等待的状态
 };
 
 CGRAPH_NAMESPACE_END

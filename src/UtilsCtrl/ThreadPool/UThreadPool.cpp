@@ -56,6 +56,7 @@ CStatus UThreadPool::init() {
     }
     thread_record_map_.clear();
     thread_record_map_[(CSize)std::hash<std::thread::id>{}(std::this_thread::get_id())] = CGRAPH_MAIN_THREAD_ID;
+    task_queue_.setup();
     primary_threads_.reserve(config_.default_thread_size_);
     for (int i = 0; i < config_.default_thread_size_; i++) {
         auto* pt = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary);    // 创建核心线程数
@@ -70,8 +71,8 @@ CStatus UThreadPool::init() {
      * 参考： https://github.com/ChunelFeng/CGraph/issues/309
      */
     for (int i = 0; i < config_.default_thread_size_; i++) {
-         status += primary_threads_[i]->init();
-         thread_record_map_[(CSize)std::hash<std::thread::id>{}(primary_threads_[i]->thread_.get_id())] = i;
+        status += primary_threads_[i]->init();
+        thread_record_map_[(CSize)std::hash<std::thread::id>{}(primary_threads_[i]->thread_.get_id())] = i;
      }
     CGRAPH_FUNCTION_CHECK_STATUS
 
@@ -162,6 +163,7 @@ CStatus UThreadPool::destroy() {
     primary_threads_.clear();
 
     // secondary 线程是智能指针，不需要delete
+    task_queue_.reset();
     for (auto &st : secondary_threads_) {
         status += st->destroy();
     }
@@ -206,7 +208,7 @@ CIndex UThreadPool::dispatch(CIndex origIndex) {
     CIndex realIndex = 0;
     if (CGRAPH_DEFAULT_TASK_STRATEGY == origIndex) {
         realIndex = cur_index_++;
-        if (cur_index_ >= config_.default_thread_size_ || cur_index_ < 0) {
+        if (cur_index_ >= config_.max_thread_size_ || cur_index_ < 0) {
             cur_index_ = 0;
         }
     } else {
