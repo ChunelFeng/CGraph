@@ -18,7 +18,7 @@ CStatus GStaticEngine::setup(const GSortedGElementPtrSet& elements) {
     CSize totalSize = 0;
     for (auto element : elements) {
         CGRAPH_ASSERT_NOT_NULL(element)
-        element->beforeRun();
+        element->refresh();
         if (element->dependence_.empty()) {
             curArr.push_back(element);
             totalSize++;

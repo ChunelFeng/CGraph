@@ -22,7 +22,7 @@ GElement::~GElement() {
 }
 
 
-CVoid GElement::beforeRun() {
+CVoid GElement::refresh() {
     this->done_ = false;
     this->left_depend_.store(dependence_.size(), std::memory_order_release);
 }

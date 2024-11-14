@@ -269,10 +269,10 @@ protected:
 /********************************/
 private:
     /**
-     * run方法执行之前的执行函数
+     * 恢复运行最初的信息
      * @return
      */
-    CVoid beforeRun();
+    CVoid refresh();
 
     /**
      * 判定当前的内容，是否需要异步执行
