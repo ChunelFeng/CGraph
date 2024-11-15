@@ -13,7 +13,9 @@ CGRAPH_NAMESPACE_BEGIN
 CStatus GDaemon::init() {
     CGRAPH_FUNCTION_BEGIN
     timer_.start(interval_, [this] {
-        this->daemonTask(param_);
+        daemonTask(param_);
+    }, [this] {
+        return modify(param_);
     });
     CGRAPH_FUNCTION_END
 }
@@ -28,6 +30,11 @@ CStatus GDaemon::destroy() {
 
 CMSec GDaemon::getInterval() const {
     return interval_;
+}
+
+
+CMSec GDaemon::modify(GDaemonParamPtr param) {
+    return 0;
 }
 
 CGRAPH_NAMESPACE_END
