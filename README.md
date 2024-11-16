@@ -340,8 +340,8 @@ int main() {
 * 优化`event`(事件)机制，异步事件可以等待结束
 * 发布 [CGraph-lite](https://github.com/ChunelFeng/CGraph-lite) 项目，提供简单DAG构图和参数传递功能。接口完全兼容，可无缝切换至本项目
 
-[2024.10.27 - v2.6.2 - Chunel]
-* 优化参数互斥机制
+[2024.11.16 - v2.6.2 - Chunel]
+* 优化参数互斥机制和获取性能
 * 修复辅助线程异常等待问题
 * 更新`tutorial`内容
 

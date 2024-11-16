@@ -157,17 +157,6 @@ public:
     CStatus removeDepend(GElement* element);
 
     /**
-     * 获取对应的ptr类型
-     * @tparam T
-     * @param ptr
-     * @param allowEmpty
-     * @return
-     */
-    template<typename T,
-            c_enable_if_t<std::is_base_of<GElement, T>::value, int> = 0>
-    T* getPtr(CBool allowEmpty = true);
-
-    /**
      * 实现连续注册的语法糖，形如：
      *  (*a)-->b&c;
      *  (*b)-->d;

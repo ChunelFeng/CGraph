@@ -9,6 +9,8 @@
 #ifndef CGRAPH_GELEMENT_INL
 #define CGRAPH_GELEMENT_INL
 
+#include <typeinfo>
+
 #include "GElement.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -56,25 +58,21 @@ GElementPtr GElement::addEParam(const std::string& key, T* param) {
     T* cur = CGRAPH_SAFE_MALLOC_COBJECT(T);
     cur->clone(param);
 
-    local_params_[key] = cur;    // 写入其中
+    local_params_[key] = cur;
     return this;
 }
 
 
 template<typename T,
-        c_enable_if_t<std::is_base_of<GElementParam, T>::value, int> >
+        c_enable_if_t<std::is_base_of<GElementParam, T>::value, int>>
 T* GElement::getEParam(const std::string& key) {
     auto iter = local_params_.find(key);
-    return dynamic_cast<T *>((iter != local_params_.end()) ? iter->second : nullptr);
-}
+    if (iter == local_params_.end()) {
+        return nullptr;
+    }
 
-
-template<typename T,
-        c_enable_if_t<std::is_base_of<GElement, T>::value, int>>
-T* GElement::getPtr(CBool allowEmpty) {
-    T* ptr = dynamic_cast<T *>(this);
-    CGRAPH_THROW_EXCEPTION_BY_CONDITION(!allowEmpty && !ptr, "change ptr type failed")
-    return ptr;
+    auto param = iter->second;
+    return likely(typeid(T) == typeid(*param)) ? static_cast<T *>(param) : nullptr;
 }
 
 CGRAPH_NAMESPACE_END

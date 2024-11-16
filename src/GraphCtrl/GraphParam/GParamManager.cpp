@@ -91,6 +91,7 @@ CStatus GParamManager::removeByKey(const std::string& key) {
 std::vector<std::string> GParamManager::getKeys() {
     std::vector<std::string> keys;
     CGRAPH_LOCK_GUARD lock(this->mutex_);
+    keys.reserve(params_map_.size());
     for (const auto& iter : params_map_) {
         keys.emplace_back(iter.first);
     }
