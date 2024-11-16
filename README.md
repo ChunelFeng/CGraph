@@ -89,6 +89,8 @@ int main() {
 
     /* 执行流图框架 */
     pipeline->process();
+
+    /* 清空流水线中所有的资源 */
     GPipelineFactory::remove(pipeline);
 
     return 0;
@@ -117,6 +119,7 @@ int main() {
 * [纯序员给你介绍图化框架的简单实现——线程池优化（五）](http://www.chunel.cn/archives/cgraph-threadpool-5-introduce)
 * [纯序员给你介绍图化框架的简单实现——线程池优化（六）](http://www.chunel.cn/archives/cgraph-threadpool-6-introduce)
 * [纯序员给你介绍图化框架的简单实现——性能优化（一）](http://www.chunel.cn/archives/cgraph-performance-1)
+* [纯序员给你介绍图化框架的简单实现——性能优化（二）](http://www.chunel.cn/archives/cgraph-performance-2)
 * [纯序员给你介绍图化框架的简单实现——距离计算](http://www.chunel.cn/archives/cgraph-distance-introduce)
   <br><br>
 * [CGraph 主打歌——《听码农的话》](http://www.chunel.cn/archives/listen-to-coder)
