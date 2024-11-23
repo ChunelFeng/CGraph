@@ -46,7 +46,7 @@ private:
     GElementManagerPtr manager_ = nullptr;
 
     friend class GPipeline;
-    friend class UAllocator;
+    friend class CAllocator;
 };
 
 using GMutablePtr = GMutable *;

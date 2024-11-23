@@ -108,7 +108,7 @@ private:
     friend class GRegion;
     friend class GMutable;
     friend class GPerf;
-    friend class UAllocator;
+    friend class CAllocator;
 };
 
 using GElementManagerPtr = GElementManager *;

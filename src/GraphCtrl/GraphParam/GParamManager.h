@@ -83,7 +83,7 @@ private:
     std::mutex mutex_;                                                // 创建param的时候上锁
 
     friend class GPipeline;
-    friend class UAllocator;
+    friend class CAllocator;
 };
 
 using GParamManagerPtr = GParamManager *;

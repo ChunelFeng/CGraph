@@ -28,7 +28,7 @@ private:
 
     friend class GPipeline;
     friend class GDynamicEngine;
-    friend class UAllocator;
+    friend class CAllocator;
 };
 
 CGRAPH_NAMESPACE_END

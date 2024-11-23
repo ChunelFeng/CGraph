@@ -46,7 +46,7 @@ public:
                      ? CStatus() : CStatus("create topic [" + topic + "] duplicate");
         } else {
             // 创建一个 topic信息
-            auto message = UAllocator::safeMallocTemplateCObject<GMessage<TImpl>>(size);
+            auto message = CAllocator::safeMallocTemplateCObject<GMessage<TImpl>>(size);
             send_recv_message_map_.insert(std::pair<const std::string&, GMessagePtr<T> >(innerTopic, GMessagePtr<T>(message)));
         }
 
@@ -196,7 +196,7 @@ public:
         auto innerTopic = internal::PUB_SUB_PREFIX + topic;
 
         CGRAPH_LOCK_GUARD lk(pub_sub_mutex_);
-        auto message = UAllocator::safeMallocTemplateCObject<GMessage<TImpl>>(size);
+        auto message = CAllocator::safeMallocTemplateCObject<GMessage<TImpl>>(size);
         CIndex connId = (++cur_conn_id_);
         auto result = pub_sub_message_map_.find(innerTopic);
         if (result != pub_sub_message_map_.end()) {

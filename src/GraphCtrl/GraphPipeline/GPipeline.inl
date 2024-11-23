@@ -217,7 +217,7 @@ GPipelinePtr GPipeline::addGDaemon(CMSec ms, Args&&... args) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_, daemon_manager_)
 
-    auto daemon = UAllocator::safeMallocTemplateCObject<TDaemon>(std::forward<Args &&>(args)...);
+    auto daemon = CAllocator::safeMallocTemplateCObject<TDaemon>(std::forward<Args &&>(args)...);
     daemon->setInterval(ms);
     daemon->setGParamManager(this->param_manager_);
     daemon->setGEventManager(this->event_manager_);

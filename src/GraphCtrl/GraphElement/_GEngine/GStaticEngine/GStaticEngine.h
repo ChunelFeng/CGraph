@@ -24,7 +24,7 @@ protected:
 private:
     GElementPtrMat2D element_mat_ {};        // 解图后的elements信息
 
-    friend class UAllocator;
+    friend class CAllocator;
     friend class GElementManager;
 };
 

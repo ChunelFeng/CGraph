@@ -46,7 +46,7 @@ CStatus GPerf::inject(GPipelinePtr pipeline) {
          * 给其中的每个element，都添加这个切面信息
          * 这里是不需要考虑 delete perf_info_的，因为在 element结束的时候，会自动释放
          */
-        cur->perf_info_ = UAllocator::safeMallocCStruct<GPerfInfo>();
+        cur->perf_info_ = CAllocator::safeMallocCStruct<GPerfInfo>();
         cur->addGAspect<GPerfAspect<CFMSec, GPerfInfoPtr>>(now, cur->perf_info_);
     }
     CGRAPH_FUNCTION_END

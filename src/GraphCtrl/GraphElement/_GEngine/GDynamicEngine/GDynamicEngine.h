@@ -89,7 +89,7 @@ private:
     std::condition_variable cv_;
     std::mutex status_lock_;
 
-    friend class UAllocator;
+    friend class CAllocator;
 };
 
 CGRAPH_NAMESPACE_END

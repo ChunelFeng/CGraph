@@ -39,7 +39,7 @@ GElementPtr GElement::addGAspect(Args... args) {
         aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager)
     }
 
-    auto aspect = UAllocator::safeMallocTemplateCObject<TAspect>(std::forward<Args>(args)...);
+    auto aspect = CAllocator::safeMallocTemplateCObject<TAspect>(std::forward<Args>(args)...);
     aspect->setBelong(this);
     aspect_manager_->add(aspect);
     return this;

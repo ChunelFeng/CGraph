@@ -46,7 +46,7 @@ private:
     CFMSec cur_start_ts_ = 0.0;                       // 当前element开始运行的时间
     GPerfInfoPtr perf_info_ = nullptr;                // 具体赋值的对象
 
-    friend class UAllocator;
+    friend class CAllocator;
 };
 
 CGRAPH_NAMESPACE_END

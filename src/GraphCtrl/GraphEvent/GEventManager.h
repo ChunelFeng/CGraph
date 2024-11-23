@@ -71,7 +71,7 @@ protected:
 private:
     std::unordered_map<std::string, GEventPtr> events_map_;    // event 管理类
 
-    friend class UAllocator;
+    friend class CAllocator;
     friend class GPipeline;
 };
 

@@ -19,5 +19,6 @@
 #include "CStdEx.h"
 #include "CDescInfo.h"
 #include "CStruct.h"
+#include "CAllocator.h"
 
 #endif //CGRAPH_CBASICINCLUDE_H

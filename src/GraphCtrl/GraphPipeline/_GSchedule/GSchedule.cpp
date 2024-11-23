@@ -19,7 +19,7 @@ CStatus GSchedule::init() {
          * 如果是 shared 的数据，则不做任何操作
          */
         CGRAPH_DELETE_PTR(unique_tp_)
-        unique_tp_ = UAllocator::safeMallocTemplateCObject<UThreadPool>(true, config_);
+        unique_tp_ = CAllocator::safeMallocTemplateCObject<UThreadPool>(true, config_);
     } else if (internal::GScheduleType::SHARED == type_) {
         CGRAPH_ASSERT_NOT_NULL(shared_tp_)
         // 首先，要确定外部传入的线程池，已经初始化过了

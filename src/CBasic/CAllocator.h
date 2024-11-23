@@ -1,26 +1,26 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: UAllocator.h
-@Time: 2021/10/28 9:15 下午
+@File: CAllocator.h
+@Time: 2024/11/23 21:54
 @Desc: 
 ***************************/
 
-#ifndef CGRAPH_UALLOCATOR_H
-#define CGRAPH_UALLOCATOR_H
+#ifndef CGRAPH_CALLOCATOR_H
+#define CGRAPH_CALLOCATOR_H
+
 
 #include <new>
 #include <mutex>
 #include <memory>
 
-#include "../CBasic/CBasicInclude.h"
+#include "CObject.h"
+#include "CStruct.h"
+#include "CStdEx.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-/**
- * 仅用于生成CObject类型的类
- */
-class UAllocator : public CObject {
+class CAllocator {
 public:
     /**
      * 生成一个 CObject 对象
@@ -90,11 +90,12 @@ private:
 
 
 #define CGRAPH_SAFE_MALLOC_COBJECT(Type)                         \
-    UAllocator::safeMallocCObject<Type>();                       \
+    CAllocator::safeMallocCObject<Type>();                       \
 
 #define CGRAPH_MAKE_UNIQUE_COBJECT(Type)                         \
-    UAllocator::makeUniqueCObject<Type>();                       \
+    CAllocator::makeUniqueCObject<Type>();                       \
 
 CGRAPH_NAMESPACE_END
 
-#endif //CGRAPH_UALLOCATOR_H
+
+#endif //CGRAPH_CALLOCATOR_H

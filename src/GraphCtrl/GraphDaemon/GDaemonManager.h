@@ -34,7 +34,7 @@ protected:
     CSize getSize() const final;
 
     friend class GPipeline;
-    friend class UAllocator;
+    friend class CAllocator;
     CGRAPH_NO_ALLOWED_COPY(GDaemonManager)
 
 private:

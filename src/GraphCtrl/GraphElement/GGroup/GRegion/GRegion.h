@@ -56,7 +56,7 @@ private:
     CGRAPH_NO_ALLOWED_COPY(GRegion)
 
     friend class GPipeline;
-    friend class UAllocator;
+    friend class CAllocator;
     friend class GTrimOptimizer;
 };
 

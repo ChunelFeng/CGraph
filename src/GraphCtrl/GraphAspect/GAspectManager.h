@@ -53,7 +53,7 @@ private:
     GAspectPtrArr aspect_arr_;     // 存储aspect的容器
 
     friend class GElement;
-    friend class UAllocator;
+    friend class CAllocator;
 };
 
 using GAspectManagerPtr = GAspectManager *;

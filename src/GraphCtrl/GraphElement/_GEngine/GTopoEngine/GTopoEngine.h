@@ -27,7 +27,7 @@ protected:
 private:
     GElementPtrArr topo_elements_ {};       // 拓扑排序后的
 
-    friend class UAllocator;
+    friend class CAllocator;
     friend class GElementManager;
 };
 

@@ -19,7 +19,6 @@
     #endif
 
 #include "../CBasic/CBasicInclude.h"
-#include "UAllocator.h"
 #include "UtilsFunction.h"
 
 CGRAPH_NAMESPACE_BEGIN

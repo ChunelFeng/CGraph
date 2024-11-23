@@ -296,7 +296,7 @@ private:
     std::vector<CInt> steal_targets_;                              // 被偷的目标信息
 
     friend class UThreadPool;
-    friend class UAllocator;
+    friend class CAllocator;
 };
 
 using UThreadPrimaryPtr = UThreadPrimary *;
