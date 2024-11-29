@@ -47,6 +47,8 @@ CStatus GGroup::addElement(GElementPtr element) {
     CGRAPH_ASSERT_NOT_NULL(element)
 
     this->group_elements_arr_.emplace_back(element);
+    element->belong_ = this;
+    element->addManagers(param_manager_, event_manager_);
     CGRAPH_FUNCTION_END
 }
 

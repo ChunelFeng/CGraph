@@ -64,6 +64,7 @@ CStatus GRegion::addElement(GElementPtr element) {
     CGRAPH_ASSERT_NOT_NULL(element, manager_)
 
     manager_->manager_elements_.emplace(element);
+    status = GGroup::addElement(element);
     CGRAPH_FUNCTION_END
 }
 

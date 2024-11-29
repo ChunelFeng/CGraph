@@ -159,7 +159,6 @@ TGroup* GPipeline::createGGroup(const GElementPtrArr &elements,
     auto* group = CGRAPH_SAFE_MALLOC_COBJECT(TGroup)
     for (GElementPtr element : elements) {
         status += group->addElement(element);
-        element->belong_ = group;    // 从属于这个group的信息
     }
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
