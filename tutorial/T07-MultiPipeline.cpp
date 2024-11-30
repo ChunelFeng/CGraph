@@ -11,41 +11,30 @@
 
 using namespace CGraph;
 
-void tutorial_pipeline_1(GPipelinePtr pipeline_1) {
-    if (nullptr == pipeline_1) {
-        return;
-    }
-
+std::future<CStatus> async_pipeline_1(GPipelinePtr pipeline_1) {
     GElementPtr node1A, node1B, node1C = nullptr;
 
     pipeline_1->registerGElement<MyNode1>(&node1A, {}, "node1A");
     pipeline_1->registerGElement<MyNode1>(&node1B, {node1A}, "node1B");
     pipeline_1->registerGElement<MyNode1>(&node1C, {node1B}, "node1C");
 
-    pipeline_1->process(5);    // 执行n次，本例中 n=5
+    // 异步执行
+    return pipeline_1->asyncProcess(5);
 }
 
 
-void tutorial_pipeline_2(GPipelinePtr pipeline_2) {
-    if (nullptr == pipeline_2) {
-        return;
-    }
-
+std::future<CStatus>  async_pipeline_2(GPipelinePtr pipeline_2) {
     GElementPtr node2A, node2B, node2C = nullptr;
 
     pipeline_2->registerGElement<MyNode2>(&node2A, {}, "node2A");
     pipeline_2->registerGElement<MyNode2>(&node2B, {node2A}, "node2B");
     pipeline_2->registerGElement<MyNode2>(&node2C, {node2A}, "node2C");
 
-    pipeline_2->process(3);
+    return pipeline_2->asyncProcess(3);
 }
 
 
-void tutorial_pipeline_3(GPipelinePtr pipeline_3) {
-    if (nullptr == pipeline_3) {
-        return;
-    }
-
+std::future<CStatus> async_pipeline_3(GPipelinePtr pipeline_3) {
     CStatus status;
     GElementPtr node3A, node3B, node3C, node3D = nullptr;
     GElementPtr region = nullptr;
@@ -58,7 +47,7 @@ void tutorial_pipeline_3(GPipelinePtr pipeline_3) {
     region = pipeline_3->createGGroup<GRegion>({node3A, node3B, node3C, node3D});
 
     pipeline_3->registerGElement<GRegion>(&region);
-    pipeline_3->process(2);
+    return pipeline_3->asyncProcess(2);
 }
 
 
@@ -89,13 +78,13 @@ void tutorial_multi_pipeline() {
      * 经过上述的设置，pipeline1 和 pipeline2 共享同一个线程池，去调度其中的dag逻辑
      * pipeline3 没有设定，故使用自带的默认线程池完成自己的调度逻辑
      */
-    std::thread thd1 = std::thread(tutorial_pipeline_1, pipeline_1);
-    std::thread thd2 = std::thread(tutorial_pipeline_2, pipeline_2);
-    std::thread thd3 = std::thread(tutorial_pipeline_3, pipeline_3);
+    auto result1 = async_pipeline_1(pipeline_1);
+    auto result2 = async_pipeline_2(pipeline_2);
+    auto result3 = async_pipeline_3(pipeline_3);
 
-    thd1.join();
-    thd2.join();
-    thd3.join();
+    result1.wait();
+    result2.wait();
+    result3.wait();
 
     GPipelineFactory::clear();
 }
