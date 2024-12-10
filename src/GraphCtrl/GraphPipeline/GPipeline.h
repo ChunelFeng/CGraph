@@ -13,6 +13,7 @@
 #include <memory>
 #include <list>
 #include <thread>
+#include <future>
 #include <sstream>
 
 #include "GPipelineObject.h"
@@ -41,16 +42,19 @@ public:
 
     /**
      * 异步执行pipeline的run流程
+     * @param policy
      * @return
      */
-    std::future<CStatus> asyncRun();
+    std::future<CStatus> asyncRun(std::launch policy = std::launch::any);
 
     /**
      * 异步执行pipeline的全部流程
      * @param runTimes
+     * @param policy
      * @return
      */
-    std::future<CStatus> asyncProcess(CSize runTimes = CGRAPH_DEFAULT_LOOP_TIMES);
+    std::future<CStatus> asyncProcess(CSize runTimes = CGRAPH_DEFAULT_LOOP_TIMES,
+                                      std::launch policy = std::launch::any);
 
     /**
      * 停止执行流程，多用于异步执行流程中

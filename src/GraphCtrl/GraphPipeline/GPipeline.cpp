@@ -151,23 +151,23 @@ CStatus GPipeline::registerGGroup(GElementPPtr groupRef, const GElementPtrSet &d
 }
 
 
-std::future<CStatus> GPipeline::asyncRun() {
+std::future<CStatus> GPipeline::asyncRun(std::launch policy) {
     /**
      * 1. 确认当前pipeline已经初始化完毕
      * 2. 异步的执行 run() 方法，并且返回执行结果的 future 信息
      */
     CGRAPH_ASSERT_INIT_THROW_ERROR(true)
 
-    return std::async(std::launch::async, [this] {
+    return std::async(policy, [this] {
         return run();
     });
 }
 
 
-std::future<CStatus> GPipeline::asyncProcess(CSize runTimes) {
+std::future<CStatus> GPipeline::asyncProcess(CSize runTimes, std::launch policy) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
-    return std::async(std::launch::async, [runTimes, this] {
+    return std::async(policy, [runTimes, this] {
         return process(runTimes);
     });
 }
