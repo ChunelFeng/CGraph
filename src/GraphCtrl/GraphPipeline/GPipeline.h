@@ -45,7 +45,7 @@ public:
      * @param policy
      * @return
      */
-    std::future<CStatus> asyncRun(std::launch policy = std::launch::any);
+    std::future<CStatus> asyncRun(std::launch policy = std::launch::async);
 
     /**
      * 异步执行pipeline的全部流程
@@ -54,7 +54,7 @@ public:
      * @return
      */
     std::future<CStatus> asyncProcess(CSize runTimes = CGRAPH_DEFAULT_LOOP_TIMES,
-                                      std::launch policy = std::launch::any);
+                                      std::launch policy = std::launch::async);
 
     /**
      * 停止执行流程，多用于异步执行流程中
