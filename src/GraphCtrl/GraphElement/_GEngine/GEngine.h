@@ -63,7 +63,7 @@ protected:
         std::queue<GElementPtr> readyQueue;
         for (auto* element : elements) {
             element->left_depend_ = element->dependence_.size();
-            if (0 == element->left_depend_) {
+            if (0 == element->left_depend_.load()) {
                 readyQueue.push(element);
             }
         }
