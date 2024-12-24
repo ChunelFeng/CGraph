@@ -310,10 +310,12 @@ private:
      * 设置manager信息
      * @param paramManager
      * @param eventManager
+     * @param stageManager
      * @return
      */
     virtual CStatus addManagers(GParamManagerPtr paramManager,
-                                GEventManagerPtr eventManager);
+                                GEventManagerPtr eventManager,
+                                GStageManagerPtr stageManager);
 
     /**
      * 包含切面相关功能的函数，fat取自fatjar的意思
@@ -481,6 +483,7 @@ private:
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER_WITH_MEMBER
     CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER_WITH_MEMBER
+    CGRAPH_DECLARE_STAGE_MANAGER_WRAPPER_WITH_MEMBER
 };
 
 using GElementRef = GElement &;

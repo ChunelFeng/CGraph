@@ -13,6 +13,7 @@
 #include "../GraphParam/GParamInclude.h"
 #include "../GraphAspect/GAspectInclude.h"
 #include "../GraphEvent/GEventInclude.h"
+#include "../GraphStage/GStageInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 

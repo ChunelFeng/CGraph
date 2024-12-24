@@ -106,16 +106,18 @@ CBool GRegion::isSerializable() const {
 
 
 CStatus GRegion::addManagers(GParamManagerPtr paramManager,
-                             GEventManagerPtr eventManager) {
+                             GEventManagerPtr eventManager,
+                             GStageManagerPtr stageManager) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
-    CGRAPH_ASSERT_NOT_NULL(paramManager, eventManager)
+    CGRAPH_ASSERT_NOT_NULL(paramManager, eventManager, stageManager)
 
     this->setGParamManager(paramManager);
     this->setGEventManager(eventManager);
+    this->setGStageManager(stageManager);
     for (auto* cur : manager_->manager_elements_) {
         CGRAPH_ASSERT_NOT_NULL(cur)
-        status += cur->addManagers(paramManager, eventManager);
+        status += cur->addManagers(paramManager, eventManager, stageManager);
     }
 
     CGRAPH_FUNCTION_END

@@ -29,6 +29,7 @@ set(CGRAPH_TUTORIAL_LIST
          T25-Coordinator
          T26-Mutable
          T27-Trim
+         T28-Stage
         )
 
 

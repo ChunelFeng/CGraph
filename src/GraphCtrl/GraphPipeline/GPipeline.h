@@ -21,6 +21,7 @@
 #include "../GraphElement/GElementInclude.h"
 #include "../GraphDaemon/GDaemonInclude.h"
 #include "../GraphEvent/GEventInclude.h"
+#include "../GraphStage/GStageInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -322,6 +323,14 @@ public:
     GPipeline* addGEvent(const std::string& key, TParam* param = nullptr);
 
     /**
+     * 添加一个阶段
+     * @param key
+     * @param threshold
+     * @return
+     */
+    GPipeline* addGStage(const std::string& key, CInt threshold);
+
+    /**
      * 设置引擎策略
      * @param type
      * @return
@@ -414,6 +423,7 @@ private:
     GParamManagerPtr param_manager_ = nullptr;                  // 参数管理类
     GDaemonManagerPtr daemon_manager_ = nullptr;                // 守护管理类
     GEventManagerPtr event_manager_ = nullptr;                  // 事件管理类
+    GStageManagerPtr stage_manager_ = nullptr;                  // 阶段管理类
 
     GSchedule schedule_;                                        // 调度管理类
     GElementRepository repository_;                             // 记录创建的所有element的仓库

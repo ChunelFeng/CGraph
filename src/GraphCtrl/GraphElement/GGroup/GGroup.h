@@ -32,7 +32,8 @@ private:
     explicit GGroup();
 
     CStatus addManagers(GParamManagerPtr paramManager,
-                        GEventManagerPtr eventManager) override;
+                        GEventManagerPtr eventManager,
+                        GStageManagerPtr stageManager) override;
 
     CStatus init() override;
 

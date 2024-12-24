@@ -46,7 +46,8 @@ private:
     CBool isSerializable() const final;
 
     CStatus addManagers(GParamManagerPtr paramManager,
-                        GEventManagerPtr eventManager) final;
+                        GEventManagerPtr eventManager,
+                        GStageManagerPtr stageManager) final;
 
     CBool isSeparate(GElementCPtr a, GElementCPtr b) const final;
 

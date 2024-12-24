@@ -18,6 +18,7 @@ GPipeline::GPipeline() {
     param_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GParamManager)
     daemon_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GDaemonManager)
     event_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GEventManager)
+    stage_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GStageManager)
 }
 
 
@@ -27,13 +28,14 @@ GPipeline::~GPipeline() {
     CGRAPH_DELETE_PTR(element_manager_)
     CGRAPH_DELETE_PTR(param_manager_)
     CGRAPH_DELETE_PTR(event_manager_)
+    CGRAPH_DELETE_PTR(stage_manager_)
 }
 
 
 CStatus GPipeline::init() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)    // 必须是非初始化的状态下，才可以初始化。反之同理
-    CGRAPH_ASSERT_NOT_NULL(element_manager_, param_manager_, daemon_manager_, event_manager_)
+    CGRAPH_ASSERT_NOT_NULL(element_manager_, param_manager_, daemon_manager_, event_manager_, stage_manager_)
 
     status += initEnv();
     CGRAPH_FUNCTION_CHECK_STATUS
@@ -41,6 +43,7 @@ CStatus GPipeline::init() {
     status += param_manager_->init();
     status += event_manager_->init();
     status += element_manager_->init();
+    status += stage_manager_->init();
     status += daemon_manager_->init();    // daemon的初始化，需要晚于所有element的初始化
     CGRAPH_FUNCTION_CHECK_STATUS
 
@@ -90,6 +93,7 @@ CStatus GPipeline::destroy() {
     status += event_manager_->destroy();
     status += daemon_manager_->destroy();
     status += element_manager_->destroy();
+    status += stage_manager_->destroy();
     status += param_manager_->destroy();
     CGRAPH_FUNCTION_CHECK_STATUS
 
@@ -220,6 +224,16 @@ CStatus GPipeline::perf(std::ostream& oss) {
 }
 
 
+GPipelinePtr GPipeline::addGStage(const std::string& key, CInt threshold) {
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(stage_manager_)
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION(threshold <= 0, "threshold value must bigger than 0")
+
+    stage_manager_->create(key, threshold);
+    return this;
+}
+
+
 GPipelinePtr GPipeline::setGEngineType(GEngineType type) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element_manager_)
@@ -345,7 +359,7 @@ CStatus GPipeline::innerRegister(GElementPtr element, const GElementPtrSet &depe
     status = element->addElementInfo(depends, curName, loop);
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    status = element->addManagers(param_manager_, event_manager_);
+    status = element->addManagers(param_manager_, event_manager_, stage_manager_);
     CGRAPH_FUNCTION_CHECK_STATUS
     status = element_manager_->add(element);
     CGRAPH_FUNCTION_CHECK_STATUS

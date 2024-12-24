@@ -190,13 +190,16 @@ CStatus GElement::addElementInfo(const GElementPtrSet& depends,
 }
 
 
-CStatus GElement::addManagers(GParamManagerPtr paramManager, GEventManagerPtr eventManager) {
+CStatus GElement::addManagers(GParamManagerPtr paramManager,
+                              GEventManagerPtr eventManager,
+                              GStageManagerPtr stageManager) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
-    CGRAPH_ASSERT_NOT_NULL(paramManager, eventManager)
+    CGRAPH_ASSERT_NOT_NULL(paramManager, eventManager, stageManager)
 
     this->setGParamManager(paramManager);
     this->setGEventManager(eventManager);
+    this->setGStageManager(stageManager);
     if (aspect_manager_) {
         aspect_manager_->setGParamManager(paramManager);
         aspect_manager_->setGEventManager(eventManager);

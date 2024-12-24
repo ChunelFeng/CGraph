@@ -48,7 +48,7 @@ CStatus GGroup::addElement(GElementPtr element) {
 
     this->group_elements_arr_.emplace_back(element);
     element->belong_ = this;
-    element->addManagers(param_manager_, event_manager_);
+    element->addManagers(param_manager_, event_manager_, stage_manager_);
     CGRAPH_FUNCTION_END
 }
 
@@ -92,16 +92,18 @@ CBool GGroup::isSerializable() const {
 
 
 CStatus GGroup::addManagers(GParamManagerPtr paramManager,
-                            GEventManagerPtr eventManager) {
+                            GEventManagerPtr eventManager,
+                            GStageManagerPtr stageManager) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(paramManager, eventManager)
     CGRAPH_ASSERT_INIT(false)
 
     this->setGParamManager(paramManager);
     this->setGEventManager(eventManager);
+    this->setGStageManager(stageManager);
     for (GElementPtr element : group_elements_arr_) {
         CGRAPH_ASSERT_NOT_NULL(element)
-        status += element->addManagers(paramManager, eventManager);
+        status += element->addManagers(paramManager, eventManager, stageManager);
     }
 
     CGRAPH_FUNCTION_END

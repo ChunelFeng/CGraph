@@ -26,7 +26,8 @@ private:
                            const std::string &name, CSize loop) final;
 
     CStatus addManagers(GParamManagerPtr paramManager,
-                        GEventManagerPtr eventManager) final;
+                        GEventManagerPtr eventManager,
+                        GStageManagerPtr stageManager) final;
 
     CBool isHold() final;
 

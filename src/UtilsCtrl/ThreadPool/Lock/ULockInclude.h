@@ -10,5 +10,6 @@
 #define CGRAPH_ULOCKINCLUDE_H
 
 #include "USpinLock.h"
+#include "UCvMutex.h"
 
 #endif //CGRAPH_ULOCKINCLUDE_H

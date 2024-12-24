@@ -348,6 +348,10 @@ int main() {
 * 修复辅助线程异常等待问题
 * 更新`tutorial`内容
 
+[2024.12.24 - v2.7.0 - Chunel]
+* 提供`stage`(阶段)功能，用于`element`之间同步运行
+* 更新`tutorial`内容
+
 </details>
 
 ------------
