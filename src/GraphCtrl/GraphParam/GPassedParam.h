@@ -34,11 +34,13 @@ using GAspectParam = GPassedParam;
 using GDaemonParam = GPassedParam;
 using GElementParam = GPassedParam;
 using GEventParam = GPassedParam;
+using GStageParam = GPassedParam;
 using GPassedParamPtr = GPassedParam *;
 using GAspectParamPtr = GAspectParam *;
 using GDaemonParamPtr = GDaemonParam *;
 using GElementParamPtr = GElementParam *;
 using GEventParamPtr = GEventParam *;
+using GStageParamPtr = GStageParam *;
 
 using GElementParamMap = std::unordered_map<std::string, GElementParamPtr>;
 

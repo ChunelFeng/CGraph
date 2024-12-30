@@ -25,7 +25,7 @@ void tutorial_stage() {
      * 添加一个 stage 信息，遇到 3次的时候，会通知触发结束
      * 正好对应上面三个 MyStageNode 的逻辑
      */
-    pipeline->addGStage(kStageKey, 3);
+    pipeline->addGStage<GStage>(kStageKey, 3);
 
     pipeline->process();
     GPipelineFactory::remove(pipeline);

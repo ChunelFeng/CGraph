@@ -27,6 +27,7 @@ protected:
 using GAspectDefaultParam = GPassedDefaultParam;
 using GDaemonDefaultParam = GPassedDefaultParam;
 using GEventDefaultParam = GPassedDefaultParam;
+using GStageDefaultParam = GPassedDefaultParam;
 
 CGRAPH_NAMESPACE_END
 

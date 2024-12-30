@@ -224,15 +224,6 @@ CStatus GPipeline::perf(std::ostream& oss) {
 }
 
 
-GPipelinePtr GPipeline::addGStage(const std::string& key, CInt threshold) {
-    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
-    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(stage_manager_)
-    CGRAPH_THROW_EXCEPTION_BY_CONDITION(threshold <= 0, "threshold value must bigger than 0")
-
-    stage_manager_->create(key, threshold);
-    return this;
-}
-
 
 GPipelinePtr GPipeline::setGEngineType(GEngineType type) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)

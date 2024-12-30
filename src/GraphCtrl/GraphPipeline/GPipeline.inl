@@ -242,6 +242,20 @@ GPipelinePtr GPipeline::addGEvent(const std::string& key, TParam* param) {
     return this;
 }
 
+
+template<typename TStage, typename TParam,
+        c_enable_if_t<std::is_base_of<GStage, TStage>::value, int>,
+        c_enable_if_t<std::is_base_of<GStageParam, TParam>::value, int>>
+GPipelinePtr GPipeline::addGStage(const std::string& key, CInt threshold, TParam* param) {
+    CGRAPH_ASSERT_INIT_THROW_ERROR(false)
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(stage_manager_, param_manager_)
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION(threshold <= 0, "threshold value must bigger than 0")
+
+    stage_manager_->setGParamManager(param_manager_);
+    stage_manager_->create<TStage, TParam>(key, threshold, param);
+    return this;
+}
+
 CGRAPH_NAMESPACE_END
 
 #endif //CGRAPH_GPIPELINE_INL

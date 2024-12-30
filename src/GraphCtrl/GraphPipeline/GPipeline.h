@@ -324,11 +324,17 @@ public:
 
     /**
      * 添加一个阶段
+     * @tparam TStage
+     * @tparam TParam
      * @param key
      * @param threshold
+     * @param param
      * @return
      */
-    GPipeline* addGStage(const std::string& key, CInt threshold);
+    template<typename TStage, typename TParam = GStageDefaultParam,
+            c_enable_if_t<std::is_base_of<GStage, TStage>::value, int> = 0,
+            c_enable_if_t<std::is_base_of<GStageParam, TParam>::value, int> = 0>
+    GPipeline* addGStage(const std::string& key, CInt threshold, TParam* param = nullptr);
 
     /**
      * 设置引擎策略

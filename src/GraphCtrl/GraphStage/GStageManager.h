@@ -52,14 +52,22 @@ protected:
 
     /**
      * 创建 stage 信息
+     * @tparam TStage
+     * @tparam TParam
      * @param key
      * @param threshold
+     * @param param
      * @return
      */
-    CStatus create(const std::string& key, CInt threshold) {
+    template<typename TStage, typename TParam = GStageDefaultParam,
+            c_enable_if_t<std::is_base_of<GStage, TStage>::value, int> = 0,
+            c_enable_if_t<std::is_base_of<GStageParam, TParam>::value, int> = 0>
+    CStatus create(const std::string& key, CInt threshold, TParam* param) {
         CGRAPH_FUNCTION_BEGIN
-        auto stage = CGRAPH_SAFE_MALLOC_COBJECT(GStage);
+        GStagePtr stage = CGRAPH_SAFE_MALLOC_COBJECT(TStage);
         stage->setThreshold(threshold);
+        stage->setSParam(param);
+        stage->setGParamManager(param_manager_);
         stage_map_.insert(std::pair<std::string, GStagePtr>(key, stage));
         CGRAPH_FUNCTION_END
     }
@@ -77,6 +85,8 @@ protected:
         iter->second->waiting();
         CGRAPH_FUNCTION_END
     }
+
+    CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER_WITH_MEMBER
 
 private:
     std::unordered_map<std::string, GStagePtr> stage_map_ {};    // stage 集合

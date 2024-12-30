@@ -12,10 +12,12 @@
 #include <atomic>
 
 #include "../GraphObject.h"
+#include "../GraphParam/GParamInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-class GStageObject : public GraphObject {
+class GStageObject : public GraphObject,
+                     public CDescInfo {
 private:
     CStatus run() final {
         CGRAPH_NO_SUPPORT

@@ -18,44 +18,50 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class GStage : public GStageObject {
-private:
-    GStage() = default;
+protected:
+    /**
+     * stage 解开的时候进入的函数
+     * @param param
+     * @return
+     */
+    virtual CVoid launch(GStageParamPtr param);
 
+protected:
+    GStage();
+    ~GStage() override;
+
+private:
     /**
      * 设置阈值信息
      * @param threshold
      * @return
      */
-    GStage* setThreshold(CInt threshold) {
-        threshold_ = threshold;
-        return this;
-    }
+    GStage* setThreshold(CInt threshold);
+
+    /**
+     * 设置参数信息
+     * @tparam T
+     * @param param
+     * @return
+     */
+    template <typename T,
+            c_enable_if_t<std::is_base_of<GStageParam, T>::value, int> = 0>
+    GStage* setSParam(T* param);
 
     /**
      * 进入等待区域
      * @return
      */
-    CVoid waiting() {
-        {
-            CGRAPH_LOCK_GUARD wm(waiting_mutex_);
-            cur_value_++;
-            if (cur_value_ >= threshold_) {
-                // 如果超过了 threshold，则打开全部
-                cur_value_ = 0;
-                locker_.cv_.notify_all();
-                return;
-            }
-        }
+    CVoid waiting();
 
-        CGRAPH_UNIQUE_LOCK lk(locker_.mtx_);
-        locker_.cv_.wait(lk, [this] {
-            return 0 == cur_value_ || cur_value_ >= threshold_;
-        });
-    }
+    CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER_WITH_MEMBER
+
+    CGRAPH_NO_ALLOWED_COPY(GStage)
 
 private:
-    CInt threshold_ { 0 };         // 阈值信息
-    CInt cur_value_ { 0 };         // 当前值
+    CInt threshold_ { 0 };                // 阈值信息
+    CInt cur_value_ { 0 };                // 当前值
+    GStageParamPtr param_ { nullptr };    // 参数信息
     UCvMutex locker_;
     std::mutex waiting_mutex_;
 
@@ -66,5 +72,7 @@ private:
 using GStagePtr = GStage *;
 
 CGRAPH_NAMESPACE_END
+
+#include "GStage.inl"
 
 #endif //CGRAPH_GSTAGE_H
