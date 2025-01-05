@@ -30,25 +30,33 @@ protected:
     virtual CStatus setup(const GSortedGElementPtrSet& elements) = 0;
 
     /**
-     * 分析所有的可以设置 linkable 的数据
+     * 分析当前的element的形状
      * @param elements
      * @return
      */
-    CVoid link(const GSortedGElementPtrSet& elements) {
+    CVoid calcShape(const GSortedGElementPtrSet& elements) {
         /**
-         * 认定图可以连通的判定条件：
-         * 1，当前元素仅有一个后继
-         * 2，当前元素的唯一后继，仅有一个前驱
-         * 3，前后元素绑定机制是一样的
+         * 认定LINKABLE的判定条件：
+         *   1，当前元素仅有一个后继
+         *   2，当前元素的唯一后继，仅有一个前驱
+         *   3，前后元素绑定机制是一样的
+         * 认定ROOT的判断条件：
+         *   1，有后继，且不是LINKABLE
+         *   2，所有的后继仅有当前一个前驱
          */
         linked_size_ = 0;
         for (GElementPtr element : elements) {
-            element->shape_ = internal::GElementShape::NORMAL;
             if (1 == element->run_before_.size()
                 && 1 == (*element->run_before_.begin())->dependence_.size()
                 && element->binding_index_ == (*(element->run_before_.begin()))->binding_index_) {
                 element->shape_ = internal::GElementShape::LINKABLE;
                 linked_size_++;
+            } else if (!element->run_before_.empty()
+                       && std::all_of(element->run_before_.begin(), element->run_before_.end(),
+                                      [](GElementPtr ptr) { return 1 == ptr->dependence_.size();})) {
+                element->shape_ = internal::GElementShape::ROOT;
+            } else {
+                element->shape_ = internal::GElementShape::NORMAL;
             }
         }
     }

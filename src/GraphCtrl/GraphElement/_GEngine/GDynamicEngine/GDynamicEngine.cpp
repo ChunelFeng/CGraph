@@ -15,13 +15,13 @@ CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
     /**
      * 1. 判断是否是 dag 结构
      * 2. 标记数据，比如有多少个结束element等
-     * 3. 标记哪些数据，是linkable 的
+     * 3. 计算element的结构类型
      * 4. 分析当前dag类型信息
      */
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!GEngine::isDag(elements),
                                             "it is not a dag struct");
     mark(elements);
-    link(elements);
+    calcShape(elements);
     analysisDagType(elements);
     CGRAPH_FUNCTION_END
 }
@@ -125,8 +125,11 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     element->done_ = true;
     if (!element->run_before_.empty() && cur_status_.isOK()) {
         if (internal::GElementShape::LINKABLE == element->shape_) {
-            // 针对linkable 的情况，做特殊判定
             process(*(element->run_before_.begin()), true);
+        } else if (internal::GElementShape::ROOT == element->shape_) {
+            for (CSize i = 0; i < element->run_before_.size(); i++) {
+                process(element->run_before_[i], i == element->run_before_.size() - 1);
+            }
         } else {
             GElementPtr reserved = nullptr;
             for (auto* cur : element->run_before_) {
