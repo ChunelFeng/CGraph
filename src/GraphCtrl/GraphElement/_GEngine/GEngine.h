@@ -46,13 +46,15 @@ protected:
          */
         linked_size_ = 0;
         for (GElementPtr element : elements) {
-            if (1 == element->run_before_.size()
-                && 1 == (*element->run_before_.begin())->dependence_.size()
-                && element->binding_index_ == (*(element->run_before_.begin()))->binding_index_) {
+            // USmallVector 在linux 上不支持 std::all_of 的方法，故做此兼容改动
+            const auto& succession = element->run_before_.asVector();
+            if (1 == succession.size()
+                && 1 == (*succession.begin())->dependence_.size()
+                && element->binding_index_ == (*(succession.begin()))->binding_index_) {
                 element->shape_ = internal::GElementShape::LINKABLE;
                 linked_size_++;
-            } else if (!element->run_before_.empty()
-                       && std::all_of(element->run_before_.begin(), element->run_before_.end(),
+            } else if (!succession.empty()
+                       && std::all_of(succession.begin(), succession.end(),
                                       [](GElementPtr ptr) { return 1 == ptr->dependence_.size();})) {
                 element->shape_ = internal::GElementShape::ROOT;
             } else {
