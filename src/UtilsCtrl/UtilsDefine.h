@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <string>
+#include <type_traits>
 
     #if __cplusplus >= 201703L
 #include <shared_mutex>
@@ -42,16 +43,17 @@ using CGRAPH_UNIQUE_LOCK = std::unique_lock<std::mutex>;
     using CGRAPH_WRITE_LOCK = std::lock_guard<std::recursive_mutex>;
 #endif
 
+
+#define __IS_NULLPTR(t) (unlikely(std::is_pointer<decltype(t)>::value && !(t)))
+
 template<typename T>
 CStatus __ASSERT_NOT_NULL(T t) {
-    return (unlikely(nullptr == t))
-           ? CStatus(CGRAPH_INPUT_IS_NULL)
-           : CStatus();
+    return __IS_NULLPTR(t) ? CStatus(CGRAPH_INPUT_IS_NULL) : CStatus();
 }
 
 template<typename T, typename... Args>
 CStatus __ASSERT_NOT_NULL(T t, Args... args) {
-    if (unlikely(t == nullptr)) {
+    if (__IS_NULLPTR(t)) {
         return __ASSERT_NOT_NULL(t);
     }
 
@@ -60,14 +62,14 @@ CStatus __ASSERT_NOT_NULL(T t, Args... args) {
 
 template<typename T>
 CVoid __ASSERT_NOT_NULL_THROW_EXCEPTION(T t) {
-    if (unlikely(nullptr == t)) {
+    if (__IS_NULLPTR(t)) {
         CGRAPH_THROW_EXCEPTION("[CException] " + std::string(CGRAPH_INPUT_IS_NULL))
     }
 }
 
 template<typename T, typename... Args>
 CVoid __ASSERT_NOT_NULL_THROW_EXCEPTION(T t, Args... args) {
-    if (unlikely(nullptr == t)) {
+    if (__IS_NULLPTR(t)) {
         __ASSERT_NOT_NULL_THROW_EXCEPTION(t);
     }
 
