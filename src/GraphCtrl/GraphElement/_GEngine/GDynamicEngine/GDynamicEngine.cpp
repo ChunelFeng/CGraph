@@ -215,9 +215,9 @@ CVoid GDynamicEngine::parallelRunAll() {
     std::vector<std::future<CStatus>> futures;
     futures.reserve(total_end_size_);
     for (int i = 0; i < total_end_size_; i++) {
-        futures.emplace_back(std::move(thread_pool_->commit([this, i] {
+        futures.emplace_back(thread_pool_->commit([this, i] {
             return total_element_arr_[i]->fatProcessor(CFunctionType::RUN);
-        }, total_element_arr_[i]->binding_index_)));
+        }, total_element_arr_[i]->binding_index_));
     }
 
     for (auto& fut : futures) {
