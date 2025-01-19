@@ -13,7 +13,8 @@ CGRAPH_NAMESPACE_BEGIN
 CStatus GEventManager::init() {
     CGRAPH_FUNCTION_BEGIN
     for (auto& iter : events_map_) {
-        status += (iter.second)->init();
+        // fatInit 中包含了init()，和部分其他逻辑
+        status += (iter.second)->fatInit();
     }
     CGRAPH_FUNCTION_END
 }
@@ -22,7 +23,7 @@ CStatus GEventManager::init() {
 CStatus GEventManager::destroy() {
     CGRAPH_FUNCTION_BEGIN
     for (auto& iter : events_map_) {
-        status += (iter.second)->destroy();
+        status += (iter.second)->fatDestroy();
     }
     CGRAPH_FUNCTION_END
 }

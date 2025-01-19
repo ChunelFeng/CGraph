@@ -20,21 +20,24 @@ GEvent::~GEvent() {
 }
 
 
-CStatus GEvent::init() {
+CStatus GEvent::fatInit() {
     CGRAPH_FUNCTION_BEGIN
     async_run_finish_futures_.clear();
     async_destroy_futures_.clear();
 
+    status = init();
     CGRAPH_FUNCTION_END
 }
 
 
-CStatus GEvent::destroy() {
+CStatus GEvent::fatDestroy() {
     CGRAPH_FUNCTION_BEGIN
 
     asyncWait(GEventAsyncStrategy::PIPELINE_DESTROY);
     async_run_finish_futures_.clear();
     async_destroy_futures_.clear();
+
+    status = destroy();
     CGRAPH_FUNCTION_END
 }
 

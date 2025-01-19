@@ -34,9 +34,17 @@ protected:
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER
 
 private:
-    CStatus init() final;
+    /**
+     * 增强版本init
+     * @return
+     */
+    CStatus fatInit();
 
-    CStatus destroy() final;
+    /**
+     * 增强版本destroy
+     * @return
+     */
+    CStatus fatDestroy();
 
     /**
      * 处理信号事件
