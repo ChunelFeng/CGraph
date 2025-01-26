@@ -10,6 +10,7 @@ namespace py = pybind11;
 PYBIND11_MODULE(pyCGraph, m) {
     py::class_<CStatus>(m, "CStatus")
         .def(py::init<>())
+        .def(py::init<int, const std::string&>())
         .def("getCode", &CStatus::getCode)
         .def("getInfo", &CStatus::getInfo)
         .def("isOK", &CStatus::isOK);
