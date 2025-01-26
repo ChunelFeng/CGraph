@@ -14,3 +14,4 @@
 /bazel-*
 /MODULE.bazel
 /MODULE.bazel.lock
+/python/build

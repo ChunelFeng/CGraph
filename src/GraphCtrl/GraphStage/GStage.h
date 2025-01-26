@@ -27,7 +27,7 @@ protected:
     virtual CVoid launch(GStageParamPtr param);
 
 protected:
-    GStage();
+    explicit GStage();
     ~GStage() override;
 
 private:
