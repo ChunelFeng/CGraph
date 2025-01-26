@@ -403,7 +403,6 @@ protected:
     explicit GPipeline();
     ~GPipeline() override;
 
-private:
     /**
      * 初始化环境信息，包括线程池 等
      * @return
