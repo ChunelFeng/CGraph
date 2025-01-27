@@ -1,5 +1,5 @@
-#ifndef CGRAPH_GELEMENTPY_H
-#define CGRAPH_GELEMENTPY_H
+#ifndef CGRAPH_GELEMENT_PYW_H
+#define CGRAPH_GELEMENT_PYW_H
 
 #include <pybind11/pybind11.h>
 
@@ -14,4 +14,4 @@ protected:
     }
 };
 
-#endif // CGRAPH_GELEMENTPY_H
+#endif // CGRAPH_GELEMENT_PYW_H

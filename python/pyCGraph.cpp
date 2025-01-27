@@ -23,16 +23,30 @@ PYBIND11_MODULE(pyCGraph, m) {
              py::arg("runTimes") = 1)
         .def("destroy", &GPipelinePy::destroy)
         .def("registerGElement", &GPipelinePy::registerGElement,
-             py::arg("element"),
-             py::arg("depends") = GElementPtrSet{},
-             py::arg("name") = CGRAPH_EMPTY,
-             py::arg("loop") = CGRAPH_DEFAULT_LOOP_TIMES,
-             "register a GElement with dependencies, name, and loop count.");
+            py::arg("element"),
+            py::arg("depends") = GElementPtrSet{},
+            py::arg("name") = CGRAPH_EMPTY,
+            py::arg("loop") = CGRAPH_DEFAULT_LOOP_TIMES,
+            "register a GElement with dependencies, name, and loop count.");
 
     py::class_<GElement, GElementPyw, std::unique_ptr<GElement, py::nodelete> >(m, "GElement")
-        .def(py::init<>());
+        .def(py::init<>())
+        .def("getName", &GElement::getName)
+        .def("setName", &GElement::setName)
+        .def("addDependGElements", &GElement::addDependGElements,
+            py::arg("elements"))
+        .def("setLoop", &GElement::setLoop);
 
     py::class_<GNode, GNodePyw, GElement, std::unique_ptr<GNode, py::nodelete> >(m, "GNode")
+        .def(py::init<>());
+
+    py::class_<GRegionPy, GElement, std::unique_ptr<GRegionPy, py::nodelete> >(m, "GRegion")
         .def(py::init<>())
-        .def("getName", &GNode::getName);
+        .def("addGElement", &GRegionPy::addGElement,
+            py::arg("element"));
+
+    py::class_<GConditionPyw, GElement, std::unique_ptr<GConditionPyw, py::nodelete> >(m, "GCondition")
+        .def(py::init<>())
+        .def("addGElement", &GConditionPyw::addGElement,
+            py::arg("element"));
 }

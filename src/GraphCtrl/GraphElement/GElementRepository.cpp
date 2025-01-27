@@ -118,7 +118,7 @@ CStatus GElementRepository::destroy() {
      * 当程序 cancel完成之后，就会重新恢复 CREATE的状态
      * 问题详见: https://github.com/ChunelFeng/CGraph/issues/153
      */
-    status = pushAllState(GElementState::CREATE);
+    status = pushAllState(GElementState::NORMAL);
     CGRAPH_FUNCTION_END
 }
 

@@ -28,9 +28,9 @@ protected:
 
     CBool isSerializable() const override;
 
-private:
     explicit GGroup();
 
+private:
     CStatus addManagers(GParamManagerPtr paramManager,
                         GEventManagerPtr eventManager,
                         GStageManagerPtr stageManager) override;

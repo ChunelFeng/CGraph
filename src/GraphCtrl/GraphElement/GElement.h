@@ -424,7 +424,7 @@ private:
     CBool visible_ { true };                                                  // 判定可见的，如果被删除的话，则认为是不可见的
     CBool is_init_ { false };                                                 // 判断是否init
     GElementType element_type_ { GElementType::ELEMENT };                     // 用于区分element 内部类型
-    std::atomic<GElementState> cur_state_ { GElementState::CREATE };       // 当前执行状态
+    std::atomic<GElementState> cur_state_ { GElementState::NORMAL };          // 当前执行状态
     internal::GElementShape shape_ { internal::GElementShape::NORMAL };       // 元素位置类型
 
     /** 配置相关信息 */

@@ -1,12 +1,12 @@
-#ifndef CGRAPH_GPIPELINEPY_H
-#define CGRAPH_GPIPELINEPY_H
+#ifndef CGRAPH_GPIPELINE_PY_H
+#define CGRAPH_GPIPELINE_PY_H
 
 #include "CGraph.h"
 
 class GPipelinePy : public CGraph::GPipeline {
 public:
     explicit GPipelinePy() : CGraph::GPipeline() {}
-    virtual ~GPipelinePy() {}
+    ~GPipelinePy() override {}
 
     CStatus registerGElement(CGraph::GElementPtr element,
                              const CGraph::GElementPtrSet &depends = CGraph::GElementPtrSet{},
@@ -16,4 +16,4 @@ public:
     }
 };
 
-#endif // CGRAPH_GPIPELINEPY_H
+#endif // CGRAPH_GPIPELINE_PY_H

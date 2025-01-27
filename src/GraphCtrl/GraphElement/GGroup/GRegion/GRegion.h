@@ -38,9 +38,9 @@ protected:
     CStatus run() final;
     CStatus destroy() final;
 
-private:
     CStatus addElement(GElementPtr element) final;
 
+private:
     CVoid dump(std::ostream& oss) final;
 
     CBool isSerializable() const final;

@@ -1,8 +1,10 @@
-#ifndef CGRAPH_PYWRAPPERINCLUDE_H
-#define CGRAPH_PYWRAPPERINCLUDE_H
+#ifndef CGRAPH_PYWRAPPER_INCLUDE_H
+#define CGRAPH_PYWRAPPER_INCLUDE_H
 
 #include "GPipelinePy.h"
 #include "GElementPyw.h"
 #include "GNodePyw.h"
+#include "GRegionPy.h"
+#include "GConditionPyw.h"
 
-#endif // CGRAPH_PYWRAPPERINCLUDE_H
+#endif // CGRAPH_PYWRAPPER_INCLUDE_H
