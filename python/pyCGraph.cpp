@@ -15,6 +15,11 @@ PYBIND11_MODULE(pyCGraph, m) {
         .def("getInfo", &CStatus::getInfo)
         .def("isOK", &CStatus::isOK);
 
+    py::enum_<GMultiConditionType>(m, "GMultiConditionType")
+        .value("SERIAL", GMultiConditionType::SERIAL)
+        .value("PARALLEL", GMultiConditionType::PARALLEL)
+        .export_values();
+
     py::class_<GPipelinePy, std::unique_ptr<GPipelinePy, py::nodelete> >(m, "GPipeline")
         .def(py::init<>())
         .def("init", &GPipelinePy::init)
@@ -49,4 +54,12 @@ PYBIND11_MODULE(pyCGraph, m) {
         .def(py::init<>())
         .def("addGElement", &GConditionPyw::addGElement,
             py::arg("element"));
+
+    py::class_<GMultiConditionPy<CGraph::GMultiConditionType::SERIAL>, GElement>(m, "GSerialMultiCondition")
+        .def(py::init<>())
+        .def("addGElement", &GMultiConditionPy<CGraph::GMultiConditionType::SERIAL>::addGElement);
+
+    py::class_<GMultiConditionPy<CGraph::GMultiConditionType::PARALLEL>, GElement>(m, "GParallelMultiCondition")
+        .def(py::init<>())
+        .def("addGElement", &GMultiConditionPy<CGraph::GMultiConditionType::PARALLEL>::addGElement);
 }

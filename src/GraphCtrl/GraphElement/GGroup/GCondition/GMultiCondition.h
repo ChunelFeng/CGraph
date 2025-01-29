@@ -16,9 +16,10 @@ CGRAPH_NAMESPACE_BEGIN
 
 template<GMultiConditionType type>
 class GMultiCondition : public GCondition {
-private:
+protected:
     explicit GMultiCondition();
 
+private:
     CStatus run() final;
 
     /**

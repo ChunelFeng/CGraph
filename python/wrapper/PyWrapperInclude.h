@@ -6,5 +6,6 @@
 #include "GNodePyw.h"
 #include "GRegionPy.h"
 #include "GConditionPyw.h"
+#include "GMulticonditionPy.h"
 
 #endif // CGRAPH_PYWRAPPER_INCLUDE_H

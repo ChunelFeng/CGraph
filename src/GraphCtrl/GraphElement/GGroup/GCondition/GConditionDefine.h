@@ -6,7 +6,6 @@
 @Desc: 
 ***************************/
 
-
 #ifndef CGRAPH_GCONDITIONDEFINE_H
 #define CGRAPH_GCONDITIONDEFINE_H
 
