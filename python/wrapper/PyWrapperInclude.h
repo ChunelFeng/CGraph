@@ -1,11 +1,20 @@
-#ifndef CGRAPH_PYWRAPPER_INCLUDE_H
-#define CGRAPH_PYWRAPPER_INCLUDE_H
+/***************************
+@Author: Chunel
+@Contact: chunel@foxmail.com
+@File: PyWrapperInclude.h
+@Time: 2025/1/30 21:46
+@Desc: 
+***************************/
 
-#include "GPipelinePy.h"
-#include "GElementPyw.h"
-#include "GNodePyw.h"
-#include "GRegionPy.h"
-#include "GConditionPyw.h"
-#include "GMulticonditionPy.h"
+#ifndef CGRAPH_PYWRAPPERINCLUDE_H
+#define CGRAPH_PYWRAPPERINCLUDE_H
 
-#endif // CGRAPH_PYWRAPPER_INCLUDE_H
+#include "PyGPipeline.h"
+#include "PywGElement.h"
+#include "PywGNode.h"
+#include "PyGCluster.h"
+#include "PyGRegion.h"
+#include "PywGCondition.h"
+#include "PyGMultiCondition.h"
+
+#endif //CGRAPH_PYWRAPPERINCLUDE_H

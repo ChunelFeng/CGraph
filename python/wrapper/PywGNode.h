@@ -1,5 +1,13 @@
-#ifndef CGRAPH_GNODE_PYW_H
-#define CGRAPH_GNODE_PYW_H
+/***************************
+@Author: Chunel
+@Contact: chunel@foxmail.com
+@File: PywGNode.h
+@Time: 2025/1/30 21:41
+@Desc: 
+***************************/
+
+#ifndef CGRAPH_PYWGNODE_H
+#define CGRAPH_PYWGNODE_H
 
 #include <pybind11/pybind11.h>
 
@@ -7,7 +15,7 @@
 
 namespace py = pybind11;
 
-class GNodePyw : public CGraph::GNode {
+class PywGNode : public CGraph::GNode {
 protected:
     CStatus init() override {
         PYBIND11_OVERLOAD(CStatus, GNode, init);
@@ -30,4 +38,4 @@ protected:
     }
 };
 
-#endif // CGRAPH_GNODE_PYW_H
+#endif //CGRAPH_PYWGNODE_H

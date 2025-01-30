@@ -1,12 +1,20 @@
-#ifndef CGRAPH_GPIPELINE_PY_H
-#define CGRAPH_GPIPELINE_PY_H
+/***************************
+@Author: Chunel
+@Contact: chunel@foxmail.com
+@File: PyGPipeline.h
+@Time: 2025/1/30 21:43
+@Desc: 
+***************************/
+
+#ifndef CGRAPH_PYGPIPELINE_H
+#define CGRAPH_PYGPIPELINE_H
 
 #include "CGraph.h"
 
-class GPipelinePy : public CGraph::GPipeline {
+class PyGPipeline : public CGraph::GPipeline {
 public:
-    explicit GPipelinePy() : CGraph::GPipeline() {}
-    ~GPipelinePy() override {}
+    explicit PyGPipeline() : CGraph::GPipeline() {}
+    ~PyGPipeline() override {}
 
     CStatus registerGElement(CGraph::GElementPtr element,
                              const CGraph::GElementPtrSet &depends = CGraph::GElementPtrSet{},
@@ -16,4 +24,4 @@ public:
     }
 };
 
-#endif // CGRAPH_GPIPELINE_PY_H
+#endif //CGRAPH_PYGPIPELINE_H
