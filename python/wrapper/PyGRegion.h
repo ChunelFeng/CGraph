@@ -16,8 +16,8 @@ public:
     explicit PyGRegion() : CGraph::GRegion() {};
     ~PyGRegion() override {};
 
-    CStatus addGElement(CGraph::GElementPtr element) {
-        return addElement(element);
+    CStatus addGElements(const CGraph::GElementPtrArr& elements) {
+        return addElements(elements);
     }
 };
 

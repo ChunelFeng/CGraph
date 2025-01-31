@@ -20,17 +20,25 @@ CGRAPH_NAMESPACE_BEGIN
 class GGroup : public GElement {
 protected:
     /**
-     * 向group中，添加element信息
-     * @param element
+     * 插入多个 elements 信息
+     * @param elements
      * @return
+     * @notice 主要为了适配python接口，不建议cpp用户直接使用
      */
-    virtual CStatus addElement(GElementPtr element);
+    CStatus addElements(const GElementPtrArr& elements);
 
     CBool isSerializable() const override;
 
     explicit GGroup();
 
 private:
+    /**
+     * 向group中，添加element信息
+     * @param element
+     * @return
+     */
+    virtual CStatus addElement(GElementPtr element);
+
     CStatus addManagers(GParamManagerPtr paramManager,
                         GEventManagerPtr eventManager,
                         GStageManagerPtr stageManager) override;

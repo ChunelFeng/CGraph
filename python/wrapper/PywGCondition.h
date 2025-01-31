@@ -24,8 +24,8 @@ public:
         PYBIND11_OVERLOAD_PURE(CIndex, PywGCondition, choose);
     }
 
-    CStatus addGElement(CGraph::GElementPtr element) {
-        return addElement(element);
+    CStatus addGElements(const CGraph::GElementPtrArr& elements) {
+        return addElements(elements);
     }
 };
 

@@ -17,8 +17,8 @@ public:
     explicit PyGMultiCondition() : CGraph::GMultiCondition<type>() {};
     ~PyGMultiCondition() override {};
 
-    CStatus addGElement(CGraph::GElementPtr element) {
-        return CGraph::GMultiCondition<type>::addElement(element);
+    CStatus addGElements(const CGraph::GElementPtrArr& elements) {
+        return CGraph::GMultiCondition<type>::addElements(elements);
     }
 };
 

@@ -22,7 +22,7 @@ void tutorial_timeout() {
 
     status = pipeline->process();    // 正常运行
     if (status.isOK()) {
-        std::cout << "pipeline run finish" << std::endl;
+        std::cout << "---- pipeline run finish" << std::endl;
     }
     std::cout << "===================" << std::endl;
 

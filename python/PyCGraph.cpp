@@ -47,26 +47,27 @@ PYBIND11_MODULE(PyCGraph, m) {
 
     py::class_<PyGCluster, GElement, std::unique_ptr<PyGCluster, py::nodelete> >(m, "GCluster")
         .def(py::init<>())
-        .def("addGElement", &PyGCluster::addGElement,
-            py::arg("element"));
+        .def("addGElements", &PyGCluster::addGElements,
+            py::arg("elements"));
 
     py::class_<PyGRegion, GElement, std::unique_ptr<PyGRegion, py::nodelete> >(m, "GRegion")
         .def(py::init<>())
-        .def("addGElement", &PyGRegion::addGElement,
-            py::arg("element"));
+        .def("addGElements", &PyGRegion::addGElements,
+            py::arg("elements"))
+        ;
 
     py::class_<PywGCondition, GElement, std::unique_ptr<PywGCondition, py::nodelete> >(m, "GCondition")
         .def(py::init<>())
-        .def("addGElement", &PywGCondition::addGElement,
-            py::arg("element"));
+        .def("addGElements", &PywGCondition::addGElements,
+            py::arg("elements"));
 
     py::class_<PyGMultiCondition<CGraph::GMultiConditionType::SERIAL>, GElement>(m, "GSerialMultiCondition")
         .def(py::init<>())
-        .def("addGElement", &PyGMultiCondition<CGraph::GMultiConditionType::SERIAL>::addGElement,
-            py::arg("element"));
+        .def("addGElements", &PyGMultiCondition<CGraph::GMultiConditionType::SERIAL>::addGElements,
+            py::arg("elements"));
 
     py::class_<PyGMultiCondition<CGraph::GMultiConditionType::PARALLEL>, GElement>(m, "GParallelMultiCondition")
         .def(py::init<>())
-        .def("addGElement", &PyGMultiCondition<CGraph::GMultiConditionType::PARALLEL>::addGElement,
-            py::arg("element"));
+        .def("addGElements", &PyGMultiCondition<CGraph::GMultiConditionType::PARALLEL>::addGElements,
+            py::arg("elements"));
 }

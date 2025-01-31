@@ -53,6 +53,16 @@ CStatus GGroup::addElement(GElementPtr element) {
 }
 
 
+CStatus GGroup::addElements(const GElementPtrArr& elements) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(false)
+    for (GElementPtr element : elements) {
+        status += addElement(element);
+    }
+    CGRAPH_FUNCTION_END
+}
+
+
 CVoid GGroup::dumpGroupLabelBegin(std::ostream& oss) {
     oss << "subgraph ";
     oss << "cluster_p" << this;    // cluster_ 是 graphviz的关键字，和CGraph中GCluster逻辑无关
