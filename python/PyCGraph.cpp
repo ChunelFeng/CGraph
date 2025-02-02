@@ -53,8 +53,7 @@ PYBIND11_MODULE(PyCGraph, m) {
     py::class_<PyGRegion, GElement, std::unique_ptr<PyGRegion, py::nodelete> >(m, "GRegion")
         .def(py::init<>())
         .def("addGElements", &PyGRegion::addGElements,
-            py::arg("elements"))
-        ;
+            py::arg("elements"));
 
     py::class_<PywGCondition, GElement, std::unique_ptr<PywGCondition, py::nodelete> >(m, "GCondition")
         .def(py::init<>())
