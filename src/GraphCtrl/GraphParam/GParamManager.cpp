@@ -99,4 +99,27 @@ std::vector<std::string> GParamManager::getKeys() {
     return keys;
 }
 
+
+CStatus GParamManager::__create_4py(GParamPtr param, const std::string& key) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_LOCK_GUARD lock(this->mutex_);
+    auto iter = params_map_.find(key);
+    if (iter != params_map_.end()) {
+        return CStatus("py: create [" + key + "] param duplicate");
+    }
+
+    params_map_.insert(std::pair<std::string, GParamPtr>(key, param));
+    CGRAPH_FUNCTION_END
+}
+
+
+GParamPtr GParamManager::__get_4py(const std::string& key) {
+    const auto& iter = params_map_.find(key);
+    if (iter == params_map_.end()) {
+        return nullptr;
+    }
+
+    return iter->second;
+}
+
 CGRAPH_NAMESPACE_END

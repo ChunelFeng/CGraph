@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: T28-Stage.cpp
 @Time: 2024/12/15 18:40
-@Desc: 
+@Desc: 本例主要展示在多个并发的element中，通过 GStage 做同步的功能
 ***************************/
 
 #include "MyGNode/MyNode1.h"

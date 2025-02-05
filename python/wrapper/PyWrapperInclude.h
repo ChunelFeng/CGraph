@@ -16,5 +16,6 @@
 #include "PyGRegion.h"
 #include "PywGCondition.h"
 #include "PyGMultiCondition.h"
+#include "PywGParam.h"
 
 #endif //CGRAPH_PYWRAPPERINCLUDE_H

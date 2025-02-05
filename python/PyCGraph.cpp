@@ -1,3 +1,11 @@
+/***************************
+@Author: Chunel
+@Contact: chunel@foxmail.com
+@File: PyCGraph.cpp
+@Time: 2025/1/30 21:43
+@Desc:
+***************************/
+
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
@@ -20,6 +28,9 @@ PYBIND11_MODULE(PyCGraph, m) {
         .value("PARALLEL", GMultiConditionType::PARALLEL)
         .export_values();
 
+    py::class_<GParam, PywGParam, std::unique_ptr<GParam, py::nodelete> >(m, "GParam")
+        .def(py::init<>());
+
     py::class_<PyGPipeline, std::unique_ptr<PyGPipeline, py::nodelete> >(m, "GPipeline")
         .def(py::init<>())
         .def("init", &PyGPipeline::init)
@@ -36,6 +47,8 @@ PYBIND11_MODULE(PyCGraph, m) {
 
     py::class_<GElement, PywGElement, std::unique_ptr<GElement, py::nodelete> >(m, "GElement")
         .def(py::init<>())
+        .def("createGParam", &GElement::__createGParam_4py)
+        .def("getGParam", &GElement::__getGParam_4py)
         .def("getName", &GElement::getName)
         .def("setName", &GElement::setName)
         .def("addDependGElements", &GElement::addDependGElements,

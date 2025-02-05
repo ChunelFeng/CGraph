@@ -44,6 +44,7 @@ tutorial_list = {
         "T25-Coordinator",
         "T26-Mutable",
         "T27-Trim",
+        "T28-Stage",
 }
 
 -- add tutorial target one by one

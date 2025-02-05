@@ -484,6 +484,11 @@ private:
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER_WITH_MEMBER
     CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER_WITH_MEMBER
     CGRAPH_DECLARE_STAGE_MANAGER_WRAPPER_WITH_MEMBER
+
+public:
+    /// 以下函数功能，仅供py版本使用
+    CStatus __createGParam_4py(GParamPtr param, const std::string& key);
+    GParamPtr __getGParam_4py(const std::string& key);
 };
 
 using GElementRef = GElement &;

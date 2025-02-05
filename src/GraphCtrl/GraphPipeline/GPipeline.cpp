@@ -359,4 +359,10 @@ CStatus GPipeline::innerRegister(GElementPtr element, const GElementPtrSet &depe
     CGRAPH_FUNCTION_END
 }
 
+
+CStatus GPipeline::__interRegister_4py(CGraph::GElementPtr element, const CGraph::GElementPtrSet &depends,
+                                         const std::string &name, CSize loop) {
+    return innerRegister(element, depends, name, loop);
+}
+
 CGRAPH_NAMESPACE_END

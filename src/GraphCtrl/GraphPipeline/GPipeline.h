@@ -403,6 +403,10 @@ protected:
     explicit GPipeline();
     ~GPipeline() override;
 
+    CStatus __interRegister_4py(GElementPtr element, const GElementPtrSet &depends,
+                                const std::string &name, CSize loop);
+
+private:
     /**
      * 初始化环境信息，包括线程池 等
      * @return

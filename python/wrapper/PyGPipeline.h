@@ -20,7 +20,7 @@ public:
                              const CGraph::GElementPtrSet &depends = CGraph::GElementPtrSet{},
                              const std::string &name = CGraph::CGRAPH_EMPTY,
                              CSize loop = CGraph::CGRAPH_DEFAULT_LOOP_TIMES) {
-        return innerRegister(element, depends, name, loop);
+        return __interRegister_4py(element, depends, name, loop);
     }
 };
 
