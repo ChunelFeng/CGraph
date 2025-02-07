@@ -25,7 +25,7 @@ public:
     }
 
     CStatus addGElements(const CGraph::GElementPtrArr& elements) {
-        return addElements(elements);
+        return __addElements_4py(elements);
     }
 };
 
