@@ -19,14 +19,6 @@ CGRAPH_NAMESPACE_BEGIN
 /* 所有节点组合的基类，所有节点组合功能，均继承自此类 */
 class GGroup : public GElement {
 protected:
-    /**
-     * 插入多个 elements 信息
-     * @param elements
-     * @return
-     * @notice 主要为了适配python接口，不建议cpp用户直接使用
-     */
-    CStatus addElements(const GElementPtrArr& elements);
-
     CBool isSerializable() const override;
 
     explicit GGroup();
@@ -80,6 +72,15 @@ private:
     friend class GMutable;
     template<GMultiConditionType> friend class GMultiCondition;
     template<CInt> friend class GSome;
+
+protected:
+    /**
+     * 插入多个 elements 信息
+     * @param elements
+     * @return
+     * @notice 主要为了适配python接口，不建议cpp用户直接使用
+     */
+    CStatus __addElements_4py(const GElementPtrArr& elements);
 };
 
 using GGroupPtr = GGroup *;

@@ -18,7 +18,7 @@ public:
     ~PyGMultiCondition() override {};
 
     CStatus addGElements(const CGraph::GElementPtrArr& elements) {
-        return CGraph::GMultiCondition<type>::addElements(elements);
+        return CGraph::GMultiCondition<type>::__addElements_4py(elements);
     }
 };
 
