@@ -29,5 +29,6 @@ Contributors:
 - [kajo-kurisu](https://github.com/kajo-kurisu)
 - [symphony09](https://github.com/symphony09)
 - [Sheldon Robinson](https://github.com/sheldonrobinson)
+- [0x007004](https://github.com/0x007004)
 
 感谢以上朋友，为CGraph项目做出的贡献，排名以贡献时间前后为顺序。
