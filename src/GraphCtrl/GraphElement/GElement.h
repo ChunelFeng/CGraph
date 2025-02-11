@@ -444,8 +444,8 @@ private:
 
     /** 图相关信息 */
     std::atomic<CSize> left_depend_ { 0 };                                    // 当 left_depend_ 值为0的时候，即可以执行该element信息
-    USmallVector<GElement *> run_before_;                                     // 被依赖的节点（后继）
-    USmallVector<GElement *> dependence_;                                     // 依赖的节点信息（前驱）
+    USmallVector<GElement *> run_before_ {};                                  // 被依赖的节点（后继）
+    USmallVector<GElement *> dependence_ {};                                  // 依赖的节点信息（前驱）
     GElement* belong_ { nullptr };                                            // 从属的element 信息，如为nullptr，则表示从属于 pipeline
 
     /** 异步执行相关信息 */
@@ -483,7 +483,7 @@ private:
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER_WITH_MEMBER
     CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER_WITH_MEMBER
-    CGRAPH_DECLARE_STAGE_MANAGER_WRAPPER_WITH_MEMBER
+    CGRAPH_DECLARE_GSTAGE_MANAGER_WRAPPER_WITH_MEMBER
 
 public:
     /// 以下函数功能，仅供py版本使用

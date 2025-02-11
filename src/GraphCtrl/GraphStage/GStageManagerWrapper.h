@@ -14,7 +14,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-#define CGRAPH_DECLARE_STAGE_MANAGER_WRAPPER_WITH_MEMBER             \
+#define CGRAPH_DECLARE_GSTAGE_MANAGER_WRAPPER_WITH_MEMBER             \
 protected:                                                           \
     /**
      * 进入特定阶段，等待同步
@@ -35,7 +35,6 @@ private:                                                             \
                                                                      \
 private:                                                             \
     GStageManagerPtr stage_manager_ { nullptr };                     \
-protected:                                                           \
                                                                      \
 
 CGRAPH_NAMESPACE_END
