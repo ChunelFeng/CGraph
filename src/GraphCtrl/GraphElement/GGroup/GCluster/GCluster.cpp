@@ -34,7 +34,7 @@ CVoid GCluster::dump(std::ostream& oss) {
     oss << "color=blue;\n";
 
     GElementPtr pre = nullptr;
-    for (auto i = 0; i < group_elements_arr_.size(); i++) {
+    for (CSize i = 0; i < group_elements_arr_.size(); i++) {
         const auto& element = group_elements_arr_[i];
         element->dump(oss);
 

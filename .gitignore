@@ -15,3 +15,5 @@
 /MODULE.bazel
 /MODULE.bazel.lock
 /python/build
+/python/dist
+/python/PyCGraph.egg-info

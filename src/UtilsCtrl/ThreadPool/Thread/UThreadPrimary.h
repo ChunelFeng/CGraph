@@ -197,7 +197,7 @@ protected:
      * @return
      */
     CBool stealTask(UTaskRef task) {
-        if (unlikely(pool_threads_->size() < config_->default_thread_size_)) {
+        if (unlikely(pool_threads_->size() < (CSize)(config_->default_thread_size_))) {
             /**
              * 线程池还未初始化完毕的时候，无法进行steal。
              * 确保程序安全运行。
@@ -235,7 +235,7 @@ protected:
      * @return
      */
     CBool stealTask(UTaskArrRef tasks) {
-        if (unlikely(pool_threads_->size() != config_->default_thread_size_)) {
+        if (unlikely(pool_threads_->size() != (CSize)(config_->default_thread_size_))) {
             return false;
         }
 

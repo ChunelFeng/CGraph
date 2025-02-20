@@ -54,7 +54,7 @@ protected:
         const auto& fstPath = fst->getDeepPath(false);
         const auto& sndPath = snd->getDeepPath(false);
         CSize minSize = std::min(fstPath.size(), sndPath.size());
-        for (int i = 0; i < minSize && (fstPath[i] == sndPath[i]); i++) {
+        for (CSize i = 0; i < minSize && (fstPath[i] == sndPath[i]); i++) {
             ancestor = fstPath[i];    // 最后一个一致的
         }
 
