@@ -17,3 +17,4 @@
 /python/build
 /python/dist
 /python/PyCGraph.egg-info
+__pycache__
