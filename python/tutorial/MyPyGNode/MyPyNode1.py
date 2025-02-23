@@ -13,6 +13,6 @@ from PyCGraph import GNode, CStatus
 
 class MyPyNode1(GNode):
     def run(self):
-        print("[{0}] {1}, enter MyPyNode1 run function. Sleep for 2 second ... ".format(datetime.now(), self.getName()))
+        print("[{0}] {1}, enter MyPyNode1 run function. Sleep for 1 second ... ".format(datetime.now(), self.getName()))
         time.sleep(1)
         return CStatus()
