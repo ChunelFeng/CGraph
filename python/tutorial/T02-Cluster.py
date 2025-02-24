@@ -12,11 +12,7 @@ from MyPyGNode.MyPyNode1 import MyPyNode1
 from MyPyGNode.MyPyNode2 import MyPyNode2
 
 def tutorial_cluster():
-    b1, b2, b3 = MyPyNode1(), MyPyNode1(), MyPyNode2()
-    b1.setName("nodeB1")
-    b2.setName("nodeB2")
-    b2.setLoop(3)
-    b3.setName("nodeB3")
+    b1, b2, b3 = MyPyNode1("nodeB1"), MyPyNode1("nodeB2", 3), MyPyNode2("nodeB3")
     b_cluster = GCluster()
     b_cluster.addGElements([b1, b2, b3])
 

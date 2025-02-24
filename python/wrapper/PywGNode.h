@@ -16,6 +16,24 @@
 namespace py = pybind11;
 
 class PywGNode : public CGraph::GNode {
+public:
+    explicit PywGNode(const std::string& name) {
+        setName(name);
+    }
+
+    explicit PywGNode(const std::string& name, int loop) {
+        setName(name);
+        setLoop(loop);
+    }
+
+    explicit PywGNode(const CGraph::GElementPtrSet& depends = CGraph::GElementPtrSet{},
+                      const std::string& name = CGraph::CGRAPH_EMPTY,
+                      int loop = CGraph::CGRAPH_DEFAULT_LOOP_TIMES) {
+        addDependGElements(depends);
+        setLoop(loop);
+        setName(name);
+    }
+
 protected:
     CStatus init() override {
         PYBIND11_OVERLOAD(CStatus, GNode, init);

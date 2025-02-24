@@ -56,7 +56,15 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("setLoop", &GElement::setLoop);
 
     py::class_<GNode, PywGNode, GElement, std::unique_ptr<GNode, py::nodelete> >(m, "GNode")
-        .def(py::init<>());
+        .def(py::init<const std::string&>(),
+             py::arg("name"))
+        .def(py::init<const std::string&, int>(),
+             py::arg("name"),
+             py::arg("loop"))
+        .def(py::init<const GElementPtrSet&, const std::string&, int>(),
+             py::arg("depends") = GElementPtrSet{},
+             py::arg("name") = CGRAPH_EMPTY,
+             py::arg("loop") = CGRAPH_DEFAULT_LOOP_TIMES);
 
     py::class_<PyGCluster, GElement, std::unique_ptr<PyGCluster, py::nodelete> >(m, "GCluster")
         .def(py::init<>())
