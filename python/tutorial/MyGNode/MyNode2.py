@@ -11,13 +11,13 @@ import time
 
 from PyCGraph import GNode, CStatus
 
-class MyPyNode2(GNode):
+class MyNode2(GNode):
     def init(self):
         print("[INIT] [{0}], enter MyNode2 init function.".format(self.getName()))
         return CStatus()
 
     def run(self):
-        print("[{0}] {1}, enter MyPyNode2 run function. Sleep for 2 second ... ".format(datetime.now(), self.getName()))
+        print("[{0}] {1}, enter MyNode2 run function. Sleep for 2 second ... ".format(datetime.now(), self.getName()))
         time.sleep(2)
         return CStatus()
 

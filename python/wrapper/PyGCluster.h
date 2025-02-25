@@ -13,7 +13,9 @@
 
 class PyGCluster : public CGraph::GCluster {
 public:
-    explicit PyGCluster() : CGraph::GCluster() {};
+    explicit PyGCluster(const CGraph::GElementPtrArr& elements = CGraph::GElementPtrArr{}) {
+        __addElements_4py(elements);
+    }
     ~PyGCluster() override {};
 
     CStatus addGElements(const CGraph::GElementPtrArr& elements) {

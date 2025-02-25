@@ -39,6 +39,11 @@ private:
     CBool isSeparate(GElementCPtr a, GElementCPtr b) const override;
 
     friend class GPipeline;
+
+public:
+    CSize __getRange_4py() const {
+        return getRange();
+    }
 };
 
 using GConditionPtr = GCondition *;

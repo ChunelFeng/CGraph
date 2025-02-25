@@ -8,7 +8,7 @@
 
 from PyCGraph import GNode, CStatus
 
-class HelloCGraphPyNode(GNode):
+class HelloCGraphNode(GNode):
     def run(self):
         print("Hello PyCGraph")
         return CStatus()

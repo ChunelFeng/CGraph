@@ -56,28 +56,30 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("setLoop", &GElement::setLoop);
 
     py::class_<GNode, PywGNode, GElement, std::unique_ptr<GNode, py::nodelete> >(m, "GNode")
-        .def(py::init<const std::string&>(),
-             py::arg("name"))
         .def(py::init<const std::string&, int>(),
              py::arg("name"),
-             py::arg("loop"))
+             py::arg("loop") = CGRAPH_DEFAULT_LOOP_TIMES)
         .def(py::init<const GElementPtrSet&, const std::string&, int>(),
              py::arg("depends") = GElementPtrSet{},
              py::arg("name") = CGRAPH_EMPTY,
              py::arg("loop") = CGRAPH_DEFAULT_LOOP_TIMES);
 
     py::class_<PyGCluster, GElement, std::unique_ptr<PyGCluster, py::nodelete> >(m, "GCluster")
-        .def(py::init<>())
+        .def(py::init<const CGraph::GElementPtrArr&>(),
+            py::arg("elements") = GElementPtrArr{})
         .def("addGElements", &PyGCluster::addGElements,
             py::arg("elements"));
 
     py::class_<PyGRegion, GElement, std::unique_ptr<PyGRegion, py::nodelete> >(m, "GRegion")
-        .def(py::init<>())
+        .def(py::init<const CGraph::GElementPtrArr&>(),
+             py::arg("elements") = GElementPtrArr{})
         .def("addGElements", &PyGRegion::addGElements,
             py::arg("elements"));
 
     py::class_<PywGCondition, GElement, std::unique_ptr<PywGCondition, py::nodelete> >(m, "GCondition")
-        .def(py::init<>())
+        .def(py::init<const CGraph::GElementPtrArr&>(),
+             py::arg("elements") = GElementPtrArr{})
+        .def("getRange", &PywGCondition::__getRange_4py)
         .def("addGElements", &PywGCondition::addGElements,
             py::arg("elements"));
 

@@ -8,17 +8,18 @@
 
 from PyCGraph import GNode, GPipeline, CStatus
 
-from MyPyGNode.MyPyNode1 import MyPyNode1
-from MyPyGNode.MyPyNode2 import MyPyNode2
+from MyGNode.MyNode1 import MyNode1
+from MyGNode.MyNode2 import MyNode2
 
 def tutorial_simple():
     pipeline = GPipeline()
-    a, b, c, d = MyPyNode1(), MyPyNode2(), MyPyNode1(), MyPyNode2()
+    a, b, c, d = MyNode1(), MyNode2(), MyNode1(), MyNode2()
 
     pipeline.registerGElement(a, set(), "nodeA")
     pipeline.registerGElement(b, {a}, "nodeB")
     pipeline.registerGElement(c, {a}, "nodeC")
     pipeline.registerGElement(d, {b, c}, "nodeD")
+
     pipeline.init()
 
     for i in range(0, 3):

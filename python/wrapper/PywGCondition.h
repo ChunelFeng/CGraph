@@ -17,7 +17,9 @@ namespace py = pybind11;
 
 class PywGCondition : public CGraph::GCondition {
 public:
-    explicit PywGCondition() : CGraph::GCondition() {};
+    explicit PywGCondition(const CGraph::GElementPtrArr& elements = CGraph::GElementPtrArr{}) {
+        __addElements_4py(elements);
+    }
     ~PywGCondition() override {};
 
     CIndex choose() override {

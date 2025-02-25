@@ -6,18 +6,17 @@
 @Desc: 
 """
 
-from PyCGraph import GNode, GPipeline, GCluster, CStatus
+from PyCGraph import GPipeline, GCluster, CStatus
 
-from MyPyGNode.MyPyNode1 import MyPyNode1
-from MyPyGNode.MyPyNode2 import MyPyNode2
+from MyGNode.MyNode1 import MyNode1
+from MyGNode.MyNode2 import MyNode2
 
 def tutorial_cluster():
-    b1, b2, b3 = MyPyNode1("nodeB1"), MyPyNode1("nodeB2", 3), MyPyNode2("nodeB3")
-    b_cluster = GCluster()
-    b_cluster.addGElements([b1, b2, b3])
+    b1, b2, b3 = MyNode1("nodeB1"), MyNode1("nodeB2", 3), MyNode2("nodeB3")
+    b_cluster = GCluster([b1, b2, b3])    # 入参为 list[] 表示写入 group(当前为 cluster) 中的内容，而非依赖内容
 
     pipeline = GPipeline()
-    a, c, d = MyPyNode1(), MyPyNode2(), MyPyNode1()
+    a, c, d = MyNode1(), MyNode2(), MyNode1()
 
     pipeline.registerGElement(a, set(), "nodeA")
     pipeline.registerGElement(b_cluster, {a}, "clusterB", 2)

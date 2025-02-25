@@ -6,21 +6,20 @@
 @Desc: 
 """
 
-from PyCGraph import GNode, GPipeline, GRegion, CStatus
+from PyCGraph import GPipeline, GRegion, CStatus
 
-from MyPyGNode.MyPyNode1 import MyPyNode1
-from MyPyGNode.MyPyNode2 import MyPyNode2
+from MyGNode.MyNode1 import MyNode1
+from MyGNode.MyNode2 import MyNode2
 
 def tutorial_region():
-    b1 = MyPyNode1("nodeB1")
-    b2 = MyPyNode2({b1}, "nodeB2", 2)
-    b3 = MyPyNode1({b1}, "nodeB3", 1)
-    b4 = MyPyNode1({b2, b3}, "nodeB4", 1)
-    b_region = GRegion()
-    b_region.addGElements([b1, b2, b3, b4])
+    b1 = MyNode1("nodeB1")
+    b2 = MyNode2({b1}, "nodeB2", 2)
+    b3 = MyNode1({b1}, "nodeB3", 1)
+    b4 = MyNode1({b2, b3}, "nodeB4", 1)
+    b_region = GRegion([b1, b2, b3, b4])
 
     pipeline = GPipeline()
-    a, c, d = MyPyNode1(), MyPyNode2(), MyPyNode1()
+    a, c, d = MyNode1(), MyNode2(), MyNode1()
 
     pipeline.registerGElement(a, set(), "nodeA")
     pipeline.registerGElement(b_region, {a}, "regionB", 2)

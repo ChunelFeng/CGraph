@@ -13,7 +13,9 @@
 
 class PyGRegion : public CGraph::GRegion {
 public:
-    explicit PyGRegion() : CGraph::GRegion() {};
+    explicit PyGRegion(const CGraph::GElementPtrArr& elements = CGraph::GElementPtrArr{}) {
+        __addElements_4py(elements);
+    };
     ~PyGRegion() override {};
 
     CStatus addGElements(const CGraph::GElementPtrArr& elements) {

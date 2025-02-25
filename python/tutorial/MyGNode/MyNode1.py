@@ -1,7 +1,7 @@
 """
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: MyPyNode1
+@File: MyNode1
 @Time: 2025/2/21 23:47
 @Desc: 
 """
@@ -11,8 +11,8 @@ import time
 
 from PyCGraph import GNode, CStatus
 
-class MyPyNode1(GNode):
+class MyNode1(GNode):
     def run(self):
-        print("[{0}] {1}, enter MyPyNode1 run function. Sleep for 1 second ... ".format(datetime.now(), self.getName()))
+        print("[{0}] {1}, enter MyNode1 run function. Sleep for 1 second ... ".format(datetime.now(), self.getName()))
         time.sleep(1)
         return CStatus()

@@ -17,11 +17,8 @@ namespace py = pybind11;
 
 class PywGNode : public CGraph::GNode {
 public:
-    explicit PywGNode(const std::string& name) {
-        setName(name);
-    }
-
-    explicit PywGNode(const std::string& name, int loop) {
+    explicit PywGNode(const std::string& name,
+                      int loop = CGraph::CGRAPH_DEFAULT_LOOP_TIMES) {
         setName(name);
         setLoop(loop);
     }

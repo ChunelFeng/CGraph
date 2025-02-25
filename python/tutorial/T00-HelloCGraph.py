@@ -8,11 +8,11 @@
 
 from PyCGraph import GNode, GPipeline, CStatus
 
-from MyPyGNode.HelloCGraphPyNode import HelloCGraphPyNode
+from MyGNode.HelloCGraphNode import HelloCGraphNode
 
 def tutorial_hello_cgraph():
     pipeline = GPipeline()
-    hcg = HelloCGraphPyNode()
+    hcg = HelloCGraphNode()
     pipeline.registerGElement(hcg)
     pipeline.process()
 
