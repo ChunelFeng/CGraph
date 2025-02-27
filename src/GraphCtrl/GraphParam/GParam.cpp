@@ -61,4 +61,19 @@ CStatus GParam::setup() {
 CVoid GParam::reset(const CStatus& curStatus) {
 }
 
+
+CVoid GParam::lock() {
+    _param_shared_lock_.lock();
+}
+
+
+CVoid GParam::unlock() {
+    _param_shared_lock_.unlock();
+}
+
+
+CBool GParam::tryLock() {
+    return _param_shared_lock_.try_lock();
+}
+
 CGRAPH_NAMESPACE_END

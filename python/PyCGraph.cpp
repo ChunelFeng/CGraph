@@ -29,11 +29,16 @@ PYBIND11_MODULE(PyCGraph, m) {
         .export_values();
 
     py::class_<GParam, PywGParam, std::unique_ptr<GParam, py::nodelete> >(m, "GParam")
-        .def(py::init<>());
+        .def(py::init<>())
+        .def("lock", &GParam::lock, py::call_guard<py::gil_scoped_release>())
+        .def("unlock", &GParam::unlock, py::call_guard<py::gil_scoped_release>())
+        .def("tryLock", &GParam::tryLock, py::call_guard<py::gil_scoped_release>());
 
     py::class_<PyGPipeline, std::unique_ptr<PyGPipeline, py::nodelete> >(m, "GPipeline")
         .def(py::init<>())
         .def("init", &PyGPipeline::init)
+        .def("createGParam", &PyGPipeline::__createGParam_4py)
+        .def("getGParam", &PyGPipeline::__getGParam_4py)
         .def("run", &PyGPipeline::run, py::call_guard<py::gil_scoped_release>())
         .def("process", &PyGPipeline::process, py::call_guard<py::gil_scoped_release>(),
              py::arg("runTimes") = 1)
@@ -47,7 +52,6 @@ PYBIND11_MODULE(PyCGraph, m) {
 
     py::class_<GElement, PywGElement, std::unique_ptr<GElement, py::nodelete> >(m, "GElement")
         .def(py::init<>())
-        .def("createGParam", &GElement::__createGParam_4py)
         .def("getGParam", &GElement::__getGParam_4py)
         .def("getName", &GElement::getName)
         .def("setName", &GElement::setName)
@@ -84,12 +88,14 @@ PYBIND11_MODULE(PyCGraph, m) {
             py::arg("elements"));
 
     py::class_<PyGMultiCondition<CGraph::GMultiConditionType::SERIAL>, GElement>(m, "GSerialMultiCondition")
-        .def(py::init<>())
+        .def(py::init<const CGraph::GElementPtrArr&>(),
+             py::arg("elements") = GElementPtrArr{})
         .def("addGElements", &PyGMultiCondition<CGraph::GMultiConditionType::SERIAL>::addGElements,
             py::arg("elements"));
 
     py::class_<PyGMultiCondition<CGraph::GMultiConditionType::PARALLEL>, GElement>(m, "GParallelMultiCondition")
-        .def(py::init<>())
+        .def(py::init<const CGraph::GElementPtrArr&>(),
+             py::arg("elements") = GElementPtrArr{})
         .def("addGElements", &PyGMultiCondition<CGraph::GMultiConditionType::PARALLEL>::addGElements,
             py::arg("elements"));
 }

@@ -14,7 +14,9 @@
 template<CGraph::GMultiConditionType type>
 class PyGMultiCondition : public CGraph::GMultiCondition<type> {
 public:
-    explicit PyGMultiCondition() : CGraph::GMultiCondition<type>() {};
+    explicit PyGMultiCondition(const CGraph::GElementPtrArr& elements = CGraph::GElementPtrArr{}) {
+        CGraph::GMultiCondition<type>::__addElements_4py(elements);
+    };
     ~PyGMultiCondition() override {};
 
     CStatus addGElements(const CGraph::GElementPtrArr& elements) {

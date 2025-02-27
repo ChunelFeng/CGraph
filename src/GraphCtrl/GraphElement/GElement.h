@@ -487,7 +487,6 @@ private:
 
 public:
     /// 以下函数功能，仅供py版本使用
-    CStatus __createGParam_4py(GParamPtr param, const std::string& key);
     GParamPtr __getGParam_4py(const std::string& key);
 };
 

@@ -403,9 +403,6 @@ protected:
     explicit GPipeline();
     ~GPipeline() override;
 
-    CStatus __interRegister_4py(GElementPtr element, const GElementPtrSet &depends,
-                                const std::string &name, CSize loop);
-
 private:
     /**
      * 初始化环境信息，包括线程池 等
@@ -440,6 +437,14 @@ private:
     friend class GPipelineFactory;
     friend class CAllocator;
     friend class GPerf;
+
+public:
+    CStatus __interRegister_4py(GElementPtr element, const GElementPtrSet &depends,
+                                const std::string &name, CSize loop);
+
+    CStatus __createGParam_4py(GParamPtr param, const std::string& key);
+
+    GParamPtr __getGParam_4py(const std::string& key);
 };
 
 using GPipelinePtr = GPipeline *;

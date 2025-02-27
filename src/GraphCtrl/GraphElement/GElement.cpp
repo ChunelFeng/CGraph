@@ -586,12 +586,6 @@ CBool GElement::isDefaultBinding() const {
 }
 
 
-CStatus GElement::__createGParam_4py(GParamPtr param, const std::string& key) {
-    CGRAPH_ASSERT_NOT_NULL(param_manager_)
-    return param_manager_->__create_4py(param, key);
-}
-
-
 GParamPtr GElement::__getGParam_4py(const std::string& key) {
     return param_manager_ ? param_manager_->__get_4py(key) : nullptr;
 }

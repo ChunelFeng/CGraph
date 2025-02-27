@@ -49,6 +49,25 @@ public:
      */
     std::string getKey() const;
 
+    /**
+     * 上锁
+     * @return
+     * @notice 推荐使用raii锁
+     */
+    CVoid lock();
+
+    /**
+     * 解锁
+     * @return
+     */
+    CVoid unlock();
+
+    /**
+     * 尝试加锁
+     * @return
+     */
+    CBool tryLock();
+
 protected:
     /**
      * 每次pipeline执行前，会调用一次setup，可以不实现
