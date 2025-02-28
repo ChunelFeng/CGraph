@@ -365,14 +365,4 @@ CStatus GPipeline::__interRegister_4py(CGraph::GElementPtr element, const CGraph
     return innerRegister(element, depends, name, loop);
 }
 
-
-CStatus GPipeline::__createGParam_4py(GParamPtr param, const std::string& key) {
-    return param_manager_->__create_4py(param, key);
-}
-
-
-GParamPtr GPipeline::__getGParam_4py(const std::string& key) {
-    return param_manager_ ? param_manager_->__get_4py(key) : nullptr;
-}
-
 CGRAPH_NAMESPACE_END

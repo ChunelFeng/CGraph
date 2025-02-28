@@ -441,10 +441,6 @@ private:
 public:
     CStatus __interRegister_4py(GElementPtr element, const GElementPtrSet &depends,
                                 const std::string &name, CSize loop);
-
-    CStatus __createGParam_4py(GParamPtr param, const std::string& key);
-
-    GParamPtr __getGParam_4py(const std::string& key);
 };
 
 using GPipelinePtr = GPipeline *;

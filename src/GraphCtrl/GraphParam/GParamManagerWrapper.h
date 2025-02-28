@@ -97,6 +97,16 @@ CGRAPH_NAMESPACE_BEGIN
         return keys;                                                                    \
     }                                                                                   \
                                                                                         \
+public:                                                                                 \
+     GParamPtr __getGParam_4py(const std::string& key) {                                \
+         return param_manager_ ? param_manager_->__get_4py(key) : nullptr;              \
+     }                                                                                  \
+                                                                                        \
+     CStatus __createGParam_4py(GParamPtr param, const std::string& key) {              \
+         CGRAPH_ASSERT_NOT_NULL(param_manager_)                                         \
+         return param_manager_->__create_4py(param, key);                               \
+     }                                                                                  \
+                                                                                        \
 private:                                                                                \
     /**
      * 设置统一管控参数类

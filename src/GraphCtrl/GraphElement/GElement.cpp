@@ -585,9 +585,4 @@ CBool GElement::isDefaultBinding() const {
     return CGRAPH_DEFAULT_BINDING_INDEX == binding_index_;
 }
 
-
-GParamPtr GElement::__getGParam_4py(const std::string& key) {
-    return param_manager_ ? param_manager_->__get_4py(key) : nullptr;
-}
-
 CGRAPH_NAMESPACE_END
