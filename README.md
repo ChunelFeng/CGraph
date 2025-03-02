@@ -33,7 +33,7 @@
 ![CGraph Skeleton](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Skeleton.jpg)
 <br>
 
-本工程使用纯C++11标准库编写，无任何第三方依赖。兼容`MacOS`、`Linux`、`Windows`和`Android`系统，支持通过 `CLion`、`VSCode`、`Xcode`、`Visual Studio`、`Code::Blocks`、`Qt Creator`等多款IDE进行本地编译和二次开发，具体编译方式请参考 [CGraph 编译说明](https://github.com/ChunelFeng/CGraph/blob/main/COMPILE.md ) <br>
+本工程使用纯C++11标准库编写，无任何第三方依赖，并且提供python版本。兼容`MacOS`、`Linux`、`Windows`和`Android`系统，支持通过 `CLion`、`VSCode`、`Xcode`、`Visual Studio`、`Code::Blocks`、`Qt Creator`等多款IDE进行本地编译和二次开发，具体编译方式请参考 [CGraph 编译说明](https://github.com/ChunelFeng/CGraph/blob/main/COMPILE.md ) <br>
 
 详细功能介绍和用法，请参考 [一面之猿网](http://www.chunel.cn/) 中的文章内容。相关视频在B站持续更新中，欢迎观看和交流：<br>
 * [【B站视频】CGraph 入门篇](https://www.bilibili.com/video/BV1mk4y1v7XJ) <br>
@@ -46,6 +46,7 @@
 * [【B站视频】CGraph 分享篇](https://www.bilibili.com/video/BV1dh4y1i78u) <br>
 
 ## 二. 使用Demo
+### cpp 版本
 
 #### MyNode.h
 ```cpp
@@ -101,6 +102,42 @@ int main() {
 <br>
 如上图所示，图结构执行的时候，首先执行`a`节点。`a`节点执行完毕后，并行执行`b`和`c`节点。`b`和`c`节点全部执行完毕后，再执行`d`节点。
 
+### python 版本
+
+#### main.py
+
+```python
+import time
+from datetime import datetime
+
+from PyCGraph import GNode, GPipeline, CStatus
+
+
+class MyNode1(GNode):
+    def run(self):
+        print("[{0}] {1}, enter MyNode1 run function. Sleep for 1 second ... ".format(datetime.now(), self.getName()))
+        time.sleep(1)
+        return CStatus()
+
+class MyNode2(GNode):
+    def run(self):
+        print("[{0}] {1}, enter MyNode2 run function. Sleep for 2 second ... ".format(datetime.now(), self.getName()))
+        time.sleep(2)
+        return CStatus()
+
+
+if __name__ == '__main__':
+    pipeline = GPipeline()
+    a, b, c, d = MyNode1(), MyNode2(), MyNode1(), MyNode2()
+
+    pipeline.registerGElement(a, set(), "nodeA")
+    pipeline.registerGElement(b, {a}, "nodeB")
+    pipeline.registerGElement(c, {a}, "nodeC")
+    pipeline.registerGElement(d, {b, c}, "nodeD")
+
+    pipeline.process()
+```
+
 ## 三. 推荐阅读
 
 * [纯序员给你介绍图化框架的简单实现——执行逻辑](http://www.chunel.cn/archives/cgraph-run-introduce)
@@ -130,6 +167,7 @@ int main() {
 * [一文带你了解练习时长两年半的CGraph](http://www.chunel.cn/archives/cgraph-kunanniversary-introduce)
 * [CGraph作者想知道，您是否需要一款eDAG调度框架](http://www.chunel.cn/archives/cgraph-extended-dag)  
 * [降边增效：CGraph中冗余边剪裁思路总结](http://www.chunel.cn/archives/cgraph-remove-redundancy-link)
+* [最新码坛爽文：重生之我在国外写CGraph(python版本)](http://www.chunel.cn/archives/cgraph-pycgraph-v1)
 <br>
 
 ## 四. 关联项目
