@@ -88,8 +88,9 @@ private:
 public:
     /// 为 python 版本设定的函数，cpp 的童鞋不需要使用
     CStatus __create_4py(GParamPtr param, const std::string& key);
-
     GParamPtr __get_4py(const std::string& key);
+    CStatus __remove_4py(const std::string& key);
+    CBool __has_4py(const std::string& key);
 };
 
 using GParamManagerPtr = GParamManager *;

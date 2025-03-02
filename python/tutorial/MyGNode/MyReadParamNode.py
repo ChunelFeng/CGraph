@@ -12,7 +12,7 @@ from MyParams.MyParam import MyParam
 
 class MyReadParamNode(GNode):
     def run(self):
-        param = self.getGParam("key")
+        param = self.getGParamWithNoEmpty("param1")
         param.lock()
         print('[{0}] value is {1}, count is {2}'.format(self.getName(), param.value, param.count))
         param.unlock()

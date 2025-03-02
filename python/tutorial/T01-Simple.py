@@ -11,6 +11,7 @@ from PyCGraph import GNode, GPipeline, CStatus
 from MyGNode.MyNode1 import MyNode1
 from MyGNode.MyNode2 import MyNode2
 
+
 def tutorial_simple():
     pipeline = GPipeline()
     a, b, c, d = MyNode1(), MyNode2(), MyNode1(), MyNode2()

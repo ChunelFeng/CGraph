@@ -9,7 +9,5 @@
 from PyCGraph import GCondition
 
 class MyCondition(GCondition):
-    index = 0
     def choose(self):
-        self.index += 1
-        return self.index % self.getRange()
+        return 1

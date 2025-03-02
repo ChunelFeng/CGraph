@@ -10,6 +10,7 @@ from PyCGraph import GNode, GPipeline, CStatus
 
 from MyGNode.HelloCGraphNode import HelloCGraphNode
 
+
 def tutorial_hello_cgraph():
     pipeline = GPipeline()
     hcg = HelloCGraphNode()

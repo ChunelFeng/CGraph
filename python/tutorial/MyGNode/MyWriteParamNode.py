@@ -12,8 +12,11 @@ from PyCGraph import GNode, CStatus
 from MyParams.MyParam import MyParam
 
 class MyWriteParamNode(GNode):
+    def init(self):
+        return self.createGParam(MyParam(), "param1")
+
     def run(self):
-        param: MyParam = self.getGParam("key")
+        param: MyParam = self.getGParam("param1")
 
         param.lock()
         param.count += 1

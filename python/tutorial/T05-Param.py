@@ -10,7 +10,7 @@ from PyCGraph import GNode, GPipeline, CStatus
 
 from MyGNode.MyWriteParamNode import MyWriteParamNode
 from MyGNode.MyReadParamNode import MyReadParamNode
-from MyParams.MyParam import MyParam
+
 
 def tutorial_param():
     pipeline = GPipeline()
@@ -24,9 +24,6 @@ def tutorial_param():
     pipeline.registerGElement(e, {a}, "readNodeE")
     pipeline.registerGElement(f, {b, c, d, e}, "writeNodeF")
 
-    param = MyParam()
-    pipeline.createGParam(param, "key")
-
     pipeline.init()
 
     for i in range(0, 3):
@@ -34,6 +31,7 @@ def tutorial_param():
         print('---- tutorial_param, loop : {0}, and run status = {1}'.format(i + 1, status.getCode()))
 
     pipeline.destroy()
+
 
 if __name__ == '__main__':
     tutorial_param()

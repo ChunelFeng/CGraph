@@ -31,9 +31,12 @@ PYBIND11_MODULE(PyCGraph, m) {
 
     py::class_<GParam, PywGParam, std::unique_ptr<GParam, py::nodelete> >(m, "GParam")
         .def(py::init<>())
-        .def("lock", &GParam::lock, py::call_guard<py::gil_scoped_release>())
-        .def("unlock", &GParam::unlock, py::call_guard<py::gil_scoped_release>())
-        .def("tryLock", &GParam::tryLock, py::call_guard<py::gil_scoped_release>());
+        .def("lock", &GParam::lock,
+             py::call_guard<py::gil_scoped_release>())
+        .def("unlock", &GParam::unlock,
+             py::call_guard<py::gil_scoped_release>())
+        .def("tryLock", &GParam::tryLock,
+             py::call_guard<py::gil_scoped_release>());
 
     py::class_<PyGPipeline, std::unique_ptr<PyGPipeline, py::nodelete> >(m, "GPipeline")
         .def(py::init<>())
@@ -41,8 +44,15 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("createGParam", &PyGPipeline::__createGParam_4py,
              py::keep_alive<1, 2>())
         .def("getGParam", &PyGPipeline::__getGParam_4py)
-        .def("run", &PyGPipeline::run, py::call_guard<py::gil_scoped_release>())
-        .def("process", &PyGPipeline::process, py::call_guard<py::gil_scoped_release>(),
+        .def("getGParamWithNoEmpty", &PyGPipeline::__getGParamWithNoEmpty_4py)
+        .def("removeGParam", &PyGPipeline::__removeGParam_4py,
+             py::call_guard<py::gil_scoped_release>())
+        .def("hasGParam", &PyGPipeline::__hasGParam_4py,
+             py::call_guard<py::gil_scoped_release>())
+        .def("run", &PyGPipeline::run,
+             py::call_guard<py::gil_scoped_release>())
+        .def("process", &PyGPipeline::process,
+             py::call_guard<py::gil_scoped_release>(),
              py::arg("runTimes") = 1)
         .def("destroy", &PyGPipeline::destroy)
         .def("registerGElement", &PyGPipeline::registerGElement,
@@ -55,8 +65,14 @@ PYBIND11_MODULE(PyCGraph, m) {
     py::class_<GElement, PywGElement, std::unique_ptr<GElement, py::nodelete> >(m, "GElement")
         .def(py::init<>())
         .def("createGParam", &GElement::__createGParam_4py,
-             py::keep_alive<1, 2>())
+             py::keep_alive<1, 2>(),
+                     py::call_guard<py::gil_scoped_release>())
         .def("getGParam", &GElement::__getGParam_4py)
+        .def("getGParamWithNoEmpty", &GElement::__getGParamWithNoEmpty_4py)
+        .def("removeGParam", &GElement::__removeGParam_4py,
+             py::call_guard<py::gil_scoped_release>())
+        .def("hasGParam", &GElement::__hasGParam_4py,
+             py::call_guard<py::gil_scoped_release>())
         .def("getName", &GElement::getName)
         .def("setName", &GElement::setName)
         .def("addDependGElements", &GElement::addDependGElements,
