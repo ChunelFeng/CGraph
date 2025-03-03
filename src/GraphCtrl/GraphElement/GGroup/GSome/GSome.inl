@@ -21,7 +21,7 @@ GSome<TriggerNum>::GSome() {
 
 
 template<CInt TriggerNum>
-CStatus GSome<TriggerNum>::addElement(GElementPtr element) {
+CStatus GSome<TriggerNum>::addElementEx(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
     CGRAPH_ASSERT_NOT_NULL(element)
@@ -34,7 +34,6 @@ CStatus GSome<TriggerNum>::addElement(GElementPtr element) {
         element->setTimeout(CGRAPH_MAX_BLOCK_TTL, GElementTimeoutStrategy::HOLD_BY_PIPELINE);
     }
 
-    group_elements_arr_.emplace_back(element);
     CGRAPH_FUNCTION_END
 }
 

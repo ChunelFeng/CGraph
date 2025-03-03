@@ -48,8 +48,16 @@ CStatus GGroup::addElement(GElementPtr element) {
 
     this->group_elements_arr_.emplace_back(element);
     element->belong_ = this;
+    // 在这里不要进行判断返回值，因为可能是region刚刚创建的时候，还没被写入 pipeline中
     element->addManagers(param_manager_, event_manager_, stage_manager_);
+
+    status = addElementEx(element);
     CGRAPH_FUNCTION_END
+}
+
+
+CStatus GGroup::addElementEx(GElementPtr element) {
+    CGRAPH_EMPTY_FUNCTION
 }
 
 
@@ -95,12 +103,12 @@ CStatus GGroup::addManagers(GParamManagerPtr paramManager,
                             GEventManagerPtr eventManager,
                             GStageManagerPtr stageManager) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(paramManager, eventManager)
+    CGRAPH_ASSERT_NOT_NULL(paramManager, eventManager, stageManager)
     CGRAPH_ASSERT_INIT(false)
 
-    this->setGParamManager(paramManager);
-    this->setGEventManager(eventManager);
-    this->setGStageManager(stageManager);
+    status = GElement::addManagers(paramManager, eventManager, stageManager);
+    CGRAPH_FUNCTION_CHECK_STATUS
+
     for (GElementPtr element : group_elements_arr_) {
         CGRAPH_ASSERT_NOT_NULL(element)
         status += element->addManagers(paramManager, eventManager, stageManager);

@@ -29,7 +29,14 @@ private:
      * @param element
      * @return
      */
-    virtual CStatus addElement(GElementPtr element);
+    CStatus addElement(GElementPtr element);
+
+    /**
+     * 在添加element的时候，附加选项
+     * @param element
+     * @return
+     */
+    virtual CStatus addElementEx(GElementPtr element);
 
     CStatus addManagers(GParamManagerPtr paramManager,
                         GEventManagerPtr eventManager,

@@ -23,7 +23,6 @@ GElementManager::~GElementManager() {
 CStatus GElementManager::init() {
     CGRAPH_FUNCTION_BEGIN
 
-    /** 首先判定，注册的element全部不为空 */
     for (auto element : manager_elements_) {
         CGRAPH_ASSERT_NOT_NULL(element)
     }

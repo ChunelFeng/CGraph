@@ -19,9 +19,8 @@ def tutorial_complex():
 
     d1, d2, d3 = MyNode1('nodeD1'), MyNode1('nodeD2'), MyNode1('nodeD3')
     d4 = MyNode2({d1}, 'nodeD4', 1)
-    d23_cluster = GCluster()
-    d23_cluster.addGElements([d2, d3])
-    d23_cluster.addDependGElements({d1})
+    d23_cluster = GCluster([d2, d3])    # 表示 d23_cluster 中包含 [d2,d3] 两个element
+    d23_cluster.addDependGElements({d1})    # 表示 d23_cluster 依赖 {d1} 一个element，注意 [] 和 {} 的不用用法
     d_region = GRegion([d1, d23_cluster, d4])
 
     a, c, e = MyNode1(), MyNode1(), MyNode1()

@@ -22,8 +22,6 @@ class GSome : public GGroup {
 protected:
     explicit GSome();
 
-    CStatus addElement(GElementPtr element) final;
-
     CStatus run() final;
 
     CBool isSerializable() const final;
@@ -35,6 +33,9 @@ protected:
     CStatus checkSuitable() final;
 
     CGRAPH_NO_ALLOWED_COPY(GSome)
+
+private:
+    CStatus addElementEx(GElementPtr element) final;
 
 private:
     CInt left_num_ = 0;                        // 还剩的触发结束的个数
