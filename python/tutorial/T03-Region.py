@@ -11,6 +11,7 @@ from PyCGraph import GPipeline, GRegion, CStatus
 from MyGNode.MyNode1 import MyNode1
 from MyGNode.MyNode2 import MyNode2
 
+
 def tutorial_region():
     b1 = MyNode1("nodeB1")
     b2 = MyNode2({b1}, "nodeB2", 2)

@@ -15,13 +15,6 @@ class PyGPipeline : public CGraph::GPipeline {
 public:
     explicit PyGPipeline() : CGraph::GPipeline() {}
     ~PyGPipeline() override {}
-
-    CStatus registerGElement(CGraph::GElementPtr element,
-                             const CGraph::GElementPtrSet &depends = CGraph::GElementPtrSet{},
-                             const std::string &name = CGraph::CGRAPH_EMPTY,
-                             CSize loop = CGraph::CGRAPH_DEFAULT_LOOP_TIMES) {
-        return __interRegister_4py(element, depends, name, loop);
-    }
 };
 
 #endif //CGRAPH_PYGPIPELINE_H

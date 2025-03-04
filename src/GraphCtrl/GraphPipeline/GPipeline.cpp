@@ -360,7 +360,7 @@ CStatus GPipeline::innerRegister(GElementPtr element, const GElementPtrSet &depe
 }
 
 
-CStatus GPipeline::__interRegister_4py(CGraph::GElementPtr element, const CGraph::GElementPtrSet &depends,
+CStatus GPipeline::__registerGElement_4py(CGraph::GElementPtr element, const CGraph::GElementPtrSet &depends,
                                          const std::string &name, CSize loop) {
     return innerRegister(element, depends, name, loop);
 }

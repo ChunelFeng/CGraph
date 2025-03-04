@@ -17,10 +17,6 @@ public:
         __addElements_4py(elements);
     };
     ~PyGRegion() override {};
-
-    CStatus addGElements(const CGraph::GElementPtrArr& elements) {
-        return __addElements_4py(elements);
-    }
 };
 
 #endif //CGRAPH_PYGREGION_H

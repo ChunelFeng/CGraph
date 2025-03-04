@@ -80,13 +80,7 @@ private:
     template<GMultiConditionType> friend class GMultiCondition;
     template<CInt> friend class GSome;
 
-protected:
-    /**
-     * 插入多个 elements 信息
-     * @param elements
-     * @return
-     * @notice 主要为了适配python接口，不建议cpp用户直接使用
-     */
+public:
     CStatus __addElements_4py(const GElementPtrArr& elements);
 };
 

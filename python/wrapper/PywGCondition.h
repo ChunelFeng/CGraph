@@ -25,10 +25,6 @@ public:
     CIndex choose() override {
         PYBIND11_OVERLOAD_PURE(CIndex, PywGCondition, choose);
     }
-
-    CStatus addGElements(const CGraph::GElementPtrArr& elements) {
-        return __addElements_4py(elements);
-    }
 };
 
 #endif //CGRAPH_PYWGCONDITION_H

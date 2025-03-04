@@ -439,8 +439,8 @@ private:
     friend class GPerf;
 
 public:
-    CStatus __interRegister_4py(GElementPtr element, const GElementPtrSet &depends,
-                                const std::string &name, CSize loop);
+    CStatus __registerGElement_4py(GElementPtr element, const GElementPtrSet &depends,
+                                   const std::string &name, CSize loop);
 };
 
 using GPipelinePtr = GPipeline *;
