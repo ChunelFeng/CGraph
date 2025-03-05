@@ -47,6 +47,8 @@ protected:
 
     CVoidPtr setGEventManager(GEventManagerPtr em) final;
 
+    CVoidPtr setBelong(GElement* belong);
+
     CGRAPH_NO_ALLOWED_COPY(GAspectManager)
 
 private:
@@ -54,6 +56,7 @@ private:
 
     friend class GElement;
     friend class CAllocator;
+    friend class GElementManager;
 };
 
 using GAspectManagerPtr = GAspectManager *;

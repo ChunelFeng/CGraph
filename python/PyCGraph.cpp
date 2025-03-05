@@ -57,6 +57,12 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("isOK", &CStatus::isOK)
         .def("isErr", &CStatus::isErr);
 
+    py::class_<GAspect, PywGAspect, std::unique_ptr<GAspect, py::nodelete> >(m, "GAspect")
+        .def(py::init<>())
+        .def("getName", &GAspect::__getName_4py)
+        .def("getGParam", &GAspect::__getGParam_4py)
+        .def("getGParamWithNoEmpty", &GAspect::__getGParamWithNoEmpty_4py);
+
     py::class_<GParam, PywGParam, std::unique_ptr<GParam, py::nodelete> >(m, "GParam")
         .def(py::init<>())
         .def("lock", &GParam::lock,
@@ -106,6 +112,8 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("getName", &GElement::getName)
         .def("setName", &GElement::setName)
         .def("setLevel", &GElement::setLevel)
+        .def("addGAspect", &GElement::__addGAspect_4py,
+             py::keep_alive<1, 2>())
         .def("addDependGElements", &GElement::addDependGElements,
              py::arg("elements"))
         .def("setLoop", &GElement::setLoop);

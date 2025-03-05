@@ -99,6 +99,7 @@ CStatus GAspectManager::popLast() {
 
 
 CVoidPtr GAspectManager::setGParamManager(GParamManagerPtr pm) {
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(pm)
     for (auto *cur: aspect_arr_) {
         cur->setGParamManager(pm);
     }
@@ -107,8 +108,17 @@ CVoidPtr GAspectManager::setGParamManager(GParamManagerPtr pm) {
 
 
 CVoidPtr GAspectManager::setGEventManager(GEventManagerPtr em) {
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(em)
     for (auto *cur : aspect_arr_) {
         cur->setGEventManager(em);
+    }
+    return this;
+}
+
+CVoidPtr GAspectManager::setBelong(GElement* belong) {
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(belong)
+    for (auto *cur : aspect_arr_) {
+        cur->belong_ = belong;
     }
     return this;
 }

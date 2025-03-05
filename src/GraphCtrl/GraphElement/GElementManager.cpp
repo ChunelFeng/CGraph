@@ -25,6 +25,8 @@ CStatus GElementManager::init() {
 
     for (auto element : manager_elements_) {
         CGRAPH_ASSERT_NOT_NULL(element)
+        // 确保在任何情况下，任何切面中，都可以获取参数，出发事件信息
+        element->updateAspectInfo();
     }
 
     status = initEngine();

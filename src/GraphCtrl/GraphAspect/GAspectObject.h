@@ -43,13 +43,6 @@ protected:
               c_enable_if_t<std::is_base_of<GAspectParam, T>::value, int> = 0>
     GAspectObject* setAParam(T* param);
 
-    /**
-     * 设置从属的 element信息
-     * @param belong
-     * @return
-     */
-    GAspectObject* setBelong(GElement* belong);
-
     const std::string& getName() const override;
 
     CGRAPH_NO_ALLOWED_COPY(GAspectObject)
@@ -76,6 +69,11 @@ private:
     friend class GAspectManager;
     friend class GAspect;
     friend class GElement;
+
+public:
+    const std::string& __getName_4py() const {
+        return getName();
+    }
 };
 
 using GAspectObjectPtr = GAspectObject *;

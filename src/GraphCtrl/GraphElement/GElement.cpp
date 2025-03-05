@@ -585,4 +585,26 @@ CBool GElement::isDefaultBinding() const {
     return CGRAPH_DEFAULT_BINDING_INDEX == binding_index_;
 }
 
+
+GElementPtr GElement::updateAspectInfo() {
+    // 在所有 element 初始化之前执行，确保切面的信息ok
+    if (aspect_manager_) {
+        aspect_manager_->setGParamManager(param_manager_);
+        aspect_manager_->setGEventManager(event_manager_);
+        aspect_manager_->setBelong(this);
+    }
+    return this;
+}
+
+
+GElementPtr GElement::__addGAspect_4py(GAspectPtr aspect) {
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(aspect)
+    if (!aspect_manager_) {
+        aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager)
+    }
+
+    aspect_manager_->add(aspect);
+    return this;
+}
+
 CGRAPH_NAMESPACE_END

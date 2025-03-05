@@ -418,6 +418,12 @@ private:
      */
     CBool isDefaultBinding() const;
 
+    /**
+     * 更新切面信息
+     * @return
+     */
+    GElement* updateAspectInfo();
+
 private:
     /** 状态相关信息 */
     CBool done_ { false };                                                    // 判定被执行结束
@@ -484,6 +490,9 @@ private:
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER_WITH_MEMBER
     CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER_WITH_MEMBER
     CGRAPH_DECLARE_GSTAGE_MANAGER_WRAPPER_WITH_MEMBER
+
+public:
+    GElement* __addGAspect_4py(GAspectPtr aspect);
 };
 
 using GElementRef = GElement &;
