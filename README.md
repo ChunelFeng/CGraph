@@ -46,13 +46,13 @@
 * [【B站视频】CGraph 分享篇](https://www.bilibili.com/video/BV1dh4y1i78u) <br>
 
 ## 二. 使用Demo
-### cpp 版本
-
-#### MyNode.h
+* cpp 版本
 ```cpp
 #include "CGraph.h"
 
-class MyNode1 : public CGraph::GNode {
+using namespace CGraph;
+
+class MyNode1 : public GNode {
 public:
     CStatus run() override {
         printf("[%s], sleep for 1 second ...\n", this->getName().c_str());
@@ -61,7 +61,7 @@ public:
     }
 };
 
-class MyNode2 : public CGraph::GNode {
+class MyNode2 : public GNode {
 public:
     CStatus run() override {
         printf("[%s], sleep for 2 second ...\n", this->getName().c_str());
@@ -69,13 +69,7 @@ public:
         return CStatus();
     }
 };
-```
 
-#### main.cpp
-```cpp
-#include "MyNode.h"
-
-using namespace CGraph;
 
 int main() {
     /* 创建一个流水线，用于设定和执行流图信息 */
@@ -102,9 +96,7 @@ int main() {
 <br>
 如上图所示，图结构执行的时候，首先执行`a`节点。`a`节点执行完毕后，并行执行`b`和`c`节点。`b`和`c`节点全部执行完毕后，再执行`d`节点。
 
-### python 版本
-
-#### main.py
+* python 版本
 
 ```python
 import time
@@ -165,10 +157,10 @@ if __name__ == '__main__':
 * [炸裂！CGraph性能全面超越taskflow之后，作者却说他更想...](http://www.chunel.cn/archives/cgraph-compare-taskflow-v1)
 * [以图优图：CGraph中计算dag最大并发度思路总结](http://www.chunel.cn/archives/cgraph-max-para-size)
 * [一文带你了解练习时长两年半的CGraph](http://www.chunel.cn/archives/cgraph-kunanniversary-introduce)
-* [CGraph作者想知道，您是否需要一款eDAG调度框架](http://www.chunel.cn/archives/cgraph-extended-dag)  
+* [CGraph作者想知道，您是否需要一款eDAG调度框架](http://www.chunel.cn/archives/cgraph-extended-dag)
 * [降边增效：CGraph中冗余边剪裁思路总结](http://www.chunel.cn/archives/cgraph-remove-redundancy-link)
 * [最新码坛爽文：重生之我在国外写CGraph(python版本)](http://www.chunel.cn/archives/cgraph-pycgraph-v1)
-<br>
+  <br>
 
 ## 四. 关联项目
 
