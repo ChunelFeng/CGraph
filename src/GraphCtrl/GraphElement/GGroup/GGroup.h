@@ -81,7 +81,7 @@ private:
     template<CInt> friend class GSome;
 
 public:
-    CStatus __addElements_4py(const GElementPtrArr& elements);
+    CStatus __addGElements_4py(const GElementPtrArr& elements);
 };
 
 using GGroupPtr = GGroup *;

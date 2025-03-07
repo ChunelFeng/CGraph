@@ -102,7 +102,7 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def(py::init<>())
         .def("createGParam", &GElement::__createGParam_4py,
              py::keep_alive<1, 2>(),
-                     py::call_guard<py::gil_scoped_release>())
+             py::call_guard<py::gil_scoped_release>())
         .def("getGParam", &GElement::__getGParam_4py)
         .def("getGParamWithNoEmpty", &GElement::__getGParamWithNoEmpty_4py)
         .def("removeGParam", &GElement::__removeGParam_4py,
@@ -131,7 +131,7 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def(py::init<const CGraph::GElementPtrArr&>(),
             py::arg("elements") = GElementPtrArr{},
             py::keep_alive<1, 2>())
-        .def("addGElements", &PyGCluster::__addElements_4py,
+        .def("addGElements", &PyGCluster::__addGElements_4py,
             py::arg("elements"),
             py::keep_alive<1, 2>());
 
@@ -139,7 +139,7 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def(py::init<const CGraph::GElementPtrArr&>(),
              py::arg("elements") = GElementPtrArr{},
              py::keep_alive<1, 2>())
-        .def("addGElements", &PyGRegion::__addElements_4py,
+        .def("addGElements", &PyGRegion::__addGElements_4py,
             py::arg("elements"),
             py::keep_alive<1, 2>());
 
@@ -148,7 +148,7 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::arg("elements") = GElementPtrArr{},
              py::keep_alive<1, 2>())
         .def("getRange", &PywGCondition::__getRange_4py)
-        .def("addGElements", &PywGCondition::__addElements_4py,
+        .def("addGElements", &PywGCondition::__addGElements_4py,
             py::arg("elements"),
             py::keep_alive<1, 2>());
 
@@ -156,7 +156,7 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def(py::init<const CGraph::GElementPtrArr&>(),
              py::arg("elements") = GElementPtrArr{},
              py::keep_alive<1, 2>())
-        .def("addGElements", &PyGMultiCondition<CGraph::GMultiConditionType::SERIAL>::__addElements_4py,
+        .def("addGElements", &PyGMultiCondition<CGraph::GMultiConditionType::SERIAL>::__addGElements_4py,
             py::arg("elements"),
             py::keep_alive<1, 2>());
 
@@ -164,7 +164,7 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def(py::init<const CGraph::GElementPtrArr&>(),
              py::arg("elements") = GElementPtrArr{},
              py::keep_alive<1, 2>())
-        .def("addGElements", &PyGMultiCondition<CGraph::GMultiConditionType::PARALLEL>::__addElements_4py,
+        .def("addGElements", &PyGMultiCondition<CGraph::GMultiConditionType::PARALLEL>::__addGElements_4py,
             py::arg("elements"),
             py::keep_alive<1, 2>());
 }

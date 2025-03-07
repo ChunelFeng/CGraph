@@ -17,9 +17,10 @@ namespace py = pybind11;
 
 class PywGAspect : public CGraph::GAspect {
 public:
-    explicit PywGAspect() {};
-    ~PywGAspect() override {};
+    explicit PywGAspect() = default;
+    ~PywGAspect() override = default;
 
+protected:
     CStatus beginInit() override {
         PYBIND11_OVERLOAD(CStatus, GAspect, beginInit);
     }

@@ -31,6 +31,8 @@ public:
         setName(name);
     }
 
+    ~PywGNode() override = default;
+
 protected:
     CStatus init() override {
         PYBIND11_OVERLOAD(CStatus, GNode, init);

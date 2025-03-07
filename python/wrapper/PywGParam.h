@@ -16,6 +16,9 @@
 namespace py = pybind11;
 
 class PywGParam : public CGraph::GParam {
+public:
+    ~PywGParam() override = default;
+
 protected:
     CStatus init() override {
         PYBIND11_OVERLOAD(CStatus, CGraph::GParam, init);

@@ -20,7 +20,7 @@ def tutorial_region():
     b_region = GRegion([b1, b2, b3, b4])
 
     pipeline = GPipeline()
-    a, c, d = MyNode1(), MyNode2(), MyNode1()
+    a, c = MyNode1(), MyNode2()
 
     pipeline.registerGElement(a, set(), "nodeA")
     pipeline.registerGElement(b_region, {a}, "regionB", 2)

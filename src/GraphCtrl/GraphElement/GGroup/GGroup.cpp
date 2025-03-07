@@ -123,7 +123,7 @@ CBool GGroup::isSeparate(GElementCPtr a, GElementCPtr b) const {
 }
 
 
-CStatus GGroup::__addElements_4py(const GElementPtrArr& elements) {
+CStatus GGroup::__addGElements_4py(const GElementPtrArr& elements) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
     for (GElementPtr element : elements) {

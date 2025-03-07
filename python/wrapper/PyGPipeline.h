@@ -13,8 +13,9 @@
 
 class PyGPipeline : public CGraph::GPipeline {
 public:
-    explicit PyGPipeline() : CGraph::GPipeline() {}
-    ~PyGPipeline() override {}
+    explicit PyGPipeline() = default;
+
+    ~PyGPipeline() override = default;
 };
 
 #endif //CGRAPH_PYGPIPELINE_H
