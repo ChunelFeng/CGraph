@@ -10,5 +10,5 @@ from PyCGraph import GNode, CStatus
 
 class HelloCGraphNode(GNode):
     def run(self):
-        print("Hello PyCGraph")
+        print("Hello, PyCGraph.")
         return CStatus()

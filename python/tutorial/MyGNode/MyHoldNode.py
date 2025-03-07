@@ -11,17 +11,17 @@ from PyCGraph import GNode, CStatus
 from MyParams.MyParam import MyParam
 
 class MyHoldNode(GNode):
-    param_key = 'hold-param'
+    _param_key = 'hold-param'
     def init(self):
-        return self.createGParam(MyParam(), self.param_key)
+        return self.createGParam(MyParam(), self._param_key)
 
     def run(self):
-        param: MyParam = self.getGParam(self.param_key)
+        param: MyParam = self.getGParam(self._param_key)
         param.value += 1
         print('current value is {0}'.format(param.value))
         return CStatus()
 
     def isHold(self):
-        param: MyParam = self.getGParam(self.param_key)
+        param: MyParam = self.getGParam(self._param_key)
         print('enter hold path, value is {0}'.format(param.value))
         return param.value < 5

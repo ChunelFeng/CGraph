@@ -50,5 +50,13 @@
   ```shell
   $ sudo apt-get install cmake -y           # 安装cmake
   $ ./CGraph-build.sh                       # 编译CGraph工程，生成的内容在同级/build/文件夹中
-  $ ./build/tutorial/T00-HelloCGraph        # 运 行T00-HelloCGraph，并且在终端输出 Hello, CGraph.
+  $ ./build/tutorial/T00-HelloCGraph        # 运行T00-HelloCGraph，并且在终端输出 Hello, CGraph.
+  ```
+
+* 安装PyCGraph，使用前需要提前安装`python3` `pybind11`和`setuptools`
+  ```shell
+  $ git clone https://github.com/ChunelFeng/CGraph.git
+  $ cd CGraph/python                       # 进入对应文件夹
+  $ python3 setup.py install               # 安装 PyCGraph
+  $ python3 tutorial/T00-HelloCGraph.py    # 运行T00-HelloCGraph.py，并且在终端输出 Hello, PyCGraph.
   ```
