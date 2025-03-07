@@ -200,10 +200,6 @@ CStatus GElement::addManagers(GParamManagerPtr paramManager,
     this->setGParamManager(paramManager);
     this->setGEventManager(eventManager);
     this->setGStageManager(stageManager);
-    if (aspect_manager_) {
-        aspect_manager_->setGParamManager(paramManager);
-        aspect_manager_->setGEventManager(eventManager);
-    }
 
     CGRAPH_FUNCTION_END
 }

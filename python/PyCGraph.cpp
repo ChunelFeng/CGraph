@@ -72,7 +72,7 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("tryLock", &GParam::tryLock,
              py::call_guard<py::gil_scoped_release>());
 
-    py::class_<PyGPipeline, std::unique_ptr<PyGPipeline, py::nodelete> >(m, "GPipeline")
+    py::class_<PyGPipeline>(m, "GPipeline")
         .def(py::init<>())
         .def("init", &PyGPipeline::init)
         .def("createGParam", &PyGPipeline::__createGParam_4py,
@@ -128,7 +128,7 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::arg("loop") = CGRAPH_DEFAULT_LOOP_TIMES);
 
     py::class_<PyGCluster, GElement, std::unique_ptr<PyGCluster, py::nodelete> >(m, "GCluster")
-        .def(py::init<const CGraph::GElementPtrArr&>(),
+        .def(py::init<const GElementPtrArr&>(),
             py::arg("elements") = GElementPtrArr{},
             py::keep_alive<1, 2>())
         .def("addGElements", &PyGCluster::__addGElements_4py,
@@ -136,7 +136,7 @@ PYBIND11_MODULE(PyCGraph, m) {
             py::keep_alive<1, 2>());
 
     py::class_<PyGRegion, GElement, std::unique_ptr<PyGRegion, py::nodelete> >(m, "GRegion")
-        .def(py::init<const CGraph::GElementPtrArr&>(),
+        .def(py::init<const GElementPtrArr&>(),
              py::arg("elements") = GElementPtrArr{},
              py::keep_alive<1, 2>())
         .def("addGElements", &PyGRegion::__addGElements_4py,
@@ -144,7 +144,7 @@ PYBIND11_MODULE(PyCGraph, m) {
             py::keep_alive<1, 2>());
 
     py::class_<PywGCondition, GElement, std::unique_ptr<PywGCondition, py::nodelete> >(m, "GCondition")
-        .def(py::init<const CGraph::GElementPtrArr&>(),
+        .def(py::init<const GElementPtrArr&>(),
              py::arg("elements") = GElementPtrArr{},
              py::keep_alive<1, 2>())
         .def("getRange", &PywGCondition::__getRange_4py)
@@ -152,19 +152,23 @@ PYBIND11_MODULE(PyCGraph, m) {
             py::arg("elements"),
             py::keep_alive<1, 2>());
 
-    py::class_<PyGMultiCondition<CGraph::GMultiConditionType::SERIAL>, GElement>(m, "GSerialMultiCondition")
-        .def(py::init<const CGraph::GElementPtrArr&>(),
+    py::class_<PyGMultiCondition<GMultiConditionType::SERIAL>,
+            GElement, std::unique_ptr<PyGMultiCondition<GMultiConditionType::SERIAL>,
+            py::nodelete> >(m, "GSerialMultiCondition")
+        .def(py::init<const GElementPtrArr&>(),
              py::arg("elements") = GElementPtrArr{},
              py::keep_alive<1, 2>())
-        .def("addGElements", &PyGMultiCondition<CGraph::GMultiConditionType::SERIAL>::__addGElements_4py,
+        .def("addGElements", &PyGMultiCondition<GMultiConditionType::SERIAL>::__addGElements_4py,
             py::arg("elements"),
             py::keep_alive<1, 2>());
 
-    py::class_<PyGMultiCondition<CGraph::GMultiConditionType::PARALLEL>, GElement>(m, "GParallelMultiCondition")
-        .def(py::init<const CGraph::GElementPtrArr&>(),
+    py::class_<PyGMultiCondition<GMultiConditionType::PARALLEL>,
+            GElement, std::unique_ptr<PyGMultiCondition<GMultiConditionType::PARALLEL>,
+            py::nodelete> >(m, "GParallelMultiCondition")
+        .def(py::init<const GElementPtrArr&>(),
              py::arg("elements") = GElementPtrArr{},
              py::keep_alive<1, 2>())
-        .def("addGElements", &PyGMultiCondition<CGraph::GMultiConditionType::PARALLEL>::__addGElements_4py,
+        .def("addGElements", &PyGMultiCondition<GMultiConditionType::PARALLEL>::__addGElements_4py,
             py::arg("elements"),
             py::keep_alive<1, 2>());
 }
