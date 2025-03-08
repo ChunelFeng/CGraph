@@ -379,9 +379,9 @@ if __name__ == '__main__':
 * 修复辅助线程异常等待问题
 * 更新`tutorial`内容
 
-[2025.02.08 - v3.0.0 - Chunel]
+[2025.03.09 - v3.0.0 - Chunel]
+* 提供 Python 版本
 * 提供`stage`(阶段)功能，用于`element`之间同步运行
-* 提供 Python 封装
 * 更新`tutorial`内容
 
 </details>
