@@ -8,7 +8,6 @@
 
 [![awesome-cpp](https://badgen.net/badge/icon/awesome-cpp/purple?icon=awesome&label&color)](https://github.com/fffaraz/awesome-cpp)
 [![HelloGithub](https://badgen.net/badge/icon/HelloGithub/purple?icon=awesome&label&color)](https://github.com/521xueweihan/HelloGitHub/blob/master/content/HelloGitHub70.md)
-[![GitHub-Chinese-Top-Charts](https://badgen.net/badge/icon/GitHub-Chinese-Top-Charts/purple?icon=awesome&label&color)](https://github.com/GrowingGit/GitHub-Chinese-Top-Charts/blob/master/content/charts/overall/software/CPP.md)
 
 中文 | [English Readme](README_en.md)
 
@@ -45,8 +44,8 @@
 * [【B站视频】CGraph 应用篇](https://www.bilibili.com/video/BV1B84y1D7Hs) <br>
 * [【B站视频】CGraph 分享篇](https://www.bilibili.com/video/BV1dh4y1i78u) <br>
 
-## 二. 使用Demo
-* C++ 版本
+## 二. 入门Demo
+> C++ 版本
 ```cpp
 #include "CGraph.h"
 
@@ -95,9 +94,8 @@ int main() {
 ![CGraph Demo](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Demo.jpg)
 <br>
 如上图所示，图结构执行的时候，首先执行`a`节点。`a`节点执行完毕后，并行执行`b`和`c`节点。`b`和`c`节点全部执行完毕后，再执行`d`节点。
-------------
 
-* Python 版本
+> Python 版本
 
 ```python
 import time

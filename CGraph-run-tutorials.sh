@@ -19,4 +19,4 @@ for file in *; do
     fi
 done
 
-echo -e "\033[34m congratulations, automatic run CGraph tutorial finish... \033[0m"
+echo -e "\033[34m congratulations, automatic run CGraph tutorials finish... \033[0m"
