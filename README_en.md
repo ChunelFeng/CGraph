@@ -118,8 +118,3 @@ int main() {
 ![CGraph Demo](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Demo.jpg)
 <br>
 As is shown on the picture, run `a` firstly. Then, run `b` and `c` parallelized. Run `d` at last after `b` and `c` finished.
-
-
-
-
-

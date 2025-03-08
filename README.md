@@ -1,5 +1,5 @@
 <p align="left">
-  <a href="https://github.com/ChunelFeng/CGraph"><img src="https://badgen.net/badge/langs/C++/cyan?list=1" alt="languages"></a>
+  <a href="https://github.com/ChunelFeng/CGraph"><img src="https://badgen.net/badge/langs/C++,Python/cyan?list=1" alt="languages"></a>
   <a href="https://github.com/ChunelFeng/CGraph"><img src="https://badgen.net/badge/os/MacOS,Linux,Windows/cyan?list=1" alt="os"></a>
   <a href="https://github.com/ChunelFeng/CGraph/stargazers"><img src="https://badgen.net/github/stars/ChunelFeng/CGraph?color=cyan" alt="stars"></a>
   <a href="https://github.com/ChunelFeng/CGraph/network/members"><img src="https://badgen.net/github/forks/ChunelFeng/CGraph?color=cyan" alt="forks"></a>
@@ -19,7 +19,7 @@
 <img align="right" src="https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Author.jpg" width="256px">
 
 ><b>CGraph</b> is a cross-platform <b>D</b>irected <b>A</b>cyclic <b>G</b>raph framework based on pure C++ without any 3rd-party dependencies.</br></br>
->You, with it, can <b>build your own operators simply, and describe any running schedules</b> as you need, such as dependence, parallelling, aggregation and so on. Some useful tools and plugins are also provide to improve your project.</br></br>
+>You, with it, can <b>build your own operators simply, and describe any running schedules</b> as you need, such as dependence, parallelling, aggregation, conditional and so on. Python APIs are also supported to build your pipeline.</br></br>
 >Tutorials and contact information are show as follows. Please <b>get in touch with us for free</b> if you need more about this repository.
 
 ## 一. 简介
@@ -33,7 +33,7 @@
 ![CGraph Skeleton](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Skeleton.jpg)
 <br>
 
-本工程使用纯C++11标准库编写，无任何第三方依赖，并且提供python版本。兼容`MacOS`、`Linux`、`Windows`和`Android`系统，支持通过 `CLion`、`VSCode`、`Xcode`、`Visual Studio`、`Code::Blocks`、`Qt Creator`等多款IDE进行本地编译和二次开发，具体编译方式请参考 [CGraph 编译说明](https://github.com/ChunelFeng/CGraph/blob/main/COMPILE.md ) <br>
+本工程使用纯C++11标准库编写，无任何第三方依赖，并且提供`Python`版本。兼容`MacOS`、`Linux`、`Windows`和`Android`系统，支持通过 `CLion`、`VSCode`、`Xcode`、`Visual Studio`、`Code::Blocks`、`Qt Creator`等多款IDE进行本地编译和二次开发，具体编译方式请参考 [CGraph 编译说明](https://github.com/ChunelFeng/CGraph/blob/main/COMPILE.md ) <br>
 
 详细功能介绍和用法，请参考 [一面之猿网](http://www.chunel.cn/) 中的文章内容。相关视频在B站持续更新中，欢迎观看和交流：<br>
 * [【B站视频】CGraph 入门篇](https://www.bilibili.com/video/BV1mk4y1v7XJ) <br>
@@ -46,7 +46,7 @@
 * [【B站视频】CGraph 分享篇](https://www.bilibili.com/video/BV1dh4y1i78u) <br>
 
 ## 二. 使用Demo
-* cpp 版本
+* C++ 版本
 ```cpp
 #include "CGraph.h"
 
@@ -95,8 +95,9 @@ int main() {
 ![CGraph Demo](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Demo.jpg)
 <br>
 如上图所示，图结构执行的时候，首先执行`a`节点。`a`节点执行完毕后，并行执行`b`和`c`节点。`b`和`c`节点全部执行完毕后，再执行`d`节点。
+------------
 
-* python 版本
+* Python 版本
 
 ```python
 import time
@@ -180,6 +181,8 @@ if __name__ == '__main__':
   * [【B站视频】KuiperInfer推理框架 - 一个面向教学的推理框架](https://www.bilibili.com/video/BV1t2421K7HN)
 * [OGraph](https://github.com/symphony09/ograph) : A simple way to build a pipeline with Go.
   * [【B站视频】听阿里云大佬分享：OGraph——基于Go的流图调度二三事](https://www.bilibili.com/video/BV19RHce6Evo)
+* [pybind11](https://github.com/pybind/pybind11) : Seamless operability between C++11 and Python
+  * 本项目Python接口绑定功能，使用pybind11实现
 
 [![Star History Chart](https://api.star-history.com/svg?repos=ChunelFeng/CGraph&type=Date)](https://star-history.com/#ChunelFeng/CGraph&Date)
 
@@ -394,10 +397,6 @@ if __name__ == '__main__':
 * 感谢《HelloGithub》期刊介绍和推荐：[HelloGithub 第70期](https://github.com/521xueweihan/HelloGitHub/blob/master/content/HelloGitHub70.md)
 
 <p align="center"><img src="https://github.com/ChunelFeng/CGraph/blob/main/doc/image/HelloGithub%20Logo.gif"/></p>
-
-* 感谢《Github中文排行榜》介绍和推荐：[Github中文排行榜 总榜-C++分类](https://github.com/GrowingGit/GitHub-Chinese-Top-Charts/blob/master/content/charts/overall/software/CPP.md)
-
-<p align="center"><img src="https://github.com/ChunelFeng/CGraph/blob/main/doc/image/GrowingGit%20Logo.png"/></p>
 
 * Thanks to the recommendation from [awesome-cpp](https://github.com/fffaraz/awesome-cpp), we all know, it is the most authoritative recommendation list for cpp project in the world
 * Thanks to the recommendation from `Taskflow Group`: [awesome-parallel-computing](https://github.com/taskflow/awesome-parallel-computing), and we always treat [taskflow](https://github.com/taskflow/taskflow) as a role model

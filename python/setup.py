@@ -30,7 +30,7 @@ setup(
     author_email = "chunel@foxmail.com",
     description = "CGraph with python api wrapper by pybind11",
     url = "https://github.com/ChunelFeng/CGraph",
-    license = "Apache-2.0",
+    license = "MIT",
     ext_modules = ext_modules,
     zip_safe = False,
 )
