@@ -16,4 +16,10 @@ public:
     unsigned int num_ {0};
 };
 
+
+class TestAdd1GParam : public CGraph::GParam {
+public:
+    int cnt_ = 0;
+};
+
 #endif //CGRAPH_TESTGPARAMS_H

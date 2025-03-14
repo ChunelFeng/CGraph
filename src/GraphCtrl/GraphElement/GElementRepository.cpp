@@ -98,6 +98,7 @@ CStatus GElementRepository::init() {
         CGRAPH_ASSERT_NOT_NULL(element)
         status = element->checkSuitable();
         CGRAPH_FUNCTION_CHECK_STATUS
+        element->updateAspectInfo();
 
         if (element->isAsync()) {
             async_elements_.emplace(element);

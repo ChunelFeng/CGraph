@@ -35,6 +35,18 @@ public:
     }
 };
 
+class TestAdd1ByParamGNode : public CGraph::GNode {
+public:
+    CStatus run() override {
+        auto p = getGParamWithNoEmpty<TestAdd1GParam>(g_add1_by_param_key);
+        {
+            CGRAPH_PARAM_WRITE_CODE_BLOCK(p)
+            p->cnt_++;
+        }
+        return CStatus();
+    }
+};
+
 
 class TestRecvMessageGNode : public CGraph::GNode {
 public:

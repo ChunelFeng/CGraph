@@ -15,5 +15,6 @@
 
 std::atomic<unsigned int> g_test_node_cnt = {0};
 static const char* g_test_message_key = "test-message-key";
+static const char* g_add1_by_param_key = "add1-by-param";
 
 #endif //CGRAPH_TESTCOMMONDEFINE_H
