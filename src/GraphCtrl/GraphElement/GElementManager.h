@@ -108,10 +108,12 @@ private:
     friend class GRegion;
     friend class GMutable;
     friend class GPerf;
+    friend class GElementRepository;
     friend class CAllocator;
 };
 
 using GElementManagerPtr = GElementManager *;
+using GElementManagerCPtr = const GElementManagerPtr;
 
 CGRAPH_NAMESPACE_END
 

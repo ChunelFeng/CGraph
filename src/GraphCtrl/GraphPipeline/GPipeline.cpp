@@ -334,6 +334,7 @@ CStatus GPipeline::initEnv() {
     element_manager_->setThreadPool(tp);
 
     // 设置所有的element 中的thread_pool
+    repository_.fetch(element_manager_);
     repository_.setThreadPool(tp);
     status += repository_.init();
     CGRAPH_FUNCTION_END

@@ -8,6 +8,7 @@
 
 #include "GElementRepository.h"
 #include "GNode/GNodeInclude.h"
+#include "GGroup/GGroupInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -73,6 +74,28 @@ CStatus GElementRepository::pushAllState(const GElementState& state) {
     }
     cur_state_ = state;    // 记录当前的状态信息
     CGRAPH_FUNCTION_END
+}
+
+
+CVoid GElementRepository::fetch(GElementManagerCPtr em) {
+    for (GElementPtr cur : em->manager_elements_) {
+        /**
+         * 从 pipeline 的 element manager 中，逐层添加查询
+         * 查询到如果pipeline中，存在没有注册到 repo 中element，则写入 repo中
+         * 主要针对 python 注册场景中 直接创建 element 放入group 的场景
+         */
+        if (this->find(cur)) {
+            continue;
+        }
+
+        if (cur->isGGroup()) {
+            auto group = dynamic_cast<GGroupPtr>(cur);
+            CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(group);
+            group->pushElements(elements_);
+        } else {
+            elements_.insert(cur);
+        }
+    }
 }
 
 
