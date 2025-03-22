@@ -49,6 +49,24 @@ PYBIND11_MODULE(PyCGraph, m) {
         .value("PARALLEL", GMultiConditionType::PARALLEL)
         .export_values();
 
+    py::enum_<GEventType>(m, "GEventType")
+        .value("SYNC", GEventType::SYNC)
+        .value("ASYNC", GEventType::ASYNC)
+        .export_values();
+
+    py::enum_<GEventAsyncStrategy>(m, "GEventAsyncStrategy")
+        .value("PIPELINE_RUN_FINISH", GEventAsyncStrategy::PIPELINE_RUN_FINISH)
+        .value("PIPELINE_DESTROY", GEventAsyncStrategy::PIPELINE_DESTROY)
+        .value("NO_WAIT", GEventAsyncStrategy::NO_WAIT)
+        .export_values();
+
+    py::class_<std::shared_future<void> >(m, "CSharedFutureVoid")
+        .def("get", [] (std::shared_future<void>& sfVoid) {
+            sfVoid.wait();
+            return py::none();
+        },
+        py::call_guard<py::gil_scoped_release>());
+
     py::class_<CStatus>(m, "CStatus")
         .def(py::init<>())
         .def(py::init<int, const std::string&>())
@@ -60,8 +78,23 @@ PYBIND11_MODULE(PyCGraph, m) {
     py::class_<GAspect, PywGAspect, std::unique_ptr<GAspect, py::nodelete> >(m, "GAspect")
         .def(py::init<>())
         .def("getName", &GAspect::__getName_4py)
+        .def("createGParam", &GAspect::__createGParam_4py,
+             py::call_guard<py::gil_scoped_release>(),
+             py::keep_alive<1, 2>())
         .def("getGParam", &GAspect::__getGParam_4py)
-        .def("getGParamWithNoEmpty", &GAspect::__getGParamWithNoEmpty_4py);
+        .def("getGParamWithNoEmpty", &GAspect::__getGParamWithNoEmpty_4py)
+        .def("removeGParam", &GAspect::__removeGParam_4py,
+             py::call_guard<py::gil_scoped_release>());
+
+    py::class_<GEvent, PywGEvent, std::unique_ptr<GEvent, py::nodelete> >(m, "GEvent")
+        .def(py::init<>())
+        .def("createGParam", &GEvent::__createGParam_4py,
+             py::call_guard<py::gil_scoped_release>(),
+             py::keep_alive<1, 2>())
+        .def("getGParam", &GEvent::__getGParam_4py)
+        .def("getGParamWithNoEmpty", &GEvent::__getGParamWithNoEmpty_4py)
+        .def("removeGParam", &GEvent::__removeGParam_4py,
+             py::call_guard<py::gil_scoped_release>());
 
     py::class_<GParam, PywGParam, std::unique_ptr<GParam, py::nodelete> >(m, "GParam")
         .def(py::init<>())
@@ -72,10 +105,15 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("tryLock", &GParam::tryLock,
              py::call_guard<py::gil_scoped_release>());
 
+    py::class_<GPassedParam, PywGPassedParam, std::unique_ptr<GPassedParam, py::nodelete> >(m, "GPassedParam")
+        .def(py::init<>());
+    m.attr("GElementParam") = m.attr("GPassedParam");
+
     py::class_<PyGPipeline>(m, "GPipeline")
         .def(py::init<>())
         .def("init", &PyGPipeline::init)
         .def("createGParam", &PyGPipeline::__createGParam_4py,
+             py::call_guard<py::gil_scoped_release>(),
              py::keep_alive<1, 2>())
         .def("getGParam", &PyGPipeline::__getGParam_4py)
         .def("getGParamWithNoEmpty", &PyGPipeline::__getGParamWithNoEmpty_4py)
@@ -91,12 +129,14 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::call_guard<py::gil_scoped_release>(),
              py::arg("runTimes") = 1)
         .def("destroy", &PyGPipeline::destroy)
+        .def("addGEvent", &PyGPipeline::__addGEvent_4py,
+             py::keep_alive<1, 2>())
         .def("registerGElement", &PyGPipeline::__registerGElement_4py,
-            py::arg("element"),
-            py::arg("depends") = GElementPtrSet{},
-            py::arg("name") = CGRAPH_EMPTY,
-            py::arg("loop") = CGRAPH_DEFAULT_LOOP_TIMES,
-            py::keep_alive<1, 2>());
+             py::arg("element"),
+             py::arg("depends") = GElementPtrSet{},
+             py::arg("name") = CGRAPH_EMPTY,
+             py::arg("loop") = CGRAPH_DEFAULT_LOOP_TIMES,
+             py::keep_alive<1, 2>());
 
     py::class_<GElement, PywGElement, std::unique_ptr<GElement, py::nodelete> >(m, "GElement")
         .def(py::init<>())
@@ -106,8 +146,17 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("getGParam", &GElement::__getGParam_4py)
         .def("getGParamWithNoEmpty", &GElement::__getGParamWithNoEmpty_4py)
         .def("removeGParam", &GElement::__removeGParam_4py,
-             py::call_guard<py::gil_scoped_release>())
+            py::call_guard<py::gil_scoped_release>())
         .def("hasGParam", &GElement::__hasGParam_4py,
+             py::call_guard<py::gil_scoped_release>())
+        .def("notify", &GElement::__notify_4py,
+             py::arg("key"),
+             py::arg("type"),
+             py::arg("strategy") = GEventAsyncStrategy::PIPELINE_RUN_FINISH,
+             py::call_guard<py::gil_scoped_release>())
+        .def("asyncNotify", &GElement::__asyncNotify_4py,
+             py::arg("key"),
+             py::arg("strategy") = GEventAsyncStrategy::PIPELINE_RUN_FINISH,
              py::call_guard<py::gil_scoped_release>())
         .def("getName", &GElement::getName)
         .def("setName", &GElement::setName)
@@ -129,19 +178,19 @@ PYBIND11_MODULE(PyCGraph, m) {
 
     py::class_<PyGCluster, GElement, std::unique_ptr<PyGCluster, py::nodelete> >(m, "GCluster")
         .def(py::init<const GElementPtrArr&>(),
-            py::arg("elements") = GElementPtrArr{},
-            py::keep_alive<1, 2>())
+             py::arg("elements") = GElementPtrArr{},
+             py::keep_alive<1, 2>())
         .def("addGElements", &PyGCluster::__addGElements_4py,
-            py::arg("elements"),
-            py::keep_alive<1, 2>());
+             py::arg("elements"),
+             py::keep_alive<1, 2>());
 
     py::class_<PyGRegion, GElement, std::unique_ptr<PyGRegion, py::nodelete> >(m, "GRegion")
         .def(py::init<const GElementPtrArr&>(),
              py::arg("elements") = GElementPtrArr{},
              py::keep_alive<1, 2>())
         .def("addGElements", &PyGRegion::__addGElements_4py,
-            py::arg("elements"),
-            py::keep_alive<1, 2>());
+             py::arg("elements"),
+             py::keep_alive<1, 2>());
 
     py::class_<PywGCondition, GElement, std::unique_ptr<PywGCondition, py::nodelete> >(m, "GCondition")
         .def(py::init<const GElementPtrArr&>(),
@@ -159,8 +208,8 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::arg("elements") = GElementPtrArr{},
              py::keep_alive<1, 2>())
         .def("addGElements", &PyGMultiCondition<GMultiConditionType::SERIAL>::__addGElements_4py,
-            py::arg("elements"),
-            py::keep_alive<1, 2>());
+             py::arg("elements"),
+             py::keep_alive<1, 2>());
 
     py::class_<PyGMultiCondition<GMultiConditionType::PARALLEL>,
             GElement, std::unique_ptr<PyGMultiCondition<GMultiConditionType::PARALLEL>,

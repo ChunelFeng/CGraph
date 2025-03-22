@@ -18,5 +18,7 @@
 #include "PyGMultiCondition.h"
 #include "PywGParam.h"
 #include "PywGAspect.h"
+#include "PywGEvent.h"
+#include "PywGPassedParam.h"
 
 #endif //CGRAPH_PYWRAPPERINCLUDE_H

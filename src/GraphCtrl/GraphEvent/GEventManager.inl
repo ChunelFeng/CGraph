@@ -25,7 +25,6 @@ CStatus GEventManager::createWithParam(const std::string& key, TEParam* param) {
     }
 
     GEventPtr event = CGRAPH_SAFE_MALLOC_COBJECT(TEvent)
-    event->setGParamManager(this->param_manager_);
 
     // 每次创建，都是重新生成参数的一个过程
     CGRAPH_DELETE_PTR(event->param_)

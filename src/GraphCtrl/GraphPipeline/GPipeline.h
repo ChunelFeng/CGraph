@@ -441,6 +441,8 @@ private:
 public:
     CStatus __registerGElement_4py(GElementPtr element, const GElementPtrSet &depends,
                                    const std::string &name, CSize loop);
+
+    GPipeline* __addGEvent_4py(GEventPtr event, const std::string& key);
 };
 
 using GPipelinePtr = GPipeline *;

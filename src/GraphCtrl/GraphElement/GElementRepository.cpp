@@ -78,6 +78,7 @@ CStatus GElementRepository::pushAllState(const GElementState& state) {
 
 
 CVoid GElementRepository::fetch(GElementManagerCPtr em) {
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(em)
     for (GElementPtr cur : em->manager_elements_) {
         /**
          * 从 pipeline 的 element manager 中，逐层添加查询

@@ -366,4 +366,15 @@ CStatus GPipeline::__registerGElement_4py(CGraph::GElementPtr element, const CGr
     return innerRegister(element, depends, name, loop);
 }
 
+
+GPipeline* GPipeline::__addGEvent_4py(GEventPtr event, const std::string& key) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(event, event_manager_, param_manager_)
+    event_manager_->param_manager_ = this->param_manager_;
+    status = event_manager_->__create_4py(event, key);
+    CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
+
+    return this;
+}
+
 CGRAPH_NAMESPACE_END

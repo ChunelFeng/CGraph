@@ -50,15 +50,28 @@ CGRAPH_NAMESPACE_BEGIN
                                           GEventAsyncStrategy strategy = GEventAsyncStrategy::PIPELINE_RUN_FINISH) {    \
         CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(this->event_manager_);                                                       \
         return this->event_manager_->asyncTrigger(key, strategy);                                                       \
-   }                                                                                                                    \
-                                                                                                                        \
+    }                                                                                                                   \
+                                                                                                  \
+public:                                                                                           \
+    CStatus __notify_4py(const std::string& key, GEventType type,                                 \
+        GEventAsyncStrategy strategy = GEventAsyncStrategy::PIPELINE_RUN_FINISH) {                \
+        return this->notify(key, type, strategy);                                                 \
+    }                                                                                             \
+                                                                                                  \
+    std::shared_future<CVoid> __asyncNotify_4py(const std::string& key,                           \
+        GEventAsyncStrategy strategy = GEventAsyncStrategy::PIPELINE_RUN_FINISH) {                \
+        return asyncNotify(key, strategy);                                                        \
+    }                                                                                             \
+                                                                                                  \
+private:                                                                                          \
+                                                                                                  \
 
-#define CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER_WITH_MEMBER                               \
-private:                                                                                \
-    GEventManagerPtr event_manager_ = nullptr;                                          \
-protected:                                                                              \
-    CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER                                               \
-                                                                                        \
+#define CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER_WITH_MEMBER                                         \
+private:                                                                                          \
+    GEventManagerPtr event_manager_ = nullptr;                                                    \
+protected:                                                                                        \
+    CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER                                                         \
+                                                                                                  \
 
 CGRAPH_NAMESPACE_END
 
