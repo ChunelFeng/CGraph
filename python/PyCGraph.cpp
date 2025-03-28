@@ -60,12 +60,24 @@ PYBIND11_MODULE(PyCGraph, m) {
         .value("NO_WAIT", GEventAsyncStrategy::NO_WAIT)
         .export_values();
 
-    py::class_<std::shared_future<void> >(m, "CSharedFutureVoid")
-        .def("get", [] (std::shared_future<void>& sfVoid) {
+    py::enum_<std::launch>(m, "StdLaunchPolicy")
+        .value("async", std::launch::async)
+        .value("deferred", std::launch::deferred)
+        .export_values();
+
+    py::class_<std::shared_future<void> >(m, "StdSharedFutureVoid")
+        .def("wait", [] (std::shared_future<void>& sfVoid) {
             sfVoid.wait();
-            return py::none();
         },
         py::call_guard<py::gil_scoped_release>());
+
+    py::class_<std::future<CStatus> >(m, "StdFutureCStatus")
+        .def("get", [] (std::future<CStatus>& fut) {
+            return fut.get();
+        }, py::call_guard<py::gil_scoped_release>())
+        .def("wait", [] (std::future<CStatus>& fut) {
+            fut.wait();
+        }, py::call_guard<py::gil_scoped_release>());
 
     py::class_<CStatus>(m, "CStatus")
         .def(py::init<>())
@@ -131,6 +143,19 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("destroy", &PyGPipeline::destroy)
         .def("addGEvent", &PyGPipeline::__addGEvent_4py,
              py::keep_alive<1, 2>())
+        .def("asyncRun", &PyGPipeline::asyncRun,
+             py::arg("policy") = std::launch::async,
+             py::call_guard<py::gil_scoped_release>())
+        .def("asyncProcess", &PyGPipeline::asyncProcess,
+             py::arg("runTimes") = CGRAPH_DEFAULT_LOOP_TIMES,
+             py::arg("policy") = std::launch::async,
+             py::call_guard<py::gil_scoped_release>())
+        .def("cancel", &PyGPipeline::cancel,
+            py::call_guard<py::gil_scoped_release>())
+        .def("yields", &PyGPipeline::yield,    // yield is python's keyword, use yields to replace
+             py::call_guard<py::gil_scoped_release>())
+        .def("resume", &PyGPipeline::resume,
+             py::call_guard<py::gil_scoped_release>())
         .def("registerGElement", &PyGPipeline::__registerGElement_4py,
              py::arg("element"),
              py::arg("depends") = GElementPtrSet{},

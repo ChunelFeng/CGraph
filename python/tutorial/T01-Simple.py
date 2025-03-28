@@ -21,7 +21,11 @@ def tutorial_simple():
     pipeline.registerGElement(c, {a}, "nodeC")
     pipeline.registerGElement(d, {b, c}, "nodeD")
 
-    pipeline.init()
+    status: CStatus = pipeline.init()
+    if status.isErr():
+        # please check api return value.
+        print('pipeline init failed, error code is {0}.'.format(status.getCode()))
+        return
 
     for i in range(0, 3):
         status = pipeline.run()
