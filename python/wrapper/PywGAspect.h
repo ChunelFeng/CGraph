@@ -13,8 +13,6 @@
 
 #include "CGraph.h"
 
-namespace py = pybind11;
-
 class PywGAspect : public CGraph::GAspect {
 public:
     explicit PywGAspect() = default;

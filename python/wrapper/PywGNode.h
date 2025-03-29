@@ -13,8 +13,6 @@
 
 #include "CGraph.h"
 
-namespace py = pybind11;
-
 class PywGNode : public CGraph::GNode {
 public:
     explicit PywGNode(const std::string& name,

@@ -37,4 +37,9 @@ CMSec GDaemon::modify(GDaemonParamPtr param) {
     return 0;
 }
 
+
+CMSec GDaemon::__getInterval_4py() const {
+    return getInterval();
+}
+
 CGRAPH_NAMESPACE_END

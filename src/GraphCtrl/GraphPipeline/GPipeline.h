@@ -443,6 +443,8 @@ public:
                                    const std::string &name, CSize loop);
 
     GPipeline* __addGEvent_4py(GEventPtr event, const std::string& key);
+
+    GPipeline* __addGDaemon_4py(GDaemonPtr daemon, CMSec ms);
 };
 
 using GPipelinePtr = GPipeline *;

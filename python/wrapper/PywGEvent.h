@@ -13,8 +13,6 @@
 
 #include "CGraph.h"
 
-namespace py = pybind11;
-
 class PywGEvent : public CGraph::GEvent {
 public:
     explicit PywGEvent() = default;

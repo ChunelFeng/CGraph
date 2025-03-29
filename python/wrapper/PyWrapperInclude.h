@@ -19,6 +19,7 @@
 #include "PywGParam.h"
 #include "PywGAspect.h"
 #include "PywGEvent.h"
+#include "PywGDaemon.h"
 #include "PywGPassedParam.h"
 
 #endif //CGRAPH_PYWRAPPERINCLUDE_H

@@ -48,6 +48,10 @@ private:
 
 private:
     UTimer timer_;                              // 计时器
+
+
+public:
+    CMSec __getInterval_4py() const;
 };
 
 using GDaemonPtr = GDaemon *;

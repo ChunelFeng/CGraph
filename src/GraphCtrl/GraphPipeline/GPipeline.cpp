@@ -377,4 +377,16 @@ GPipeline* GPipeline::__addGEvent_4py(GEventPtr event, const std::string& key) {
     return this;
 }
 
+
+GPipeline* GPipeline::__addGDaemon_4py(GDaemonPtr daemon, CMSec ms) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(daemon, param_manager_, event_manager_, daemon_manager_)
+    daemon->setGParamManager(this->param_manager_);
+    daemon->setGEventManager(this->event_manager_);
+    daemon->setInterval(ms);
+    status = daemon_manager_->add(daemon);
+    CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
+    return this;
+}
+
 CGRAPH_NAMESPACE_END

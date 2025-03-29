@@ -13,8 +13,6 @@
 
 #include "CGraph.h"
 
-namespace py = pybind11;
-
 class PywGCondition : public CGraph::GCondition {
 public:
     explicit PywGCondition(const CGraph::GElementPtrArr& elements = CGraph::GElementPtrArr{}) {

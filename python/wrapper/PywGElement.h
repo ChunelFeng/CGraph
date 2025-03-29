@@ -13,8 +13,6 @@
 
 #include "CGraph.h"
 
-namespace py = pybind11;
-
 class PywGElement : public CGraph::GElement {
 protected:
     CStatus run() override {

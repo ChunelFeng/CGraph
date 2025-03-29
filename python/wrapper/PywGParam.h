@@ -13,8 +13,6 @@
 
 #include "CGraph.h"
 
-namespace py = pybind11;
-
 class PywGParam : public CGraph::GParam {
 public:
     ~PywGParam() override = default;

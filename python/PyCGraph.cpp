@@ -98,6 +98,17 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("removeGParam", &GAspect::__removeGParam_4py,
              py::call_guard<py::gil_scoped_release>());
 
+    py::class_<GDaemon, PywGDaemon, std::unique_ptr<GDaemon, py::nodelete> >(m, "GDaemon")
+        .def(py::init<>())
+        .def("getInterval", &GDaemon::__getInterval_4py)
+        .def("createGParam", &GDaemon::__createGParam_4py,
+             py::call_guard<py::gil_scoped_release>(),
+             py::keep_alive<1, 2>())
+        .def("getGParam", &GDaemon::__getGParam_4py)
+        .def("getGParamWithNoEmpty", &GDaemon::__getGParamWithNoEmpty_4py)
+        .def("removeGParam", &GDaemon::__removeGParam_4py,
+             py::call_guard<py::gil_scoped_release>());
+
     py::class_<GEvent, PywGEvent, std::unique_ptr<GEvent, py::nodelete> >(m, "GEvent")
         .def(py::init<>())
         .def("createGParam", &GEvent::__createGParam_4py,
@@ -120,6 +131,7 @@ PYBIND11_MODULE(PyCGraph, m) {
     py::class_<GPassedParam, PywGPassedParam, std::unique_ptr<GPassedParam, py::nodelete> >(m, "GPassedParam")
         .def(py::init<>());
     m.attr("GElementParam") = m.attr("GPassedParam");
+    m.attr("GDaemonParam") = m.attr("GPassedParam");
 
     py::class_<PyGPipeline>(m, "GPipeline")
         .def(py::init<>())
@@ -142,6 +154,10 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::arg("runTimes") = 1)
         .def("destroy", &PyGPipeline::destroy)
         .def("addGEvent", &PyGPipeline::__addGEvent_4py,
+             py::keep_alive<1, 2>())
+        .def("addGDaemon", &PyGPipeline::__addGDaemon_4py,
+             py::arg("daemon"),
+             py::arg("ms"),
              py::keep_alive<1, 2>())
         .def("asyncRun", &PyGPipeline::asyncRun,
              py::arg("policy") = std::launch::async,
