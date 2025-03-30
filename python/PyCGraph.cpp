@@ -44,6 +44,11 @@ PYBIND11_MODULE(PyCGraph, m) {
         .value("STATIC", GEngineType::STATIC)
         .export_values();
 
+    py::enum_<GElementTimeoutStrategy>(m, "GElementTimeoutStrategy")
+        .value("AS_ERROR", GElementTimeoutStrategy::AS_ERROR)
+        .value("HOLD_BY_PIPELINE", GElementTimeoutStrategy::HOLD_BY_PIPELINE)
+        .value("NO_HOLD", GElementTimeoutStrategy::NO_HOLD);
+
     py::enum_<GMultiConditionType>(m, "GMultiConditionType")
         .value("SERIAL", GMultiConditionType::SERIAL)
         .value("PARALLEL", GMultiConditionType::PARALLEL)
@@ -200,13 +205,16 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::arg("strategy") = GEventAsyncStrategy::PIPELINE_RUN_FINISH,
              py::call_guard<py::gil_scoped_release>())
         .def("getName", &GElement::getName)
+        .def("setLoop", &GElement::setLoop)
         .def("setName", &GElement::setName)
         .def("setLevel", &GElement::setLevel)
+        .def("setTimeout", &GElement::setTimeout,
+             py::arg("timeout"),
+             py::arg("strategy") = GElementTimeoutStrategy::AS_ERROR)
         .def("addGAspect", &GElement::__addGAspect_4py,
              py::keep_alive<1, 2>())
         .def("addDependGElements", &GElement::addDependGElements,
-             py::arg("elements"))
-        .def("setLoop", &GElement::setLoop);
+             py::arg("elements"));
 
     py::class_<GNode, PywGNode, GElement, std::unique_ptr<GNode, py::nodelete> >(m, "GNode")
         .def(py::init<const std::string&, int>(),
