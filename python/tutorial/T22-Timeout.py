@@ -29,7 +29,7 @@ def tutorial_timeout():
     print("---- set [{0}] timeout value to 300".format(c.getName()))
     status = pipeline.process()
     if not status.isOK():
-        print("--- T22-timeout pipeline run error info : {0} \n".format(status.getInfo()))
+        print("---- T22-timeout pipeline run error info : {0} \n".format(status.getInfo()))
 
     c.setTimeout(0)
     print("---- set [{0}] no timeout, rerun pipeline again".format(c.getName()))

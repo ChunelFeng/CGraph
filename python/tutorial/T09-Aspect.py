@@ -6,8 +6,7 @@
 @Desc: 
 """
 
-
-from PyCGraph import GPipeline, GAspect, GCluster
+from PyCGraph import GPipeline, GCluster
 
 from MyGNode.MyNode1 import MyNode1
 from MyGNode.MyNode2 import MyNode2
