@@ -10,6 +10,7 @@ from PyCGraph import GNode, CStatus
 
 from MyParams.MyParam import MyParam
 
+
 class MyReadParamNode(GNode):
     def run(self):
         param = self.getGParamWithNoEmpty("param1")
