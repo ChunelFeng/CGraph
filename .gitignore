@@ -18,3 +18,4 @@
 /python/dist
 /python/PyCGraph.egg-info
 __pycache__
+*.pyi

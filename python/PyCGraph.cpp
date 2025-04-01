@@ -38,6 +38,17 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def_readwrite("batch_task_enable", &UThreadPoolConfig::batch_task_enable_)
         .def_readwrite("monitor_enable", &UThreadPoolConfig::monitor_enable_);
 
+    py::class_<UThreadPool>(m, "UThreadPool")
+        .def(py::init<CBool, const UThreadPoolConfig&>(),
+             py::arg("autoInit") = true,
+             py::arg("config") = UThreadPoolConfig{})
+         .def("setConfig", &UThreadPool::setConfig,
+              py::keep_alive<1, 2>())
+         .def("getConfig", &UThreadPool::getConfig)
+         .def("init", &UThreadPool::init)
+         .def("destroy", &UThreadPool::destroy)
+         .def("isInit", &UThreadPool::isInit);
+
     py::enum_<GEngineType>(m, "GEngineType")
         .value("DYNAMIC", GEngineType::DYNAMIC)
         .value("TOPO", GEngineType::TOPO)
@@ -151,6 +162,9 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("hasGParam", &PyGPipeline::__hasGParam_4py,
              py::call_guard<py::gil_scoped_release>())
         .def("setUniqueThreadPoolConfig", &PyGPipeline::setUniqueThreadPoolConfig)
+        .def("setSharedThreadPool", &PyGPipeline::setSharedThreadPool,
+             py::call_guard<py::gil_scoped_release>(),
+             py::keep_alive<1, 2>())
         .def("setGEngineType", &PyGPipeline::setGEngineType)
         .def("run", &PyGPipeline::run,
              py::call_guard<py::gil_scoped_release>())
