@@ -46,6 +46,8 @@ private:
 
     CStatus destroy() override;
 
+    GElementPtrArr getChildren() const override;
+
     /**
      * 生成graphviz中 group对应的label 的开头信息
      * @param oss

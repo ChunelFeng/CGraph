@@ -157,6 +157,12 @@ public:
     CStatus removeDepend(GElement* element);
 
     /**
+     * 获取当前节点的相关关系信息，包含前驱、后继、从属关系、包含元素
+     * @return
+     */
+    GElementRelation getRelation() const;
+
+    /**
      * 实现连续注册的语法糖，形如：
      *  (*a)-->b&c;
      *  (*b)-->d;
@@ -244,12 +250,6 @@ protected:
      * @notice 不同的group类型，获取 binding index 的方式不同
      */
     CIndex getBindingIndex() const;
-
-    /**
-     * 获取当前节点的相关关系信息，包含前驱、后继、从属关系
-     * @return
-     */
-    GElementRelation getRelation() const;
 
     CGRAPH_NO_ALLOWED_COPY(GElement);
 
@@ -423,6 +423,13 @@ private:
      * @return
      */
     GElement* updateAspectInfo();
+
+    /**
+     * 获取其中包含的内容
+     * @return
+     * @notice 仅在为 group 的情况下有意义
+     */
+    virtual std::vector<GElement *> getChildren() const;
 
 private:
     /** 状态相关信息 */

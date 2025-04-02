@@ -470,16 +470,6 @@ CIndex GElement::getBindingIndex() const {
 }
 
 
-GElementRelation GElement::getRelation() const {
-    GElementRelation relation;
-    relation.predecessors_ = this->dependence_.asVector();    // 前驱
-    relation.successors_ = this->run_before_.asVector();    // 后继
-    relation.belong_ = this->belong_;    // 从属信息
-
-    return relation;
-}
-
-
 CStatus GElement::removeDepend(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(element)
@@ -491,6 +481,17 @@ CStatus GElement::removeDepend(GElementPtr element) {
     element->run_before_.remove(this);
     left_depend_.store(dependence_.size(), std::memory_order_release);
     CGRAPH_FUNCTION_END
+}
+
+
+GElementRelation GElement::getRelation() const {
+    GElementRelation relation;
+    relation.predecessors_ = this->dependence_.asVector();    // 前驱
+    relation.successors_ = this->run_before_.asVector();    // 后继
+    relation.children_ = this->getChildren();
+    relation.belong_ = this->belong_;    // 从属信息
+
+    return relation;
 }
 
 
@@ -574,6 +575,12 @@ GElementPtrArr GElement::getDeepPath(CBool reverse) const {
         std::reverse(path.begin(), path.end());
     }
     return path;
+}
+
+
+GElementPtrArr GElement::getChildren() const {
+    (void)(this);
+    return GElementPtrArr{};
 }
 
 

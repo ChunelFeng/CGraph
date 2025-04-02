@@ -61,6 +61,11 @@ CStatus GGroup::addElementEx(GElementPtr element) {
 }
 
 
+GElementPtrArr GGroup::getChildren() const {
+    return group_elements_arr_;
+}
+
+
 CVoid GGroup::dumpGroupLabelBegin(std::ostream& oss) {
     oss << "subgraph ";
     oss << "cluster_p" << this;    // cluster_ 是 graphviz的关键字，和CGraph中GCluster逻辑无关

@@ -38,6 +38,13 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def_readwrite("batch_task_enable", &UThreadPoolConfig::batch_task_enable_)
         .def_readwrite("monitor_enable", &UThreadPoolConfig::monitor_enable_);
 
+    py::class_<GElementRelation>(m, "GElementRelation")
+        .def(py::init<>())
+        .def_readonly("predecessors", &GElementRelation::predecessors_)
+        .def_readonly("successors", &GElementRelation::successors_)
+        .def_readonly("children", &GElementRelation::children_)
+        .def_readonly("belong", &GElementRelation::belong_);
+
     py::class_<UThreadPool>(m, "UThreadPool")
         .def(py::init<CBool, const UThreadPoolConfig&>(),
              py::arg("autoInit") = true,
@@ -225,6 +232,7 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("setTimeout", &GElement::setTimeout,
              py::arg("timeout"),
              py::arg("strategy") = GElementTimeoutStrategy::AS_ERROR)
+        .def("getRelation", &GElement::getRelation)
         .def("addGAspect", &GElement::__addGAspect_4py,
              py::keep_alive<1, 2>())
         .def("addDependGElements", &GElement::addDependGElements,
