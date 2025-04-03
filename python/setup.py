@@ -16,21 +16,21 @@ _include_dirs = [pybind11.get_include(), "../src"]
 
 ext_modules = [
     Extension(
-        name = "PyCGraph",
-        sources = _sources,
-        extra_compile_args = _extra_compile_args,
-        include_dirs = _include_dirs,
+        name="PyCGraph",
+        sources=_sources,
+        extra_compile_args=_extra_compile_args,
+        include_dirs=_include_dirs,
     ),
 ]
 
 setup(
-    name = "PyCGraph",
-    version = "1.1.0",
-    author = "Chunel Feng",
-    author_email = "chunel@foxmail.com",
-    description = "CGraph with python api wrapper by pybind11",
-    url = "https://github.com/ChunelFeng/CGraph",
-    license = "MIT",
-    ext_modules = ext_modules,
-    zip_safe = False,
+    name="PyCGraph",
+    version="1.1.0",
+    author="Chunel Feng",
+    author_email="chunel@foxmail.com",
+    description="CGraph with python api wrapper by pybind11",
+    url="https://github.com/ChunelFeng/CGraph",
+    license="MIT",
+    ext_modules=ext_modules,
+    zip_safe=False,
 )

@@ -500,6 +500,7 @@ private:
 
 public:
     GElement* __addGAspect_4py(GAspectPtr aspect);
+    CStatus __enterStage_4py(const std::string& key);
 };
 
 using GElementRef = GElement &;

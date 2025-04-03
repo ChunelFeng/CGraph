@@ -74,7 +74,7 @@ private:
     friend class CAllocator;
     friend class GPipeline;
 
-public:
+private:
     CStatus __create_4py(GEventPtr event, const std::string& key);
 };
 

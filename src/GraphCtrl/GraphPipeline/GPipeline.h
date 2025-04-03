@@ -441,10 +441,11 @@ private:
 public:
     CStatus __registerGElement_4py(GElementPtr element, const GElementPtrSet &depends,
                                    const std::string &name, CSize loop);
-
     GPipeline* __addGEvent_4py(GEventPtr event, const std::string& key);
-
     GPipeline* __addGDaemon_4py(GDaemonPtr daemon, CMSec ms);
+    GPipeline* __addGStage_4py(GStagePtr stage, const std::string& key, CInt threshold);
+    std::string __dump_4py();
+    std::string __perf_4py();
 };
 
 using GPipelinePtr = GPipeline *;

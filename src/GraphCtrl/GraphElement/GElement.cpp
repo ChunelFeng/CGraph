@@ -610,4 +610,9 @@ GElementPtr GElement::__addGAspect_4py(GAspectPtr aspect) {
     return this;
 }
 
+
+CStatus GElement::__enterStage_4py(const std::string& key) {
+    return enterStage(key);
+}
+
 CGRAPH_NAMESPACE_END

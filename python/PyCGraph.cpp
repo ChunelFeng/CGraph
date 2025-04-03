@@ -89,8 +89,8 @@ PYBIND11_MODULE(PyCGraph, m) {
         .export_values();
 
     py::class_<std::shared_future<void> >(m, "StdSharedFutureVoid")
-        .def("wait", [] (std::shared_future<void>& sfVoid) {
-            sfVoid.wait();
+        .def("wait", [] (std::shared_future<void>& fut) {
+            fut.wait();
         },
         py::call_guard<py::gil_scoped_release>());
 
@@ -142,6 +142,16 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("removeGParam", &GEvent::__removeGParam_4py,
              py::call_guard<py::gil_scoped_release>());
 
+    py::class_<GStage, PywGStage, std::unique_ptr<GStage, py::nodelete> >(m, "GStage")
+        .def(py::init<>())
+        .def("createGParam", &GStage::__createGParam_4py,
+             py::call_guard<py::gil_scoped_release>(),
+             py::keep_alive<1, 2>())
+        .def("getGParam", &GStage::__getGParam_4py)
+        .def("getGParamWithNoEmpty", &GStage::__getGParamWithNoEmpty_4py)
+        .def("removeGParam", &GStage::__removeGParam_4py,
+             py::call_guard<py::gil_scoped_release>());
+
     py::class_<GParam, PywGParam, std::unique_ptr<GParam, py::nodelete> >(m, "GParam")
         .def(py::init<>())
         .def("lock", &GParam::lock,
@@ -155,6 +165,8 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def(py::init<>());
     m.attr("GElementParam") = m.attr("GPassedParam");
     m.attr("GDaemonParam") = m.attr("GPassedParam");
+    m.attr("GStageParam") = m.attr("GPassedParam");
+    m.attr("GEventParam") = m.attr("GPassedParam");
 
     py::class_<PyGPipeline>(m, "GPipeline")
         .def(py::init<>())
@@ -185,6 +197,11 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::arg("daemon"),
              py::arg("ms"),
              py::keep_alive<1, 2>())
+        .def("addGStage", &PyGPipeline::__addGStage_4py,
+             py::arg("stage"),
+             py::arg("key"),
+             py::arg("threshold"),
+             py::keep_alive<1, 2>())
         .def("asyncRun", &PyGPipeline::asyncRun,
              py::arg("policy") = std::launch::async,
              py::call_guard<py::gil_scoped_release>())
@@ -198,6 +215,9 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::call_guard<py::gil_scoped_release>())
         .def("resume", &PyGPipeline::resume,
              py::call_guard<py::gil_scoped_release>())
+        .def("perf", &PyGPipeline::__perf_4py,
+             py::call_guard<py::gil_scoped_release>())
+        .def("dump", &PyGPipeline::__dump_4py)
         .def("registerGElement", &PyGPipeline::__registerGElement_4py,
              py::arg("element"),
              py::arg("depends") = GElementPtrSet{},
@@ -224,6 +244,9 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("asyncNotify", &GElement::__asyncNotify_4py,
              py::arg("key"),
              py::arg("strategy") = GEventAsyncStrategy::PIPELINE_RUN_FINISH,
+             py::call_guard<py::gil_scoped_release>())
+         .def("enterStage", &GElement::__enterStage_4py,
+             py::arg("key"),
              py::call_guard<py::gil_scoped_release>())
         .def("getName", &GElement::getName)
         .def("setLoop", &GElement::setLoop)

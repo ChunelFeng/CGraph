@@ -367,7 +367,7 @@ CStatus GPipeline::__registerGElement_4py(CGraph::GElementPtr element, const CGr
 }
 
 
-GPipeline* GPipeline::__addGEvent_4py(GEventPtr event, const std::string& key) {
+GPipelinePtr GPipeline::__addGEvent_4py(GEventPtr event, const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(event, event_manager_, param_manager_)
     event_manager_->param_manager_ = this->param_manager_;
@@ -378,7 +378,7 @@ GPipeline* GPipeline::__addGEvent_4py(GEventPtr event, const std::string& key) {
 }
 
 
-GPipeline* GPipeline::__addGDaemon_4py(GDaemonPtr daemon, CMSec ms) {
+GPipelinePtr GPipeline::__addGDaemon_4py(GDaemonPtr daemon, CMSec ms) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(daemon, param_manager_, event_manager_, daemon_manager_)
     daemon->setGParamManager(this->param_manager_);
@@ -387,6 +387,29 @@ GPipeline* GPipeline::__addGDaemon_4py(GDaemonPtr daemon, CMSec ms) {
     status = daemon_manager_->add(daemon);
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
     return this;
+}
+
+
+GPipelinePtr GPipeline::__addGStage_4py(GStagePtr stage, const std::string& key, CInt threshold) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(stage, param_manager_, stage_manager_)
+    stage_manager_->setGParamManager(param_manager_);
+    stage_manager_->__create_4py(stage, key, threshold);
+    return this;
+}
+
+
+std::string GPipeline::__dump_4py() {
+    std::ostringstream oss;
+    this->dump(oss);
+    return oss.str();
+}
+
+
+std::string GPipeline::__perf_4py() {
+    std::ostringstream oss;
+    this->perf(oss);
+    return oss.str();
 }
 
 CGRAPH_NAMESPACE_END
