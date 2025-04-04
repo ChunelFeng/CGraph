@@ -51,6 +51,14 @@ protected:
     CBool isMatch() override {
         PYBIND11_OVERLOAD(CBool, GNode, isMatch);
     }
+
+    CStatus prepareRun() override {
+        PYBIND11_OVERLOAD(CStatus, GNode, prepareRun);
+    }
+
+    CStatus checkRunResult() override {
+        PYBIND11_OVERLOAD(CStatus, GNode, checkRunResult);
+    }
 };
 
 #endif //CGRAPH_PYWGNODE_H

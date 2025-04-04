@@ -615,4 +615,9 @@ CStatus GElement::__enterStage_4py(const std::string& key) {
     return enterStage(key);
 }
 
+
+CBool GElement::__isTimeout_4py() {
+    return isTimeout();
+}
+
 CGRAPH_NAMESPACE_END

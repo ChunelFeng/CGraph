@@ -264,6 +264,10 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("setTimeout", &GElement::setTimeout,
              py::arg("timeout"),
              py::arg("strategy") = GElementTimeoutStrategy::AS_ERROR)
+        .def("isTimeout", &GElement::__isTimeout_4py)
+        .def("isGGroup", &GElement::isGGroup)
+        .def("isGAdaptor", &GElement::isGAdaptor)
+        .def("isGNode", &GElement::isGNode)
         .def("getRelation", &GElement::getRelation)
         .def("getCurState", &GElement::getCurState)
         .def("addGAspect", &GElement::__addGAspect_4py,
