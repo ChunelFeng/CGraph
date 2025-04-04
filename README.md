@@ -384,6 +384,9 @@ if __name__ == '__main__':
 * 提供`stage`(阶段)功能，用于`element`之间同步运行
 * 更新`tutorial`内容
 
+[2025.04.04 - v3.0.1 - Chunel]
+* 完善 Python 版本功能
+
 </details>
 
 ------------

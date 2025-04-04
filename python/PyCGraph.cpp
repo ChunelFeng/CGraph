@@ -84,15 +84,14 @@ PYBIND11_MODULE(PyCGraph, m) {
         .export_values();
 
     py::enum_<std::launch>(m, "StdLaunchPolicy")
-        .value("async", std::launch::async)
-        .value("deferred", std::launch::deferred)
+        .value("ASYNC", std::launch::async)
+        .value("DEFERRED", std::launch::deferred)
         .export_values();
 
     py::class_<std::shared_future<void> >(m, "StdSharedFutureVoid")
         .def("wait", [] (std::shared_future<void>& fut) {
             fut.wait();
-        },
-        py::call_guard<py::gil_scoped_release>());
+        }, py::call_guard<py::gil_scoped_release>());
 
     py::class_<std::future<CStatus> >(m, "StdFutureCStatus")
         .def("get", [] (std::future<CStatus>& fut) {
@@ -105,6 +104,8 @@ PYBIND11_MODULE(PyCGraph, m) {
     py::class_<CStatus>(m, "CStatus")
         .def(py::init<>())
         .def(py::init<int, const std::string&>())
+        .def("__iadd__", &CStatus::operator+=,
+             py::return_value_policy::reference)
         .def("getCode", &CStatus::getCode)
         .def("getInfo", &CStatus::getInfo)
         .def("isOK", &CStatus::isOK)
@@ -218,6 +219,7 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("perf", &PyGPipeline::__perf_4py,
              py::call_guard<py::gil_scoped_release>())
         .def("dump", &PyGPipeline::__dump_4py)
+        .def("trim", &PyGPipeline::trim)
         .def("registerGElement", &PyGPipeline::__registerGElement_4py,
              py::arg("element"),
              py::arg("depends") = GElementPtrSet{},
@@ -249,17 +251,27 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::arg("key"),
              py::call_guard<py::gil_scoped_release>())
         .def("getName", &GElement::getName)
-        .def("setLoop", &GElement::setLoop)
-        .def("setName", &GElement::setName)
-        .def("setLevel", &GElement::setLevel)
+        .def("setLoop", &GElement::setLoop,
+             py::arg("loop"))
+        .def("setName", &GElement::setName,
+             py::arg("name"))
+        .def("setLevel", &GElement::setLevel,
+             py::arg("level"))
+        .def("setVisible", &GElement::setVisible,
+             py::arg("visible"))
+        .def("setMacro", &GElement::setMacro,
+            py::arg("macro"))
         .def("setTimeout", &GElement::setTimeout,
              py::arg("timeout"),
              py::arg("strategy") = GElementTimeoutStrategy::AS_ERROR)
         .def("getRelation", &GElement::getRelation)
+        .def("getCurState", &GElement::getCurState)
         .def("addGAspect", &GElement::__addGAspect_4py,
              py::keep_alive<1, 2>())
         .def("addDependGElements", &GElement::addDependGElements,
-             py::arg("elements"));
+             py::arg("elements"))
+        .def("removeDepend", &GElement::removeDepend,
+             py::arg("element"));
 
     py::class_<GNode, PywGNode, GElement, std::unique_ptr<GNode, py::nodelete> >(m, "GNode")
         .def(py::init<const std::string&, int>(),
