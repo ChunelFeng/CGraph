@@ -53,10 +53,21 @@
   $ ./build/tutorial/T00-HelloCGraph        # 运行T00-HelloCGraph，并且在终端输出 Hello, CGraph.
   ```
 
+---
+
 * 安装PyCGraph，使用前需要提前安装`python3` `pybind11`和`setuptools`
+  * 通过生成`.whl`文件安装（推荐）
+  ```shell
+  $ git clone https://github.com/ChunelFeng/CGraph.git
+  $ cd CGraph/python                       # 进入对应文件夹
+  $ python3 setup.py bdist_wheel           # 生成 *.whl 安装包
+  $ pip3 install dist/PyCGraph-xxx.whl     # 安装 *.whl 安装包，xxx 信息与版本和系统有关
+  $ python3 tutorial/T00-HelloCGraph.py    # 运行T00-HelloCGraph.py，并且在终端输出 Hello, PyCGraph.
+  ```
+  * 本地直接安装
   ```shell
   $ git clone https://github.com/ChunelFeng/CGraph.git
   $ cd CGraph/python                       # 进入对应文件夹
   $ python3 setup.py install               # 安装 PyCGraph
-  $ python3 tutorial/T00-HelloCGraph.py    # 运行T00-HelloCGraph.py，并且在终端输出 Hello, PyCGraph.
+  $ python3 tutorial/T00-HelloCGraph.py
   ```
