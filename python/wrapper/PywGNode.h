@@ -12,6 +12,7 @@
 #include <pybind11/pybind11.h>
 
 #include "CGraph.h"
+#include "PyWrapperDefine.h"
 
 class PywGNode : public CGraph::GNode {
 public:
@@ -44,21 +45,7 @@ protected:
         PYBIND11_OVERLOAD(CStatus, GNode, destroy);
     }
 
-    CBool isHold() override {
-        PYBIND11_OVERLOAD(CBool, GNode, isHold);
-    }
-
-    CBool isMatch() override {
-        PYBIND11_OVERLOAD(CBool, GNode, isMatch);
-    }
-
-    CStatus prepareRun() override {
-        PYBIND11_OVERLOAD(CStatus, GNode, prepareRun);
-    }
-
-    CStatus checkRunResult() override {
-        PYBIND11_OVERLOAD(CStatus, GNode, checkRunResult);
-    }
+    PYCGRAPH_DECLARE_GELEMENT_COMMON_FUNCTIONS(CGraph::GNode)
 };
 
 #endif //CGRAPH_PYWGNODE_H

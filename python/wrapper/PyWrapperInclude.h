@@ -10,12 +10,12 @@
 #define CGRAPH_PYWRAPPERINCLUDE_H
 
 #include "PyGPipeline.h"
+#include "PyGMultiCondition.h"
 #include "PywGElement.h"
 #include "PywGNode.h"
-#include "PyGCluster.h"
-#include "PyGRegion.h"
+#include "PywGCluster.h"
+#include "PywGRegion.h"
 #include "PywGCondition.h"
-#include "PyGMultiCondition.h"
 #include "PywGParam.h"
 #include "PywGAspect.h"
 #include "PywGEvent.h"

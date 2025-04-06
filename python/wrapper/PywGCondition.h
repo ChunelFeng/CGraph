@@ -12,6 +12,7 @@
 #include <pybind11/pybind11.h>
 
 #include "CGraph.h"
+#include "PyWrapperDefine.h"
 
 class PywGCondition : public CGraph::GCondition {
 public:
@@ -24,5 +25,10 @@ public:
         PYBIND11_OVERLOAD_PURE(CIndex, PywGCondition, choose);
     }
 };
+
+PYCGRAPH_DECLARE_GGROUP_INTERFACE_CLASS(PywGCondition,
+    CIndex choose() override {
+        PYBIND11_OVERLOAD_PURE(CIndex, PywGConditionInterface, choose);
+    });
 
 #endif //CGRAPH_PYWGCONDITION_H

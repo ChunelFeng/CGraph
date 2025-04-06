@@ -24,4 +24,4 @@ class MyHoldNode(GNode):
     def isHold(self):
         param: MyParam = self.getGParam(self._param_key)
         print('enter hold path, value is {0}'.format(param.value))
-        return param.value < 5
+        return param.value < 3

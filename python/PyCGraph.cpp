@@ -286,21 +286,23 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::arg("name") = CGRAPH_EMPTY,
              py::arg("loop") = CGRAPH_DEFAULT_LOOP_TIMES);
 
-    py::class_<PyGCluster, GElement, std::unique_ptr<PyGCluster, py::nodelete> >(m, "GCluster")
+    py::class_<PywGCluster, GElement, std::unique_ptr<PywGCluster, py::nodelete> >(m, "GCluster")
         .def(py::init<const GElementPtrArr&>(),
              py::arg("elements") = GElementPtrArr{},
              py::keep_alive<1, 2>())
-        .def("addGElements", &PyGCluster::__addGElements_4py,
+        .def("addGElements", &PywGCluster::__addGElements_4py,
              py::arg("elements"),
              py::keep_alive<1, 2>());
+    PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GClusterInterface);
 
-    py::class_<PyGRegion, GElement, std::unique_ptr<PyGRegion, py::nodelete> >(m, "GRegion")
+    py::class_<PywGRegion, GElement, std::unique_ptr<PywGRegion, py::nodelete> >(m, "GRegion")
         .def(py::init<const GElementPtrArr&>(),
              py::arg("elements") = GElementPtrArr{},
              py::keep_alive<1, 2>())
-        .def("addGElements", &PyGRegion::__addGElements_4py,
+        .def("addGElements", &PywGRegion::__addGElements_4py,
              py::arg("elements"),
              py::keep_alive<1, 2>());
+    PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GRegionInterface);
 
     py::class_<PywGCondition, GElement, std::unique_ptr<PywGCondition, py::nodelete> >(m, "GCondition")
         .def(py::init<const GElementPtrArr&>(),
@@ -310,6 +312,7 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("addGElements", &PywGCondition::__addGElements_4py,
             py::arg("elements"),
             py::keep_alive<1, 2>());
+    PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GConditionInterface);
 
     py::class_<PyGMultiCondition<GMultiConditionType::SERIAL>,
             GElement, std::unique_ptr<PyGMultiCondition<GMultiConditionType::SERIAL>,
