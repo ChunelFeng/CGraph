@@ -10,7 +10,6 @@
 #define CGRAPH_PYWRAPPERINCLUDE_H
 
 #include "PyGPipeline.h"
-#include "PyGMultiCondition.h"
 #include "PywGElement.h"
 #include "PywGNode.h"
 #include "PywGCluster.h"
@@ -21,6 +20,8 @@
 #include "PywGEvent.h"
 #include "PywGDaemon.h"
 #include "PywGStage.h"
+#include "PywGParallelMultiCondition.h"
+#include "PywGSerialMultiCondition.h"
 #include "PywGPassedParam.h"
 
 #endif //CGRAPH_PYWRAPPERINCLUDE_H

@@ -54,4 +54,17 @@ protected:                                                                      
             py::keep_alive<1, 2>())                                                       \
                                                                                           \
 
+
+#define PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(PCGO)                                      \
+    def("createGParam", &PCGO::__createGParam_4py,                                        \
+         py::keep_alive<1, 2>(),                                                          \
+         py::call_guard<py::gil_scoped_release>())                                        \
+    .def("getGParam", &PCGO::__getGParam_4py)                                             \
+    .def("getGParamWithNoEmpty", &PCGO::__getGParamWithNoEmpty_4py)                       \
+    .def("removeGParam", &PCGO::__removeGParam_4py,                                       \
+         py::call_guard<py::gil_scoped_release>())                                        \
+    .def("hasGParam", &PCGO::__hasGParam_4py,                                             \
+         py::call_guard<py::gil_scoped_release>())                                        \
+                                                                                          \
+
 #endif //CGRAPH_PYWRAPPERDEFINE_H
