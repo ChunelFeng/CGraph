@@ -293,4 +293,13 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::arg("elements"),
              py::keep_alive<1, 2>());
     PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GParallelMultiConditionInterface);
+
+    py::class_<PywGMutable, GElement, std::unique_ptr<PywGMutable, py::nodelete> >(m, "GMutable")
+        .def(py::init<const GElementPtrArr&>(),
+             py::arg("elements") = GElementPtrArr{},
+             py::keep_alive<1, 2>())
+        .def("addGElements", &PywGMutable::__addGElements_4py,
+             py::arg("elements"),
+             py::keep_alive<1, 2>());
+    PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GMutableInterface);
 }

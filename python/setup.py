@@ -25,7 +25,7 @@ ext_modules = [
 
 setup(
     name="PyCGraph",
-    version="1.3.1",
+    version="1.3.2",
     author="Chunel",
     author_email="chunel@foxmail.com",
     description="CGraph with python api wrapper by pybind11",

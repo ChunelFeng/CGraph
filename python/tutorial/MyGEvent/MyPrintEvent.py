@@ -7,7 +7,6 @@
 """
 
 import time
-from datetime import datetime
 
 from PyCGraph import GEvent
 

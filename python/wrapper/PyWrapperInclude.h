@@ -22,6 +22,7 @@
 #include "PywGStage.h"
 #include "PywGParallelMultiCondition.h"
 #include "PywGSerialMultiCondition.h"
+#include "PywGMutable.h"
 #include "PywGPassedParam.h"
 
 #endif //CGRAPH_PYWRAPPERINCLUDE_H
