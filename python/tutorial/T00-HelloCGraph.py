@@ -13,8 +13,7 @@ from MyGNode.HelloCGraphNode import HelloCGraphNode
 
 def tutorial_hello_cgraph():
     pipeline = GPipeline()
-    hcg = HelloCGraphNode()
-    pipeline.registerGElement(hcg)
+    pipeline.registerGElement(HelloCGraphNode())
     pipeline.process()
 
 

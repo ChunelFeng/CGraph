@@ -246,6 +246,14 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::arg("name") = CGRAPH_EMPTY,
              py::arg("loop") = CGRAPH_DEFAULT_LOOP_TIMES);
 
+    py::class_<GFence, PyGFence, GElement, std::unique_ptr<GFence, py::nodelete> >(m, "GFence")
+        .def(py::init<>())
+        .def("waitGElement", &GFence::waitGElement,
+             py::arg("element"))
+        .def("waitGElements", &GFence::waitGElements,
+             py::arg("elements"))
+        .def("clear", &GFence::clear);
+
     py::class_<PywGCluster, GElement, std::unique_ptr<PywGCluster, py::nodelete> >(m, "GCluster")
         .def(py::init<const GElementPtrArr&>(),
              py::arg("elements") = GElementPtrArr{},

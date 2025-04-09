@@ -6,8 +6,7 @@ cc_library(
                 "MyGEvent/**/*.h",
                 "MyGMutable/**/*.h",
                 "MyGNode/**/*.h",
-                "MyParams/**/*.h",
-                "MyUtils/**/*.h",]),
+                "MyParams/**/*.h",]),
     visibility = ["//visibility:public"],
 )
 

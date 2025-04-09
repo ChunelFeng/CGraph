@@ -10,6 +10,7 @@
 #define CGRAPH_PYWRAPPERINCLUDE_H
 
 #include "PyGPipeline.h"
+#include "PyGFence.h"
 #include "PywGElement.h"
 #include "PywGNode.h"
 #include "PywGCluster.h"
