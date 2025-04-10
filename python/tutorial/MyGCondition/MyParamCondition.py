@@ -7,7 +7,7 @@
 """
 
 
-from PyCGraph import GCondition
+from PyCGraph import GCondition, GElementRelation
 
 from MyParams.MyParam import MyParam
 
@@ -18,4 +18,5 @@ class MyParamCondition(GCondition):
         cnt = param.count
         param.unlock()
 
-        return cnt % self.getRange()
+        relation: GElementRelation = self.getRelation()
+        return cnt % len(relation.children)

@@ -254,60 +254,21 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::arg("elements"))
         .def("clear", &GFence::clear);
 
-    py::class_<PywGCluster, GElement, std::unique_ptr<PywGCluster, py::nodelete> >(m, "GCluster")
-        .def(py::init<const GElementPtrArr&>(),
-             py::arg("elements") = GElementPtrArr{},
-             py::keep_alive<1, 2>())
-        .def("addGElements", &PywGCluster::__addGElements_4py,
-             py::arg("elements"),
-             py::keep_alive<1, 2>());
+    PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GCluster);
     PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GClusterInterface);
 
-    py::class_<PywGRegion, GElement, std::unique_ptr<PywGRegion, py::nodelete> >(m, "GRegion")
-        .def(py::init<const GElementPtrArr&>(),
-             py::arg("elements") = GElementPtrArr{},
-             py::keep_alive<1, 2>())
-        .def("addGElements", &PywGRegion::__addGElements_4py,
-             py::arg("elements"),
-             py::keep_alive<1, 2>());
+    PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GRegion);
     PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GRegionInterface);
 
-    py::class_<PywGCondition, GElement, std::unique_ptr<PywGCondition, py::nodelete> >(m, "GCondition")
-        .def(py::init<const GElementPtrArr&>(),
-             py::arg("elements") = GElementPtrArr{},
-             py::keep_alive<1, 2>())
-        .def("getRange", &PywGCondition::__getRange_4py)
-        .def("addGElements", &PywGCondition::__addGElements_4py,
-            py::arg("elements"),
-            py::keep_alive<1, 2>());
+    PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GCondition);
     PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GConditionInterface);
 
-    py::class_<PywGSerialMultiCondition, GElement, std::unique_ptr<PywGSerialMultiCondition, py::nodelete> >(
-            m, "GSerialMultiCondition")
-        .def(py::init<const GElementPtrArr&>(),
-             py::arg("elements") = GElementPtrArr{},
-             py::keep_alive<1, 2>())
-        .def("addGElements", &PywGSerialMultiCondition::__addGElements_4py,
-             py::arg("elements"),
-             py::keep_alive<1, 2>());
+    PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GSerialMultiCondition);
     PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GSerialMultiConditionInterface);
 
-    py::class_<PywGParallelMultiCondition, GElement, std::unique_ptr<PywGParallelMultiCondition, py::nodelete> >(
-            m, "GParallelMultiCondition")
-        .def(py::init<const GElementPtrArr&>(),
-             py::arg("elements") = GElementPtrArr{},
-             py::keep_alive<1, 2>())
-        .def("addGElements", &PywGParallelMultiCondition::__addGElements_4py,
-             py::arg("elements"),
-             py::keep_alive<1, 2>());
+    PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GParallelMultiCondition);
     PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GParallelMultiConditionInterface);
 
-    py::class_<PywGMutable, GElement, std::unique_ptr<PywGMutable, py::nodelete> >(m, "GMutable")
-        .def(py::init<const GElementPtrArr&>(),
-             py::arg("elements") = GElementPtrArr{},
-             py::keep_alive<1, 2>())
-        .def("addGElements", &PywGMutable::__addGElements_4py,
-             py::arg("elements"),
-             py::keep_alive<1, 2>());
+    PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GMutable);
     PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GMutableInterface);
 }

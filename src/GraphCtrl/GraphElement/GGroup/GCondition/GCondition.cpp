@@ -35,11 +35,6 @@ CStatus GCondition::run() {
 }
 
 
-CSize GCondition::getRange() const {
-    return group_elements_arr_.size();
-}
-
-
 CVoid GCondition::dump(std::ostream& oss) {
     dumpElement(oss);
     dumpGroupLabelBegin(oss);
