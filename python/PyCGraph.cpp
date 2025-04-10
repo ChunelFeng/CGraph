@@ -145,50 +145,50 @@ PYBIND11_MODULE(PyCGraph, m) {
     m.attr("GStageParam") = m.attr("GPassedParam");
     m.attr("GEventParam") = m.attr("GPassedParam");
 
-    py::class_<PyGPipeline>(m, "GPipeline")
+    py::class_<PywGPipeline>(m, "GPipeline")
         .def(py::init<>())
-        .def("init", &PyGPipeline::init)
-        .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(PyGPipeline)
-        .def("setUniqueThreadPoolConfig", &PyGPipeline::setUniqueThreadPoolConfig)
-        .def("setSharedThreadPool", &PyGPipeline::setSharedThreadPool,
+        .def("init", &PywGPipeline::init)
+        .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(PywGPipeline)
+        .def("setUniqueThreadPoolConfig", &PywGPipeline::setUniqueThreadPoolConfig)
+        .def("setSharedThreadPool", &PywGPipeline::setSharedThreadPool,
              py::call_guard<py::gil_scoped_release>(),
              py::keep_alive<1, 2>())
-        .def("setGEngineType", &PyGPipeline::setGEngineType)
-        .def("run", &PyGPipeline::run,
+        .def("setGEngineType", &PywGPipeline::setGEngineType)
+        .def("run", &PywGPipeline::run,
              py::call_guard<py::gil_scoped_release>())
-        .def("process", &PyGPipeline::process,
+        .def("process", &PywGPipeline::process,
              py::call_guard<py::gil_scoped_release>(),
              py::arg("runTimes") = 1)
-        .def("destroy", &PyGPipeline::destroy)
-        .def("addGEvent", &PyGPipeline::__addGEvent_4py,
+        .def("destroy", &PywGPipeline::destroy)
+        .def("addGEvent", &PywGPipeline::__addGEvent_4py,
              py::keep_alive<1, 2>())
-        .def("addGDaemon", &PyGPipeline::__addGDaemon_4py,
+        .def("addGDaemon", &PywGPipeline::__addGDaemon_4py,
              py::arg("daemon"),
              py::arg("ms"),
              py::keep_alive<1, 2>())
-        .def("addGStage", &PyGPipeline::__addGStage_4py,
+        .def("addGStage", &PywGPipeline::__addGStage_4py,
              py::arg("stage"),
              py::arg("key"),
              py::arg("threshold"),
              py::keep_alive<1, 2>())
-        .def("asyncRun", &PyGPipeline::asyncRun,
+        .def("asyncRun", &PywGPipeline::asyncRun,
              py::arg("policy") = std::launch::async,
              py::call_guard<py::gil_scoped_release>())
-        .def("asyncProcess", &PyGPipeline::asyncProcess,
+        .def("asyncProcess", &PywGPipeline::asyncProcess,
              py::arg("runTimes") = CGRAPH_DEFAULT_LOOP_TIMES,
              py::arg("policy") = std::launch::async,
              py::call_guard<py::gil_scoped_release>())
-        .def("cancel", &PyGPipeline::cancel,
+        .def("cancel", &PywGPipeline::cancel,
             py::call_guard<py::gil_scoped_release>())
-        .def("yields", &PyGPipeline::yield,    // yield is python's keyword, use yields to replace
+        .def("yields", &PywGPipeline::yield,    // yield is python's keyword, use yields to replace
              py::call_guard<py::gil_scoped_release>())
-        .def("resume", &PyGPipeline::resume,
+        .def("resume", &PywGPipeline::resume,
              py::call_guard<py::gil_scoped_release>())
-        .def("perf", &PyGPipeline::__perf_4py,
+        .def("perf", &PywGPipeline::__perf,
              py::call_guard<py::gil_scoped_release>())
-        .def("dump", &PyGPipeline::__dump_4py)
-        .def("trim", &PyGPipeline::trim)
-        .def("registerGElement", &PyGPipeline::__registerGElement_4py,
+        .def("dump", &PywGPipeline::__dump)
+        .def("trim", &PywGPipeline::trim)
+        .def("registerGElement", &PywGPipeline::__registerGElement_4py,
              py::arg("element"),
              py::arg("depends") = GElementPtrSet{},
              py::arg("name") = CGRAPH_EMPTY,
@@ -246,8 +246,9 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::arg("name") = CGRAPH_EMPTY,
              py::arg("loop") = CGRAPH_DEFAULT_LOOP_TIMES);
 
-    py::class_<GFence, PyGFence, GElement, std::unique_ptr<GFence, py::nodelete> >(m, "GFence")
+    py::class_<GFence, PywGFence, GElement, std::unique_ptr<GFence, py::nodelete> >(m, "GFence")
         .def(py::init<>())
+        .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(GFence)
         .def("waitGElement", &GFence::waitGElement,
              py::arg("element"))
         .def("waitGElements", &GFence::waitGElements,

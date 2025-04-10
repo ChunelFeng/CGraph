@@ -398,18 +398,4 @@ GPipelinePtr GPipeline::__addGStage_4py(GStagePtr stage, const std::string& key,
     return this;
 }
 
-
-std::string GPipeline::__dump_4py() {
-    std::ostringstream oss;
-    this->dump(oss);
-    return oss.str();
-}
-
-
-std::string GPipeline::__perf_4py() {
-    std::ostringstream oss;
-    this->perf(oss);
-    return oss.str();
-}
-
 CGRAPH_NAMESPACE_END

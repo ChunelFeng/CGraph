@@ -9,8 +9,8 @@
 #ifndef CGRAPH_PYWRAPPERINCLUDE_H
 #define CGRAPH_PYWRAPPERINCLUDE_H
 
-#include "PyGPipeline.h"
-#include "PyGFence.h"
+#include "PywGPipeline.h"
+#include "PywGFence.h"
 #include "PywGElement.h"
 #include "PywGNode.h"
 #include "PywGCluster.h"
