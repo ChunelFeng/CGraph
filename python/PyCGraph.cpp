@@ -65,7 +65,8 @@ PYBIND11_MODULE(PyCGraph, m) {
     py::enum_<GElementTimeoutStrategy>(m, "GElementTimeoutStrategy")
         .value("AS_ERROR", GElementTimeoutStrategy::AS_ERROR)
         .value("HOLD_BY_PIPELINE", GElementTimeoutStrategy::HOLD_BY_PIPELINE)
-        .value("NO_HOLD", GElementTimeoutStrategy::NO_HOLD);
+        .value("NO_HOLD", GElementTimeoutStrategy::NO_HOLD)
+        .export_values();
 
     py::enum_<GMultiConditionType>(m, "GMultiConditionType")
         .value("SERIAL", GMultiConditionType::SERIAL)
@@ -114,12 +115,14 @@ PYBIND11_MODULE(PyCGraph, m) {
     py::class_<GAspect, PywGAspect, std::unique_ptr<GAspect, py::nodelete> >(m, "GAspect")
         .def(py::init<>())
         .def("getName", &GAspect::__getName_4py)
-        .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(GAspect);
+        .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(GAspect)
+        .PYCGRAPH_DEF_GEVENT_PYBIND11_FUNCTIONS(GAspect);
 
     py::class_<GDaemon, PywGDaemon, std::unique_ptr<GDaemon, py::nodelete> >(m, "GDaemon")
         .def(py::init<>())
         .def("getInterval", &GDaemon::__getInterval_4py)
-        .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(GDaemon);
+        .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(GDaemon)
+        .PYCGRAPH_DEF_GEVENT_PYBIND11_FUNCTIONS(GDaemon);
 
     py::class_<GEvent, PywGEvent, std::unique_ptr<GEvent, py::nodelete> >(m, "GEvent")
         .def(py::init<>())
@@ -198,16 +201,8 @@ PYBIND11_MODULE(PyCGraph, m) {
     py::class_<GElement, PywGElement, std::unique_ptr<GElement, py::nodelete> >(m, "GElement")
         .def(py::init<>())
         .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(GElement)
-        .def("notify", &GElement::__notify_4py,
-             py::arg("key"),
-             py::arg("type"),
-             py::arg("strategy") = GEventAsyncStrategy::PIPELINE_RUN_FINISH,
-             py::call_guard<py::gil_scoped_release>())
-        .def("asyncNotify", &GElement::__asyncNotify_4py,
-             py::arg("key"),
-             py::arg("strategy") = GEventAsyncStrategy::PIPELINE_RUN_FINISH,
-             py::call_guard<py::gil_scoped_release>())
-         .def("enterStage", &GElement::__enterStage_4py,
+        .PYCGRAPH_DEF_GEVENT_PYBIND11_FUNCTIONS(GElement)
+        .def("enterStage", &GElement::__enterStage_4py,
              py::arg("key"),
              py::call_guard<py::gil_scoped_release>())
         .def("getName", &GElement::getName)
