@@ -149,6 +149,12 @@ public:
     GElementState getCurState() const;
 
     /**
+     * 获取loop值信息
+     * @return
+     */
+    CSize getLoop() const;
+
+    /**
      * 删除一个依赖的节点信息
      * @param element
      * @return
@@ -502,9 +508,11 @@ public:
     GElement* __addGAspect_4py(GAspectPtr aspect);
     CStatus __enterStage_4py(const std::string& key);
     CBool __isTimeout_4py();
+    std::string __str__4py();
 };
 
 using GElementRef = GElement &;
+using GElementCRef = const GElement &;
 using GElementPtr = GElement *;
 using GElementCPtr = const GElement *;
 using GElementPPtr = GElementPtr *;

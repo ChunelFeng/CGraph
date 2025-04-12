@@ -10,7 +10,7 @@
 #define CGRAPH_PYWGPARALLELMULTICONDITION_H
 
 #include "CGraph.h"
-#include "PyWrapperDefine.h"
+#include "PyWrapperMacro.h"
 
 class PywGParallelMultiCondition : public CGraph::GMultiCondition<CGraph::GMultiConditionType::PARALLEL> {
 public:

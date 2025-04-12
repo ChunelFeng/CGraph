@@ -200,6 +200,7 @@ PYBIND11_MODULE(PyCGraph, m) {
 
     py::class_<GElement, PywGElement, std::unique_ptr<GElement, py::nodelete> >(m, "GElement")
         .def(py::init<>())
+        .def("__str__", &GElement::__str__4py)
         .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(GElement)
         .PYCGRAPH_DEF_GEVENT_PYBIND11_FUNCTIONS(GElement)
         .def("enterStage", &GElement::__enterStage_4py,
@@ -224,6 +225,7 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("isGAdaptor", &GElement::isGAdaptor)
         .def("isGNode", &GElement::isGNode)
         .def("getRelation", &GElement::getRelation)
+        .def("getLoop", &GElement::getLoop)
         .def("getCurState", &GElement::getCurState)
         .def("addGAspect", &GElement::__addGAspect_4py,
              py::keep_alive<1, 2>())

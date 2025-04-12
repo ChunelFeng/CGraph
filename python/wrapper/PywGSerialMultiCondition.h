@@ -10,7 +10,7 @@
 #define CGRAPH_PYWGSERIALMULTICONDITION_H
 
 #include "CGraph.h"
-#include "PyWrapperDefine.h"
+#include "PyWrapperMacro.h"
 
 class PywGSerialMultiCondition : public CGraph::GMultiCondition<CGraph::GMultiConditionType::SERIAL> {
 public:

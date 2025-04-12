@@ -21,13 +21,15 @@ public:
 
     std::string __dump() {
         std::ostringstream oss;
-        this->dump(oss);
+        auto status = this->dump(oss);
+        CGRAPH_THROW_EXCEPTION_BY_STATUS(status);
         return oss.str();
     }
 
     std::string __perf() {
         std::ostringstream oss;
-        this->perf(oss);
+        auto status = this->perf(oss);
+        CGRAPH_THROW_EXCEPTION_BY_STATUS(status);
         return oss.str();
     }
 };

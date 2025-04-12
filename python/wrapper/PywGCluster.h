@@ -10,7 +10,7 @@
 #define CGRAPH_PYWGCLUSTER_H
 
 #include "CGraph.h"
-#include "PyWrapperDefine.h"
+#include "PyWrapperMacro.h"
 
 class PywGCluster : public CGraph::GCluster {
 public:

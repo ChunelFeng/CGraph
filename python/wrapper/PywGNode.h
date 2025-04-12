@@ -12,7 +12,7 @@
 #include <pybind11/pybind11.h>
 
 #include "CGraph.h"
-#include "PyWrapperDefine.h"
+#include "PyWrapperMacro.h"
 
 class PywGNode : public CGraph::GNode {
 public:

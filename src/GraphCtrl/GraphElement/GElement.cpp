@@ -465,6 +465,11 @@ GElementState GElement::getCurState() const {
 }
 
 
+CSize GElement::getLoop() const {
+    return loop_;
+}
+
+
 CIndex GElement::getBindingIndex() const {
     return this->binding_index_;
 }
@@ -618,6 +623,44 @@ CStatus GElement::__enterStage_4py(const std::string& key) {
 
 CBool GElement::__isTimeout_4py() {
     return isTimeout();
+}
+
+
+std::string GElement::__str__4py() {
+    // python 中 print 展示的格式
+    std::string info = "<name=" + this->getName() +
+                       ", session=" + this->getSession() + ", loop=" + std::to_string(this->getLoop());
+    auto relation = this->getRelation();
+    if (relation.belong_) {
+        info += ", belong=" + relation.belong_->getName();
+    }
+
+    if (!relation.successors_.empty()) {
+        info += ", successors=[";
+        for (CSize i = 0; i < relation.successors_.size() - 1; i++) {
+            info += relation.successors_[i]->getName() + ",";;
+        }
+        info += relation.successors_.back()->getName() + "]";
+    }
+
+    if (!relation.predecessors_.empty()) {
+        info += ", predecessors=[";
+        for (CSize i = 0; i < relation.predecessors_.size() - 1; i++) {
+            info += relation.predecessors_[i]->getName() + ",";
+        }
+        info += relation.predecessors_.back()->getName() + "]";
+    }
+
+    if (!relation.children_.empty()) {
+        info += ", children=[";
+        for (CSize i = 0; i < relation.children_.size() - 1; i++) {
+            info += relation.children_[i]->getName() + ",";
+        }
+        info += relation.children_.back()->getName() + "]";
+    }
+
+    info += ">";
+    return info;
 }
 
 CGRAPH_NAMESPACE_END

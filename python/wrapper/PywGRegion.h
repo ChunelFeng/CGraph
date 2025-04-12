@@ -10,7 +10,7 @@
 #define CGRAPH_PYWGREGION_H
 
 #include "CGraph.h"
-#include "PyWrapperDefine.h"
+#include "PyWrapperMacro.h"
 
 class PywGRegion : public CGraph::GRegion {
 public:
