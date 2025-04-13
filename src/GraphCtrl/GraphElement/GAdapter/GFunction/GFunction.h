@@ -29,7 +29,7 @@ public:
 
     CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER
 
-private:
+protected:
     explicit GFunction();
 
     CStatus init() final;

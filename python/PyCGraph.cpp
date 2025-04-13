@@ -8,6 +8,7 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <pybind11/functional.h>
 
 #include "CGraph.h"
 #include "wrapper/PyWrapperInclude.h"
@@ -82,6 +83,12 @@ PYBIND11_MODULE(PyCGraph, m) {
         .value("PIPELINE_RUN_FINISH", GEventAsyncStrategy::PIPELINE_RUN_FINISH)
         .value("PIPELINE_DESTROY", GEventAsyncStrategy::PIPELINE_DESTROY)
         .value("NO_WAIT", GEventAsyncStrategy::NO_WAIT)
+        .export_values();
+
+    py::enum_<CFunctionType>(m, "CFunctionType")
+        .value("INIT", CFunctionType::INIT)
+        .value("RUN", CFunctionType::RUN)
+        .value("DESTROY", CFunctionType::DESTROY)
         .export_values();
 
     py::enum_<std::launch>(m, "StdLaunchPolicy")
@@ -251,6 +258,12 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("waitGElements", &GFence::waitGElements,
              py::arg("elements"))
         .def("clear", &GFence::clear);
+
+    py::class_<GFunction, PywGFunction, GElement, std::unique_ptr<GFunction, py::nodelete> >(m, "GFunction")
+        .def(py::init<>())
+        .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(GFunction)
+        .PYCGRAPH_DEF_GEVENT_PYBIND11_FUNCTIONS(GFunction)
+        .def("setFunction", &GFunction::setFunction);
 
     PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GCluster);
     PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GClusterInterface);

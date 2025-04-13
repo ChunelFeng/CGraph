@@ -11,6 +11,7 @@
 
 #include "PywGPipeline.h"
 #include "PywGFence.h"
+#include "PywGFunction.h"
 #include "PywGElement.h"
 #include "PywGNode.h"
 #include "PywGCluster.h"
