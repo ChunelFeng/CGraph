@@ -206,6 +206,10 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::call_guard<py::gil_scoped_release>())
         .def("dump", &PywGPipeline::__dump)
         .def("trim", &PywGPipeline::trim)
+        .def("makeSerial", &PywGPipeline::makeSerial)
+        .def("getMaxPara", &PywGPipeline::getMaxPara)
+        .def("getCurState", &PywGPipeline::getCurState)
+        .def("checkSeparate", &PywGPipeline::checkSeparate)
         .def("registerGElement", &PywGPipeline::__registerGElement_4py,
              py::arg("element"),
              py::arg("depends") = GElementPtrSet{},
