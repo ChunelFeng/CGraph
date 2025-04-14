@@ -376,10 +376,10 @@ private:
     CVoid dumpPerfInfo(std::ostream& oss);
 
     /**
-     * 判断是否进入 yield状态。如果是的话，则等待恢复。未进入yield状态，则继续运行
+     * 判断是否进入 suspend 状态。如果是的话，则等待恢复。未进入 suspend 状态，则继续运行
      * @return
      */
-    CVoid checkYield();
+    CVoid checkSuspend();
 
     /**
      * 判断当前元素，是否可以线性执行。默认返回true
@@ -469,8 +469,7 @@ private:
 
     /** 异步执行相关信息 */
     std::future<CStatus> async_result_;                                       // 用于记录当前节点的异步执行情况
-    std::mutex yield_mutex_;                                                  // 控制停止执行的锁
-    std::condition_variable yield_cv_;                                        // 控制停止执行的条件变量
+    UCvMutex suspend_locker_;                                                 // 控制停止执行锁信息
 
     friend class GNode;
     friend class GGroup;

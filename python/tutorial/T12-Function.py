@@ -25,7 +25,7 @@ def d_function_init(d: GFunction):
     return CStatus()
 
 def d_function_run(d: GFunction, num: int):
-    # get GParam info in CFunction
+    # get GParam info in GFunction
     param: MyParam = d.getGParamWithNoEmpty('param1')
     param.count += num
     print('[{0}] do run function, count is {1}, value is {2}'.format(

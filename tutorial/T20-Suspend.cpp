@@ -1,7 +1,7 @@
 /***************************
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: T20-YieldResume.cpp
+@File: T20-Suspend.cpp
 @Time: 2023/6/24 15:08
 @Desc: 本例子主要展示异步执行的逻辑中，如何暂停和恢复执行pipeline的功能
 ***************************/
@@ -11,7 +11,7 @@
 
 using namespace CGraph;
 
-void tutorial_yield_resume() {
+void tutorial_suspend() {
     GPipelinePtr pipeline = GPipelineFactory::create();
     GElementPtr a, b, c, d = nullptr;
 
@@ -30,8 +30,8 @@ void tutorial_yield_resume() {
     auto result = pipeline->asyncRun();
     CGRAPH_SLEEP_MILLISECOND(2600)
 
-    CGRAPH_ECHO("pipeline async run, YIELD.");
-    status += pipeline->yield();    // 暂停执行，保留当前pipeline内部所有参数信息和状态信息
+    CGRAPH_ECHO("pipeline async run, SUSPEND.");
+    status += pipeline->suspend();    // 暂停执行，保留当前pipeline内部所有参数信息和状态信息
 
     CGRAPH_SLEEP_MILLISECOND(7200)
     CGRAPH_ECHO("pipeline async run, RESUME after 7200ms.");
@@ -45,6 +45,6 @@ void tutorial_yield_resume() {
 
 
 int main () {
-    tutorial_yield_resume();
+    tutorial_suspend();
     return 0;
 }

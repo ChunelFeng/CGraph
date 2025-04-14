@@ -39,7 +39,7 @@ enum class GElementType {
 enum class GElementState {
     NORMAL = 0x0000,                          // 正常状态
     CANCEL = 0x1001,                          // 取消状态
-    YIELD = 0x1002,                           // 暂停状态
+    SUSPEND = 0x1002,                         // 暂停状态（同 v3.0.0版本之前的 YIELD 含义相同）
     TIMEOUT = 0x1010,                         // 超时状态
 };
 using GPipelineState = GElementState;         // pipeline 同element共享状态

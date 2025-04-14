@@ -21,7 +21,7 @@ class MyStageNode(GNode):
         time.sleep(self._before)
         print('[{0}] ----> {1} wait {2}s before enter stage'.format(datetime.now(), self.getName(), self._before))
 
-        sts: CStatus = self.enterStage('stage1')
+        status: CStatus = self.enterStage('stage1')
         print('[{0}] <---- {1} wait {2}s after enter stage'.format(datetime.now(), self.getName(), self._after))
         time.sleep(self._after)
-        return CStatus()
+        return status

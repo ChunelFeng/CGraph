@@ -67,7 +67,7 @@ public:
       * 暂停当前pipeline的执行，多用于异步执行流程中
       * @return
       */
-     CStatus yield();
+     CStatus suspend();
 
      /**
       * 恢复当前pipeline的执行，多用于异步执行流程中

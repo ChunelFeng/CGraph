@@ -31,7 +31,7 @@ CGRAPH_TUTORIAL_LIST = [
          "T17-MessagePubSub",
          "T18-Event",
          "T19-Cancel",
-         "T20-YieldResume",
+         "T20-Suspend",
          "T21-MultiCondition",
          "T22-Timeout",
          "T23-Some",

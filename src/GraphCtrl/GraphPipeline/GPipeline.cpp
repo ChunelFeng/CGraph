@@ -183,9 +183,9 @@ CStatus GPipeline::cancel() {
 }
 
 
-CStatus GPipeline::yield() {
+CStatus GPipeline::suspend() {
     CGRAPH_ASSERT_INIT(true)
-    return repository_.pushAllState(GElementState::YIELD);
+    return repository_.pushAllState(GElementState::SUSPEND);
 }
 
 

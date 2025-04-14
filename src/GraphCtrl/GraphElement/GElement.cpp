@@ -246,12 +246,12 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                     do {
                         status += isAsync() ? asyncRun() : run();
                         /**
-                         * 在实际run结束之后，首先需要判断一下是否进入yield状态了。
+                         * 在实际run结束之后，首先需要判断一下是否进入suspend状态了。
                          * 接下来，如果状态是ok的，并且被条件hold住，则循环执行
                          * 默认所有element的isHold条件均为false，即不hold，即执行一次
                          * 可以根据需求，对任意element类型，添加特定的isHold条件
                          * */
-                    } while (checkYield(), this->isHold() && status.isOK());
+                    } while (checkSuspend(), this->isHold() && status.isOK());
                     doAspect(internal::GAspectType::FINISH_RUN, status);
                 }
 
@@ -431,10 +431,14 @@ CVoid GElement::dumpPerfInfo(std::ostream& oss) {
 }
 
 
-CVoid GElement::checkYield() {
-    std::unique_lock<std::mutex> lk(yield_mutex_);
-    this->yield_cv_.wait(lk, [this] {
-        return GElementState::YIELD != cur_state_.load(std::memory_order_acquire);
+CVoid GElement::checkSuspend() {
+    if (GElementState::SUSPEND != cur_state_.load(std::memory_order_acquire)) {
+        return;
+    }
+
+    std::unique_lock<std::mutex> lk(suspend_locker_.mtx_);
+    this->suspend_locker_.cv_.wait(lk, [this] {
+        return GElementState::SUSPEND != cur_state_.load(std::memory_order_acquire);
     });
 }
 

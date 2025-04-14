@@ -1,7 +1,7 @@
 """
 @Author: Chunel
 @Contact: chunel@foxmail.com
-@File: T13-Deamon
+@File: T13-Daemon
 @Time: 2025/3/30 00:46
 @Desc: 
 """
@@ -13,7 +13,7 @@ from MyGNode.MyWriteParamNode import MyWriteParamNode
 from MyGDaemon.MyMonitorDaemon import MyMonitorGDaemon
 
 
-def tutorial_simple():
+def tutorial_daemon():
     pipeline = GPipeline()
     a, b = MyNode1(), MyWriteParamNode()
 
@@ -26,5 +26,5 @@ def tutorial_simple():
 
 
 if __name__ == '__main__':
-    tutorial_simple()
+    tutorial_daemon()
 

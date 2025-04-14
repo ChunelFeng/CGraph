@@ -91,6 +91,14 @@ PYBIND11_MODULE(PyCGraph, m) {
         .value("DESTROY", CFunctionType::DESTROY)
         .export_values();
 
+    py::enum_<GElementState>(m, "GElementState")
+        .value("NORMAL", GElementState::NORMAL)
+        .value("CANCEL", GElementState::CANCEL)
+        .value("SUSPEND", GElementState::SUSPEND)
+        .value("TIMEOUT", GElementState::TIMEOUT)
+        .export_values();
+    m.attr("GPipelineState") = m.attr("GElementState");
+
     py::enum_<std::launch>(m, "StdLaunchPolicy")
         .value("ASYNC", std::launch::async)
         .value("DEFERRED", std::launch::deferred)
@@ -190,7 +198,7 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::call_guard<py::gil_scoped_release>())
         .def("cancel", &PywGPipeline::cancel,
             py::call_guard<py::gil_scoped_release>())
-        .def("yields", &PywGPipeline::yield,    // yield is python's keyword, use yields to replace
+        .def("suspend", &PywGPipeline::suspend,
              py::call_guard<py::gil_scoped_release>())
         .def("resume", &PywGPipeline::resume,
              py::call_guard<py::gil_scoped_release>())
