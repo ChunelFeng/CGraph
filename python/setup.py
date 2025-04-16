@@ -10,13 +10,21 @@ import glob
 from setuptools import setup, Extension
 import pybind11
 
+__PYCGRAPH_NAME__ = "PyCGraph"
+__PYCGRAPH_VERSION__ = "1.3.5"
+__PYCGRAPH_AUTHOR__ = "Chunel"
+__PYCGRAPH_AUTHOR_EMAIL__ = "chunel@foxmail.com"
+__PYCGRAPH_DESCRIPTION__ = "CGraph with python api wrapper by pybind11"
+__PYCGRAPH_URL__ = "https://github.com/ChunelFeng/CGraph"
+__PYCGRAPH_LICENSE__ = "MIT"
+
 _sources = ['PyCGraph.cpp'] + glob.glob("../src/**/*.cpp", recursive=True)
 _extra_compile_args = ["-pthread", "-std=c++11", '-fvisibility=hidden']
 _include_dirs = [pybind11.get_include(), "../src"]
 
 ext_modules = [
     Extension(
-        name="PyCGraph",
+        name=__PYCGRAPH_NAME__,
         sources=_sources,
         extra_compile_args=_extra_compile_args,
         include_dirs=_include_dirs,
@@ -24,13 +32,13 @@ ext_modules = [
 ]
 
 setup(
-    name="PyCGraph",
-    version="1.3.4",
-    author="Chunel",
-    author_email="chunel@foxmail.com",
-    description="CGraph with python api wrapper by pybind11",
-    url="https://github.com/ChunelFeng/CGraph",
-    license="MIT",
+    name=__PYCGRAPH_NAME__,
+    version=__PYCGRAPH_VERSION__,
+    author=__PYCGRAPH_AUTHOR__,
+    author_email=__PYCGRAPH_AUTHOR_EMAIL__,
+    description=__PYCGRAPH_DESCRIPTION__,
+    url=__PYCGRAPH_URL__,
+    license=__PYCGRAPH_LICENSE__,
     ext_modules=ext_modules,
     zip_safe=False,
 )
