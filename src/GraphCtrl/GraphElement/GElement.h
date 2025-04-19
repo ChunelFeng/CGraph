@@ -507,7 +507,7 @@ public:
     GElement* __addGAspect_4py(GAspectPtr aspect);
     CStatus __enterStage_4py(const std::string& key);
     CBool __isTimeout_4py();
-    std::string __str__4py();
+    std::string __str_4py();
 };
 
 using GElementRef = GElement &;

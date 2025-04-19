@@ -163,63 +163,80 @@ PYBIND11_MODULE(PyCGraph, m) {
     m.attr("GStageParam") = m.attr("GPassedParam");
     m.attr("GEventParam") = m.attr("GPassedParam");
 
-    py::class_<PywGPipeline>(m, "GPipeline")
-        .def(py::init<>())
-        .def("init", &PywGPipeline::init)
-        .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(PywGPipeline)
-        .def("setUniqueThreadPoolConfig", &PywGPipeline::setUniqueThreadPoolConfig)
-        .def("setSharedThreadPool", &PywGPipeline::setSharedThreadPool,
+    py::class_<GPipeline, std::unique_ptr<GPipeline, PywGPipelineDeleter> >(m, "GPipeline")
+        .def(py::init<>([]() { return GPipelineFactory::create(); }))
+        .def("init", &GPipeline::init)
+        .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(GPipeline)
+        .def("setUniqueThreadPoolConfig", &GPipeline::setUniqueThreadPoolConfig)
+        .def("setSharedThreadPool", &GPipeline::setSharedThreadPool,
              py::call_guard<py::gil_scoped_release>(),
              py::keep_alive<1, 2>())
-        .def("setGEngineType", &PywGPipeline::setGEngineType)
-        .def("run", &PywGPipeline::run,
+        .def("setGEngineType", &GPipeline::setGEngineType)
+        .def("run", &GPipeline::run,
              py::call_guard<py::gil_scoped_release>())
-        .def("process", &PywGPipeline::process,
+        .def("process", &GPipeline::process,
              py::call_guard<py::gil_scoped_release>(),
              py::arg("runTimes") = 1)
-        .def("destroy", &PywGPipeline::destroy)
-        .def("addGEvent", &PywGPipeline::__addGEvent_4py,
+        .def("destroy", &GPipeline::destroy)
+        .def("addGEvent", &GPipeline::__addGEvent_4py,
              py::keep_alive<1, 2>())
-        .def("addGDaemon", &PywGPipeline::__addGDaemon_4py,
+        .def("addGDaemon", &GPipeline::__addGDaemon_4py,
              py::arg("daemon"),
              py::arg("ms"),
              py::keep_alive<1, 2>())
-        .def("addGStage", &PywGPipeline::__addGStage_4py,
+        .def("addGStage", &GPipeline::__addGStage_4py,
              py::arg("stage"),
              py::arg("key"),
              py::arg("threshold"),
              py::keep_alive<1, 2>())
-        .def("asyncRun", &PywGPipeline::asyncRun,
+        .def("asyncRun", &GPipeline::asyncRun,
              py::arg("policy") = std::launch::async,
              py::call_guard<py::gil_scoped_release>())
-        .def("asyncProcess", &PywGPipeline::asyncProcess,
+        .def("asyncProcess", &GPipeline::asyncProcess,
              py::arg("runTimes") = CGRAPH_DEFAULT_LOOP_TIMES,
              py::arg("policy") = std::launch::async,
              py::call_guard<py::gil_scoped_release>())
-        .def("cancel", &PywGPipeline::cancel,
+        .def("cancel", &GPipeline::cancel,
             py::call_guard<py::gil_scoped_release>())
-        .def("suspend", &PywGPipeline::suspend,
+        .def("suspend", &GPipeline::suspend,
              py::call_guard<py::gil_scoped_release>())
-        .def("resume", &PywGPipeline::resume,
+        .def("resume", &GPipeline::resume,
              py::call_guard<py::gil_scoped_release>())
-        .def("perf", &PywGPipeline::__perf,
+        .def("perf", &GPipeline::__perf_4py,
              py::call_guard<py::gil_scoped_release>())
-        .def("dump", &PywGPipeline::__dump)
-        .def("trim", &PywGPipeline::trim)
-        .def("makeSerial", &PywGPipeline::makeSerial)
-        .def("getMaxPara", &PywGPipeline::getMaxPara)
-        .def("getCurState", &PywGPipeline::getCurState)
-        .def("checkSeparate", &PywGPipeline::checkSeparate)
-        .def("registerGElement", &PywGPipeline::__registerGElement_4py,
+        .def("dump", &GPipeline::__dump_4py)
+        .def("trim", &GPipeline::trim)
+        .def("makeSerial", &GPipeline::makeSerial)
+        .def("getMaxPara", &GPipeline::getMaxPara)
+        .def("getCurState", &GPipeline::getCurState)
+        .def("checkSeparate", &GPipeline::checkSeparate)
+        .def("registerGElement", &GPipeline::__registerGElement_4py,
              py::arg("element"),
              py::arg("depends") = GElementPtrSet{},
              py::arg("name") = CGRAPH_EMPTY,
              py::arg("loop") = CGRAPH_DEFAULT_LOOP_TIMES,
              py::keep_alive<1, 2>());
 
+    py::class_<GPipelineManager>(m, "GPipelineManager")
+        .def(py::init<>())
+        .def("init", &GPipelineManager::init)
+        .def("run", &GPipelineManager::run,
+             py::call_guard<py::gil_scoped_release>())
+        .def("destroy", &GPipelineManager::destroy)
+        .def("add", &GPipelineManager::add,
+            py::keep_alive<1, 2>())
+        .def("clear", &GPipelineManager::clear)
+        .def("find", &GPipelineManager::find)
+        .def("remove", &GPipelineManager::remove)
+        .def("getSize", &GPipelineManager::getSize)
+        .def("fetch", &GPipelineManager::fetch,
+             py::call_guard<py::gil_scoped_release>())
+        .def("release", &GPipelineManager::release,
+             py::call_guard<py::gil_scoped_release>());
+
     py::class_<GElement, PywGElement, std::unique_ptr<GElement, py::nodelete> >(m, "GElement")
         .def(py::init<>())
-        .def("__str__", &GElement::__str__4py)
+        .def("__str__", &GElement::__str_4py)
         .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(GElement)
         .PYCGRAPH_DEF_GEVENT_PYBIND11_FUNCTIONS(GElement)
         .def("enterStage", &GElement::__enterStage_4py,

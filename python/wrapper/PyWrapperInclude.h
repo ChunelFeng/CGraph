@@ -9,7 +9,6 @@
 #ifndef CGRAPH_PYWRAPPERINCLUDE_H
 #define CGRAPH_PYWRAPPERINCLUDE_H
 
-#include "PywGPipeline.h"
 #include "PywGFence.h"
 #include "PywGFunction.h"
 #include "PywGElement.h"
@@ -26,5 +25,6 @@
 #include "PywGSerialMultiCondition.h"
 #include "PywGMutable.h"
 #include "PywGPassedParam.h"
+#include "PywGPipelineDeleter.h"
 
 #endif //CGRAPH_PYWRAPPERINCLUDE_H

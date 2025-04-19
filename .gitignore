@@ -12,6 +12,7 @@
 .vscode/
 /.cache/
 /bazel-*
+/MODULE.bazel
 /MODULE.bazel.lock
 /python/build
 /python/dist

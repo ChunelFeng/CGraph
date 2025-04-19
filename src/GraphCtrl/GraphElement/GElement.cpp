@@ -630,7 +630,7 @@ CBool GElement::__isTimeout_4py() {
 }
 
 
-std::string GElement::__str__4py() {
+std::string GElement::__str_4py() {
     // python 中 print 展示的格式
     std::string info = "<name=" + this->getName() +
                        ", session=" + this->getSession() + ", loop=" + std::to_string(this->getLoop());
@@ -639,29 +639,19 @@ std::string GElement::__str__4py() {
         info += ", belong=" + relation.belong_->getName();
     }
 
-    if (!relation.successors_.empty()) {
-        info += ", successors=[";
-        for (CSize i = 0; i < relation.successors_.size() - 1; i++) {
-            info += relation.successors_[i]->getName() + ",";;
+    auto toStr = [](const GElementPtrArr& arr, const std::string& key, std::string& result){
+        if (!arr.empty()) {
+            result += ", " + key + "=[";
+            for (CSize i = 0; i < arr.size() - 1; i++) {
+                result += arr[i]->getName() + ",";
+            }
+            result += arr.back()->getName() + "]";
         }
-        info += relation.successors_.back()->getName() + "]";
-    }
+    };
 
-    if (!relation.predecessors_.empty()) {
-        info += ", predecessors=[";
-        for (CSize i = 0; i < relation.predecessors_.size() - 1; i++) {
-            info += relation.predecessors_[i]->getName() + ",";
-        }
-        info += relation.predecessors_.back()->getName() + "]";
-    }
-
-    if (!relation.children_.empty()) {
-        info += ", children=[";
-        for (CSize i = 0; i < relation.children_.size() - 1; i++) {
-            info += relation.children_[i]->getName() + ",";
-        }
-        info += relation.children_.back()->getName() + "]";
-    }
+    toStr(relation.successors_, "successors", info);
+    toStr(relation.predecessors_, "predecessors", info);
+    toStr(relation.children_, "children", info);
 
     info += ">";
     return info;
