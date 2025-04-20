@@ -124,8 +124,10 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::return_value_policy::reference)
         .def("getCode", &CStatus::getCode)
         .def("getInfo", &CStatus::getInfo)
+        .def("reset", &CStatus::reset)
         .def("isOK", &CStatus::isOK)
-        .def("isErr", &CStatus::isErr);
+        .def("isErr", &CStatus::isErr)
+        .def("isCrash", &CStatus::isCrash);
 
     py::class_<GAspect, PywGAspect, std::unique_ptr<GAspect, py::nodelete> >(m, "GAspect")
         .def(py::init<>())

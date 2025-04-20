@@ -29,6 +29,12 @@ option(CGRAPH_BUILD_PERFORMANCE_TESTS "Enables builds of performance tests" OFF)
 # 此宏可以在纯并发的微小任务下，用于提升整体性能。主要用于在性能测试的情况下使用，一般情况不推荐打开
 # add_definitions(-D_CGRAPH_PARALLEL_MICRO_BATCH_ENABLE_)
 
+# 此宏用于在读写GParam加锁的时候，加锁方式修改为读写锁的情况
+# 仅在cpp17或以上版本生效
+# 打开后会在多读少写的情况下有性能优化
+# 副作用是GParam中的锁无法递归上锁，一般情况下可忽略影响
+# add_definitions(-D_CGRAPH_GPARAM_RWLOCK_ENABLE_)
+
 # add CGraph environment info
 include(cmake/CGraph-env-include.cmake)
 

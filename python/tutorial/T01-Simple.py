@@ -23,8 +23,11 @@ def tutorial_simple():
 
     status: CStatus = pipeline.init()
     if status.isErr():
-        # please check api return value.
-        print('pipeline init failed, error code is {0}.'.format(status.getCode()))
+        # please check api return status
+        # ret_code == 0 is ok, default
+        # ret_code < 0 means error, ex: return CStatus(-1, "my error info")
+        print('pipeline init failed, error code is {0}, error info is {1}'.format(
+            status.getCode(), status.getInfo()))
         return
 
     for i in range(0, 3):

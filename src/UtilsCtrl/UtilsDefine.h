@@ -35,11 +35,11 @@ CGRAPH_NAMESPACE_BEGIN
 using CGRAPH_LOCK_GUARD = std::lock_guard<std::mutex>;
 using CGRAPH_UNIQUE_LOCK = std::unique_lock<std::mutex>;
 
-#if __cplusplus >= 201703L
+#if __cplusplus >= 201703L && _CGRAPH_GPARAM_RWLOCK_ENABLE_
     using CGRAPH_READ_LOCK = std::shared_lock<std::shared_mutex>;
     using CGRAPH_WRITE_LOCK = std::unique_lock<std::shared_mutex>;
 #else
-    using CGRAPH_READ_LOCK = std::lock_guard<std::recursive_mutex>;    // C++11和14不支持读写锁，使用mutex替代
+    using CGRAPH_READ_LOCK = std::lock_guard<std::recursive_mutex>;    // C++11和14不支持读写锁，使用 recursive_mutex 替代
     using CGRAPH_WRITE_LOCK = std::lock_guard<std::recursive_mutex>;
 #endif
 
