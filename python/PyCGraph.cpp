@@ -50,12 +50,13 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def(py::init<CBool, const UThreadPoolConfig&>(),
              py::arg("autoInit") = true,
              py::arg("config") = UThreadPoolConfig{})
-         .def("setConfig", &UThreadPool::setConfig,
+        .def("setConfig", &UThreadPool::setConfig,
+              py::arg("config"),
               py::keep_alive<1, 2>())
-         .def("getConfig", &UThreadPool::getConfig)
-         .def("init", &UThreadPool::init)
-         .def("destroy", &UThreadPool::destroy)
-         .def("isInit", &UThreadPool::isInit);
+        .def("getConfig", &UThreadPool::getConfig)
+        .def("init", &UThreadPool::init)
+        .def("destroy", &UThreadPool::destroy)
+        .def("isInit", &UThreadPool::isInit);
 
     py::enum_<GEngineType>(m, "GEngineType")
         .value("DYNAMIC", GEngineType::DYNAMIC)
@@ -119,7 +120,9 @@ PYBIND11_MODULE(PyCGraph, m) {
 
     py::class_<CStatus>(m, "CStatus")
         .def(py::init<>())
-        .def(py::init<int, const std::string&>())
+        .def(py::init<int, const std::string&>(),
+             py::arg("errorCode"),
+             py::arg("errorInfo"))
         .def("__iadd__", &CStatus::operator+=,
              py::return_value_policy::reference)
         .def("getCode", &CStatus::getCode)
@@ -169,18 +172,23 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def(py::init<>([]() { return GPipelineFactory::create(); }))
         .def("init", &GPipeline::init)
         .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(GPipeline)
-        .def("setUniqueThreadPoolConfig", &GPipeline::setUniqueThreadPoolConfig)
+        .def("setUniqueThreadPoolConfig", &GPipeline::setUniqueThreadPoolConfig,
+             py::arg("config"))
         .def("setSharedThreadPool", &GPipeline::setSharedThreadPool,
+             py::arg("ptr"),
              py::call_guard<py::gil_scoped_release>(),
              py::keep_alive<1, 2>())
-        .def("setGEngineType", &GPipeline::setGEngineType)
+        .def("setGEngineType", &GPipeline::setGEngineType,
+             py::arg("type"))
         .def("run", &GPipeline::run,
              py::call_guard<py::gil_scoped_release>())
         .def("process", &GPipeline::process,
-             py::call_guard<py::gil_scoped_release>(),
-             py::arg("runTimes") = 1)
+             py::arg("runTimes") = 1,
+             py::call_guard<py::gil_scoped_release>())
         .def("destroy", &GPipeline::destroy)
         .def("addGEvent", &GPipeline::__addGEvent_4py,
+             py::arg("event"),
+             py::arg("key"),
              py::keep_alive<1, 2>())
         .def("addGDaemon", &GPipeline::__addGDaemon_4py,
              py::arg("daemon"),
@@ -211,7 +219,9 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("makeSerial", &GPipeline::makeSerial)
         .def("getMaxPara", &GPipeline::getMaxPara)
         .def("getCurState", &GPipeline::getCurState)
-        .def("checkSeparate", &GPipeline::checkSeparate)
+        .def("checkSeparate", &GPipeline::checkSeparate,
+             py::arg("fst"),
+             py::arg("snd"))
         .def("registerGElement", &GPipeline::__registerGElement_4py,
              py::arg("element"),
              py::arg("depends") = GElementPtrSet{},
@@ -226,14 +236,18 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::call_guard<py::gil_scoped_release>())
         .def("destroy", &GPipelineManager::destroy)
         .def("add", &GPipelineManager::add,
+            py::arg("ptr"),
             py::keep_alive<1, 2>())
         .def("clear", &GPipelineManager::clear)
-        .def("find", &GPipelineManager::find)
-        .def("remove", &GPipelineManager::remove)
+        .def("find", &GPipelineManager::find,
+             py::arg("ptr"))
+        .def("remove", &GPipelineManager::remove,
+             py::arg("ptr"))
         .def("getSize", &GPipelineManager::getSize)
         .def("fetch", &GPipelineManager::fetch,
              py::call_guard<py::gil_scoped_release>())
         .def("release", &GPipelineManager::release,
+             py::arg("ptr"),
              py::call_guard<py::gil_scoped_release>());
 
     py::class_<GElement, PywGElement, std::unique_ptr<GElement, py::nodelete> >(m, "GElement")
@@ -266,6 +280,7 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("getLoop", &GElement::getLoop)
         .def("getCurState", &GElement::getCurState)
         .def("addGAspect", &GElement::__addGAspect_4py,
+             py::arg("aspect"),
              py::keep_alive<1, 2>())
         .def("addDependGElements", &GElement::addDependGElements,
              py::arg("elements"))
@@ -294,7 +309,9 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def(py::init<>())
         .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(GFunction)
         .PYCGRAPH_DEF_GEVENT_PYBIND11_FUNCTIONS(GFunction)
-        .def("setFunction", &GFunction::setFunction);
+        .def("setFunction", &GFunction::setFunction,
+             py::arg("type"),
+             py::arg("func"));
 
     PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GCluster);
     PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GClusterInterface);
