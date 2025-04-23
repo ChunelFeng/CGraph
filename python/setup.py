@@ -11,7 +11,7 @@ from setuptools import setup, Extension
 import pybind11
 
 __PYCGRAPH_NAME__ = "PyCGraph"
-__PYCGRAPH_VERSION__ = "1.5.0"
+__PYCGRAPH_VERSION__ = "1.5.1"
 __PYCGRAPH_AUTHOR__ = "Chunel"
 __PYCGRAPH_AUTHOR_EMAIL__ = "chunel@foxmail.com"
 __PYCGRAPH_DESCRIPTION__ = "CGraph with python api wrapper by pybind11"
@@ -21,8 +21,7 @@ __PYCGRAPH_LICENSE__ = "MIT"
 _sources = ['PyCGraph.cpp'] + glob.glob("../src/**/*.cpp", recursive=True)
 _extra_compile_args = ["-pthread", "-std=c++11", '-fvisibility=hidden']
 _include_dirs = [pybind11.get_include(), "../src"]
-
-ext_modules = [
+_ext_modules = [
     Extension(
         name=__PYCGRAPH_NAME__,
         sources=_sources,
@@ -39,6 +38,6 @@ setup(
     description=__PYCGRAPH_DESCRIPTION__,
     url=__PYCGRAPH_URL__,
     license=__PYCGRAPH_LICENSE__,
-    ext_modules=ext_modules,
+    ext_modules=_ext_modules,
     zip_safe=False,
 )

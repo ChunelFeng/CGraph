@@ -58,6 +58,8 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("destroy", &UThreadPool::destroy)
         .def("isInit", &UThreadPool::isInit);
 
+    py::register_exception<CException>(m, "CException");
+
     py::enum_<GEngineType>(m, "GEngineType")
         .value("DYNAMIC", GEngineType::DYNAMIC)
         .value("TOPO", GEngineType::TOPO)
@@ -236,8 +238,8 @@ PYBIND11_MODULE(PyCGraph, m) {
              py::call_guard<py::gil_scoped_release>())
         .def("destroy", &GPipelineManager::destroy)
         .def("add", &GPipelineManager::add,
-            py::arg("ptr"),
-            py::keep_alive<1, 2>())
+             py::arg("ptr"),
+             py::keep_alive<1, 2>())
         .def("clear", &GPipelineManager::clear)
         .def("find", &GPipelineManager::find,
              py::arg("ptr"))
@@ -268,7 +270,7 @@ PYBIND11_MODULE(PyCGraph, m) {
         .def("setVisible", &GElement::setVisible,
              py::arg("visible"))
         .def("setMacro", &GElement::setMacro,
-            py::arg("macro"))
+             py::arg("macro"))
         .def("setTimeout", &GElement::setTimeout,
              py::arg("timeout"),
              py::arg("strategy") = GElementTimeoutStrategy::AS_ERROR)
