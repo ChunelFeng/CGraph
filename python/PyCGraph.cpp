@@ -17,8 +17,10 @@ using namespace CGraph;
 namespace py = pybind11;
 
 PYBIND11_MODULE(PyCGraph, m) {
+    m.doc() = "CGraph with python api, github: https://github.com/ChunelFeng/CGraph";
+
     py::class_<UThreadPoolConfig>(m, "UThreadPoolConfig")
-        .def(pybind11::init<>())
+        .def(py::init<>())
         .def_readwrite("default_thread_size", &UThreadPoolConfig::default_thread_size_)
         .def_readwrite("secondary_thread_size", &UThreadPoolConfig::secondary_thread_size_)
         .def_readwrite("max_thread_size", &UThreadPoolConfig::max_thread_size_)
