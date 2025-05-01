@@ -11,7 +11,7 @@ from setuptools import setup, Extension
 import pybind11
 
 __PYCGRAPH_NAME__ = "PyCGraph"
-__PYCGRAPH_VERSION__ = "1.5.1"
+__PYCGRAPH_VERSION__ = "1.5.2"
 __PYCGRAPH_AUTHOR__ = "Chunel"
 __PYCGRAPH_AUTHOR_EMAIL__ = "chunel@foxmail.com"
 __PYCGRAPH_DESCRIPTION__ = "CGraph with python api wrapper by pybind11"
