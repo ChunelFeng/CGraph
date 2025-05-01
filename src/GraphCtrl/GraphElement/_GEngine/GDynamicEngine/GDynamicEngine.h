@@ -72,6 +72,13 @@ protected:
     CVoid parallelRunAll();
 
     /**
+     * 并发的时候，仅执行单个逻辑
+     * @return
+     * @notice 仅在 parallelRunAll 中使用
+     */
+    CVoid parallelRunOne(GElementPtr element);
+
+    /**
      * 串行的执行所有element
      * @return
      */
@@ -83,10 +90,10 @@ private:
     CSize total_end_size_ = 0;                                                           // 图结束节点数量
     CSize finished_end_size_ = 0;                                                        // 执行结束节点数量
     CStatus cur_status_;                                                                 // 当前全局的状态信息
+    std::atomic<CSize> parallel_run_num_ {0};                                            // 纯并行时，执行的个数信息
     internal::GEngineDagType dag_type_ = { internal::GEngineDagType::COMMON };           // 当前元素的排布形式
 
-    std::mutex lock_;
-    std::condition_variable cv_;
+    UCvMutex locker_;
     std::mutex status_lock_;
 
     friend class CAllocator;

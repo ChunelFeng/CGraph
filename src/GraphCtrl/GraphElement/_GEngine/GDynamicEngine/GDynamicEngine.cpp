@@ -144,7 +144,7 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
             reserved ? process(reserved, true) : void();
         }
     } else {
-        CGRAPH_LOCK_GUARD lock(lock_);
+        CGRAPH_LOCK_GUARD lock(locker_.mtx_);
         /**
          * 满足一下条件之一，则通知wait函数停止等待
          * 1，无后缀节点全部执行完毕(在运行正常的情况下，只有无后缀节点执行完成的时候，才可能整体运行结束)
@@ -152,15 +152,15 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
          */
         if ((element->run_before_.empty() && (++finished_end_size_ >= total_end_size_))
             || cur_status_.isErr()) {
-            cv_.notify_one();
+            locker_.cv_.notify_one();
         }
     }
 }
 
 
 CVoid GDynamicEngine::fatWait() {
-    CGRAPH_UNIQUE_LOCK lock(lock_);
-    cv_.wait(lock, [this] {
+    CGRAPH_UNIQUE_LOCK lock(locker_.mtx_);
+    locker_.cv_.wait(lock, [this] {
         /**
          * 遇到以下条件之一，结束执行：
          * 1，执行结束
@@ -206,25 +206,40 @@ CVoid GDynamicEngine::parallelRunAll() {
 }
 #else
 CVoid GDynamicEngine::parallelRunAll() {
-    /**
-     * 主要适用于dag是纯并发逻辑的情况
-     * 直接并发的执行所有的流程，从而减少调度损耗
-     * 实测效果，在32路纯并行的情况下，整体耗时从 21.5s降低到 12.5s
-     * 非纯并行逻辑，不走此函数
-     */
-    std::vector<std::future<CStatus>> futures;
-    futures.reserve(total_end_size_);
-    for (CSize i = 0; i < total_end_size_; i++) {
-        futures.emplace_back(thread_pool_->commit([this, i] {
-            return total_element_arr_[i]->fatProcessor(CFunctionType::RUN);
-        }, total_element_arr_[i]->binding_index_));
+    parallel_run_num_ = 0;
+    for (GElementPtr element : total_element_arr_) {
+        thread_pool_->execute([this, element] {
+            parallelRunOne(element);
+        }, element->binding_index_);
     }
 
-    for (auto& fut : futures) {
-        cur_status_ += fut.get();
+    {
+        CGRAPH_UNIQUE_LOCK lock(locker_.mtx_);
+        locker_.cv_.wait(lock, [this] {
+            return (parallel_run_num_ >= total_end_size_ || cur_status_.isErr());
+        });
     }
 }
 #endif
+
+
+CVoid GDynamicEngine::parallelRunOne(GElementPtr element) {
+    if (unlikely(cur_status_.isErr())) {
+        return;
+    }
+
+    auto status = element->fatProcessor(CFunctionType::RUN);
+    if (unlikely(status.isErr())) {
+        CGRAPH_LOCK_GUARD lk(status_lock_);
+        cur_status_ += status;
+    }
+
+    auto finishedSize = parallel_run_num_.fetch_add(1, std::memory_order_release) + 1;
+    if (finishedSize >= total_end_size_) {
+        CGRAPH_UNIQUE_LOCK lock(locker_.mtx_);
+        locker_.cv_.notify_one();
+    }
+}
 
 
 CVoid GDynamicEngine::serialRunAll() {
