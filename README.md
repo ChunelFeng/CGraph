@@ -181,6 +181,8 @@ if __name__ == '__main__':
   * [【B站视频】听阿里云大佬分享：OGraph——基于Go的流图调度二三事](https://www.bilibili.com/video/BV19RHce6Evo)
 * [pybind11](https://github.com/pybind/pybind11) : Seamless operability between C++11 and Python
   * 本项目Python接口绑定功能，使用pybind11实现
+  * [【B站视频】pybind11落地实战——PyCGraph是怎样练成的](https://www.bilibili.com/video/BV1ofLdz5EzX) | [飞书文档链接](https://ilyryn6yei.feishu.cn/docx/YDfHdU9mfoTlnqxaTkscRob6nGe)
+
 
 [![Star History Chart](https://api.star-history.com/svg?repos=ChunelFeng/CGraph&type=Date)](https://star-history.com/#ChunelFeng/CGraph&Date)
 
@@ -384,7 +386,7 @@ if __name__ == '__main__':
 * 提供`stage`(阶段)功能，用于`element`之间同步运行
 * 更新`tutorial`内容
 
-[2025.05.01 - v3.1.0 - Chunel]
+[2025.05.04 - v3.1.0 - Chunel]
 * 完善 Python 版本功能
 * 提供 Python 打包功能
 

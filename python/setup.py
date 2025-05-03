@@ -11,7 +11,7 @@ from setuptools import setup, Extension
 import pybind11
 
 __PYCGRAPH_NAME__ = "PyCGraph"
-__PYCGRAPH_VERSION__ = "1.5.2"
+__PYCGRAPH_VERSION__ = "1.6.0"
 __PYCGRAPH_AUTHOR__ = "Chunel"
 __PYCGRAPH_AUTHOR_EMAIL__ = "chunel@foxmail.com"
 __PYCGRAPH_DESCRIPTION__ = "CGraph with python api wrapper by pybind11"
@@ -19,8 +19,11 @@ __PYCGRAPH_URL__ = "https://github.com/ChunelFeng/CGraph"
 __PYCGRAPH_LICENSE__ = "MIT"
 
 _sources = ['PyCGraph.cpp'] + glob.glob("../src/**/*.cpp", recursive=True)
-_extra_compile_args = ["-pthread", "-std=c++11", '-fvisibility=hidden']
-_include_dirs = [pybind11.get_include(), "../src"]
+_extra_compile_args = ["-pthread",
+                       "-std=c++11",
+                       "-fvisibility=hidden"]
+_include_dirs = [pybind11.get_include(),
+                 "../src"]
 _ext_modules = [
     Extension(
         name=__PYCGRAPH_NAME__,
@@ -40,4 +43,30 @@ setup(
     license=__PYCGRAPH_LICENSE__,
     ext_modules=_ext_modules,
     zip_safe=False,
+    python_requires=">=3.6",
+    keywords=["CGraph", __PYCGRAPH_NAME__, "dag", "parallel", "pybind11"],
+    install_requires=[
+        "pybind11",
+    ],
+    classifiers=[
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
+        "Programming Language :: C++",
+        "Operating System :: Unix",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: Microsoft :: Windows",
+        "License :: OSI Approved :: MIT License",
+        "Natural Language :: Chinese (Simplified)",
+        "Natural Language :: English",
+    ]
 )
