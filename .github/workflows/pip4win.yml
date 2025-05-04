@@ -6,6 +6,9 @@ on:
   push:
     branches:
       - main
+  release:
+    types:
+      - published
 
 jobs:
   build:
@@ -44,7 +47,7 @@ jobs:
           python setup.py build
           python setup.py bdist_wheel
 
-      - name: Upload to pypi if release
+      - name: Upload to pypi when release
         if: github.event_name == 'release' && github.event.action == 'published'
         env:
           TWINE_USERNAME: __token__

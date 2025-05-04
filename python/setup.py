@@ -18,7 +18,14 @@ __PYCGRAPH_DESCRIPTION__ = "CGraph with python api wrapper by pybind11"
 __PYCGRAPH_URL__ = "https://github.com/ChunelFeng/CGraph"
 __PYCGRAPH_LICENSE__ = "MIT"
 __PYCGRAPH_LONG_DESCRIPTION__ = 'You can get everything in CGraph github main page : [CGraph](https://github.com/ChunelFeng/CGraph)'
-__PYCGRAPH_KEYWORDS__ = ["CGraph", __PYCGRAPH_NAME__, "dag", "parallel", 'workflow', 'taskflow', "pybind11"]
+__PYCGRAPH_KEYWORDS__ = ["CGraph",
+                         __PYCGRAPH_NAME__,
+                         "dag",
+                         "parallel",
+                         "airflow",
+                         "taskflow",
+                         "workflow",
+                         "pybind11"]
 
 _sources = ['PyCGraph.cpp'] + glob.glob("../src/**/*.cpp", recursive=True)
 _extra_compile_args = ["-pthread",
