@@ -2,6 +2,8 @@
   CGraph 编译说明
 </h1>
 
+### C++ 版本
+
 * 本工程支持`MacOS`、`Linux`、`Windows`和`Android`系统，无任何第三方依赖。默认使用C++11版本，推荐使用C++17版本，暂不支持C++11以下的版本
 
 * 使用`CLion`(推荐)作为IDE的开发者，打开`CMakeLists.txt`文件作为工程，即可编译通过。本项目已经获得 [Jetbrains 开源开发许可证](https://www.jetbrains.com/zh-cn/community/opensource/#support )，感谢 Jetbrains 提供优秀的IDE，和对项目的认可
@@ -55,7 +57,14 @@
 
 ---
 
-* 安装PyCGraph，使用前需要提前安装`python3` `pybind11`和`setuptools`
+### Python 版本
+* MacOS 和 Windows 用户可以通过命令安装（推荐）
+  ```shell
+  $ pip3 install PyCGraph                  # 直接通过 pip3 安装
+  $ python3 -c "import PyCGraph"           # 验证 PyCGraph 成功安装
+  ```
+
+* 通过源码安装(Linux/MacOS/Windows)，使用前需要提前安装`python3` `pybind11`和`setuptools`
   * 通过生成`.whl`文件安装（推荐）
   ```shell
   $ git clone https://github.com/ChunelFeng/CGraph.git
@@ -69,5 +78,5 @@
   $ git clone https://github.com/ChunelFeng/CGraph.git
   $ cd CGraph/python                       # 进入对应文件夹
   $ python3 setup.py install               # 安装 PyCGraph
-  $ python3 tutorial/T00-HelloCGraph.py
+  $ python3 tutorial/T00-HelloCGraph.py    # 运行T00-HelloCGraph.py，并且在终端输出 Hello, PyCGraph.
   ```

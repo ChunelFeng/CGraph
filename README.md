@@ -388,7 +388,7 @@ if __name__ == '__main__':
 
 [2025.05.04 - v3.1.0 - Chunel]
 * 完善 Python 版本功能
-* 提供 Python 打包功能
+* 提供 Python 打包功能，MacOS 和 Windows 用户可以通过 `pip3 install PyCGraph` 安装
 
 </details>
 

@@ -11,12 +11,14 @@ from setuptools import setup, Extension
 import pybind11
 
 __PYCGRAPH_NAME__ = "PyCGraph"
-__PYCGRAPH_VERSION__ = "1.6.0"
+__PYCGRAPH_VERSION__ = "0.0.3"
 __PYCGRAPH_AUTHOR__ = "Chunel"
 __PYCGRAPH_AUTHOR_EMAIL__ = "chunel@foxmail.com"
 __PYCGRAPH_DESCRIPTION__ = "CGraph with python api wrapper by pybind11"
 __PYCGRAPH_URL__ = "https://github.com/ChunelFeng/CGraph"
 __PYCGRAPH_LICENSE__ = "MIT"
+__PYCGRAPH_LONG_DESCRIPTION__ = 'You can get everything in CGraph github main page : [CGraph](https://github.com/ChunelFeng/CGraph)'
+__PYCGRAPH_KEYWORDS__ = ["CGraph", __PYCGRAPH_NAME__, "dag", "parallel", 'workflow', 'taskflow', "pybind11"]
 
 _sources = ['PyCGraph.cpp'] + glob.glob("../src/**/*.cpp", recursive=True)
 _extra_compile_args = ["-pthread",
@@ -43,11 +45,10 @@ setup(
     license=__PYCGRAPH_LICENSE__,
     ext_modules=_ext_modules,
     zip_safe=False,
+    long_description=__PYCGRAPH_LONG_DESCRIPTION__,
+    long_description_content_type="text/markdown",
     python_requires=">=3.6",
-    keywords=["CGraph", __PYCGRAPH_NAME__, "dag", "parallel", "pybind11"],
-    install_requires=[
-        "pybind11",
-    ],
+    keywords=__PYCGRAPH_KEYWORDS__,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
