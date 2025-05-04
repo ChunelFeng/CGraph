@@ -11,15 +11,15 @@ from setuptools import setup, Extension
 import pybind11
 
 __PYCGRAPH_NAME__ = "PyCGraph"
-__PYCGRAPH_VERSION__ = "0.0.3"
+__PYCGRAPH_VERSION__ = "3.1.0"
 __PYCGRAPH_AUTHOR__ = "Chunel"
 __PYCGRAPH_AUTHOR_EMAIL__ = "chunel@foxmail.com"
 __PYCGRAPH_DESCRIPTION__ = "CGraph with python api wrapper by pybind11"
 __PYCGRAPH_URL__ = "https://github.com/ChunelFeng/CGraph"
 __PYCGRAPH_LICENSE__ = "MIT"
 __PYCGRAPH_LONG_DESCRIPTION__ = 'You can get everything in CGraph github main page : [CGraph](https://github.com/ChunelFeng/CGraph)'
-__PYCGRAPH_KEYWORDS__ = ["CGraph",
-                         __PYCGRAPH_NAME__,
+__PYCGRAPH_KEYWORDS__ = [__PYCGRAPH_NAME__,
+                         "CGraph",
                          "dag",
                          "parallel",
                          "airflow",
