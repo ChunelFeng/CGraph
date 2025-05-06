@@ -45,6 +45,7 @@ jobs:
           python setup.py bdist_wheel --plat-name manylinux2014_x86_64
 
       - name: Upload to pypi when release
+        if: github.event_name == 'release' && github.event.action == 'published'
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_PYCGRAPH_TOKEN }}
