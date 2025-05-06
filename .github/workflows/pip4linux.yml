@@ -1,0 +1,54 @@
+name: Pip4Linux
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ubuntu-latest]
+        python-version: ["3.8",
+                         "3.9",
+                         "3.10",
+                         "3.11",
+                         "3.12",
+                         "3.13",]
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Update requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install pybind11 setuptools wheel twine
+
+      - name: Build and install for mac
+        run: |
+          cd python
+          python setup.py bdist_wheel --plat-name manylinux2014_x86_64
+
+      - name: Upload to pypi when release
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_PYCGRAPH_TOKEN }}
+        run: |
+          cd python
+          twine check dist/*
+          twine upload --verbose --skip-existing dist/*
