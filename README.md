@@ -10,11 +10,9 @@
 [![awesome-cpp](https://badgen.net/badge/icon/awesome-cpp/purple?icon=awesome&label&color)](https://github.com/fffaraz/awesome-cpp)
 [![HelloGithub](https://badgen.net/badge/icon/HelloGithub/purple?icon=awesome&label&color)](https://github.com/521xueweihan/HelloGitHub/blob/master/content/HelloGitHub70.md)
 
-中文 | [English Readme](README_en.md)
+中文 | [English Readme](README_en.md) | [deepwiki](https://deepwiki.com/ChunelFeng/CGraph)
 
-<h1 align="center">
-  CGraph 说明文档
-</h1>
+<h1 align="center"> CGraph 说明文档 </h1>
 
 <img align="right" src="https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Author.jpg" width="256px">
 
@@ -43,7 +41,7 @@
   * 适合想要全面了解功能和快速上手使用CGraph的童鞋
   * 适合对多线程编程感兴趣的童鞋
 * [【B站视频】CGraph 应用篇](https://www.bilibili.com/video/BV1B84y1D7Hs) <br>
-* [【B站视频】CGraph 分享篇](https://www.bilibili.com/video/BV1dh4y1i78u) <br>
+* [【B站视频】CGraph 分享篇](https://www.bilibili.com/video/BV1ofLdz5EzX) <br>
 
 ## 二. 入门Demo
 > C++ 版本

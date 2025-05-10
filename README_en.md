@@ -10,7 +10,7 @@
 [![awesome-cpp](https://badgen.net/badge/icon/awesome-cpp/purple?icon=awesome&label&color)](https://github.com/fffaraz/awesome-cpp)
 [![HelloGithub](https://badgen.net/badge/icon/HelloGithub/purple?icon=awesome&label&color)](https://github.com/521xueweihan/HelloGitHub/blob/master/content/HelloGitHub70.md)
 
-[中文](README.md) | English Readme
+[中文](README.md) | English Readme | [deepwiki](https://deepwiki.com/ChunelFeng/CGraph)
 
 <h1 align="center">
   CGraph Readme

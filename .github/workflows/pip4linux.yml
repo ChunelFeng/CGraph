@@ -39,7 +39,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install pybind11 setuptools wheel twine
 
-      - name: Build and install for mac
+      - name: Build and install for linux
         run: |
           cd python
           python setup.py bdist_wheel --plat-name manylinux2014_x86_64
