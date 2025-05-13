@@ -58,7 +58,7 @@
 ---
 
 ### Python 版本
-* 用户可以通过命令安装（推荐）
+* MacOS 和 Windows 用户可以通过命令安装（推荐）
   ```shell
   $ pip3 install PyCGraph                  # 直接通过 pip3 安装
   $ python3 -c "import PyCGraph"           # 验证 PyCGraph 成功安装

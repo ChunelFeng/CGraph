@@ -54,7 +54,7 @@ setup(
     zip_safe=False,
     long_description=__PYCGRAPH_LONG_DESCRIPTION__,
     long_description_content_type="text/markdown",
-    python_requires=">=3.6",
+    python_requires=">=3.8",
     keywords=__PYCGRAPH_KEYWORDS__,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -66,7 +66,6 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
-        "Programming Language :: Python :: 3.14",
         "Programming Language :: C++",
         "Operating System :: Unix",
         "Operating System :: MacOS :: MacOS X",
