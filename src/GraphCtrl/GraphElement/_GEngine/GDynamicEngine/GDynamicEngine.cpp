@@ -225,6 +225,8 @@ CVoid GDynamicEngine::parallelRunAll() {
 
 CVoid GDynamicEngine::parallelRunOne(GElementPtr element) {
     if (unlikely(cur_status_.isErr())) {
+        CGRAPH_UNIQUE_LOCK lock(locker_.mtx_);
+        locker_.cv_.notify_one();
         return;
     }
 

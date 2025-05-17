@@ -64,38 +64,38 @@ public:
     /**
      * 提交任务信息
      * @tparam FunctionType
-     * @param task
+     * @param func
      * @param index
      * @return
      */
     template<typename FunctionType>
-    auto commit(const FunctionType& task,
+    auto commit(const FunctionType& func,
                 CIndex index = CGRAPH_DEFAULT_TASK_STRATEGY)
     -> std::future<decltype(std::declval<FunctionType>()())>;
 
     /**
      * 向特定的线程id中，提交任务信息
      * @tparam FunctionType
-     * @param task
+     * @param func
      * @param tid 线程id。如果超出主线程个数范围，则默认写入pool的通用队列中
      * @param enable 是否启用上锁/解锁功能
      * @param lockable 上锁(true) / 解锁(false)
      * @return
      */
     template<typename FunctionType>
-    auto commitWithTid(const FunctionType& task, CIndex tid, CBool enable, CBool lockable)
+    auto commitWithTid(const FunctionType& func, CIndex tid, CBool enable, CBool lockable)
     -> std::future<decltype(std::declval<FunctionType>()())>;
 
     /**
      * 根据优先级，执行任务
      * @tparam FunctionType
-     * @param task
+     * @param func
      * @param priority 优先级别。自然序从大到小依次执行
      * @return
      * @notice 建议，priority 范围在 [-100, 100] 之间
      */
     template<typename FunctionType>
-    auto commitWithPriority(const FunctionType& task,
+    auto commitWithPriority(const FunctionType& func,
                             int priority)
     -> std::future<decltype(std::declval<FunctionType>()())>;
 
@@ -106,7 +106,7 @@ public:
      * @param index
      */
     template<typename FunctionType>
-    CVoid execute(const FunctionType& task,
+    CVoid execute(FunctionType&& task,
                   CIndex index = CGRAPH_DEFAULT_TASK_STRATEGY);
 
     /**
