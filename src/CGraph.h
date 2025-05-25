@@ -9,12 +9,6 @@
 #ifndef CGRAPH_CGRAPH_H
 #define CGRAPH_CGRAPH_H
 
-#ifdef _WIN32
-    #include<windows.h>
-#endif
-
-
-
 #include "CBasic/CBasicInclude.h"
 #include "GraphCtrl/GraphInclude.h"
 #include "UtilsCtrl/UtilsInclude.h"
