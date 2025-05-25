@@ -62,7 +62,7 @@ protected:
      * @return
      */
     int calcStealRange() const {
-        int range = std::min(this->max_task_steal_range_, this->default_thread_size_ - 1);
+        int range = (std::min)(this->max_task_steal_range_, this->default_thread_size_ - 1);
         return range;
     }
 
