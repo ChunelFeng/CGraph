@@ -107,7 +107,7 @@ protected:
     bool freeze() {
         if (likely(is_running_)) {
             cur_ttl_++;
-            cur_ttl_ = std::min(cur_ttl_, config_->secondary_thread_ttl_);
+            cur_ttl_ = (std::min)(cur_ttl_, config_->secondary_thread_ttl_);
         } else {
             cur_ttl_--;    // 如果当前线程没有在执行，则ttl-1
         }
