@@ -125,7 +125,7 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     element->done_ = true;
     if (!element->run_before_.empty() && cur_status_.isOK()) {
         if (internal::GElementShape::LINKABLE == element->shape_) {
-            process(*(element->run_before_.begin()), true);
+            process(element->run_before_.front(), true);
         } else if (internal::GElementShape::ROOT == element->shape_) {
             for (CSize i = 0; i < element->run_before_.size(); i++) {
                 process(element->run_before_[i], i == element->run_before_.size() - 1);

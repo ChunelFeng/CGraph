@@ -160,7 +160,7 @@ CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
 
     for (GElementPtr element: elements) {
         CGRAPH_ASSERT_NOT_NULL(element)
-        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((element->belong_ != this->belong_),     \
+        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((element->belong_ != this->belong_),    \
         element->getName() + " cannot depend because not same belong info")
         if (this == element) {
             continue;
