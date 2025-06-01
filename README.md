@@ -165,6 +165,7 @@ if __name__ == '__main__':
 * [GraphANNS](https://github.com/whenever5225/GraphANNS) : Graph-based Approximate Nearest Neighbor Search Working off CGraph
 * [CThreadPool](https://github.com/ChunelFeng/CThreadPool) : 一个简单好用、功能强大、性能优异、跨平台的C++线程池
 * [CGraph-lite](https://github.com/ChunelFeng/CGraph-lite) : head-only, simplest CGraph, with DAG executor and param translate function
+* [CsCGraph](https://github.com/ChunelFeng/CsCGraph) : A CSharp version, CGraph-API-liked DAG project
 * [PyCGraph-example](https://github.com/ChunelFeng/PyCGraph-example) : A useful list of how cool to use PyCGraph
 * [awesome-cpp](https://github.com/fffaraz/awesome-cpp) : A curated list of awesome C++ (or C) frameworks, libraries, resources, and shiny things. Inspired by awesome-... stuff.
 * [awesome-workflow-engines](https://github.com/meirwah/awesome-workflow-engines) : A curated list of awesome open source workflow engines
