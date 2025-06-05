@@ -26,8 +26,6 @@
 
 使用者只需继承`GNode`(节点)类，实现子类的`run()`方法，并根据需要设定依赖关系，即可实现任务的图化执行或流水线执行。还可以通过设定各种包含多节点信息的`GGroup`(组)，自行控制图的条件判断、循环和并发执行逻辑。
 
-项目提供了丰富的`Param`(参数)类型，用于不同应用场景下的数据互通。此外，还可以通过添加`GAspect`(切面)的方式，实现以上各种元素功能的横向扩展；通过引入`GAdapter`(适配器)对单个节点功能进行加强；或者通过添加`GEvent`(信号)，丰富和优化执行逻辑。
-
 ![CGraph Skeleton](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Skeleton.jpg)
 <br>
 
@@ -42,6 +40,8 @@
   * 适合对多线程编程感兴趣的童鞋
 * [【B站视频】CGraph 应用篇](https://www.bilibili.com/video/BV1B84y1D7Hs) <br>
 * [【B站视频】CGraph 分享篇](https://www.bilibili.com/video/BV1ofLdz5EzX) <br>
+
+----
 
 ## 二. 入门Demo
 > C++ 版本
@@ -128,6 +128,14 @@ if __name__ == '__main__':
     pipeline.process()
 ```
 
+> 其他版本
+
+* [CsCGraph](https://github.com/ChunelFeng/CsCGraph) : A CSharp native, CGraph-API-liked DAG project
+* [JaCGraph](https://github.com/ChunelFeng/JaCGraph) : A Java native, CGraph-API-liked DAG project
+* [CGraph-lite](https://github.com/ChunelFeng/CGraph-lite) : A one-header-only, CGraph-API-liked DAG project, lite version by C++
+
+----
+
 ## 三. 推荐阅读
 
 * [纯序员给你介绍图化框架的简单实现——执行逻辑](http://www.chunel.cn/archives/cgraph-run-introduce)
@@ -160,12 +168,12 @@ if __name__ == '__main__':
 * [最新码坛爽文：重生之我在国外写CGraph(python版本)](http://www.chunel.cn/archives/cgraph-pycgraph-v1)
   <br>
 
+----
+
 ## 四. 关联项目
 
 * [GraphANNS](https://github.com/whenever5225/GraphANNS) : Graph-based Approximate Nearest Neighbor Search Working off CGraph
 * [CThreadPool](https://github.com/ChunelFeng/CThreadPool) : 一个简单好用、功能强大、性能优异、跨平台的C++线程池
-* [CGraph-lite](https://github.com/ChunelFeng/CGraph-lite) : head-only, simplest CGraph, with DAG executor and param translate function
-* [CsCGraph](https://github.com/ChunelFeng/CsCGraph) : A CSharp version, CGraph-API-liked DAG project
 * [PyCGraph-example](https://github.com/ChunelFeng/PyCGraph-example) : A useful list of how cool to use PyCGraph
 * [awesome-cpp](https://github.com/fffaraz/awesome-cpp) : A curated list of awesome C++ (or C) frameworks, libraries, resources, and shiny things. Inspired by awesome-... stuff.
 * [awesome-workflow-engines](https://github.com/meirwah/awesome-workflow-engines) : A curated list of awesome open source workflow engines
@@ -173,9 +181,8 @@ if __name__ == '__main__':
   * [【B站视频】CGraph 和 taskflow 性能对比实测](https://www.bilibili.com/video/BV1gwWAekEAy/?spm_id_from=333.337.search-card.all.click&vd_source=2c7baed805c6cb33d630d5d4546cf0be) <br>
 * [torchpipe](https://github.com/torchpipe/torchpipe) : Serving Inside Pytorch
   * [【B站视频】开源项目torchpipe - ai引擎在线高并发经验和实战](https://www.bilibili.com/video/BV1Zm411X7k1/)
-* [nndeploy](https://github.com/DeployAI/nndeploy) : nndeploy是一款模型端到端部署框架。以多端推理以及基于有向无环图模型部署为内核，致力为用户提供跨平台、简单易用、高性能的模型部署体验。
-  * [【B站视频】nndeploy--AI模型端到端部署框架(1)](https://www.bilibili.com/video/BV1VA4m1A7Bk)
-  * [【B站视频】nndeploy--AI模型端到端部署框架(2)](https://www.bilibili.com/video/BV1PK421v775)
+* [nndeploy](https://github.com/DeployAI/nndeploy) : Easy-to-use, high-performance, multi-platform inference deployment framework
+  * [【B站视频合集】【nndeploy】AI推理框架最全教程](https://space.bilibili.com/435543077/lists/5565358?type=season)
 * [KuiperInfer](https://github.com/zjhellofss/KuiperInfer) : 带你从零实现一个高性能的深度学习推理库，支持大模型 llama2 、Unet、Yolov5、Resnet等模型的推理。Implement a high-performance deep learning inference library step by step
   * [【B站视频】KuiperInfer推理框架 - 一个面向教学的推理框架](https://www.bilibili.com/video/BV1t2421K7HN)
 * [OGraph](https://github.com/symphony09/ograph) : A simple way to build a pipeline with Go.
