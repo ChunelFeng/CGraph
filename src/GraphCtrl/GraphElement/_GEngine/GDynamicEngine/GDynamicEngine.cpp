@@ -225,19 +225,19 @@ CVoid GDynamicEngine::parallelRunAll() {
 
 CVoid GDynamicEngine::parallelRunOne(GElementPtr element) {
     if (unlikely(cur_status_.isErr())) {
-        CGRAPH_UNIQUE_LOCK lock(locker_.mtx_);
-        locker_.cv_.notify_one();
         return;
     }
 
     auto status = element->fatProcessor(CFunctionType::RUN);
     if (unlikely(status.isErr())) {
-        CGRAPH_LOCK_GUARD lk(status_lock_);
-        cur_status_ += status;
+        {
+            CGRAPH_LOCK_GUARD lk(status_lock_);
+            cur_status_ += status;
+        }
     }
 
     auto finishedSize = parallel_run_num_.fetch_add(1, std::memory_order_release) + 1;
-    if (finishedSize >= total_end_size_) {
+    if (finishedSize >= total_end_size_ || cur_status_.isErr()) {
         CGRAPH_UNIQUE_LOCK lock(locker_.mtx_);
         locker_.cv_.notify_one();
     }
