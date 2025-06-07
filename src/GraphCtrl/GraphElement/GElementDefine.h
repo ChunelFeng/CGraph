@@ -33,6 +33,7 @@ enum class GElementType {
     SINGLETON = 0x00040002,                  // 单例
     FENCE = 0x00040004,                      // 栅栏
     COORDINATOR = 0x00040008,                // 协调
+    OTHERS = 0xFFFF,                         // 其他信息
 };
 
 

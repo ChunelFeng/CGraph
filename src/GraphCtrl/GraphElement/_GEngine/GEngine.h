@@ -55,7 +55,9 @@ protected:
                 linked_size_++;
             } else if (!succession.empty()
                        && std::all_of(succession.begin(), succession.end(),
-                                      [](GElementPtr ptr) { return 1 == ptr->dependence_.size();})) {
+                                      [] (GElementPtr ptr) {
+                           return 1 == ptr->dependence_.size();
+                       })) {
                 element->shape_ = internal::GElementShape::ROOT;
             } else {
                 element->shape_ = internal::GElementShape::NORMAL;
@@ -110,6 +112,7 @@ protected:
 protected:
     UThreadPoolPtr thread_pool_ { nullptr };                    // 内部执行的线程池
     CSize linked_size_ = 0;                                     // 标记有多少个element，是 linkable 的数据
+    GElementPtr belong_ = nullptr;                              // 从属的元素，pipeline中为 nullptr
 
     friend class GElementManager;
     friend class GPipeline;

@@ -105,8 +105,15 @@ CVoid GDynamicEngine::analysisParallelMatrix() {
                                         "default thread size cannot smaller than 1");
 
     CSize taskNumPerThd = total_end_size_ / thdSize + (CSize)(0 != total_end_size_ % thdSize);
-    CSize curIndex = 0;
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION(taskNumPerThd == 0,
+                                        "task num per thread is 0")
+    if (1 == taskNumPerThd) {
+        // 如果线程数比 task数量都多，则直接放到一个 arr里就好了
+        parallel_element_matrix_.push_back(total_element_arr_);
+        return;
+    }
 
+    CSize curIndex = 0;
     while (curIndex < total_end_size_) {
         CSize curEnd = curIndex + taskNumPerThd < total_end_size_ ? curIndex + taskNumPerThd : total_end_size_ ;
         GElementPtrArr curArr(total_element_arr_.data() + curIndex, total_element_arr_.data() + curEnd);

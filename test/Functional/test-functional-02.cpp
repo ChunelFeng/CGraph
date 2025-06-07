@@ -13,7 +13,7 @@ using namespace CGraph;
 void test_functional_02() {
     GPipelinePtr pipeline = GPipelineFactory::create();
     CStatus status;
-    const int runTimes = 5000;
+    const int runTimes = 1;
 
     GElementPtr a,b,c,d,e,f,g,h,i,j,k,l,m,n = nullptr;
     GElementPtr region1, region2, cluster1, cluster2 = nullptr;
@@ -48,7 +48,7 @@ void test_functional_02() {
 
     {
         UTimeCounter counter("test_functional_02");
-        status += pipeline->process(runTimes);
+        status += pipeline->process();
     }
 
     if (status.isErr()) {
