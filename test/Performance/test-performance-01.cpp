@@ -14,15 +14,15 @@ void test_performance_01() {
     // 并行的执行32次，对应第1个例子，8thread，32并发，50w次
     GPipelinePtr pipeline = GPipelineFactory::create();
     CStatus status;
-    const int runTimes = 500000;
-    const int size = 32;
+    const int runTimes = 1;
+    const int size = 39;
     GElementPtr arr[size] = {};
 
     UThreadPoolConfig config;
     config.default_thread_size_ = 8;
-    config.secondary_thread_size_ = 0;
+    config.secondary_thread_size_ = 2;
     config.max_task_steal_range_ = 7;
-    config.max_thread_size_ = 8;
+    config.max_thread_size_ = 20;
     config.primary_thread_empty_interval_ = 0;
     config.primary_thread_busy_epoch_ = 500;
     pipeline->setUniqueThreadPoolConfig(config);
