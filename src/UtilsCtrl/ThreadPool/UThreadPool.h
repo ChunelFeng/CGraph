@@ -110,6 +110,18 @@ public:
                   CIndex index = CGRAPH_DEFAULT_TASK_STRATEGY);
 
     /**
+     * 异步写入特定thread id，执行信息
+     * @tparam FunctionType
+     * @param task
+     * @param tid
+     * @param enable
+     * @param lockable
+     * @return
+     */
+    template<typename FunctionType>
+    CVoid executeWithTid(FunctionType&& task, CIndex tid, CBool enable, CBool lockable);
+
+    /**
      * 执行任务组信息
      * 取taskGroup内部ttl和入参ttl的最小值，为计算ttl标准
      * @param taskGroup

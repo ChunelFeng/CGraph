@@ -37,6 +37,12 @@ protected:
     CVoid analysisDagType(const GSortedGElementPtrSet& elements);
 
     /**
+     * 解析纯并行的情况下，元素矩阵
+     * @return
+     */
+    CVoid analysisParallelMatrix();
+
+    /**
      * 动态图运行
      * @param
      * @return
@@ -91,6 +97,8 @@ private:
     CSize finished_end_size_ = 0;                                                        // 执行结束节点数量
     CStatus cur_status_;                                                                 // 当前全局的状态信息
     std::atomic<CSize> parallel_run_num_ {0};                                            // 纯并行时，执行的个数信息
+    GElementPtrMat2D parallel_element_matrix_ {};                                        // 纯并行时，记录
+
     internal::GEngineDagType dag_type_ = { internal::GEngineDagType::COMMON };           // 当前元素的排布形式
 
     UCvMutex locker_;
