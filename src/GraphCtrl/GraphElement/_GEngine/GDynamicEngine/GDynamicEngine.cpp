@@ -106,7 +106,9 @@ CVoid GDynamicEngine::analysisParallelMatrix() {
 
     CSize taskNumPerThd = total_end_size_ / thdSize + (CSize)(0 != total_end_size_ % thdSize);
     CGRAPH_THROW_EXCEPTION_BY_CONDITION(taskNumPerThd == 0,
-                                        "task num per thread is 0")
+                                        "task number per thread is 0");
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION(total_end_size_ <= 1,
+                                        "total end size <= 1, should not enter all parallel path");
     if (1 == taskNumPerThd) {
         // 如果线程数比 task数量都多，则直接放到一个 arr里就好了
         parallel_element_matrix_.push_back(total_element_arr_);
@@ -238,8 +240,10 @@ CVoid GDynamicEngine::parallelRunAll() {
         const auto& curArr = parallel_element_matrix_[i];
         for (auto element : curArr) {
             thread_pool_->executeWithTid([this, element] {
-                parallelRunOne(element);
-            }, i, element == curArr.front() || element == curArr.back(), element == curArr.front());
+                parallelRunOne(element); },
+                1 == parallel_element_matrix_.size() ? CGRAPH_SECONDARY_THREAD_COMMON_ID : i,
+                element == curArr.front() || element == curArr.back(),
+                element == curArr.front());
         }
     }
 
