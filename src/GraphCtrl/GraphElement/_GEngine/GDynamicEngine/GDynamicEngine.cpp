@@ -203,21 +203,8 @@ CVoid GDynamicEngine::fatWait() {
 #ifdef _CGRAPH_PARALLEL_MICRO_BATCH_ENABLE_
 CVoid GDynamicEngine::parallelRunAll() {
     // 微任务模式，主要用于性能测试的场景下
-    const UThreadPoolConfig& config = thread_pool_->getConfig();
-    CSize thdNum = config.default_thread_size_ + config.secondary_thread_size_;
-    CGRAPH_THROW_EXCEPTION_BY_CONDITION(thdNum <= 0,
-                                        "default thread size cannot smaller than 1");
-
     std::vector<std::future<CStatus>> futures;
-    CSize taskNumPerThd = total_end_size_ / thdNum + (CSize)(0 != total_end_size_ % thdNum);
-    for (int i = 0; i < thdNum; i++) {
-        GElementPtrArr elements;
-        for (int j = 0; j < taskNumPerThd; j++) {
-            auto cur = i * taskNumPerThd + j;
-            if (cur < total_end_size_) {
-                elements.emplace_back(front_element_arr_[cur]);
-            }
-        }
+    for (auto& elements : parallel_element_matrix_) {
         auto curFut = thread_pool_->commit([elements] {
             CGRAPH_FUNCTION_BEGIN
             for (auto* element : elements) {
