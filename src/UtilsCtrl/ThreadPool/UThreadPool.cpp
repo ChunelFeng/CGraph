@@ -266,4 +266,15 @@ CVoid UThreadPool::monitor() {
     }
 }
 
+
+CVoid UThreadPool::wakeupAllThread() {
+    for (auto& pt : primary_threads_) {
+        pt->wakeup();
+    }
+
+    for (auto& st : secondary_threads_) {
+        st->wakeup();
+    }
+}
+
 CGRAPH_NAMESPACE_END

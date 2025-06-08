@@ -118,6 +118,21 @@ protected:
         total_task_num_ = 0;
     }
 
+
+    /**
+     * 唤醒当前线程
+     * @return
+     */
+    CBool wakeup() {
+        CBool result = false;
+        if (!is_running_) {
+            cv_.notify_one();
+            result = true;
+        }
+        return result;
+    }
+
+
     /**
      * 执行单个消息
      * @return

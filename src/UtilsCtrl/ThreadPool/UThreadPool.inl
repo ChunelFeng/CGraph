@@ -33,12 +33,7 @@ auto UThreadPool::commitWithTid(const FunctionType& func, CIndex tid, CBool enab
     std::packaged_task<ResultType()> task(std::move(func));
     std::future<ResultType> result(task.get_future());
 
-    if (tid >= 0 && tid < config_.default_thread_size_) {
-        primary_threads_[tid]->pushTask(std::move(task), enable, lockable);
-    } else {
-        // 如果超出主线程的范围，则默认写入 pool 通用的任务队列中
-        task_queue_.push(func);
-    }
+    execute(std::move(task), tid, enable, lockable);
     return result;
 }
 
@@ -68,6 +63,17 @@ CVoid UThreadPool::execute(FunctionType&& task, CIndex index) {
     } else if (CGRAPH_LONG_TIME_TASK_STRATEGY == realIndex) {
         priority_task_queue_.push(std::forward<FunctionType>(task), CGRAPH_LONG_TIME_TASK_STRATEGY);
     } else {
+        task_queue_.push(std::forward<FunctionType>(task));
+    }
+}
+
+
+template<typename FunctionType>
+CVoid UThreadPool::executeWithTid(FunctionType&& task, CIndex tid, CBool enable, CBool lockable) {
+    if (likely(tid >= 0 && tid < config_.default_thread_size_)) {
+        primary_threads_[tid]->pushTask(std::forward<FunctionType>(task), enable, lockable);
+    } else {
+        // 如果超出主线程的范围，则默认写入 pool 通用的任务队列中
         task_queue_.push(std::forward<FunctionType>(task));
     }
 }

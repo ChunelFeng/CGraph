@@ -90,8 +90,37 @@ CVoid GDynamicEngine::analysisDagType(const GSortedGElementPtrSet& elements) {
         dag_type_ = internal::GEngineDagType::ALL_SERIAL;
     } else if (total_element_arr_.size() == total_end_size_ && front_element_arr_.size() == total_end_size_) {
         dag_type_ = internal::GEngineDagType::ALL_PARALLEL;
+        analysisParallelMatrix();
     } else {
         dag_type_ = internal::GEngineDagType::COMMON;
+    }
+}
+
+
+CVoid GDynamicEngine::analysisParallelMatrix() {
+    parallel_element_matrix_.clear();
+    const auto& config = thread_pool_->getConfig();
+    CSize thdSize = config.default_thread_size_ + config.secondary_thread_size_;
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION(thdSize <= 0,
+                                        "default thread size cannot smaller than 1");
+
+    CSize taskNumPerThd = total_end_size_ / thdSize + (CSize)(0 != total_end_size_ % thdSize);
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION(taskNumPerThd == 0,
+                                        "task number per thread is 0");
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION(total_end_size_ <= 1,
+                                        "total end size <= 1, should not enter all parallel path");
+    if (1 == taskNumPerThd) {
+        // 如果线程数比 task数量都多，则直接放到一个 arr里就好了
+        parallel_element_matrix_.push_back(total_element_arr_);
+        return;
+    }
+
+    CSize curIndex = 0;
+    while (curIndex < total_end_size_) {
+        CSize curEnd = curIndex + taskNumPerThd < total_end_size_ ? curIndex + taskNumPerThd : total_end_size_ ;
+        GElementPtrArr curArr(total_element_arr_.data() + curIndex, total_element_arr_.data() + curEnd);
+        parallel_element_matrix_.push_back(curArr);
+        curIndex += taskNumPerThd;
     }
 }
 
@@ -207,11 +236,17 @@ CVoid GDynamicEngine::parallelRunAll() {
 #else
 CVoid GDynamicEngine::parallelRunAll() {
     parallel_run_num_ = 0;
-    for (GElementPtr element : total_element_arr_) {
-        thread_pool_->execute([this, element] {
-            parallelRunOne(element);
-        }, element->binding_index_);
+    for (int i = 0; i < parallel_element_matrix_.size(); i++) {
+        const auto& curArr = parallel_element_matrix_[i];
+        for (auto element : curArr) {
+            thread_pool_->executeWithTid([this, element] {
+                parallelRunOne(element); },
+                1 == parallel_element_matrix_.size() ? CGRAPH_SECONDARY_THREAD_COMMON_ID : i,
+                element == curArr.front() || element == curArr.back(),
+                element == curArr.front());
+        }
     }
+    thread_pool_->wakeupAllThread();
 
     {
         CGRAPH_UNIQUE_LOCK lock(locker_.mtx_);
