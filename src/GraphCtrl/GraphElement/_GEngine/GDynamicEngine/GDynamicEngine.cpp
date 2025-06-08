@@ -236,17 +236,19 @@ CVoid GDynamicEngine::parallelRunAll() {
 #else
 CVoid GDynamicEngine::parallelRunAll() {
     parallel_run_num_ = 0;
-    for (int i = 0; i < parallel_element_matrix_.size(); i++) {
+    for (CIndex i = 0; i < (CIndex)parallel_element_matrix_.size(); i++) {
         const auto& curArr = parallel_element_matrix_[i];
         for (auto element : curArr) {
-            thread_pool_->executeWithTid([this, element] {
-                parallelRunOne(element); },
-                1 == parallel_element_matrix_.size() ? CGRAPH_SECONDARY_THREAD_COMMON_ID : i,
-                element == curArr.front() || element == curArr.back(),
-                element == curArr.front());
+            thread_pool_->executeWithTid([this, element] { parallelRunOne(element); }, i,
+                                         element == curArr.front() || element == curArr.back(),
+                                         element == curArr.front());
         }
     }
-    thread_pool_->wakeupAllThread();
+
+    if (parallel_element_matrix_.size() < (CSize)(thread_pool_->getConfig().default_thread_size_)) {
+        // 确保所有的 pt 都可以被唤醒，从而快速执行
+        thread_pool_->wakeupAllThread();
+    }
 
     {
         CGRAPH_UNIQUE_LOCK lock(locker_.mtx_);
