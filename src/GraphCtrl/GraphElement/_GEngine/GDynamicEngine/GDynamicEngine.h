@@ -91,8 +91,8 @@ protected:
     CVoid serialRunAll();
 
 private:
-    GElementPtrArr total_element_arr_;                                                   // pipeline中所有的元素信息集合
-    GElementPtrArr front_element_arr_;                                                   // 没有依赖的元素信息
+    GElementPtrArr total_element_arr_ {};                                                // pipeline中所有的元素信息集合
+    GElementPtrArr front_element_arr_ {};                                                // 没有依赖的元素信息
     CSize total_end_size_ = 0;                                                           // 图结束节点数量
     CSize finished_end_size_ = 0;                                                        // 执行结束节点数量
     CStatus cur_status_;                                                                 // 当前全局的状态信息

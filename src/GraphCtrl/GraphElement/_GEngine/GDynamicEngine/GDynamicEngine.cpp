@@ -28,21 +28,23 @@ CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
 
 
 CStatus GDynamicEngine::run() {
-    CGRAPH_FUNCTION_BEGIN
     cur_status_.reset();
 
-    if (internal::GEngineDagType::COMMON == dag_type_) {
-        commonRunAll();
-    } else if (internal::GEngineDagType::ALL_SERIAL == dag_type_) {
-        serialRunAll();
-    } else if (internal::GEngineDagType::ALL_PARALLEL == dag_type_) {
-        parallelRunAll();
-    } else {
-        CGRAPH_RETURN_ERROR_STATUS("unknown engine dag type")
+    switch (dag_type_) {
+        case internal::GEngineDagType::COMMON:
+            commonRunAll();
+            break;
+        case internal::GEngineDagType::ALL_SERIAL:
+            serialRunAll();
+            break;
+        case internal::GEngineDagType::ALL_PARALLEL:
+            parallelRunAll();
+            break;
+        default:
+            CGRAPH_RETURN_ERROR_STATUS("unknown engine dag type");
     }
 
-    status = cur_status_;
-    CGRAPH_FUNCTION_END
+    return cur_status_;
 }
 
 
@@ -103,22 +105,16 @@ CVoid GDynamicEngine::analysisParallelMatrix() {
     CSize thdSize = config.default_thread_size_ + config.secondary_thread_size_;
     CGRAPH_THROW_EXCEPTION_BY_CONDITION(thdSize <= 0,
                                         "default thread size cannot smaller than 1");
-
     CSize taskNumPerThd = total_end_size_ / thdSize + (CSize)(0 != total_end_size_ % thdSize);
     CGRAPH_THROW_EXCEPTION_BY_CONDITION(taskNumPerThd == 0,
                                         "task number per thread is 0");
-    CGRAPH_THROW_EXCEPTION_BY_CONDITION(total_end_size_ <= 1,
-                                        "total end size <= 1, should not enter all parallel path");
-    if (1 == taskNumPerThd) {
-        // 如果线程数比 task数量都多，则直接放到一个 arr里就好了
-        parallel_element_matrix_.push_back(total_element_arr_);
-        return;
-    }
 
     CSize curIndex = 0;
     while (curIndex < total_end_size_) {
         CSize curEnd = curIndex + taskNumPerThd < total_end_size_ ? curIndex + taskNumPerThd : total_end_size_ ;
         GElementPtrArr curArr(total_element_arr_.data() + curIndex, total_element_arr_.data() + curEnd);
+        CGRAPH_THROW_EXCEPTION_BY_CONDITION(curArr.empty(),
+                                            "current elements array cannot be empty");
         parallel_element_matrix_.push_back(curArr);
         curIndex += taskNumPerThd;
     }
@@ -170,7 +166,7 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
                     }
                 }
             }
-            reserved ? process(reserved, true) : void();
+            if (reserved) { process(reserved, true); }
         }
     } else {
         CGRAPH_LOCK_GUARD lock(locker_.mtx_);
@@ -224,11 +220,18 @@ CVoid GDynamicEngine::parallelRunAll() {
 CVoid GDynamicEngine::parallelRunAll() {
     parallel_run_num_ = 0;
     for (CIndex i = 0; i < (CIndex)parallel_element_matrix_.size(); i++) {
-        const auto& curArr = parallel_element_matrix_[i];
-        for (auto element : curArr) {
-            thread_pool_->executeWithTid([this, element] { parallelRunOne(element); }, i,
-                                         element == curArr.front() || element == curArr.back(),
-                                         element == curArr.front());
+        auto& curArr = parallel_element_matrix_[i];
+        if (curArr.size() > 1) {
+            for (const auto& element : curArr) {
+                thread_pool_->executeWithTid([this, element] { parallelRunOne(element); }, i,
+                                             element == curArr.front() || element == curArr.back(),
+                                             element == curArr.front());
+            }
+        } else {
+            // 仅有一个任务的情况，无法使用 executeWithTid 函数，故走这边的逻辑
+            const auto& element = curArr.front();
+            thread_pool_->execute([this, element] {
+                parallelRunOne(element); }, element->binding_index_);
         }
     }
 
