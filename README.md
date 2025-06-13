@@ -395,11 +395,12 @@ if __name__ == '__main__':
 * 更新`tutorial`内容
 
 [2025.05.04 - v3.1.0 - Chunel]
-* 提供全量功能 Python 版本
+* 提供 全量功能 Python 版本
 * 提供 Python 和 C++ 混合编程功能
 * 提供 Python 打包功能，支持 `pip3 install PyCGraph` 安装
 
-[2025.05.05 - v3.1.1 - Chunel]
+[2025.06.14 - v3.1.1 - Chunel]
+* 提供 C# 和 Java 版本
 * 提供 `CODE_OF_CONDUCT.md` 文档
 
 </details>
