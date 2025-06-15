@@ -44,7 +44,7 @@
 ----
 
 ## 二. 入门Demo
-> C++ 版本
+> <b>C++ 版本</b>
 ```cpp
 #include "CGraph.h"
 
@@ -94,7 +94,7 @@ int main() {
 <br>
 如上图所示，图结构执行的时候，首先执行`a`节点。`a`节点执行完毕后，并行执行`b`和`c`节点。`b`和`c`节点全部执行完毕后，再执行`d`节点。
 
-> Python 版本
+> <b>Python 版本</b>
 
 ```python
 import time
@@ -128,7 +128,7 @@ if __name__ == '__main__':
     pipeline.process()
 ```
 
-> 其他版本
+> <b>其他版本</b>
 
 * [CsCGraph](https://github.com/ChunelFeng/CsCGraph) : A CSharp native, CGraph-API-liked DAG project
 * [JaCGraph](https://github.com/ChunelFeng/JaCGraph) : A Java native, CGraph-API-liked DAG project
@@ -399,7 +399,7 @@ if __name__ == '__main__':
 * 提供 Python 和 C++ 混合编程功能
 * 提供 Python 打包功能，支持 `pip3 install PyCGraph` 安装
 
-[2025.06.14 - v3.1.1 - Chunel]
+[2025.06.15 - v3.1.1 - Chunel]
 * 提供 C# 和 Java 版本
 * 提供 `CODE_OF_CONDUCT.md` 文档
 
