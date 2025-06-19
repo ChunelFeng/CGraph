@@ -263,6 +263,10 @@ PYBIND11_MODULE(PyCGraph, cg) {
              py::arg("key"),
              py::call_guard<py::gil_scoped_release>())
         .def("getName", &GElement::getName)
+        .def("getSession", &GElement::getSession)
+        .def("getRelation", &GElement::getRelation)
+        .def("getLoop", &GElement::getLoop)
+        .def("getCurState", &GElement::getCurState)
         .def("setLoop", &GElement::setLoop,
              py::arg("loop"))
         .def("setName", &GElement::setName,
@@ -280,9 +284,6 @@ PYBIND11_MODULE(PyCGraph, cg) {
         .def("isGGroup", &GElement::isGGroup)
         .def("isGAdaptor", &GElement::isGAdaptor)
         .def("isGNode", &GElement::isGNode)
-        .def("getRelation", &GElement::getRelation)
-        .def("getLoop", &GElement::getLoop)
-        .def("getCurState", &GElement::getCurState)
         .def("addGAspect", &GElement::__addGAspect_4py,
              py::arg("aspect"),
              py::keep_alive<1, 2>())
