@@ -133,6 +133,7 @@ CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
             // 当且仅当整体状正常，且当前状态异常的时候，进入赋值逻辑。确保不重复赋值
             CGRAPH_LOCK_GUARD lk(status_lock_);
             cur_status_ += curStatus;
+            locker_.cv_.notify_one();
         }
         afterElementRun(element);
     };
@@ -148,37 +149,45 @@ CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
 
 CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
     element->done_ = true;
-    if (!element->run_before_.empty() && cur_status_.isOK()) {
-        if (internal::GElementShape::LINKABLE == element->shape_) {
-            process(element->run_before_.front(), true);
-        } else if (internal::GElementShape::ROOT == element->shape_) {
-            for (CSize i = 0; i < element->run_before_.size(); i++) {
-                process(element->run_before_[i], i == element->run_before_.size() - 1);
-            }
-        } else {
-            GElementPtr reserved = nullptr;
-            for (auto* cur : element->run_before_) {
-                if (--cur->left_depend_ <= 0) {
-                    if (reserved) {
-                        process(cur, false);
-                    } else {
-                        reserved = cur;    // 留一个作为亲和性的，在当前线程运行
+    if (unlikely(cur_status_.isErr())) {
+        return;
+    }
+
+    switch (element->shape_) {
+        case internal::GElementShape::NORMAL:
+            {
+                GElementPtr reserved = nullptr;
+                for (auto* cur : element->run_before_) {
+                    if (--cur->left_depend_ <= 0) {
+                        if (reserved) {
+                            process(cur, false);
+                        } else {
+                            reserved = cur;    // 留一个作为亲和性的，在当前线程运行
+                        }
                     }
                 }
+
+                if (reserved) { process(reserved, true); }
             }
-            if (reserved) { process(reserved, true); }
-        }
-    } else {
-        CGRAPH_LOCK_GUARD lock(locker_.mtx_);
-        /**
-         * 满足一下条件之一，则通知wait函数停止等待
-         * 1，无后缀节点全部执行完毕(在运行正常的情况下，只有无后缀节点执行完成的时候，才可能整体运行结束)
-         * 2，有节点执行状态异常
-         */
-        if ((element->run_before_.empty() && (++finished_end_size_ >= total_end_size_))
-            || cur_status_.isErr()) {
-            locker_.cv_.notify_one();
-        }
+            break;
+        case internal::GElementShape::LINKABLE:
+            process(element->run_before_.front(), true);
+            break;
+        case internal::GElementShape::ROOT:
+            for (auto* cur : element->run_before_) {
+                process(cur, element->run_before_.back() == cur);
+            }
+            break;
+        case internal::GElementShape::TAIL:
+            {
+                CGRAPH_LOCK_GUARD lock(locker_.mtx_);
+                if ((++finished_end_size_ >= total_end_size_)) {
+                    locker_.cv_.notify_one();
+                }
+            }
+            break;
+        default:
+            break;
     }
 }
 

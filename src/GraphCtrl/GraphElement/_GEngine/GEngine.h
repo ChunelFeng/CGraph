@@ -57,6 +57,8 @@ protected:
                        && std::all_of(succession.begin(), succession.end(),
                                       [](GElementPtr ptr) { return 1 == ptr->dependence_.size();})) {
                 element->shape_ = internal::GElementShape::ROOT;
+            } else if (element->run_before_.empty()) {
+                element->shape_ = internal::GElementShape::TAIL;
             } else {
                 element->shape_ = internal::GElementShape::NORMAL;
             }

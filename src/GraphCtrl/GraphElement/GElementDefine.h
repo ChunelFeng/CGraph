@@ -57,6 +57,7 @@ enum class GElementShape {
     NORMAL = 0,                               // 普通的元素
     LINKABLE = 1,                             // 后继是唯一元素的情况（类似 list）
     ROOT = 2,                                 // 所有后继元素，只有一个前驱的情况（类似tree root）
+    TAIL = 3,                                 // 尾部节点
 };
 CGRAPH_INTERNAL_NAMESPACE_END
 
