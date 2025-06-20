@@ -126,23 +126,26 @@ CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
         return;
     }
 
-    const auto& exec = [this, element] {
-        element->refresh();
-        const CStatus& curStatus = element->fatProcessor(CFunctionType::RUN);
-        if (unlikely(curStatus.isErr())) {
-            // 当且仅当整体状正常，且当前状态异常的时候，进入赋值逻辑。确保不重复赋值
-            CGRAPH_LOCK_GUARD lk(status_lock_);
-            cur_status_ += curStatus;
-            locker_.cv_.notify_one();
-        }
-        afterElementRun(element);
-    };
-
     if (affinity && element->isDefaultBinding()) {
         // 如果 affinity=true，表示用当前的线程，执行这个逻辑。以便增加亲和性
-        exec();
+        innerExec(element);
     } else {
-        thread_pool_->execute(exec, element->binding_index_);
+        thread_pool_->execute([this, element] {
+            this->innerExec(element); }, element->binding_index_);
+    }
+}
+
+
+CVoid GDynamicEngine::innerExec(GElementPtr element) {
+    element->refresh();
+    const CStatus& curStatus = element->fatProcessor(CFunctionType::RUN);
+    if (likely(curStatus.isNotErr())) {
+        afterElementRun(element);
+    } else {
+        // 遇到异常情况，结束整体逻辑
+        CGRAPH_LOCK_GUARD lk(status_lock_);
+        cur_status_ += curStatus;
+        locker_.cv_.notify_one();
     }
 }
 
@@ -187,6 +190,8 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
             }
             break;
         default:
+            CGRAPH_LOCK_GUARD lk(status_lock_);
+            cur_status_.setErrorInfo("element shape type error");
             break;
     }
 }

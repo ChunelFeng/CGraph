@@ -124,6 +124,14 @@ public:
     }
 
     /**
+     * 没有异常。包含 > 0 的警告类型
+     * @return
+     */
+    bool isNotErr() const {
+        return error_code_ >= STATUS_OK;
+    }
+
+    /**
      * 判断当前状态是否是崩溃了
      * @return
      */

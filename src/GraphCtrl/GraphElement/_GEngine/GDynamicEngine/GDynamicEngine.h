@@ -58,6 +58,13 @@ protected:
     CVoid process(GElementPtr element, CBool affinity);
 
     /**
+     * element 前后执行逻辑
+     * @param element
+     * @return
+     */
+    CVoid innerExec(GElementPtr element);
+
+    /**
      * element 运行完成处理
      * @param element
      * @return
