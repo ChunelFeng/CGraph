@@ -29,10 +29,15 @@ CStatus GPipeline::registerGElement(GElementPPtr elementRef,
          * 如果是GGroup类型的信息，则：
          * 1，必须外部创建
          * 2，未被注册到其他的pipeline中
+         * 3，group 类型必须正确
          */
         if ((*elementRef) != nullptr
             && ((*elementRef)->isRegistered())) {
             CGRAPH_RETURN_ERROR_STATUS("this group register duplicate")
+        }
+
+        if (typeid(**elementRef) != typeid(T)) {
+            CGRAPH_RETURN_ERROR_STATUS("register group type is not suitable")
         }
     } else if (std::is_base_of<GNode, T>::value || std::is_base_of<GAdapter, T>::value) {
         /**
