@@ -32,6 +32,21 @@
   $ ./tutorial/T00-HelloCGraph              # 运行 T00-HelloCGraph
   ```
 
+* 在项目中作为第三方库调用，使用FetchContent
+  ```cmake
+  Include(FetchContent)
+  FetchContent_Declare(
+    CGraph
+    GIT_REPOSITORY https://github.com/ChunelFeng/CGraph.git
+    GIT_TAG main
+    GIT_SHALLOW true
+  )
+  FetchContent_MakeAvailable(CGraph)
+
+  target_include_directories(${PROJECT_NAME} PRIVATE ${CGraph_SOURCE_DIR}/src)
+  target_link_libraries(${PROJECT_NAME} PRIVATE CGraph)
+  ```
+
 * Bazel编译方式(Linux/MacOS/Windows)
   ```shell
   $ git clone https://github.com/ChunelFeng/CGraph.git
