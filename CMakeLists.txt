@@ -15,6 +15,8 @@ project(CGraph VERSION 3.1.1)
 # CGraph默认使用C++11版本，推荐使用C++17版本。暂不支持C++11以下版本
 set(CMAKE_CXX_STANDARD 11)
 
+option(CGRAPH_BUILD_TUTORIAL "Enables builds of tutorials" ON)
+option(CGRAPH_BUILD_EXAMPLE "Enables builds of examples" ON)
 option(CGRAPH_BUILD_FUNCTIONAL_TESTS "Enables builds of functional tests" OFF)
 option(CGRAPH_BUILD_PERFORMANCE_TESTS "Enables builds of performance tests" OFF)
 
@@ -38,8 +40,12 @@ option(CGRAPH_BUILD_PERFORMANCE_TESTS "Enables builds of performance tests" OFF)
 # add CGraph environment info
 include(cmake/CGraph-env-include.cmake)
 
-add_subdirectory(./tutorial)
-add_subdirectory(./example)
+if(CGRAPH_BUILD_TUTORIAL)
+    add_subdirectory(./tutorial)
+endif(CGRAPH_BUILD_TUTORIAL)
+if(CGRAPH_BUILD_EXAMPLE)
+    add_subdirectory(./example)
+endif(CGRAPH_BUILD_EXAMPLE)
 
 # 功能测试相关内容
 if(CGRAPH_BUILD_FUNCTIONAL_TESTS)
