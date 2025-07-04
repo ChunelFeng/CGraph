@@ -32,21 +32,6 @@
   $ ./tutorial/T00-HelloCGraph              # 运行 T00-HelloCGraph
   ```
 
-* 在项目中作为第三方库调用，使用FetchContent
-  ```cmake
-  Include(FetchContent)
-  FetchContent_Declare(
-    CGraph
-    GIT_REPOSITORY https://github.com/ChunelFeng/CGraph.git
-    GIT_TAG main
-    GIT_SHALLOW true
-  )
-  FetchContent_MakeAvailable(CGraph)
-
-  target_include_directories(${PROJECT_NAME} PRIVATE ${CGraph_SOURCE_DIR}/src)
-  target_link_libraries(${PROJECT_NAME} PRIVATE CGraph)
-  ```
-
 * Bazel编译方式(Linux/MacOS/Windows)
   ```shell
   $ git clone https://github.com/ChunelFeng/CGraph.git
@@ -68,6 +53,28 @@
   $ sudo apt-get install cmake -y           # 安装cmake
   $ ./CGraph-build.sh                       # 编译CGraph工程，生成的内容在同级/build/文件夹中
   $ ./build/tutorial/T00-HelloCGraph        # 运行T00-HelloCGraph，并且在终端输出 Hello, CGraph.
+  ```
+
+---
+
+* 在其他使用 CMakeLists.txt 构建的项目中，通过 FetchContent 作为三方库引入
+  ```cmake
+  set(CGRAPH_BUILD_TUTORIAL OFF CACHE BOOL "" FORCE)
+  set(CGRAPH_BUILD_EXAMPLE OFF CACHE BOOL "" FORCE)
+  set(CGRAPH_BUILD_FUNCTIONAL_TESTS OFF CACHE BOOL "" FORCE)
+  set(CGRAPH_BUILD_PERFORMANCE_TESTS OFF CACHE BOOL "" FORCE)
+
+  Include(FetchContent)
+  FetchContent_Declare(
+    CGraph
+    GIT_REPOSITORY https://github.com/ChunelFeng/CGraph.git
+    GIT_TAG main
+    GIT_SHALLOW true
+  )
+
+  FetchContent_MakeAvailable(CGraph)
+  target_include_directories(${PROJECT_NAME} PRIVATE ${CGraph_SOURCE_DIR}/src)
+  target_link_libraries(${PROJECT_NAME} PRIVATE CGraph)
   ```
 
 ---
