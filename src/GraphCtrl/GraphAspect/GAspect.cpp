@@ -40,4 +40,8 @@ CVoid GAspect::finishDestroy(const CStatus& curStatus) {
 CVoid GAspect::enterCrashed() {
 }
 
+
+CVoid GAspect::enterTimeout() {
+}
+
 CGRAPH_NAMESPACE_END

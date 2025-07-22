@@ -46,6 +46,10 @@ protected:
     CVoid enterCrashed() override {
         PYBIND11_OVERLOAD(CVoid, GAspect, enterCrashed);
     }
+
+    CVoid enterTimeout() override {
+        PYBIND11_OVERLOAD(CVoid, GAspect, enterTimeout);
+    }
 };
 
 #endif //CGRAPH_PYWGASPECT_H

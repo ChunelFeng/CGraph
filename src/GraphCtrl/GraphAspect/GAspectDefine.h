@@ -21,6 +21,7 @@ enum class GAspectType {
     FINISH_RUN = 3,
     BEGIN_DESTROY = 4,
     FINISH_DESTROY = 5,
+    ENTER_TIMEOUT = 98,
     ENTER_CRASHED = 99,
 };
 

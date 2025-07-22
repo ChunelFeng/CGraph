@@ -51,10 +51,16 @@ public:
     virtual CVoid finishDestroy(const CStatus& curStatus);
 
     /**
-     * 进入crash的逻辑
+     * 进入crash切面的逻辑
      * @return
      */
     virtual CVoid enterCrashed();
+
+    /**
+     * 进入 timeout状态的切面逻辑
+     * @return
+     */
+    virtual CVoid enterTimeout();
 };
 
 using GAspectPtr = GAspect *;
