@@ -18,7 +18,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 class GParam : public GParamObject {
 public:
-#if __cplusplus >= 201703L
+#if __cplusplus >= 201703L && _CGRAPH_GPARAM_RWLOCK_ENABLE_
     std::shared_mutex _param_shared_lock_;    // 用于参数互斥的锁信息
 #else
     std::recursive_mutex _param_shared_lock_;

@@ -46,7 +46,7 @@ CStatus GPipeline::registerGElement(GElementPPtr elementRef,
          */
         (*elementRef) = new(std::nothrow) T();
     } else {
-        CGRAPH_RETURN_ERROR_STATUS("resister error type")
+        CGRAPH_RETURN_ERROR_STATUS("register error type")
     }
 
     status = innerRegister(*elementRef, depends, name, loop);
