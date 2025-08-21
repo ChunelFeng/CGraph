@@ -15,7 +15,7 @@ void test_functional_04() {
     const int halfArrSize = 32;
     const int runTimes = 100000;
     CGRAPH_CREATE_MESSAGE_TOPIC(TestGMessageParam, g_test_message_key, 100)
-    std::unique_ptr<TestGMessageParam> mp(new TestGMessageParam());
+    std::shared_ptr<TestGMessageParam> mp(new TestGMessageParam());
     CGRAPH_SEND_MPARAM(TestGMessageParam, g_test_message_key, mp, GMessagePushStrategy::WAIT)
 
     GPipelinePtr pipeline = GPipelineFactory::create();

@@ -32,19 +32,6 @@ public:
     }
 
     /**
-     * 写入参数
-     * @tparam TImpl
-     * @param value
-     * @param strategy
-     * @return
-     */
-    template<class TImpl,
-            c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CVoid send(const TImpl& value, GMessagePushStrategy strategy) {
-        queue_.push(value, strategy);
-    }
-
-    /**
      * 写入智能指针类型的参数
      * @tparam TImpl
      * @param value
@@ -53,20 +40,8 @@ public:
      */
     template<class TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CVoid send(std::unique_ptr<TImpl>& value, GMessagePushStrategy strategy) {
+    CVoid send(const std::shared_ptr<TImpl>& value, GMessagePushStrategy strategy) {
         queue_.push(value, strategy);
-    }
-
-    /**
-     * 获取参数
-     * @param value
-     * @param timeout
-     * @return
-     */
-    template<class TImpl,
-            c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CStatus recv(TImpl& value, CMSec timeout) {
-        return queue_.waitPopWithTimeout(value, timeout);
     }
 
     /**
@@ -78,7 +53,7 @@ public:
      */
     template<class TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CStatus recv(std::unique_ptr<TImpl>& value, CMSec timeout) {
+    CStatus recv(std::shared_ptr<TImpl>& value, CMSec timeout) {
         return queue_.waitPopWithTimeout(value, timeout);
     }
 

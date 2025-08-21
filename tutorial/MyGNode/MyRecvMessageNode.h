@@ -15,7 +15,7 @@
 class MyRecvMessageNode : public CGraph::GNode {
 public:
     CStatus run() override {
-        std::unique_ptr<MyMessageParam> mp = nullptr;    // 接收一个消息
+        std::shared_ptr<MyMessageParam> mp = nullptr;    // 接收一个消息
         CStatus status = CGRAPH_RECV_MPARAM(MyMessageParam, "send-recv", mp);
         if (!status.isOK()) {
             CGraph::CGRAPH_ECHO("MySubMessageNode sub message error");

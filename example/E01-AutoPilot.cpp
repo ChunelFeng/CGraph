@@ -55,10 +55,10 @@ struct DetectResultGParam : public GParam {
 class CameraGDaemon : public GDaemon {
 public:
     CVoid daemonTask(GDaemonParamPtr param) override {
-        ImageMParam image;
-        image.frame_id_ = cur_index_;
+        std::shared_ptr<ImageMParam> image(new ImageMParam());
+        image->frame_id_ = cur_index_;
         std::string info = "this is " + std::to_string(cur_index_) + " image";
-        memcpy(image.image_buf_, info.c_str(), info.length());
+        memcpy(image->image_buf_, info.c_str(), info.length());
         cur_index_++;
 
         CGRAPH_PUB_MPARAM(ImageMParam, EXAMPLE_IMAGE_TOPIC, image, GMessagePushStrategy::WAIT);
@@ -78,7 +78,7 @@ public:
     }
 
     CStatus run() override {
-        std::unique_ptr<ImageMParam> image = nullptr;
+        std::shared_ptr<ImageMParam> image = nullptr;
         auto status = CGRAPH_SUB_MPARAM(ImageMParam, conn_id_, image);
         if (status.isErr()) {
             return status;
@@ -105,7 +105,7 @@ public:
     }
 
     CStatus run() override {
-        std::unique_ptr<ImageMParam> image = nullptr;
+        std::shared_ptr<ImageMParam> image = nullptr;
         auto status = CGRAPH_SUB_MPARAM(ImageMParam, conn_id_, image);
         if (status.isErr()) {
             return status;

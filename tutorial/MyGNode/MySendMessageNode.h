@@ -20,7 +20,7 @@ public:
          * 推荐使用 unique_ptr 的方式，进行 send 和 recv
          * 可以减少内存copy次数
          */
-        std::unique_ptr<MyMessageParam> mp(new MyMessageParam());
+        std::shared_ptr<MyMessageParam> mp(new MyMessageParam());
 
         mp->num = (num_++) * 10;
         mp->info = "this is a test send info, num = " + std::to_string(mp->num);

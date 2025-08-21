@@ -74,33 +74,6 @@ public:
     }
 
     /**
-     * 根据传入的topic，获得信息
-     * @tparam TImpl
-     * @param topic
-     * @param value
-     * @param timeout
-     * @return
-     */
-    template<typename TImpl,
-            c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CStatus recvTopicValue(const std::string& topic,
-                           TImpl& value,
-                           CMSec timeout = CGRAPH_MAX_BLOCK_TTL) {
-        CGRAPH_FUNCTION_BEGIN
-        auto innerTopic = internal::SEND_RECV_PREFIX + topic;
-        auto result = send_recv_message_map_.find(innerTopic);
-        if (result == send_recv_message_map_.end()) {
-            CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
-        }
-
-        auto message = (GMessagePtr<TImpl>)(result->second);
-        CGRAPH_ASSERT_NOT_NULL(message);
-
-        status = message->recv(value, timeout);
-        CGRAPH_FUNCTION_END
-    }
-
-    /**
      * 根据传入的topic，获得信息。仅针对传入智能指针的情况
      * @tparam TImpl
      * @param topic
@@ -113,7 +86,7 @@ public:
     template<typename TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CStatus recvTopicValue(const std::string& topic,
-                           std::unique_ptr<TImpl>& value,
+                           std::shared_ptr<TImpl>& value,
                            CMSec timeout = CGRAPH_MAX_BLOCK_TTL) {
         CGRAPH_FUNCTION_BEGIN
         auto innerTopic = internal::SEND_RECV_PREFIX + topic;
@@ -126,33 +99,6 @@ public:
         CGRAPH_ASSERT_NOT_NULL(message);
 
         status = message->recv(value, timeout);
-        CGRAPH_FUNCTION_END
-    }
-
-    /**
-     * 根据传入的topic，输入信息
-     * @tparam TImpl
-     * @param topic
-     * @param value
-     * @param strategy
-     * @return
-     */
-    template<typename TImpl,
-            c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CStatus sendTopicValue(const std::string& topic,
-                           const TImpl& value,
-                           GMessagePushStrategy strategy) {
-        CGRAPH_FUNCTION_BEGIN
-        auto innerTopic = internal::SEND_RECV_PREFIX + topic;
-        auto result = send_recv_message_map_.find(innerTopic);
-        if (result == send_recv_message_map_.end()) {
-            CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
-        }
-
-        auto message = static_cast<GMessagePtr<T> >(result->second);
-        CGRAPH_ASSERT_NOT_NULL(message);
-
-        message->send(value, strategy);
         CGRAPH_FUNCTION_END
     }
 
@@ -167,7 +113,7 @@ public:
     template<typename TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CStatus sendTopicValue(const std::string& topic,
-                           std::unique_ptr<TImpl>& value,
+                           const std::shared_ptr<TImpl>& value,
                            GMessagePushStrategy strategy) {
         CGRAPH_FUNCTION_BEGIN
         auto innerTopic = internal::SEND_RECV_PREFIX + topic;
@@ -224,7 +170,7 @@ public:
     template<typename TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CStatus pubTopicValue(const std::string& topic,
-                          const TImpl& value,
+                          const std::shared_ptr<TImpl>& value,
                           GMessagePushStrategy strategy) {
         CGRAPH_FUNCTION_BEGIN
         auto innerTopic = internal::PUB_SUB_PREFIX + topic;
@@ -241,27 +187,6 @@ public:
     }
 
     /**
-     * 根据传入的 connId信息，来获取对应的message信息
-     * @tparam TImpl
-     * @param connId
-     * @param value
-     * @param timeout
-     * @return
-     */
-    template<typename TImpl,
-            c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CStatus subTopicValue(CIndex connId, TImpl& value, CMSec timeout = CGRAPH_MAX_BLOCK_TTL) {
-        CGRAPH_FUNCTION_BEGIN
-        if (conn_message_map_.end() == conn_message_map_.find(connId)) {
-            CGRAPH_RETURN_ERROR_STATUS("no find [" + std::to_string(connId) + "] connect");
-        }
-
-        auto message = (GMessagePtr<TImpl>)(conn_message_map_[connId]);
-        status = message->recv(value, timeout);
-        CGRAPH_FUNCTION_END
-    }
-
-    /**
      * 根据传入的 connId信息，来获取对应的message信息。仅针对传入智能指针的情况
      * @tparam TImpl
      * @param connId
@@ -271,7 +196,7 @@ public:
      */
     template<typename TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
-    CStatus subTopicValue(CIndex connId, std::unique_ptr<TImpl>& value, CMSec timeout = CGRAPH_MAX_BLOCK_TTL) {
+    CStatus subTopicValue(CIndex connId, std::shared_ptr<TImpl>& value, CMSec timeout = CGRAPH_MAX_BLOCK_TTL) {
         CGRAPH_FUNCTION_BEGIN
         if (conn_message_map_.end() == conn_message_map_.find(connId)) {
             CGRAPH_RETURN_ERROR_STATUS("no find [" + std::to_string(connId) + "] connect");

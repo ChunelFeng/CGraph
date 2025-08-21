@@ -37,7 +37,7 @@ class InputGNode : public GNode {
 public:
     CStatus run() override {
         for (int i = 0; i < 30; i++) {
-            std::unique_ptr<InputMParam> input(new InputMParam());
+            std::shared_ptr<InputMParam> input(new InputMParam());
             randomSleep(1, 5);    // 间隔1~6ms，发送一次
             input->num_ = std::abs((int)std::random_device{}()) % 5 + 1;
             CGRAPH_SEND_MPARAM(InputMParam, INPUT_TOPIC_NAME, input, GMessagePushStrategy::WAIT);
@@ -52,14 +52,14 @@ class ProcessGNode : public GNode {
 public:
     CStatus run() override {
         while (true) {
-            std::unique_ptr<InputMParam> input = nullptr;
+            std::shared_ptr<InputMParam> input = nullptr;
             auto status = CGRAPH_RECV_MPARAM_WITH_TIMEOUT(InputMParam, INPUT_TOPIC_NAME, input, 1000);
             if (status.isErr()) {
                 break;    // 一阵子收不到消息了，就自动停止好了
             }
 
             int ms = randomSleep(1, 100);    // 模拟处理流程，随机休息不超过 100ms
-            std::unique_ptr<ResultMParam> result(new ResultMParam);
+            std::shared_ptr<ResultMParam> result(new ResultMParam);
             switch (input->num_) {
                 case 1: result->eng_info_ = "one"; break;
                 case 2: result->eng_info_ = "two"; break;
@@ -82,7 +82,7 @@ class ResultGNode : public GNode {
 public:
     CStatus run() override {
         while (true) {
-            std::unique_ptr<ResultMParam> result = nullptr;
+            std::shared_ptr<ResultMParam> result = nullptr;
             auto status = CGRAPH_RECV_MPARAM_WITH_TIMEOUT(ResultMParam, RESULT_TOPIC_NAME, result, 1000);
             if (status.isErr()) {
                 break;
