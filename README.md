@@ -403,7 +403,8 @@ if __name__ == '__main__':
 * 提供 C# 和 Java 版本
 * 提供 `CODE_OF_CONDUCT.md` 文档
 
-[2025.07.23 - v3.1.2 - Chunel]
+[2025.08.28 - v3.1.2 - Chunel]
+* 优化 消息功能
 * 优化 切面功能
 
 </details>

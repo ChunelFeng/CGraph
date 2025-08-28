@@ -16,9 +16,8 @@ class MySendMessageNode : public CGraph::GNode {
 public:
     CStatus run() override {
         /**
-         * 可以使用 MyMessageParam mp; 构建值的方式传递
-         * 推荐使用 unique_ptr 的方式，进行 send 和 recv
-         * 可以减少内存copy次数
+         * 在 v3.1.2 版本，修改了message的使用方法
+         * 仅通过 std::shared_ptr<T> 传递参数
          */
         std::shared_ptr<MyMessageParam> mp(new MyMessageParam());
 

@@ -80,7 +80,7 @@ CStatus GPipeline::destroy() {
     CGRAPH_FUNCTION_BEGIN
 
     CGRAPH_ASSERT_INIT(true)
-    CGRAPH_ASSERT_NOT_NULL(element_manager_, param_manager_, daemon_manager_, event_manager_)
+    CGRAPH_ASSERT_NOT_NULL(element_manager_, param_manager_, daemon_manager_, event_manager_, stage_manager_)
 
     /**
      * 需要先将线程池相关内容析构，然后再做destroy。
