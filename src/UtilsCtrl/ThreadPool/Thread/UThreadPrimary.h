@@ -31,7 +31,6 @@ protected:
         CGRAPH_ASSERT_NOT_NULL(config_)
 
         is_init_ = true;
-        metrics_.reset();
         buildStealTargets();
         thread_ = std::thread(&UThreadPrimary::run, this);
         setSchedParam();
@@ -116,12 +115,10 @@ protected:
      */
     CVoid fatWait() {
         cur_empty_epoch_++;
-        metrics_.fleet_wait_times_++;
         CGRAPH_YIELD();
         if (cur_empty_epoch_ >= config_->primary_thread_busy_epoch_) {
             CGRAPH_UNIQUE_LOCK lk(mutex_);
             cv_.wait_for(lk, std::chrono::milliseconds(config_->primary_thread_empty_interval_));
-            metrics_.deep_wait_times_++;
             cur_empty_epoch_ = 0;
         }
     }
@@ -135,11 +132,9 @@ protected:
     CVoid pushTask(UTask&& task) {
         while (!(primary_queue_.tryPush(std::move(task))
                  || secondary_queue_.tryPush(std::move(task)))) {
-            metrics_.local_push_yield_times_++;
             CGRAPH_YIELD();
         }
         cur_empty_epoch_ = 0;
-        metrics_.local_push_real_num_++;
         cv_.notify_one();
     }
 
@@ -157,8 +152,6 @@ protected:
             cur_empty_epoch_ = 0;
             cv_.notify_one();
         }
-        metrics_.local_push_yield_times_++;
-        metrics_.local_push_real_num_++;
     }
 
 
@@ -169,7 +162,6 @@ protected:
      */
     CBool popTask(UTaskRef task) {
         auto result = primary_queue_.tryPop(task) || secondary_queue_.tryPop(task);
-        metrics_.calcLocal(result, 1);
         return result;
     }
 
@@ -186,7 +178,6 @@ protected:
             // 如果凑齐了，就不需要了。没凑齐的话，就继续
             result |= (secondary_queue_.tryPop(tasks, leftSize));
         }
-        metrics_.calcLocal(result, tasks.size());
         return result;
     }
 
@@ -224,7 +215,6 @@ protected:
             }
         }
 
-        metrics_.calcSteal(result, 1);
         return result;
     }
 
@@ -260,7 +250,6 @@ protected:
             }
         }
 
-        metrics_.calcSteal(result, tasks.size());
         return result;
     }
 
@@ -276,15 +265,6 @@ protected:
             steal_targets_.push_back(target);
         }
         steal_targets_.shrink_to_fit();
-    }
-
-
-    ~UThreadPrimary() override {
-        /**
-         * 在开启展示宏的时候，会在主线程退出的时候，打印相关内容
-         * 默认情况下，不会开启
-         */
-        metrics_.show("thread" + std::to_string(index_));
     }
 
 private:

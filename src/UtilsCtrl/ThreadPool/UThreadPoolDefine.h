@@ -10,7 +10,7 @@
 #define CGRAPH_UTHREADPOOLDEFINE_H
 
 #include <thread>
-# include <mutex>
+#include <mutex>
     #if __cplusplus >= 201703L
 #include <shared_mutex>
     #endif

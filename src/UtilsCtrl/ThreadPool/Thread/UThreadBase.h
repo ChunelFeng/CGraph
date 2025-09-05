@@ -14,7 +14,6 @@
 #include "../UThreadObject.h"
 #include "../Queue/UQueueInclude.h"
 #include "../Task/UTaskInclude.h"
-#include "../Metrics/UMetrics.h"
 
 
 CGRAPH_NAMESPACE_BEGIN
@@ -57,7 +56,6 @@ protected:
             // 如果辅助线程没有获取到的话，还需要再尝试从长时间任务队列中，获取一次
             result = pool_priority_task_queue_->tryPop(task);
         }
-        metrics_.calcPool(result, 1);
         return result;
     }
 
@@ -73,7 +71,6 @@ protected:
             result = pool_priority_task_queue_->tryPop(tasks, 1);    // 从优先队列里，最多pop出来一个
         }
 
-        metrics_.calcPool(result, tasks.size());
         return result;
     }
 
@@ -248,7 +245,6 @@ protected:
     UAtomicQueue<UTask>* pool_task_queue_;                             // 用于存放线程池中的普通任务
     UAtomicPriorityQueue<UTask>* pool_priority_task_queue_;            // 用于存放线程池中的包含优先级任务的队列，仅辅助线程可以执行
     UThreadPoolConfigPtr config_ = nullptr;                            // 配置参数信息
-    UMetrics metrics_;                                                 // 线程中的指标信息
 
     std::thread thread_;                                               // 线程类
     std::mutex mutex_;
