@@ -132,6 +132,7 @@ if __name__ == '__main__':
 
 * [CsCGraph](https://github.com/ChunelFeng/CsCGraph) : A CSharp native, CGraph-API-liked DAG project
 * [JaCGraph](https://github.com/ChunelFeng/JaCGraph) : A Java native, CGraph-API-liked DAG project
+* [GoCGraph](https://github.com/AsunaU2/GoCGraph) : A Go native, CGraph-API-liked DAG project
 * [CGraph-lite](https://github.com/ChunelFeng/CGraph-lite) : A one-header-only, CGraph-API-liked DAG project, lite version by C++
 
 ----
@@ -403,7 +404,8 @@ if __name__ == '__main__':
 * 提供 C# 和 Java 版本
 * 提供 `CODE_OF_CONDUCT.md` 文档
 
-[2025.08.28 - v3.1.2 - Chunel]
+[2025.09.05 - v3.1.2 - Chunel]
+* 提供 Go 版本
 * 优化 消息功能
 * 优化 切面功能
 
