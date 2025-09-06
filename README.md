@@ -29,7 +29,7 @@
 ![CGraph Skeleton](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Skeleton.jpg)
 <br>
 
-本工程使用纯C++11标准库编写，无任何第三方依赖，并且提供`Python`版本：`PyCGraph`。兼容`MacOS`、`Linux`、`Windows`和`Android`系统，支持本地编译和二次开发。编译方法和`PyCGraph`安装方法，请参考 [CGraph 编译说明](https://github.com/ChunelFeng/CGraph/blob/main/COMPILE.md ) <br>
+本工程使用纯C++11标准库编写，无任何第三方依赖，兼容`MacOS`、`Linux`、`Windows`和`Android`系统。支持本地编译和二次开发，并且提供`Python`版本：`PyCGraph`。编译和安装方法，请参考 [CGraph 编译说明](https://github.com/ChunelFeng/CGraph/blob/main/COMPILE.md ) <br>
 
 详细功能介绍和用法，请参考 [一面之猿网](http://www.chunel.cn/) 中的文章内容。相关视频在B站持续更新中，欢迎观看和交流：<br>
 * [【B站视频】CGraph 入门篇](https://www.bilibili.com/video/BV1mk4y1v7XJ) <br>
@@ -404,10 +404,10 @@ if __name__ == '__main__':
 * 提供 C# 和 Java 版本
 * 提供 `CODE_OF_CONDUCT.md` 文档
 
-[2025.09.05 - v3.1.2 - Chunel]
+[2025.09.06 - v3.1.2 - Chunel]
 * 提供 Go 版本
-* 优化 消息功能
-* 优化 切面功能
+* 优化 `message` 功能
+* 优化 `aspect` 功能
 
 </details>
 
