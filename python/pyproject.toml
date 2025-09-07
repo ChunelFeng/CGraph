@@ -1,0 +1,17 @@
+[build-system]
+# some dependency needed by PyCGraph
+requires = ["setuptools", "wheel", "pybind11>=3.0.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PyCGraph"
+description = "Python bindings for CGraph"
+authors = [{ name = "ChunelFeng" }]
+license = { text = "MIT" }
+
+dependencies = [
+    "pybind11>=3.0.1",
+]
+
+[tool.setuptools]
+package-dir = {"" = "."}
