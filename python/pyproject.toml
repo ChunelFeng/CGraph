@@ -5,11 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PyCGraph"
-version = "3.1.2"
-description = "Python bindings for CGraph"
-authors = [{ name = "ChunelFeng" }]
-license = { text = "MIT" }
-dynamic = ["readme", "requires-python", "keywords", "classifiers"]
+dynamic = ["version", "description", "authors", "license", "readme", "requires-python", "keywords", "classifiers"]
 
 dependencies = [
     "pybind11",
