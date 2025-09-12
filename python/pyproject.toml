@@ -4,7 +4,12 @@ requires = ["setuptools", "wheel", "pybind11"]
 build-backend = "setuptools.build_meta"
 
 [project]
-dynamic = ["name", "version", "description", "authors", "license", "readme", "requires-python", "keywords", "classifiers"]
+name = "PyCGraph"
+version = "latest"
+description = "Python bindings for CGraph"
+authors = [{ name = "ChunelFeng" }]
+license = { text = "MIT" }
+dynamic = ["readme", "requires-python", "keywords", "classifiers"]
 
 dependencies = [
     "pybind11",

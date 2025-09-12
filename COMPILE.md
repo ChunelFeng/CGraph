@@ -102,3 +102,10 @@
   $ python3 setup.py install               # 安装 PyCGraph
   $ python3 tutorial/T00-HelloCGraph.py    # 运行T00-HelloCGraph.py，并且在终端输出 Hello, PyCGraph.
   ```
+
+* 通过uv安装(Linux/MacOS/Windows)
+  * 通过执行下述uv指令添加PyCGraph作为项目依赖
+  ```shell
+  $ # 该指令会根据不同系统采取不同的策略拉取PyCGraph作为依赖，Linux系统则拉取git仓库main分支代码并从源码构建依赖，Windows/Mac系统则从pip仓库拉取依赖
+  $ uv add "pycgraph @ git+https://github.com/ChunelFeng/CGraph.git@main#subdirectory=python" --marker "sys_platform == 'linux'"
+  ```
