@@ -1,11 +1,10 @@
 [build-system]
-# some dependency needed by PyCGraph
 requires = ["setuptools", "wheel", "pybind11"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "PyCGraph"
-dynamic = ["version", "description", "authors", "license", "readme", "requires-python", "keywords", "classifiers"]
+dynamic = ["version", "description", "author", "license", "readme", "requires-python", "keywords", "classifiers"]
 
 dependencies = [
     "pybind11",
