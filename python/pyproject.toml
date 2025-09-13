@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PyCGraph"
-dynamic = ["version", "description", "author", "license", "readme", "requires-python", "keywords", "classifiers"]
+dynamic = ["version", "description", "authors", "license", "readme", "requires-python", "keywords", "classifiers"]
 
 dependencies = [
     "pybind11",
