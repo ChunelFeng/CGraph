@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "wheel", "pybind11"]
+requires = ["setuptools", "wheel", "pybind11", "pybind11-stubgen"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,6 +8,7 @@ dynamic = ["version", "description", "authors", "license", "readme", "requires-p
 
 dependencies = [
     "pybind11",
+    "pybind11-stubgen"
 ]
 
 [tool.setuptools]
