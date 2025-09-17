@@ -8,7 +8,6 @@ dynamic = ["version", "description", "authors", "license", "readme", "requires-p
 
 dependencies = [
     "pybind11",
-    "pybind11-stubgen"
 ]
 
 [tool.setuptools]
