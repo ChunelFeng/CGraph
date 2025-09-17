@@ -49,12 +49,14 @@ _ext_modules = [
 class build_ext(_build_ext):
     def run(self):
         super().run()
+        build_lib = self.build_lib
+        sys.path.insert(0, build_lib)
         # 生成 stub 文件到当前目录
         subprocess.check_call([
-            sys.executable, "-m", "pybind11_stubgen", __PYCGRAPH_NAME__, "--output-dir=."
+            sys.executable, "-m", "pybind11_stubgen", __PYCGRAPH_NAME__,
+            "--output-dir=.", f"--search-path={build_lib}"
         ])
         # 拷贝生成的 .pyi 文件到包目录
-        build_lib = self.build_lib
         stub_path = os.path.join(os.path.dirname(__file__), f"{__PYCGRAPH_NAME__}.pyi")
         dst_pyi = os.path.join(os.path.dirname(__file__), build_lib, "PyCGraph.pyi")
         if os.path.exists(stub_path):
