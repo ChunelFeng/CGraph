@@ -49,11 +49,6 @@ _ext_modules = [
 class build_ext(_build_ext):
     def run(self):
         super().run()
-        # 自动生成 stub 文件
-        try:
-            import pybind11_stubgen
-        except ImportError:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", "pybind11-stubgen"])
         # 生成 stub 文件到当前目录
         subprocess.check_call([
             sys.executable, "-m", "pybind11_stubgen", __PYCGRAPH_NAME__, "--output-dir=."
