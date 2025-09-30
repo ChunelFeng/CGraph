@@ -69,6 +69,13 @@ CBool GMutable::isSerializable() const {
 }
 
 
+GElementPtr GMutable::setThreadPoolEx(UThreadPoolPtr ptr) {
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(manager_, ptr)
+    manager_->setThreadPool(ptr);
+    return this;
+}
+
+
 CVoid GMutable::setup() {
     for (auto* element : group_elements_arr_) {
         element->run_before_.clear();

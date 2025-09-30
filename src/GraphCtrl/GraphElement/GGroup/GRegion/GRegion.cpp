@@ -27,10 +27,8 @@ GRegion::~GRegion() {
 CStatus GRegion::init() {
     CGRAPH_FUNCTION_BEGIN
     // 在这里将初始化所有的节点信息，并且实现分析，联通等功能
-    CGRAPH_ASSERT_NOT_NULL(thread_pool_, manager_)
+    CGRAPH_ASSERT_NOT_NULL(manager_)
 
-    // 在region中，需要专门的调度逻辑
-    this->manager_->setThreadPool(thread_pool_);
     status = this->manager_->init();
     CGRAPH_FUNCTION_CHECK_STATUS
 
@@ -65,6 +63,13 @@ CStatus GRegion::addElementEx(GElementPtr element) {
 
     manager_->manager_elements_.emplace(element);
     CGRAPH_FUNCTION_END
+}
+
+
+GElementPtr GRegion::setThreadPoolEx(UThreadPoolPtr ptr) {
+    CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(manager_, ptr)
+    manager_->setThreadPool(ptr);
+    return this;
 }
 
 

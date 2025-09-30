@@ -101,7 +101,7 @@ CVoid GDynamicEngine::analysisDagType(const GSortedGElementPtrSet& elements) {
 
 CVoid GDynamicEngine::analysisParallelMatrix() {
     parallel_element_matrix_.clear();
-    const auto& config = thread_pool_->getConfig();
+    const auto& config = thread_pool_ ? thread_pool_->getConfig() : UThreadPoolConfig();
     CSize thdSize = config.default_thread_size_ + config.secondary_thread_size_;
     CGRAPH_THROW_EXCEPTION_BY_CONDITION(thdSize <= 0,
                                         "default thread size cannot smaller than 1");

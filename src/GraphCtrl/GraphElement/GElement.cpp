@@ -361,6 +361,13 @@ GElementPtr GElement::setThreadPool(UThreadPoolPtr ptr) {
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(ptr)
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     this->thread_pool_ = ptr;
+    setThreadPoolEx(ptr);
+    return this;
+}
+
+
+GElementPtr GElement::setThreadPoolEx(UThreadPoolPtr ptr) {
+    (void)(ptr);
     return this;
 }
 

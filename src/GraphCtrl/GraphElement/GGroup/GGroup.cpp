@@ -128,14 +128,6 @@ CBool GGroup::isSeparate(GElementCPtr a, GElementCPtr b) const {
 }
 
 
-CVoid GGroup::pushElements(GElementPtrSet& repo) {
-    repo.insert(this);
-    for (auto* cur : group_elements_arr_) {
-        repo.insert(cur);
-    }
-}
-
-
 CStatus GGroup::__addGElements_4py(const GElementPtrArr& elements) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)

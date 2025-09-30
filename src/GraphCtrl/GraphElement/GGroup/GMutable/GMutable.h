@@ -42,6 +42,8 @@ private:
      */
     CVoid setup();
 
+    GElementPtr setThreadPoolEx(UThreadPoolPtr ptr) final;
+
 private:
     GElementManagerPtr manager_ = nullptr;
 

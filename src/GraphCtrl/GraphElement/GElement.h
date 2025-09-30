@@ -338,6 +338,12 @@ private:
     GElement* setThreadPool(UThreadPoolPtr ptr);
 
     /**
+     * 设置线程池信息，供个别有 manager 的 group使用
+     * @return
+     */
+    virtual GElement* setThreadPoolEx(UThreadPoolPtr ptr);
+
+    /**
      * graphviz dump 逻辑
      * @param oss
      * @return

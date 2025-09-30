@@ -64,7 +64,14 @@ private:
      * @return
      * @notice 部分element 随着 group注册进来（特别是 python版本中），在这里做一次查缺补漏
      */
-    CVoid fetch(GElementManagerCPtr em);
+    CVoid fetchAll(GElementManagerCPtr em);
+
+    /**
+     * 递归同步所有element 的信息到 repo 中
+     * @param element
+     * @return
+     */
+    CVoid fetch(GElementPtr element);
 
     /**
      * 用于判断是否是出于退出状态

@@ -71,13 +71,6 @@ private:
      */
     virtual CBool isSeparate(GElementCPtr a, GElementCPtr b) const;
 
-    /**
-     * 将group内部的所有element（包含子group中的）写入repo中
-     * @param repo
-     * @return
-     */
-    CVoid pushElements(GElementPtrSet& repo);
-
 private:
     GElementPtrArr group_elements_arr_;    // 存放 element的数组
 

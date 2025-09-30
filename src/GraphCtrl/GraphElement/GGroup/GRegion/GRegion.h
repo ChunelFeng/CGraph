@@ -45,6 +45,8 @@ private:
 
     CStatus addElementEx(GElementPtr element) final;
 
+    GElementPtr setThreadPoolEx(UThreadPoolPtr ptr) final;
+
     CBool isSeparate(GElementCPtr a, GElementCPtr b) const final;
 
 private:

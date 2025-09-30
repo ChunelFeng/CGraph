@@ -77,7 +77,7 @@ CStatus GElementRepository::pushAllState(const GElementState& state) {
 }
 
 
-CVoid GElementRepository::fetch(GElementManagerCPtr em) {
+CVoid GElementRepository::fetchAll(GElementManagerCPtr em) {
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(em)
     for (GElementPtr cur : em->manager_elements_) {
         /**
@@ -85,16 +85,18 @@ CVoid GElementRepository::fetch(GElementManagerCPtr em) {
          * 查询到如果pipeline中，存在没有注册到 repo 中element，则写入 repo中
          * 主要针对 python 注册场景中 直接创建 element 放入group 的场景
          */
-        if (this->find(cur)) {
-            continue;
-        }
+        fetch(cur);
+    }
+}
 
-        if (cur->isGGroup()) {
-            auto group = dynamic_cast<GGroupPtr>(cur);
-            CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(group);
-            group->pushElements(elements_);
-        } else {
-            elements_.insert(cur);
+
+CVoid GElementRepository::fetch(GElementPtr element) {
+    elements_.insert(element);
+    if (element->isGGroup()) {
+        auto group = dynamic_cast<GGroupPtr>(element);
+        CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(group)
+        for (auto* cur : group->group_elements_arr_) {
+            fetch(cur);
         }
     }
 }
