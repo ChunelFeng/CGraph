@@ -121,7 +121,7 @@ CStatus GElementRepository::init() {
          * 2. 查验配置信息是否正确
          * 3. 记录异步节点的信息
          */
-        CGRAPH_ASSERT_NOT_NULL(element)
+        CGRAPH_ASSERT_NOT_NULL(element, element->thread_pool_)
         status = element->checkSuitable();
         CGRAPH_FUNCTION_CHECK_STATUS
         element->updateAspectInfo();

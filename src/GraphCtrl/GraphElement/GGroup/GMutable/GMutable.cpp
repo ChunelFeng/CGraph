@@ -25,7 +25,6 @@ GMutable::~GMutable() {
 CStatus GMutable::init() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(manager_)
-    manager_->setThreadPool(thread_pool_);
     status = manager_->initEngine();
     CGRAPH_FUNCTION_CHECK_STATUS
 
