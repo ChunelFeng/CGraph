@@ -33,6 +33,7 @@ private:
     CBool isSeparate(GElementCPtr a, GElementCPtr b) const override;
 
     friend class GPipeline;
+    friend class GStorageFactory;
 };
 
 using GConditionPtr = GCondition *;

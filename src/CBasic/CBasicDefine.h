@@ -28,6 +28,7 @@ namespace internal {                                                    \
 CGRAPH_INTERNAL_NAMESPACE_BEGIN
 
 using CCHAR = char;
+using CUCHAR = unsigned char;
 using CUINT = unsigned int;
 using CVOID = void;
 using CINT = int;

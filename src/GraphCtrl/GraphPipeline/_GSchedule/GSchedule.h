@@ -46,6 +46,7 @@ private:
     internal::GScheduleType type_ = internal::GScheduleType::UNIQUE;      // 调度类型
 
     friend class GPipeline;
+    friend class GStorage;
 };
 
 CGRAPH_NAMESPACE_END

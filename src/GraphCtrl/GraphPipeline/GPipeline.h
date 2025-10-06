@@ -18,6 +18,7 @@
 
 #include "GPipelineObject.h"
 #include "_GSchedule/GScheduleInclude.h"
+#include "_GStroage/GStorageInclude.h"
 #include "../GraphElement/GElementInclude.h"
 #include "../GraphDaemon/GDaemonInclude.h"
 #include "../GraphEvent/GEventInclude.h"
@@ -394,6 +395,20 @@ public:
     CBool checkSeparate(GElementPtr fst, GElementPtr snd) const;
 
     /**
+     * 存储当前 pipeline 信息到本地
+     * @param path
+     * @return
+     */
+    CStatus save(const std::string& path);
+
+    /**
+     * 从本地文件中加载 pipeline 信息
+     * @param path
+     * @return
+     */
+    CStatus load(const std::string& path);
+
+    /**
      * 注册GParam 交互类集合
      * @return
      */
@@ -437,6 +452,7 @@ private:
     friend class GPipelineFactory;
     friend class CAllocator;
     friend class GPerf;
+    friend class GStorage;
 
 public:
     CStatus __registerGElement_4py(GElementPtr element, const GElementPtrSet &depends,

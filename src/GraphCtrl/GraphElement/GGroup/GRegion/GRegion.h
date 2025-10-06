@@ -56,6 +56,7 @@ private:
 
     friend class GPipeline;
     friend class CAllocator;
+    friend class GStorageFactory;
     friend class GTrimOptimizer;
 };
 

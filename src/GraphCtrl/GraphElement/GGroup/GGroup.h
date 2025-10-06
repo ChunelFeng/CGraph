@@ -80,6 +80,7 @@ private:
     friend class GCondition;
     friend class GMutable;
     friend class GElementRepository;
+    friend class GStorage;
     template<GMultiConditionType> friend class GMultiCondition;
     template<CInt> friend class GSome;
 

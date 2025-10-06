@@ -15,9 +15,9 @@
 
     #if __cplusplus >= 201703L
 #include <shared_mutex>
-    #else
-#include <mutex>
     #endif
+
+#include <mutex>
 
 #include "../CBasic/CBasicInclude.h"
 #include "UtilsFunction.h"
@@ -89,13 +89,13 @@ CVoid __ASSERT_NOT_NULL_THROW_EXCEPTION(T t, Args... args) {
 
 /* 删除资源信息 */
 #define CGRAPH_DELETE_PTR(ptr)                                                  \
-    if (unlikely((ptr) != nullptr)) {                                           \
+    if (likely((ptr) != nullptr)) {                                             \
         delete (ptr);                                                           \
         (ptr) = nullptr;                                                        \
     }                                                                           \
 
 #define CGRAPH_DELETE_PTR_ARRAY(arr)                                            \
-    if (unlikely((arr) != nullptr)) {                                           \
+    if (likely((arr) != nullptr)) {                                             \
         delete[] (arr);                                                         \
         (arr) = nullptr;                                                        \
     }                                                                           \

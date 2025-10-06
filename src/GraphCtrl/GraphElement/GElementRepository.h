@@ -94,6 +94,7 @@ private:
 
     friend class GPipeline;
     friend class GPerf;
+    friend class GStorage;
 };
 
 using GElementRepositoryPtr = GElementRepository *;

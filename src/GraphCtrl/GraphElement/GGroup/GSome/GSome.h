@@ -47,6 +47,7 @@ private:
     friend class GPipeline;
     friend class GDynamicEngine;
     friend class CAllocator;
+    friend class GStorageFactory;
 };
 
 CGRAPH_NAMESPACE_END

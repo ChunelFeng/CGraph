@@ -9,8 +9,9 @@
 #ifndef CGRAPH_GPIPELINEFACTORY_H
 #define CGRAPH_GPIPELINEFACTORY_H
 
-#include <list>
 #include <mutex>
+#include <list>
+#include <map>
 
 #include "GPipeline.h"
 #include "GPipelineObject.h"
@@ -38,7 +39,7 @@ public:
     static CStatus clear();
 
 private:
-    static GPipelinePtrList s_pipeline_list_;    // 记录所有的
+    static GPipelinePtrList s_pipeline_list_;    // 记录所有的 pipeline 信息
     static std::mutex s_lock_;
 };
 

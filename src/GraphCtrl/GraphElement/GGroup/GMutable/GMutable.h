@@ -49,6 +49,7 @@ private:
 
     friend class GPipeline;
     friend class CAllocator;
+    friend class GStorageFactory;
 };
 
 using GMutablePtr = GMutable *;

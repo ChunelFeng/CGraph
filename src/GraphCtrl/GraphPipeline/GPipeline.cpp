@@ -8,6 +8,7 @@
 
 #include "GPipeline.h"
 #include "_GPerf/GPerfInclude.h"
+#include "_GStroage/GStorageInclude.h"
 #include "../GraphElement/_GOptimizer/GOptimizerInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -321,9 +322,44 @@ CBool GPipeline::checkSeparate(GElementPtr fst, GElementPtr snd) const {
 }
 
 
+CStatus GPipeline::save(const std::string& path) {
+    CGRAPH_FUNCTION_BEGIN
+    std::set<std::string> names;
+
+    // 不允许有同名的 element 被存储
+    for (const auto* element : repository_.elements_) {
+        CGRAPH_ASSERT_NOT_NULL(element)
+        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(element->isGAdaptor(),
+                                                element->name_ + " is GAdaptor, cannot be saved.")
+        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(names.find(element->name_) != names.end(),
+                                                element->name_ + " name is duplicated, cannot be saved.")
+        names.insert(element->name_);
+    }
+
+#if __cplusplus >= 201703L
+    status = GStorage::save(this, path);
+#else
+    status = CStatus("save function support cpp17+ only");
+#endif
+    CGRAPH_FUNCTION_END
+}
+
+
+CStatus GPipeline::load(const std::string& path) {
+    CGRAPH_FUNCTION_BEGIN
+#if __cplusplus >= 201703L
+    status = GStorage::load(this, path);
+#else
+    status = CStatus("load function support cpp17+ only");
+#endif
+
+    CGRAPH_FUNCTION_END
+}
+
+
 CStatus GPipeline::initEnv() {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(event_manager_, element_manager_)
+    CGRAPH_ASSERT_NOT_NULL(event_manager_, element_manager_, stage_manager_)
 
     status = schedule_.init();
     CGRAPH_FUNCTION_CHECK_STATUS

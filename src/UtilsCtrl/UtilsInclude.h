@@ -17,5 +17,8 @@
 #include "Distance/UDistanceInclude.h"
 #include "Random/URandom.h"
 #include "Container/UContainerInclude.h"
+    #if __cplusplus >= 201703L
+#include "Reflection/UReflectionInclude.h"
+    #endif
 
 #endif //CGRAPH_UTILSINCLUDE_H

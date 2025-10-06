@@ -10,8 +10,8 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-GPipelinePtrList GPipelineFactory::s_pipeline_list_;
-std::mutex GPipelineFactory::s_lock_;
+GPipelinePtrList GPipelineFactory::s_pipeline_list_ {};
+std::mutex GPipelineFactory::s_lock_ {};
 
 GPipelinePtr GPipelineFactory::create() {
     CGRAPH_FUNCTION_BEGIN

@@ -30,6 +30,7 @@ set(CGRAPH_TUTORIAL_LIST
          T26-Mutable
          T27-Trim
          T28-Stage
+         T29-Storage
         )
 
 
