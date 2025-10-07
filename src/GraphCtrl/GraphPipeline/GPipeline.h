@@ -136,9 +136,9 @@ public:
     template<typename TGroup,
             c_enable_if_t<std::is_base_of<GGroup, TGroup>::value, int> = 0>
     TGroup* createGGroup(const GElementPtrArr &elements,
-                    const GElementPtrSet &depends = std::initializer_list<GElementPtr>(),
-                    const std::string &name = CGRAPH_EMPTY,
-                    CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
+                         const GElementPtrSet &depends = std::initializer_list<GElementPtr>(),
+                         const std::string &name = CGRAPH_EMPTY,
+                         CSize loop = CGRAPH_DEFAULT_LOOP_TIMES);
 
     /**
      * 在图中注册一个 GElement信息

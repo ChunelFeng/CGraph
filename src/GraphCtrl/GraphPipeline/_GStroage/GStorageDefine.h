@@ -15,6 +15,7 @@
 
 #include "../../GraphDefine.h"
 #include "../../GraphElement/GElementInclude.h"
+#include "../../GraphEvent/GEventInclude.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -71,6 +72,7 @@ struct _GElementStorage : public CStruct {
         element->setVisible(visible_);
         element->setLevel(level_);
         element->setTimeout(timeout_, timeout_strategy_);
+        element->session_ = session_;
         if (element->isGNode()) {
             element->setMacro(is_marco_);
         }
@@ -81,9 +83,20 @@ struct _GElementStorage : public CStruct {
     friend class GStorage;
 };
 
+struct _GEventStorage : public CStruct {
+    explicit _GEventStorage() = default;
+    explicit _GEventStorage(const std::string& key, const std::string& clz) {
+        key_ = key;
+        event_clz_name_ = clz;
+    }
+
+    std::string key_ {};
+    std::string event_clz_name_ {};
+};
 
 struct _GPipelineStorage : public CStruct {
-    std::vector<_GElementStorage> element_storages_ {};       // 记录pipeline中所有element 的信息
+    std::vector<_GElementStorage> element_storages_ {};       // 记录pipeline中所有 element 的信息
+    std::vector<_GEventStorage> event_storages_ {};           // 记录pipeline中所有 event 的信息
     UThreadPoolConfig thread_pool_config_ {};                 // 记录线程池配置信息
 };
 

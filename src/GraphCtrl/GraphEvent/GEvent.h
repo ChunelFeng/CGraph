@@ -77,6 +77,8 @@ private:
     std::mutex async_destroy_lock_;
 
     friend class GEventManager;
+    friend class GStorage;
+    friend class GPipeline;
 };
 
 using GEventPtr = GEvent *;
