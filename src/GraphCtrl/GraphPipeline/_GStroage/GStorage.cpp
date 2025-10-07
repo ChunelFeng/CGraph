@@ -34,6 +34,11 @@ UREFL_CREATE_STRUCT_TRAIT_INFO(_GElementStorage,
    UREFL_DECLARE_FIELD(_GElementStorage, children_, 14)
 )
 
+UREFL_CREATE_STRUCT_TRAIT_INFO(_GEventStorage,
+    UREFL_DECLARE_FIELD(_GEventStorage, key_, 1),
+    UREFL_DECLARE_FIELD(_GEventStorage, event_clz_name_, 2)
+)
+
 UREFL_CREATE_STRUCT_TRAIT_INFO(UThreadPoolConfig,
    UREFL_DECLARE_FIELD(UThreadPoolConfig, default_thread_size_, 1),
    UREFL_DECLARE_FIELD(UThreadPoolConfig, secondary_thread_size_, 2),
@@ -58,7 +63,8 @@ UREFL_CREATE_STRUCT_TRAIT_INFO(UThreadPoolConfig,
 
 UREFL_CREATE_STRUCT_TRAIT_INFO(_GPipelineStorage,
     UREFL_DECLARE_FIELD(_GPipelineStorage, element_storages_, 1),
-    UREFL_DECLARE_FIELD(_GPipelineStorage, thread_pool_config_, 2)
+    UREFL_DECLARE_FIELD(_GPipelineStorage, event_storages_, 2),
+    UREFL_DECLARE_FIELD(_GPipelineStorage, thread_pool_config_, 3)
 )
 
 CGRAPH_INTERNAL_NAMESPACE_END
@@ -71,12 +77,18 @@ CGRAPH_INTERNAL_NAMESPACE_END
  */
 CStatus GStorage::save(GPipelinePtr pipeline, const std::string& path) {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_ASSERT_NOT_NULL(pipeline);
+    CGRAPH_ASSERT_NOT_NULL(pipeline, pipeline->event_manager_);
 
     _GPipelineStorage storage {};
     for (const auto* cur : pipeline->repository_.elements_) {
-        storage.element_storages_.emplace_back(_GElementStorage(cur));
+        storage.element_storages_.emplace_back(cur);
     }
+    for (const auto& event : pipeline->event_manager_->events_map_) {
+        const std::string& key = event.first;
+        const std::string& clz = typeid(*event.second).name();
+        storage.event_storages_.emplace_back(key, clz);
+    }
+
     storage.thread_pool_config_ = pipeline->schedule_.config_;
 
     auto refl = internal::UReflection<_GPipelineStorage>();
@@ -147,10 +159,23 @@ CStatus GStorage::loadBuffer(GPipelinePtr pipeline, char* buffer, CSize size) {
     auto refl = internal::UReflection<_GPipelineStorage>();
     refl.read(storage, (CUCharPtr)buffer, size);
 
+    status += loadElement(pipeline, storage);
+    status += loadEvent(pipeline, storage);
+    CGRAPH_FUNCTION_CHECK_STATUS
+
+    pipeline->setUniqueThreadPoolConfig(storage.thread_pool_config_);
+
+    CGRAPH_FUNCTION_END
+}
+
+CStatus GStorage::loadElement(GPipelinePtr pipeline, const _GPipelineStorage& storage) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(pipeline)
+
     std::map<std::string, GElementPtr> eleCache{};    // 用于存放所有的构建好的 element 信息
     // 恢复所有的 element 的信息
     for (const auto& cur : storage.element_storages_) {
-        auto element = dynamic_cast<GElementPtr>(GStorageFactory::createByType(cur.clz_name_.c_str()));
+        auto element = dynamic_cast<GElementPtr>(GStorageFactory::createByType(cur.clz_name_));
         CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!element,
                                                 cur.name_ + " element type do not register, please check")
         CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(element->element_type_ != cur.element_type_,
@@ -191,7 +216,21 @@ CStatus GStorage::loadBuffer(GPipelinePtr pipeline, char* buffer, CSize size) {
             }
         }
     }
-    pipeline->setUniqueThreadPoolConfig(storage.thread_pool_config_);
+
+    CGRAPH_FUNCTION_END
+}
+
+
+CStatus GStorage::loadEvent(GPipelinePtr pipeline, const _GPipelineStorage& storage) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(pipeline, pipeline->event_manager_, pipeline->param_manager_)
+
+    pipeline->event_manager_->param_manager_ = pipeline->param_manager_;
+    for (const auto& es : storage.event_storages_) {
+        GEventPtr event = dynamic_cast<GEventPtr>(GStorageFactory::createByType(es.event_clz_name_));
+        CGRAPH_ASSERT_NOT_NULL(event)
+        pipeline->event_manager_->events_map_[es.key_] = event;
+    }
 
     CGRAPH_FUNCTION_END
 }

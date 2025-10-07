@@ -11,6 +11,7 @@
 
 #if __cplusplus >= 201703L
 
+#include "GStorageDefine.h"
 #include "../../GraphObject.h"
 
 CGRAPH_NAMESPACE_BEGIN
@@ -48,6 +49,10 @@ private:
      * @return
      */
     static CStatus loadBuffer(GPipeline* pipeline, char* buffer, CSize size);
+
+    static CStatus loadElement(GPipeline* pipeline, const _GPipelineStorage& storage);
+
+    static CStatus loadEvent(GPipeline* pipeline, const _GPipelineStorage& storage);
 
     friend class GPipeline;
 };

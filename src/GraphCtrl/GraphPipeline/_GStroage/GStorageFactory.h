@@ -36,7 +36,7 @@ public:
                          || std::is_base_of<GEvent, T>::value, int> = 0>
     static CVoid registerMetaType() {
         const char* key = typeid(T).name();
-        meta_types_[key] = []() { return new T(); };
+        meta_types_[key] = []() { return CAllocator::safeMallocCObject<T>(); };
     }
 
 protected:
@@ -45,7 +45,7 @@ protected:
      * @param typeName
      * @return
      */
-    static GraphObject* createByType(const char* typeName);
+    static GraphObject* createByType(const std::string& typeName);
 
     explicit GStorageFactory() = default;
     ~GStorageFactory() override = default;
