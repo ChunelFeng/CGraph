@@ -17,6 +17,15 @@
 CGRAPH_NAMESPACE_BEGIN
 CGRAPH_INTERNAL_NAMESPACE_BEGIN
 
+UREFL_CREATE_STRUCT_TRAIT_INFO(_GEventStorage,
+   UREFL_DECLARE_FIELD(_GEventStorage, key_, 1),
+   UREFL_DECLARE_FIELD(_GEventStorage, event_clz_name_, 2)
+)
+
+UREFL_CREATE_STRUCT_TRAIT_INFO(_GAspectStorage,
+   UREFL_DECLARE_FIELD(_GAspectStorage, aspect_clz_name_, 1)
+)
+
 UREFL_CREATE_STRUCT_TRAIT_INFO(_GElementStorage,
    UREFL_DECLARE_FIELD(_GElementStorage, name_, 1),
    UREFL_DECLARE_FIELD(_GElementStorage, loop_, 2),
@@ -31,12 +40,8 @@ UREFL_CREATE_STRUCT_TRAIT_INFO(_GElementStorage,
    UREFL_DECLARE_FIELD(_GElementStorage, clz_name_, 11),
    UREFL_DECLARE_FIELD(_GElementStorage, belong_session_, 12),
    UREFL_DECLARE_FIELD(_GElementStorage, element_type_, 13),
-   UREFL_DECLARE_FIELD(_GElementStorage, children_, 14)
-)
-
-UREFL_CREATE_STRUCT_TRAIT_INFO(_GEventStorage,
-    UREFL_DECLARE_FIELD(_GEventStorage, key_, 1),
-    UREFL_DECLARE_FIELD(_GEventStorage, event_clz_name_, 2)
+   UREFL_DECLARE_FIELD(_GElementStorage, children_, 14),
+   UREFL_DECLARE_FIELD(_GElementStorage, aspect_storages_, 15)
 )
 
 UREFL_CREATE_STRUCT_TRAIT_INFO(UThreadPoolConfig,
@@ -194,6 +199,9 @@ CStatus GStorage::loadElement(GPipelinePtr pipeline, const _GPipelineStorage& st
         } else {
             element->belong_ = eleCache[cur.belong_session_];
         }
+
+        status += loadAspect(element, cur.aspect_storages_);
+        CGRAPH_FUNCTION_CHECK_STATUS
     }
 
     // 设定依赖关系
@@ -221,15 +229,34 @@ CStatus GStorage::loadElement(GPipelinePtr pipeline, const _GPipelineStorage& st
 }
 
 
+CStatus GStorage::loadAspect(GElementPtr element, const std::vector<_GAspectStorage>& aspStorages) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(element)
+
+    if (!aspStorages.empty()) {
+        element->aspect_manager_ = CAllocator::safeMallocCObject<GAspectManager>();
+        for (const auto &gas: aspStorages) {
+            GAspectPtr aspect = dynamic_cast<GAspectPtr>(GStorageFactory::createByType(gas.aspect_clz_name_));
+            CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!aspect,
+                                                    gas.aspect_clz_name_ + " type create aspect failed.");
+            element->aspect_manager_->add(aspect);
+        }
+    }
+
+    CGRAPH_FUNCTION_END
+}
+
+
 CStatus GStorage::loadEvent(GPipelinePtr pipeline, const _GPipelineStorage& storage) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(pipeline, pipeline->event_manager_, pipeline->param_manager_)
 
+    // 为了确保每个 event 中都可以获取参数信息
     pipeline->event_manager_->param_manager_ = pipeline->param_manager_;
-    for (const auto& es : storage.event_storages_) {
-        GEventPtr event = dynamic_cast<GEventPtr>(GStorageFactory::createByType(es.event_clz_name_));
+    for (const auto& ges : storage.event_storages_) {
+        GEventPtr event = dynamic_cast<GEventPtr>(GStorageFactory::createByType(ges.event_clz_name_));
         CGRAPH_ASSERT_NOT_NULL(event)
-        pipeline->event_manager_->events_map_[es.key_] = event;
+        pipeline->event_manager_->events_map_[ges.key_] = event;
     }
 
     CGRAPH_FUNCTION_END

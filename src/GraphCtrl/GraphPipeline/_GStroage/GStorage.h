@@ -17,6 +17,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class GPipeline;
+class GElement;
 
 class GStorage : public GraphObject {
 protected:
@@ -53,6 +54,8 @@ private:
     static CStatus loadElement(GPipeline* pipeline, const _GPipelineStorage& storage);
 
     static CStatus loadEvent(GPipeline* pipeline, const _GPipelineStorage& storage);
+
+    static CStatus loadAspect(GElementPtr element, const std::vector<_GAspectStorage>& aspStorages);
 
     friend class GPipeline;
 };

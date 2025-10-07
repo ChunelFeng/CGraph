@@ -52,11 +52,13 @@ protected:
     CGRAPH_NO_ALLOWED_COPY(GAspectManager)
 
 private:
-    GAspectPtrArr aspect_arr_;     // 存储aspect的容器
+    GAspectPtrArr aspect_arr_ {};     // 存储aspect的容器
 
     friend class GElement;
     friend class CAllocator;
     friend class GElementManager;
+    friend class GStorage;
+    friend struct _GElementStorage;
 };
 
 using GAspectManagerPtr = GAspectManager *;

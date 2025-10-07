@@ -504,8 +504,8 @@ private:
     friend class GSeparateOptimizer;
     friend class GElementRepository;
     friend class GPerf;
-    friend class _GElementStorage;
     friend class GStorage;
+    friend struct _GElementStorage;
 
     CGRAPH_DECLARE_GPARAM_MANAGER_WRAPPER_WITH_MEMBER
     CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER_WITH_MEMBER

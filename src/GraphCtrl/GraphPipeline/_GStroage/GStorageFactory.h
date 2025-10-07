@@ -20,6 +20,7 @@ class GEvent;
 class GParam;
 class GDaemon;
 class GStage;
+class GAspect;
 
 class GStorageFactory : public GraphObject {
 public:
@@ -32,6 +33,7 @@ public:
             c_enable_if_t<std::is_base_of<GElement, T>::value
                          || std::is_base_of<GParam, T>::value
                          || std::is_base_of<GDaemon, T>::value
+                         || std::is_base_of<GAspect, T>::value
                          || std::is_base_of<GStage, T>::value
                          || std::is_base_of<GEvent, T>::value, int> = 0>
     static CVoid registerMetaType() {
@@ -56,9 +58,7 @@ private:
     friend class GStorage;
 };
 
-
 #define CGRAPH_REGISTER_META_TYPE(_CLZ) GStorageFactory::registerMetaType<_CLZ>();    \
-
 
 CGRAPH_NAMESPACE_END
 
