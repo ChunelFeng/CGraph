@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: Storage.cpp
 @Time: 2025/10/4 13:43
-@Desc: 本例子主要展示保存
+@Desc: 本例子主要展示保存pipeline 到本地，并且重新加载的功能
 ***************************/
 
 #include <iostream>

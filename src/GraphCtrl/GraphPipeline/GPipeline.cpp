@@ -324,16 +324,13 @@ CBool GPipeline::checkSeparate(GElementPtr fst, GElementPtr snd) const {
 
 CStatus GPipeline::save(const std::string& path) {
     CGRAPH_FUNCTION_BEGIN
-    std::set<std::string> names;
+    CGRAPH_ASSERT_INIT(false)
 
     // 不允许有同名的 element 被存储
     for (const auto* element : repository_.elements_) {
         CGRAPH_ASSERT_NOT_NULL(element)
         CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(element->isGAdaptor(),
                                                 element->name_ + " is GAdaptor, cannot be saved.")
-        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(names.find(element->name_) != names.end(),
-                                                element->name_ + " name is duplicated, cannot be saved.")
-        names.insert(element->name_);
     }
 
 #if __cplusplus >= 201703L
@@ -347,6 +344,8 @@ CStatus GPipeline::save(const std::string& path) {
 
 CStatus GPipeline::load(const std::string& path) {
     CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(false)
+
 #if __cplusplus >= 201703L
     status = GStorage::load(this, path);
 #else

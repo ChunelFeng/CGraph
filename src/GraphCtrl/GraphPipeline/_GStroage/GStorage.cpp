@@ -20,15 +20,16 @@ CGRAPH_INTERNAL_NAMESPACE_BEGIN
 UREFL_CREATE_STRUCT_TRAIT_INFO(_GElementStorage,
    UREFL_DECLARE_FIELD(_GElementStorage, name_, 1),
    UREFL_DECLARE_FIELD(_GElementStorage, loop_, 2),
-   UREFL_DECLARE_FIELD(_GElementStorage, dependence_, 3),
-   UREFL_DECLARE_FIELD(_GElementStorage, visible_, 4),
-   UREFL_DECLARE_FIELD(_GElementStorage, binding_index_, 5),
+   UREFL_DECLARE_FIELD(_GElementStorage, session_, 3),
+   UREFL_DECLARE_FIELD(_GElementStorage, dependence_sessions_, 4),
+   UREFL_DECLARE_FIELD(_GElementStorage, visible_, 5),
+   UREFL_DECLARE_FIELD(_GElementStorage, binding_index_, 6),
    UREFL_DECLARE_FIELD(_GElementStorage, level_, 7),
    UREFL_DECLARE_FIELD(_GElementStorage, timeout_, 8),
    UREFL_DECLARE_FIELD(_GElementStorage, timeout_strategy_, 9),
    UREFL_DECLARE_FIELD(_GElementStorage, is_marco_, 10),
    UREFL_DECLARE_FIELD(_GElementStorage, clz_name_, 11),
-   UREFL_DECLARE_FIELD(_GElementStorage, belong_name_, 12),
+   UREFL_DECLARE_FIELD(_GElementStorage, belong_session_, 12),
    UREFL_DECLARE_FIELD(_GElementStorage, element_type_, 13),
    UREFL_DECLARE_FIELD(_GElementStorage, children_, 14)
 )
@@ -157,25 +158,25 @@ CStatus GStorage::loadBuffer(GPipelinePtr pipeline, char* buffer, CSize size) {
         status = cur.recover(element);
         CGRAPH_FUNCTION_CHECK_STATUS
 
-        eleCache[cur.name_] = element;
+        eleCache[cur.session_] = element;
     }
 
     // 设定从属关系
     for (const auto& cur : storage.element_storages_) {
-        auto element = eleCache[cur.name_];
-        if (cur.belong_name_.empty()) {
+        auto element = eleCache[cur.session_];
+        if (cur.belong_session_.empty()) {
             pipeline->innerRegister(element, {}, cur.name_, cur.loop_);
         } else {
-            element->belong_ = eleCache[cur.belong_name_];
+            element->belong_ = eleCache[cur.belong_session_];
         }
     }
 
     // 设定依赖关系
     for (const auto& cur : storage.element_storages_) {
-        if (!cur.dependence_.empty()) {
-            auto element = eleCache[cur.name_];
+        if (!cur.dependence_sessions_.empty()) {
+            auto element = eleCache[cur.session_];
             GElementPtrSet depSet{};
-            for (const std::string& dep : cur.dependence_) {
+            for (const std::string& dep : cur.dependence_sessions_) {
                 depSet.insert(eleCache[dep]);
             }
             status += element->addDependGElements(depSet);
@@ -183,10 +184,10 @@ CStatus GStorage::loadBuffer(GPipelinePtr pipeline, char* buffer, CSize size) {
         }
 
         if (!cur.children_.empty()) {
-            GGroupPtr group = dynamic_cast<GGroupPtr>(eleCache[cur.name_]);
+            GGroupPtr group = dynamic_cast<GGroupPtr>(eleCache[cur.session_]);
             CGRAPH_ASSERT_NOT_NULL(group)
             for (const auto& child : cur.children_) {
-                group->addElement(eleCache[child.name_]);
+                group->addElement(eleCache[child.session_]);
             }
         }
     }

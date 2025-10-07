@@ -21,16 +21,17 @@ CGRAPH_NAMESPACE_BEGIN
 struct _GElementStorage : public CStruct {
     std::string name_ {};
     CSize loop_ { CGRAPH_DEFAULT_LOOP_TIMES };
+    std::string session_ {};
     CBool visible_ { true };
     CIndex binding_index_ { CGRAPH_DEFAULT_BINDING_INDEX };
     CLevel level_ { CGRAPH_DEFAULT_ELEMENT_LEVEL };
     CMSec timeout_ { CGRAPH_DEFAULT_ELEMENT_TIMEOUT };
     GElementTimeoutStrategy timeout_strategy_ { GElementTimeoutStrategy::AS_ERROR };
     CBool is_marco_ { false };
-    std::string belong_name_ {};
+    std::string belong_session_ {};
     GElementType element_type_ {};
     std::string clz_name_ {};        // 记录element 的真实类型信息
-    std::vector<std::string> dependence_ {};
+    std::vector<std::string> dependence_sessions_ {};
     std::vector<_GElementStorage> children_ {};
 
     explicit _GElementStorage() = default;
@@ -38,17 +39,18 @@ struct _GElementStorage : public CStruct {
     explicit _GElementStorage(GElementCPtr element) {
         name_ = element->getName();
         loop_ = element->getLoop();
+        session_ = element->getSession();
         visible_ = element->visible_;
-        binding_index_ = element->binding_index_;
+        binding_index_ = element->getBindingIndex();
         level_ = element->level_;
         timeout_ = element->timeout_;
         timeout_strategy_ = element->timeout_strategy_;
         is_marco_ = element->is_marco_;
-        belong_name_ = element->belong_ ? element->belong_->getName() : CGRAPH_EMPTY;
+        belong_session_ = element->belong_ ? element->belong_->getSession() : CGRAPH_EMPTY;
         element_type_ = element->element_type_;
         clz_name_ = typeid(*element).name();
         for (const auto* dep : element->dependence_) {
-            dependence_.emplace_back(dep->getName());
+            dependence_sessions_.emplace_back(dep->getSession());
         }
         for (const auto* child : element->getChildren()) {
             children_.emplace_back(child);
@@ -69,8 +71,6 @@ struct _GElementStorage : public CStruct {
         element->setVisible(visible_);
         element->setLevel(level_);
         element->setTimeout(timeout_, timeout_strategy_);
-        element->setMacro(is_marco_);
-
         if (element->isGNode()) {
             element->setMacro(is_marco_);
         }
