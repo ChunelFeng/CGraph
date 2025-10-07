@@ -19,6 +19,26 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
+struct _GEventStorage : public CStruct {
+    explicit _GEventStorage() = default;
+    explicit _GEventStorage(const std::string& key, const std::string& clz) {
+        key_ = key;
+        event_clz_name_ = clz;
+    }
+
+    std::string key_ {};
+    std::string event_clz_name_ {};
+};
+
+struct _GAspectStorage : public CStruct {
+    explicit _GAspectStorage() = default;
+    explicit _GAspectStorage(const std::string& clz) {
+        aspect_clz_name_ = clz;
+    }
+
+    std::string aspect_clz_name_ {};
+};
+
 struct _GElementStorage : public CStruct {
     std::string name_ {};
     CSize loop_ { CGRAPH_DEFAULT_LOOP_TIMES };
@@ -34,6 +54,7 @@ struct _GElementStorage : public CStruct {
     std::string clz_name_ {};        // 记录element 的真实类型信息
     std::vector<std::string> dependence_sessions_ {};
     std::vector<_GElementStorage> children_ {};
+    std::vector<_GAspectStorage> aspect_storages_ {};
 
     explicit _GElementStorage() = default;
 
@@ -55,6 +76,11 @@ struct _GElementStorage : public CStruct {
         }
         for (const auto* child : element->getChildren()) {
             children_.emplace_back(child);
+        }
+        if (element->aspect_manager_) {
+            for (const auto* aspect : element->aspect_manager_->aspect_arr_) {
+                aspect_storages_.emplace_back(typeid(*aspect).name());
+            }
         }
     }
 
@@ -81,17 +107,6 @@ struct _GElementStorage : public CStruct {
     }
 
     friend class GStorage;
-};
-
-struct _GEventStorage : public CStruct {
-    explicit _GEventStorage() = default;
-    explicit _GEventStorage(const std::string& key, const std::string& clz) {
-        key_ = key;
-        event_clz_name_ = clz;
-    }
-
-    std::string key_ {};
-    std::string event_clz_name_ {};
 };
 
 struct _GPipelineStorage : public CStruct {
