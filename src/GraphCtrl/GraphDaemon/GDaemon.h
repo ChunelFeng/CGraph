@@ -45,6 +45,7 @@ private:
 
     friend class GDaemonManager;
     friend class GPipeline;
+    friend class GStorage;
 
 private:
     UTimer timer_;                              // 计时器

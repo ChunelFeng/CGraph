@@ -23,20 +23,57 @@ struct _GEventStorage : public CStruct {
     explicit _GEventStorage() = default;
     explicit _GEventStorage(const std::string& key, const std::string& clz) {
         key_ = key;
-        event_clz_name_ = clz;
+        clz_name_ = clz;
     }
 
     std::string key_ {};
-    std::string event_clz_name_ {};
+    std::string clz_name_ {};
 };
 
 struct _GAspectStorage : public CStruct {
     explicit _GAspectStorage() = default;
     explicit _GAspectStorage(const std::string& clz) {
-        aspect_clz_name_ = clz;
+        clz_name_ = clz;
     }
 
-    std::string aspect_clz_name_ {};
+    std::string clz_name_ {};
+};
+
+struct _GDaemonStorage : public CStruct {
+    explicit _GDaemonStorage() = default;
+    explicit _GDaemonStorage(CMSec msec, const std::string& clz) {
+        msec_ = msec;
+        clz_name_ = clz;
+    }
+
+    CMSec msec_ {0};
+    std::string clz_name_ {};
+};
+
+struct _GStageStorage : public CStruct {
+    explicit _GStageStorage() = default;
+    explicit _GStageStorage(const std::string& key, CInt threshold, const std::string& clz) {
+        key_ = key;
+        threshold_ = threshold;
+        clz_name_ = clz;
+    }
+
+    std::string key_ {};
+    CInt threshold_ {0};
+    std::string clz_name_ {};
+};
+
+struct _GParamStorage : public CStruct {
+    explicit _GParamStorage() = default;
+    explicit _GParamStorage(const std::string& key, CBool backtrace, const std::string& clz) {
+        key_ = key;
+        backtrace_ = backtrace;
+        clz_name_ = clz;
+    }
+
+    std::string key_ {};
+    std::string clz_name_ {};
+    CBool backtrace_ { false };
 };
 
 struct _GElementStorage : public CStruct {
@@ -112,6 +149,9 @@ struct _GElementStorage : public CStruct {
 struct _GPipelineStorage : public CStruct {
     std::vector<_GElementStorage> element_storages_ {};       // 记录pipeline中所有 element 的信息
     std::vector<_GEventStorage> event_storages_ {};           // 记录pipeline中所有 event 的信息
+    std::vector<_GParamStorage> param_storages_ {};           // 记录pipeline中所有 gparam 的信息
+    std::vector<_GDaemonStorage> daemon_storages_ {};         // 记录pipeline中所有 daemon 的信息
+    std::vector<_GStageStorage> stage_storages_ {};           // 记录pipeline中所有 stage 的信息
     UThreadPoolConfig thread_pool_config_ {};                 // 记录线程池配置信息
 };
 

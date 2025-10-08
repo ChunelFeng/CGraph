@@ -84,6 +84,7 @@ private:
 
     friend class GPipeline;
     friend class CAllocator;
+    friend class GStorage;
 
 public:
     /// 为 python 版本设定的函数，cpp 的童鞋不需要使用
