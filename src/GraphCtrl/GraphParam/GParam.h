@@ -91,6 +91,7 @@ private:
     USpinLock backtrace_lock_;                                   // 针对backtrace的自旋锁
 
     friend class GParamManager;
+    friend class GStorage;
 };
 
 using GParamPtr = GParam *;

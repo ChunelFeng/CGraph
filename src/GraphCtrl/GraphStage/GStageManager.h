@@ -93,6 +93,7 @@ private:
 
     friend class GPipeline;
     friend class GElement;
+    friend class GStorage;
 
 private:
     CStatus __create_4py(GStagePtr stage, const std::string& key, CInt threshold) {

@@ -67,6 +67,7 @@ private:
     friend class GDaemon;
     friend class GDaemonManager;
     friend class GPipeline;
+    friend class GStorage;
 
 private:
     GParamManagerPtr param_manager_ = nullptr;                 // GParam参数管理类

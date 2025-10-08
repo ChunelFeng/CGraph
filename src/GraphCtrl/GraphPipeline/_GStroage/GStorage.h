@@ -17,7 +17,6 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class GPipeline;
-class GElement;
 
 class GStorage : public GraphObject {
 protected:
@@ -43,6 +42,22 @@ protected:
 
 private:
     /**
+     * 构建 pipeline storage
+     * @param pipeline
+     * @param storage
+     * @return
+     */
+    static CStatus buildPipelineStorage(GPipeline* pipeline, _GPipelineStorage& storage);
+
+    /**
+     * 将 storage 存储到 buffer 中
+     * @param storage
+     * @param path
+     * @return
+     */
+    static CStatus saveBuffer(const _GPipelineStorage& storage, const std::string& path);
+
+    /**
      * 从 buffer 中加载并还原pipeline 数据信息
      * @param pipeline
      * @param buffer
@@ -50,10 +65,11 @@ private:
      * @return
      */
     static CStatus loadBuffer(GPipeline* pipeline, char* buffer, CSize size);
-
     static CStatus loadElement(GPipeline* pipeline, const _GPipelineStorage& storage);
-
     static CStatus loadEvent(GPipeline* pipeline, const _GPipelineStorage& storage);
+    static CStatus loadParam(GPipeline* pipeline, const _GPipelineStorage& storage);
+    static CStatus loadDaemon(GPipeline* pipeline, const _GPipelineStorage& storage);
+    static CStatus loadStage(GPipeline* pipeline, const _GPipelineStorage& storage);
 
     static CStatus loadAspect(GElementPtr element, const std::vector<_GAspectStorage>& aspStorages);
 

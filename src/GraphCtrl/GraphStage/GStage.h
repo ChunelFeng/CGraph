@@ -68,6 +68,7 @@ private:
     friend class GStageManager;
     friend class CAllocator;
     friend class GPipeline;
+    friend class GStorage;
 };
 
 using GStagePtr = GStage *;

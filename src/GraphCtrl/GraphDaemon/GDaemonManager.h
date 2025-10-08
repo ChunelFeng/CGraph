@@ -35,6 +35,7 @@ protected:
 
     friend class GPipeline;
     friend class CAllocator;
+    friend class GStorage;
     CGRAPH_NO_ALLOWED_COPY(GDaemonManager)
 
 private:
