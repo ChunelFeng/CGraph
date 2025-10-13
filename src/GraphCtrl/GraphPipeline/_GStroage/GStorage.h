@@ -21,6 +21,7 @@ class GPipeline;
 class GStorage : public GraphObject {
 protected:
     explicit GStorage() = default;
+    ~GStorage() override = default;
 
     /**
      * 保存
@@ -65,12 +66,53 @@ private:
      * @return
      */
     static CStatus loadBuffer(GPipeline* pipeline, char* buffer, CSize size);
+
+    /**
+     * 加载 element 信息
+     * @param pipeline
+     * @param storage
+     * @return
+     */
     static CStatus loadElement(GPipeline* pipeline, const _GPipelineStorage& storage);
+
+    /**
+     * 加载 event 信息
+     * @param pipeline
+     * @param storage
+     * @return
+     */
     static CStatus loadEvent(GPipeline* pipeline, const _GPipelineStorage& storage);
+
+    /**
+     * 加载 GParam 信息
+     * @param pipeline
+     * @param storage
+     * @return
+     */
     static CStatus loadParam(GPipeline* pipeline, const _GPipelineStorage& storage);
+
+    /**
+     *
+     * @param pipeline
+     * @param storage
+     * @return
+     */
     static CStatus loadDaemon(GPipeline* pipeline, const _GPipelineStorage& storage);
+
+    /**
+     * 加载 stage 信息
+     * @param pipeline
+     * @param storage
+     * @return
+     */
     static CStatus loadStage(GPipeline* pipeline, const _GPipelineStorage& storage);
 
+    /**
+     * 加载 aspect 信息
+     * @param element
+     * @param aspStorages
+     * @return
+     */
     static CStatus loadAspect(GElementPtr element, const std::vector<_GAspectStorage>& aspStorages);
 
     friend class GPipeline;

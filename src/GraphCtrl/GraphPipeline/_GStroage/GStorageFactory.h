@@ -58,7 +58,8 @@ private:
     friend class GStorage;
 };
 
-#define CGRAPH_REGISTER_META_TYPE(_CLZ) GStorageFactory::registerMetaType<_CLZ>();    \
+#define CGRAPH_REGISTER_META_TYPE(...) \
+    do { GStorageFactory::registerMetaType<__VA_ARGS__>(); } while (0) \
 
 CGRAPH_NAMESPACE_END
 
