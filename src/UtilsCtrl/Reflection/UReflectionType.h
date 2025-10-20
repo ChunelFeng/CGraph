@@ -44,14 +44,6 @@ using type = typename std::decay_t<T>::value_type;
 template<typename T>
 using container_element_t = typename container_element_type<T>::type;
 
-
-enum UReflWireType : CUChar {
-    kUReflDefault = 0,
-    kUReflLengthDelimited = 2,
-    kUReflFixed32 = 5,
-};
-
-constexpr static size_t kUReflWireTypeSize = sizeof(UReflWireType);
 constexpr static size_t kUReflIdTypeSize = sizeof(UReflIdType);
 constexpr static size_t kUReflSizeTTypeSize = sizeof(size_t);
 
@@ -60,20 +52,17 @@ struct UReflEnum : public CStruct {
     static constexpr size_t kEnumLen = sizeof(ET);
 
     static void reflGetSize(UReflSession &session, const ET &value) {
-        session.addLen(kUReflIdTypeSize + kUReflWireTypeSize + kEnumLen);
+        session.addLen(kUReflIdTypeSize + kEnumLen);
     }
 
     static void reflRead(UReflSession &session, ET &value) {
         UReflIdType id = 0;
         session.getValueAndOffset(id);
-        UReflWireType type;
-        session.getValueAndOffset(type);
         session.getValueAndOffset(value);
     }
 
     static void reflWrite(UReflSession &session, const ET &value, UReflIdType id) {
         session.setValueAndOffset(id);
-        session.setValueAndOffset(UReflWireType::kUReflFixed32);
         session.setValueAndOffset(value);
     }
 };
@@ -81,14 +70,12 @@ struct UReflEnum : public CStruct {
 
 struct UReflString : public CStruct {
     static void reflGetSize(UReflSession &session, const std::string &value) {
-        session.addLen(kUReflIdTypeSize + kUReflWireTypeSize + kUReflSizeTTypeSize + value.size());
+        session.addLen(kUReflIdTypeSize + kUReflSizeTTypeSize + value.size());
     }
 
     static void reflRead(UReflSession &session, std::string &value) {
         UReflIdType id = 0;
         session.getValueAndOffset(id);
-        UReflWireType type;
-        session.getValueAndOffset(type);
 
         size_t len = 0;
         session.getValueAndOffset(len);
@@ -97,7 +84,6 @@ struct UReflString : public CStruct {
 
     static void reflWrite(UReflSession &session, const std::string &value, UReflIdType id) {
         session.setValueAndOffset(id);
-        session.setValueAndOffset(UReflWireType::kUReflLengthDelimited);
         const size_t &len = value.size();
         session.setValueAndOffset(len);
         session.setBufferAndOffset((CUCharPtr) (value.data()), len);
@@ -111,20 +97,17 @@ struct UReflFundamental : public CStruct  {
 
     struct type {
         static void reflGetSize(UReflSession &session, const T &value) {
-            session.addLen(kUReflIdTypeSize + kUReflWireTypeSize + kFundamentalTypeLen);
+            session.addLen(kUReflIdTypeSize + kFundamentalTypeLen);
         }
 
         static void reflRead(UReflSession &session, T &value) {
             UReflIdType id = 0;
             session.getValueAndOffset(id);
-            UReflWireType type;
-            session.getValueAndOffset(type);
             session.getValueAndOffset(value);
         }
 
         static void reflWrite(UReflSession &session, const T &value, UReflIdType id) {
             session.setValueAndOffset(id);
-            session.setValueAndOffset(UReflWireType::kUReflFixed32);
             session.setValueAndOffset(value);
         }
     };
@@ -140,7 +123,7 @@ void reflGetSize(UReflSession &session, const T &value) {
     } else if constexpr (is_string_v<T>) {
         UReflString::reflGetSize(session, value);
     } else if constexpr (is_vector_container_v<T>) {
-        session.addLen(kUReflIdTypeSize + kUReflWireTypeSize + kUReflSizeTTypeSize);
+        session.addLen(kUReflIdTypeSize + kUReflSizeTTypeSize);
         for (const auto &elem: value) {
             reflGetSize(session, elem);
         }
@@ -165,7 +148,6 @@ void reflWrite(UReflSession &session, const T &value, UReflIdType id = 0) {
         UReflString::reflWrite(session, value, id);
     } else if constexpr (is_vector_container_v<T>) {
         session.setValueAndOffset(id);
-        session.setValueAndOffset(UReflWireType::kUReflLengthDelimited);
 
         size_t cur_offset = session.getCurrentOffset();
         CUCharPtr origin_pos = session.getCurrentPos();
@@ -200,8 +182,6 @@ void reflRead(UReflSession &session, T &value) {
     } else if constexpr (is_vector_container_v<T>) {
         UReflIdType id = 0;
         session.getValueAndOffset(id);
-        UReflWireType type;
-        session.getValueAndOffset(type);
 
         size_t size = 0;
         session.getValueAndOffset(size);
