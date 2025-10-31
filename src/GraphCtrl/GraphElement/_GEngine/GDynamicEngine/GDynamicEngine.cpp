@@ -22,7 +22,7 @@ CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
                                             "it is not a dag struct");
     mark(elements);
     calcShape(elements);
-    analysisDagType(elements);
+    analysisDagType();
     CGRAPH_FUNCTION_END
 }
 
@@ -81,7 +81,7 @@ CVoid GDynamicEngine::mark(const GSortedGElementPtrSet& elements) {
 }
 
 
-CVoid GDynamicEngine::analysisDagType(const GSortedGElementPtrSet& elements) {
+CVoid GDynamicEngine::analysisDagType() {
     if (total_element_arr_.empty()
        || (front_element_arr_.size() == 1 && total_element_arr_.size() - 1 == linked_size_)) {
         /**

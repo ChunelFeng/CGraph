@@ -34,7 +34,7 @@ protected:
      * 分析当前的信息，主要用于区分dag的类型
      * @return
      */
-    CVoid analysisDagType(const GSortedGElementPtrSet& elements);
+    CVoid analysisDagType();
 
     /**
      * 解析纯并行的情况下，元素矩阵
