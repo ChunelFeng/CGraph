@@ -207,6 +207,15 @@ CVoid GDynamicEngine::fatWait() {
          */
         return (finished_end_size_ >= total_end_size_) || cur_status_.isErr();
     });
+    
+    // 状态异常的情况下刷新所有element，避免错误的中间状态被带入下一次process
+    if (cur_status_.isErr())
+    {
+        for (auto &e : total_element_arr_)
+        {
+            e->refresh();
+        }
+    }
 }
 
 
