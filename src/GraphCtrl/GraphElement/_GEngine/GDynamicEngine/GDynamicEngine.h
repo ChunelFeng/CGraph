@@ -97,6 +97,12 @@ protected:
      */
     CVoid serialRunAll();
 
+    /**
+     * 执行运行前的准备工作
+     * @return
+     */
+    CVoid prepareRun();
+
 private:
     GElementPtrArr total_element_arr_ {};                                                // pipeline中所有的元素信息集合
     GElementPtrArr front_element_arr_ {};                                                // 没有依赖的元素信息

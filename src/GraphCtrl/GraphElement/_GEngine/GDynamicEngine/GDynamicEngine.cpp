@@ -28,7 +28,7 @@ CStatus GDynamicEngine::setup(const GSortedGElementPtrSet& elements) {
 
 
 CStatus GDynamicEngine::run() {
-    cur_status_.reset();
+    prepareRun();
 
     switch (dag_type_) {
         case internal::GEngineDagType::COMMON:
@@ -207,13 +207,6 @@ CVoid GDynamicEngine::fatWait() {
          */
         return (finished_end_size_ >= total_end_size_) || cur_status_.isErr();
     });
-
-    // 状态异常的情况下刷新所有element，避免错误的中间状态被带入下一次process
-    if (unlikely(cur_status_.isErr())) {
-        for (auto* element : total_element_arr_) {
-            element->refresh();
-        }
-    }
 }
 
 
@@ -304,6 +297,17 @@ CVoid GDynamicEngine::serialRunAll() {
             break;
         }
         cur = *(cur->run_before_.begin());
+    }
+}
+
+
+CVoid GDynamicEngine::prepareRun() {
+    if (unlikely(!cur_status_.isOK())) {
+        // 状态异常的情况下刷新所有element，避免错误的中间状态被带入下一次process
+        for (auto* element : total_element_arr_) {
+            element->refresh();
+        }
+        cur_status_.reset();
     }
 }
 
