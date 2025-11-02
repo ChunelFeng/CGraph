@@ -19,7 +19,11 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-struct _GEventStorage : public CStruct {
+struct _GStorageBasic : public CStruct {
+    std::string clz_name_ {};
+};
+
+struct _GEventStorage : public _GStorageBasic {
     explicit _GEventStorage() = default;
     explicit _GEventStorage(const std::string& key, const std::string& clz) {
         key_ = key;
@@ -27,19 +31,16 @@ struct _GEventStorage : public CStruct {
     }
 
     std::string key_ {};
-    std::string clz_name_ {};
 };
 
-struct _GAspectStorage : public CStruct {
+struct _GAspectStorage : public _GStorageBasic {
     explicit _GAspectStorage() = default;
     explicit _GAspectStorage(const std::string& clz) {
         clz_name_ = clz;
     }
-
-    std::string clz_name_ {};
 };
 
-struct _GDaemonStorage : public CStruct {
+struct _GDaemonStorage : public _GStorageBasic {
     explicit _GDaemonStorage() = default;
     explicit _GDaemonStorage(CMSec msec, const std::string& clz) {
         msec_ = msec;
@@ -47,10 +48,9 @@ struct _GDaemonStorage : public CStruct {
     }
 
     CMSec msec_ {0};
-    std::string clz_name_ {};
 };
 
-struct _GStageStorage : public CStruct {
+struct _GStageStorage : public _GStorageBasic {
     explicit _GStageStorage() = default;
     explicit _GStageStorage(const std::string& key, CInt threshold, const std::string& clz) {
         key_ = key;
@@ -60,23 +60,30 @@ struct _GStageStorage : public CStruct {
 
     std::string key_ {};
     CInt threshold_ {0};
-    std::string clz_name_ {};
 };
 
-struct _GParamStorage : public CStruct {
+struct _GParamStorage : public _GStorageBasic {
     explicit _GParamStorage() = default;
     explicit _GParamStorage(const std::string& key, CBool backtrace, const std::string& clz) {
         key_ = key;
         backtrace_ = backtrace;
+    }
+
+    std::string key_ {};
+    CBool backtrace_ { false };
+};
+
+struct _GPassedParamStorage : public _GStorageBasic {
+    explicit _GPassedParamStorage() = default;
+    explicit _GPassedParamStorage(const std::string& key, const std::string& clz) {
+        key_ = key;
         clz_name_ = clz;
     }
 
     std::string key_ {};
-    std::string clz_name_ {};
-    CBool backtrace_ { false };
 };
 
-struct _GElementStorage : public CStruct {
+struct _GElementStorage : public _GStorageBasic {
     std::string name_ {};
     CSize loop_ { CGRAPH_DEFAULT_LOOP_TIMES };
     std::string session_ {};
@@ -92,6 +99,7 @@ struct _GElementStorage : public CStruct {
     std::vector<std::string> dependence_sessions_ {};
     std::vector<_GElementStorage> children_ {};
     std::vector<_GAspectStorage> aspect_storages_ {};
+    std::vector<_GPassedParamStorage> eparam_storages_ {};
 
     explicit _GElementStorage() = default;
 
@@ -118,6 +126,9 @@ struct _GElementStorage : public CStruct {
             for (const auto* aspect : element->aspect_manager_->aspect_arr_) {
                 aspect_storages_.emplace_back(typeid(*aspect).name());
             }
+        }
+        for (const auto& lp : element->local_params_) {
+            eparam_storages_.emplace_back(lp.first, typeid(*(lp.second)).name());
         }
     }
 

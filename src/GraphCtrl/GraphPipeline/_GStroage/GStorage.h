@@ -115,6 +115,14 @@ private:
      */
     static CStatus loadAspect(GElementPtr element, const std::vector<_GAspectStorage>& aspStorages);
 
+    /**
+     * 加载 eparam 信息
+     * @param element
+     * @param psdParamStorages
+     * @return
+     */
+    static CStatus loadEParam(GElementPtr element, const std::vector<_GPassedParamStorage>& psdParamStorages);
+
     friend class GPipeline;
 };
 

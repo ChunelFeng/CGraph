@@ -21,6 +21,7 @@ class GParam;
 class GDaemon;
 class GStage;
 class GAspect;
+class GPassedParam;
 
 class GStorageFactory : public GraphObject {
 public:
@@ -31,11 +32,12 @@ public:
      */
     template<typename T,
             c_enable_if_t<std::is_base_of<GElement, T>::value
-                         || std::is_base_of<GParam, T>::value
-                         || std::is_base_of<GDaemon, T>::value
-                         || std::is_base_of<GAspect, T>::value
-                         || std::is_base_of<GStage, T>::value
-                         || std::is_base_of<GEvent, T>::value, int> = 0>
+                          || std::is_base_of<GParam, T>::value
+                          || std::is_base_of<GDaemon, T>::value
+                          || std::is_base_of<GAspect, T>::value
+                          || std::is_base_of<GStage, T>::value
+                          || std::is_base_of<GPassedParam, T>::value
+                          || std::is_base_of<GEvent, T>::value, int> = 0>
     static CVoid registerMetaType() {
         const char* key = typeid(T).name();
         meta_types_[key] = []() { return CAllocator::safeMallocCObject<T>(); };

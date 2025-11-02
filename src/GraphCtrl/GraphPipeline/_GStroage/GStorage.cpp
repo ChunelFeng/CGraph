@@ -42,6 +42,11 @@ UREFL_CREATE_STRUCT_TRAIT_INFO(_GParamStorage,
     UREFL_DECLARE_FIELD(_GParamStorage, clz_name_, 2)
 )
 
+UREFL_CREATE_STRUCT_TRAIT_INFO(_GPassedParamStorage,
+    UREFL_DECLARE_FIELD(_GPassedParamStorage, key_, 1),
+    UREFL_DECLARE_FIELD(_GPassedParamStorage, clz_name_, 2)
+)
+
 UREFL_CREATE_STRUCT_TRAIT_INFO(_GElementStorage,
     UREFL_DECLARE_FIELD(_GElementStorage, name_, 1),
     UREFL_DECLARE_FIELD(_GElementStorage, loop_, 2),
@@ -57,7 +62,8 @@ UREFL_CREATE_STRUCT_TRAIT_INFO(_GElementStorage,
     UREFL_DECLARE_FIELD(_GElementStorage, belong_session_, 12),
     UREFL_DECLARE_FIELD(_GElementStorage, element_type_, 13),
     UREFL_DECLARE_FIELD(_GElementStorage, children_, 14),
-    UREFL_DECLARE_FIELD(_GElementStorage, aspect_storages_, 15)
+    UREFL_DECLARE_FIELD(_GElementStorage, aspect_storages_, 15),
+    UREFL_DECLARE_FIELD(_GElementStorage, eparam_storages_, 16)
 )
 
 UREFL_CREATE_STRUCT_TRAIT_INFO(UThreadPoolConfig,
@@ -266,6 +272,7 @@ CStatus GStorage::loadElement(GPipelinePtr pipeline, const _GPipelineStorage& st
         }
 
         status += loadAspect(element, cur.aspect_storages_);
+        status += loadEParam(element, cur.eparam_storages_);
         CGRAPH_FUNCTION_CHECK_STATUS
     }
 
@@ -381,6 +388,21 @@ CStatus GStorage::loadAspect(GElementPtr element, const std::vector<_GAspectStor
                                                     gas.clz_name_ + " type create aspect failed.");
             element->aspect_manager_->add(aspect);
         }
+    }
+
+    CGRAPH_FUNCTION_END
+}
+
+
+CStatus GStorage::loadEParam(GElementPtr element, const std::vector<_GPassedParamStorage>& psdParamStorages) {
+    CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_NOT_NULL(element)
+
+    for (const auto& pps : psdParamStorages) {
+        GPassedParamPtr ep = dynamic_cast<GPassedParamPtr>(GStorageFactory::createByType(pps.clz_name_));
+        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!ep,
+                                                pps.clz_name_ + " type create passed param failed.");
+        element->local_params_[pps.key_] = ep;
     }
 
     CGRAPH_FUNCTION_END
