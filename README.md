@@ -411,7 +411,7 @@ if __name__ == '__main__':
 * 优化 `message` 功能
 * 优化 `aspect` 功能
 
-[2025.11.07 - v3.2.1 - Chunel]
+[2025.11.08 - v3.2.1 - Chunel]
 * 提供 本地保存和加载 功能
 * 修改 `PyCGraph` 为 `pycgraph`，支持 `pip3 install pycgraph` 安装
 
