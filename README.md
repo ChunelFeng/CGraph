@@ -3,7 +3,7 @@
   <a href="https://github.com/ChunelFeng/CGraph"><img src="https://badgen.net/badge/os/MacOS,Linux,Windows/cyan?list=1" alt="os"></a>
   <a href="https://github.com/ChunelFeng/CGraph/stargazers"><img src="https://badgen.net/github/stars/ChunelFeng/CGraph?color=cyan" alt="stars"></a>
   <a href="https://github.com/ChunelFeng/CGraph/network/members"><img src="https://badgen.net/github/forks/ChunelFeng/CGraph?color=cyan" alt="forks"></a>
-  <a href="https://badge.fury.io/py/PyCGraph"><img src="https://badge.fury.io/py/PyCGraph.svg" alt="pypi"></a>
+  <a href="https://badge.fury.io/py/pycgraph"><img src="https://badge.fury.io/py/pycgraph.svg" alt="pypi"></a>
   <a href="https://pepy.tech/projects/pycgraph"><img src="https://static.pepy.tech/personalized-badge/pycgraph?period=total&units=INTERNATIONAL_SYSTEM&left_color=GRAY&right_color=GREEN&left_text=pypi+downloads" alt="PyPI Downloads"></a>
   <a href="https://www.codefactor.io/repository/github/chunelfeng/cgraph/overview/main"><img src="https://www.codefactor.io/repository/github/chunelfeng/cgraph/badge/main" alt="CodeFactor" /></a>
 </p>
@@ -30,7 +30,7 @@
 ![CGraph Skeleton](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Skeleton.jpg)
 <br>
 
-本工程使用纯C++11标准库编写，无任何第三方依赖，兼容`MacOS`、`Linux`、`Windows`和`Android`系统。支持本地编译和二次开发，并且提供`Python`版本：`PyCGraph`。编译和安装方法，请参考 [CGraph 编译说明](https://github.com/ChunelFeng/CGraph/blob/main/COMPILE.md ) <br>
+本工程使用纯C++11标准库编写，无任何第三方依赖，兼容`MacOS`、`Linux`、`Windows`和`Android`系统。支持本地编译和二次开发，并且提供`Python`版本：`pycgraph`。编译和安装方法，请参考 [CGraph 编译说明](https://github.com/ChunelFeng/CGraph/blob/main/COMPILE.md ) <br>
 
 详细功能介绍和用法，请参考 [一面之猿网](http://www.chunel.cn/) 中的文章内容。相关视频在B站持续更新中，欢迎观看和交流：<br>
 * [【B站视频】CGraph 入门篇](https://www.bilibili.com/video/BV1mk4y1v7XJ) <br>
@@ -101,7 +101,7 @@ int main() {
 import time
 from datetime import datetime
 
-from PyCGraph import GNode, GPipeline, CStatus
+from pycgraph import GNode, GPipeline, CStatus
 
 
 class MyNode1(GNode):
@@ -411,8 +411,9 @@ if __name__ == '__main__':
 * 优化 `message` 功能
 * 优化 `aspect` 功能
 
-[2025.11.02 - v3.2.0 - Chunel]
+[2025.11.07 - v3.2.1 - Chunel]
 * 提供 本地保存和加载 功能
+* 修改 `PyCGraph` 为 `pycgraph`，支持 `pip3 install pycgraph` 安装
 
 </details>
 

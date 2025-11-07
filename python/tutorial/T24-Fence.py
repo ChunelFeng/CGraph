@@ -6,7 +6,7 @@
 @Desc: 
 """
 
-from PyCGraph import GPipeline, GFence, GElementTimeoutStrategy
+from pycgraph import GPipeline, GFence, GElementTimeoutStrategy
 
 from MyGNode.MyNode1 import MyNode1
 from MyGNode.MyNode2 import MyNode2

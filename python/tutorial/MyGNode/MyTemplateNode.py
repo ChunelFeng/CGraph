@@ -6,7 +6,7 @@
 @Desc: 
 """
 
-from PyCGraph import GNode, CStatus
+from pycgraph import GNode, CStatus
 
 
 class MyTemplateNode(GNode):

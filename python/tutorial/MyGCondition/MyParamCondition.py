@@ -7,7 +7,7 @@
 """
 
 
-from PyCGraph import GCondition, GElementRelation
+from pycgraph import GCondition, GElementRelation
 
 from MyParams.MyParam import MyParam
 

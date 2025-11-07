@@ -10,7 +10,7 @@ import glob
 from setuptools import setup, Extension
 import pybind11
 
-__PYCGRAPH_NAME__ = "PyCGraph"
+__PYCGRAPH_NAME__ = "pycgraph"
 __PYCGRAPH_VERSION__ = "3.2.0"
 __PYCGRAPH_AUTHOR__ = "Chunel"
 __PYCGRAPH_AUTHOR_EMAIL__ = "chunel@foxmail.com"

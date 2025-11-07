@@ -6,7 +6,7 @@
 @Desc: 
 """
 
-from PyCGraph import GDaemon
+from pycgraph import GDaemon
 
 from MyParams.MyParam import MyParam
 

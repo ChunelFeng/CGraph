@@ -13,4 +13,4 @@ for file in *.py; do
     echo " "
 done
 
-echo -e "\033[34m congratulations, automatic run PyCGraph tutorials finish... \033[0m"
+echo -e "\033[34m congratulations, automatic run pycgraph tutorials finish... \033[0m"

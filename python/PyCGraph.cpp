@@ -16,7 +16,7 @@
 using namespace CGraph;
 namespace py = pybind11;
 
-PYBIND11_MODULE(PyCGraph, cg) {
+PYBIND11_MODULE(pycgraph, cg) {
     cg.doc() = "CGraph with python api, github: https://github.com/ChunelFeng/CGraph";
 
     py::class_<UThreadPoolConfig>(cg, "UThreadPoolConfig")

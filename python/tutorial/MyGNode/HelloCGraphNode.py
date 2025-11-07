@@ -6,9 +6,9 @@
 @Desc: 
 """
 
-from PyCGraph import GNode, CStatus
+from pycgraph import GNode, CStatus
 
 class HelloCGraphNode(GNode):
     def run(self):
-        print("Hello, PyCGraph.")
+        print("Hello, pycgraph.")
         return CStatus()

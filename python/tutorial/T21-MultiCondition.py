@@ -6,7 +6,7 @@
 @Desc: 
 """
 
-from PyCGraph import GPipeline, GSerialMultiCondition, GParallelMultiCondition
+from pycgraph import GPipeline, GSerialMultiCondition, GParallelMultiCondition
 
 from MyGNode.MyMatchNode import MyMatchNode
 from MyGNode.MyNode1 import MyNode1

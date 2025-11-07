@@ -8,7 +8,7 @@
 
 import time
 
-from PyCGraph import GAspect, CStatus
+from pycgraph import GAspect, CStatus
 
 class MyTimerAspect(GAspect):
     _start_time = None

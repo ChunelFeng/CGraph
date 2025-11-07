@@ -6,7 +6,7 @@
 @Desc: 
 """
 
-from PyCGraph import GParam, CStatus
+from pycgraph import GParam, CStatus
 
 class MyParam(GParam):
     value = 0

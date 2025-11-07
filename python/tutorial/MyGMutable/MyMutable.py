@@ -8,7 +8,7 @@
 
 from typing import List
 
-from PyCGraph import GMutable, CStatus, GElement
+from pycgraph import GMutable, CStatus, GElement
 
 from MyParams.MyParam import MyParam
 

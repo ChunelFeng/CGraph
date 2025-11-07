@@ -6,7 +6,7 @@
 @Desc: 
 """
 
-from PyCGraph import GPipeline, GStage
+from pycgraph import GPipeline, GStage
 
 from MyGNode.MyNode1 import MyNode1
 from MyGNode.MyStageNode import MyStageNode

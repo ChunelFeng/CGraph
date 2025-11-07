@@ -6,7 +6,7 @@
 @Desc: 
 """
 
-from PyCGraph import GNode, CStatus
+from pycgraph import GNode, CStatus
 
 from MyParams.MyParam import MyParam
 

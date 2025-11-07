@@ -9,7 +9,8 @@
 import time
 from datetime import datetime
 
-from PyCGraph import GNode, CStatus
+from pycgraph import GNode, CStatus
+
 
 class MyStageNode(GNode):
     def __init__(self, before: int, after: int):

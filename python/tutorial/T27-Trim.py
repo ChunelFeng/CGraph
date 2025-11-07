@@ -7,7 +7,7 @@
 """
 
 
-from PyCGraph import GPipeline
+from pycgraph import GPipeline
 
 from MyGNode.MyNode1 import MyNode1
 from MyGNode.MyNode2 import MyNode2

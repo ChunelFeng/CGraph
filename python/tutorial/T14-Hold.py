@@ -6,7 +6,7 @@
 @Desc: 
 """
 
-from PyCGraph import GPipeline
+from pycgraph import GPipeline
 
 from MyGNode.MyHoldNode import MyHoldNode
 from MyGNode.MyNode1 import MyNode1

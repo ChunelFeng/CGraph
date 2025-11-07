@@ -80,10 +80,10 @@
 ---
 
 ### Python 版本
-* MacOS 和 Windows 用户可以通过命令安装（推荐）
+* 通过`pip`命令安装（推荐）
   ```shell
-  $ pip3 install PyCGraph                  # 直接通过 pip3 安装
-  $ python3 -c "import PyCGraph"           # 验证 PyCGraph 成功安装
+  $ pip3 install pycgraph                  # 直接通过 pip3 安装
+  $ python3 -c "import pycgraph"           # 验证 pycgraph 成功安装
   ```
 
 * 通过源码安装(Linux/MacOS/Windows)，使用前需要提前安装`python3` `pybind11`和`setuptools`
@@ -92,21 +92,21 @@
   $ git clone https://github.com/ChunelFeng/CGraph.git
   $ cd CGraph/python                       # 进入对应文件夹
   $ python3 setup.py bdist_wheel           # 生成 *.whl 安装包
-  $ pip3 install dist/PyCGraph-xxx.whl     # 安装 *.whl 安装包，xxx 信息与版本和系统有关
-  $ python3 tutorial/T00-HelloCGraph.py    # 运行T00-HelloCGraph.py，并且在终端输出 Hello, PyCGraph.
+  $ pip3 install dist/pycgraph-xxx.whl     # 安装 *.whl 安装包，xxx 信息与版本和系统有关
+  $ python3 tutorial/T00-HelloCGraph.py    # 运行T00-HelloCGraph.py，并且在终端输出 Hello, pycgraph.
   ```
   * 本地直接安装
   ```shell
   $ git clone https://github.com/ChunelFeng/CGraph.git
   $ cd CGraph/python                       # 进入对应文件夹
-  $ python3 setup.py install               # 安装 PyCGraph
-  $ python3 tutorial/T00-HelloCGraph.py    # 运行T00-HelloCGraph.py，并且在终端输出 Hello, PyCGraph.
+  $ python3 setup.py install               # 安装 pycgraph
+  $ python3 tutorial/T00-HelloCGraph.py    # 运行T00-HelloCGraph.py，并且在终端输出 Hello, pycgraph.
   ```
 
 * 通过uv安装(Linux/MacOS/Windows)
   ```shell
   $ uv init cgraph_env              # 通过uv 创建一个名为 cgraph_env 的环境
   $ cd cgraph_env 
-  $ uv add "pycgraph @ git+https://github.com/ChunelFeng/CGraph.git@main#subdirectory=python" --marker "sys_platform == 'linux'"    # 添加PyCGraph依赖
-  $ python3 -c "import PyCGraph"    # 验证 PyCGraph 成功安装
+  $ uv add "pycgraph @ git+https://github.com/ChunelFeng/CGraph.git@main#subdirectory=python" --marker "sys_platform == 'linux'"    # 添加 pycgraph 依赖
+  $ python3 -c "import pycgraph"    # 验证 pycgraph 成功安装
   ```

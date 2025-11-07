@@ -9,7 +9,7 @@
 from datetime import datetime
 import time
 
-from PyCGraph import GNode, CStatus
+from pycgraph import GNode, CStatus
 
 class MyNode2(GNode):
     def init(self):
