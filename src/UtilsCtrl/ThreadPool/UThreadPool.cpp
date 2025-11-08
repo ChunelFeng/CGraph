@@ -253,12 +253,12 @@ CVoid UThreadPool::monitor() {
         bool busy = !primary_threads_.empty() && std::all_of(primary_threads_.begin(), primary_threads_.end(),
                                 [](UThreadPrimaryPtr ptr) { return ptr && ptr->is_running_; });
 
-        CGRAPH_LOCK_GUARD lock(st_mutex_);
         // 如果忙碌或者priority_task_queue_中有任务，则需要添加 secondary线程
         if (busy || !priority_task_queue_.empty()) {
             createSecondaryThread(1);
         }
 
+        CGRAPH_LOCK_GUARD lock(st_mutex_);
         // 判断 secondary 线程是否需要退出
         for (auto iter = secondary_threads_.begin(); iter != secondary_threads_.end(); ) {
             (*iter)->freeze() ? secondary_threads_.erase(iter++) : iter++;
