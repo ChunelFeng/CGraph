@@ -190,6 +190,7 @@ if __name__ == '__main__':
 * [OGraph](https://github.com/symphony09/ograph) : A simple way to build a pipeline with Go.
   * [【B站视频】听阿里云大佬分享：OGraph——基于Go的流图调度二三事](https://www.bilibili.com/video/BV19RHce6Evo)
 * [incubator-hugegraph-ai](https://github.com/apache/incubator-hugegraph-ai) : The integration of HugeGraph with AI/LLM & GraphRAG
+  * [Agentic GraphRAG：模块化架构实践](https://hugegraph.apache.org/cn/blog/2025/10/29/agentic-graphrag/)
 * [pybind11](https://github.com/pybind/pybind11) : Seamless operability between C++11 and Python
   * 本项目Python接口绑定功能，使用pybind11实现
   * [【B站视频】pybind11落地实战——PyCGraph是怎样练成的](https://www.bilibili.com/video/BV1ofLdz5EzX) | [飞书文档链接](https://ilyryn6yei.feishu.cn/docx/YDfHdU9mfoTlnqxaTkscRob6nGe)
