@@ -3,7 +3,7 @@
 @Contact: chunel@foxmail.com
 @File: GSingleton.h
 @Time: 2021/10/30 10:24 下午
-@Desc: 本功能，仅在C++17或以上版本生效
+@Desc: 本功能今后不再维护，推荐使用 GEvent 替换
 ***************************/
 
 #ifndef CGRAPH_GSINGLETON_H
