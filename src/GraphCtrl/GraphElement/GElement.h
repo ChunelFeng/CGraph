@@ -300,7 +300,7 @@ private:
      * @return
      */
     CStatus doAspect(const internal::GAspectType& aspectType,
-                     const CStatus& curStatus = CStatus());
+                     const CStatus& curStatus = CStatus()) const;
 
     /**
      * 设置element信息

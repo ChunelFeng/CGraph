@@ -29,7 +29,7 @@ protected:
      * @return
      */
     CStatus reflect(const internal::GAspectType& type,
-                    const CStatus& curStatus = CStatus());
+                    const CStatus& curStatus = CStatus()) const;
 
     CStatus add(GAspectPtr aspect) final;
 

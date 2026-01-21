@@ -205,7 +205,7 @@ CStatus GElement::addManagers(GParamManagerPtr paramManager,
 }
 
 
-CStatus GElement::doAspect(const internal::GAspectType& aspectType, const CStatus& curStatus) {
+CStatus GElement::doAspect(const internal::GAspectType& aspectType, const CStatus& curStatus) const {
     CGRAPH_FUNCTION_BEGIN
 
     // 如果切面管理类为空，或者未添加切面，直接返回

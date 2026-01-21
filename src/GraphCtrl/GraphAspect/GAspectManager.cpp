@@ -21,7 +21,7 @@ GAspectManager::~GAspectManager() {
 
 
 CStatus GAspectManager::reflect(const internal::GAspectType &type,
-                                const CStatus &curStatus) {
+                                const CStatus &curStatus) const {
     CGRAPH_FUNCTION_BEGIN
 
     for (GAspectPtr aspect : aspect_arr_) {

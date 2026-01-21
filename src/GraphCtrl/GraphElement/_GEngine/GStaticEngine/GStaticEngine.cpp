@@ -29,7 +29,7 @@ CStatus GStaticEngine::setup(const GSortedGElementPtrSet& elements) {
         element_mat_.emplace_back(curArr);
         GElementPtrArr runnableArr = curArr;
         curArr.clear();
-        for (auto element : runnableArr) {
+        for (const auto element : runnableArr) {
             for (auto cur : element->run_before_) {
                 if (0 == (--cur->left_depend_)) {
                     curArr.push_back(cur);

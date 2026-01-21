@@ -102,16 +102,16 @@ CVoid GDynamicEngine::analysisDagType() {
 CVoid GDynamicEngine::analysisParallelMatrix() {
     parallel_element_matrix_.clear();
     const auto& config = thread_pool_ ? thread_pool_->getConfig() : UThreadPoolConfig();
-    CSize thdSize = config.default_thread_size_ + config.secondary_thread_size_;
+    const CSize& thdSize = config.default_thread_size_ + config.secondary_thread_size_;
     CGRAPH_THROW_EXCEPTION_BY_CONDITION(thdSize <= 0,
                                         "default thread size cannot smaller than 1");
-    CSize taskNumPerThd = total_end_size_ / thdSize + (CSize)(0 != total_end_size_ % thdSize);
+    const CSize& taskNumPerThd = total_end_size_ / thdSize + static_cast<CSize>(0 != total_end_size_ % thdSize);
     CGRAPH_THROW_EXCEPTION_BY_CONDITION(taskNumPerThd == 0,
                                         "task number per thread is 0");
 
     CSize curIndex = 0;
     while (curIndex < total_end_size_) {
-        CSize curEnd = curIndex + taskNumPerThd < total_end_size_ ? curIndex + taskNumPerThd : total_end_size_ ;
+        const CSize curEnd = curIndex + taskNumPerThd < total_end_size_ ? curIndex + taskNumPerThd : total_end_size_ ;
         GElementPtrArr curArr(total_element_arr_.data() + curIndex, total_element_arr_.data() + curEnd);
         CGRAPH_THROW_EXCEPTION_BY_CONDITION(curArr.empty(),
                                             "current elements array cannot be empty");
@@ -233,7 +233,8 @@ CVoid GDynamicEngine::parallelRunAll() {
 #else
 CVoid GDynamicEngine::parallelRunAll() {
     parallel_run_num_ = 0;
-    for (CIndex i = 0; i < (CIndex)parallel_element_matrix_.size(); i++) {
+    const CIndex& totalSize = static_cast<CIndex>(parallel_element_matrix_.size());
+    for (CIndex i = 0; i < totalSize; i++) {
         auto& curArr = parallel_element_matrix_[i];
         if (curArr.size() > 1) {
             for (const auto& element : curArr) {
@@ -249,7 +250,7 @@ CVoid GDynamicEngine::parallelRunAll() {
         }
     }
 
-    if (parallel_element_matrix_.size() < (CSize)(thread_pool_->getConfig().default_thread_size_)) {
+    if (parallel_element_matrix_.size() < static_cast<CSize>(thread_pool_->getConfig().default_thread_size_)) {
         // 确保所有的 pt 都可以被唤醒，从而快速执行
         thread_pool_->wakeupAllThread();
     }
@@ -269,7 +270,7 @@ CVoid GDynamicEngine::parallelRunOne(GElementPtr element) {
         return;
     }
 
-    auto status = element->fatProcessor(CFunctionType::RUN);
+    const auto& status = element->fatProcessor(CFunctionType::RUN);
     if (unlikely(status.isErr())) {
         {
             CGRAPH_LOCK_GUARD lk(status_lock_);
@@ -277,7 +278,7 @@ CVoid GDynamicEngine::parallelRunOne(GElementPtr element) {
         }
     }
 
-    auto finishedSize = parallel_run_num_.fetch_add(1, std::memory_order_release) + 1;
+    const auto& finishedSize = parallel_run_num_.fetch_add(1, std::memory_order_release) + 1;
     if (finishedSize >= total_end_size_ || cur_status_.isErr()) {
         CGRAPH_UNIQUE_LOCK lock(locker_.mtx_);
         locker_.cv_.notify_one();
