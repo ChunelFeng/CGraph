@@ -83,7 +83,7 @@ CStatus GPipeline::registerGElement(GTemplateNodePtr<Args ...> *elementRef,
     CGRAPH_ASSERT_INIT(false)
 
     // 构建模板node信息
-    (*elementRef) = new(std::nothrow) TNode(std::forward<Args &&>(args)...);
+    (*elementRef) = new(std::nothrow) TNode(std::forward<Args>(args)...);
     CGRAPH_ASSERT_NOT_NULL(*elementRef)
 
     status = innerRegister(*elementRef, depends, CGRAPH_EMPTY, CGRAPH_DEFAULT_LOOP_TIMES);
@@ -125,7 +125,7 @@ TNode* GPipeline::createGNode(const GNodeInfo &info, Args&&... args) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
 
-    auto* node = new(std::nothrow) TNode(std::forward<Args &&>(args)...);
+    auto* node = new(std::nothrow) TNode(std::forward<Args>(args)...);
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(node)
     status = node->addElementInfo(info.dependence_, info.name_, info.loop_);
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
@@ -140,7 +140,7 @@ template<typename TNode, typename ...Args,
 TNode* GPipeline::createGNode(const GElementPtrSet& dependence, const std::string& name,
                                 CSize loop, Args&&... args) {
     const GNodeInfo& info = GNodeInfo(dependence, name, loop);
-    return createGNode<TNode>(info, std::forward<Args &&>(args)...);
+    return createGNode<TNode>(info, std::forward<Args>(args)...);
 }
 
 
@@ -221,7 +221,7 @@ GPipelinePtr GPipeline::addGDaemon(CMSec ms, Args&&... args) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_, daemon_manager_)
 
-    auto daemon = CAllocator::safeMallocTemplateCObject<TDaemon>(std::forward<Args &&>(args)...);
+    auto daemon = CAllocator::safeMallocTemplateCObject<TDaemon>(std::forward<Args>(args)...);
     daemon->setInterval(ms);
     daemon->setGParamManager(this->param_manager_);
     daemon->setGEventManager(this->event_manager_);

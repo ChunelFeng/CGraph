@@ -11,7 +11,6 @@
 
 
 #include <new>
-#include <mutex>
 #include <memory>
 
 #include "CObject.h"
@@ -55,8 +54,9 @@ public:
             c_enable_if_t<std::is_base_of<CObject, T>::value, int> = 0>
     static T* safeMallocTemplateCObject(Args&&... args) {
         T* result = nullptr;
-        while (!result) {
-            result = new(std::nothrow) T(std::forward<Args&&>(args)...);
+        CUInt maxTimes = 3;
+        while (!result && maxTimes--) {
+            result = new(std::nothrow) T(std::forward<Args>(args)...);
         }
         return result;
     }
@@ -81,7 +81,8 @@ private:
     template<class T>
     static T* safeMalloc() {
         T* ptr = nullptr;
-        while (!ptr) {
+        CUInt maxTimes = 3;
+        while (!ptr && maxTimes--) {
             ptr = new(std::nothrow) T();
         }
         return ptr;
