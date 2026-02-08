@@ -56,8 +56,8 @@ auto UThreadPool::commitWithPriority(const FunctionType& func, int priority)
 
 
 template<typename FunctionType>
-CVoid UThreadPool::execute(FunctionType&& task, CIndex index) {
-    CIndex realIndex = dispatch(index);
+CVoid UThreadPool::execute(FunctionType&& task, const CIndex index) {
+    const CIndex& realIndex = dispatch(index);
     if (realIndex >= 0 && realIndex < config_.default_thread_size_) {
         primary_threads_[realIndex]->pushTask(std::forward<FunctionType>(task));
     } else if (CGRAPH_LONG_TIME_TASK_STRATEGY == realIndex) {

@@ -36,12 +36,12 @@ public:
         this->error_info_ = errorInfo;
     }
 
-    explicit CSTATUS(int errorCode, const std::string &errorInfo) {
+    explicit CSTATUS(const int& errorCode, const std::string& errorInfo) {
         this->error_code_ = errorCode;
         this->error_info_ = errorInfo;
     }
 
-    CSTATUS(const CSTATUS &status) {
+    CSTATUS(const CSTATUS& status) {
         if (status.error_code_ == error_code_) {
             return;
         }
@@ -50,7 +50,7 @@ public:
         this->error_info_ = status.error_info_;
     }
 
-    CSTATUS(const CSTATUS &&status) noexcept {
+    CSTATUS(const CSTATUS&& status) noexcept {
         if (status.error_code_ == error_code_) {
             return;
         }
@@ -145,7 +145,7 @@ public:
      * @param info
      * @return
      */
-    CSTATUS* setInfo(int code, const std::string& info) {
+    CSTATUS* setInfo(const int& code, const std::string& info) {
         error_code_ = code;
         error_info_ = (STATUS_OK == error_code_) ? CGRAPH_EMPTY : info;
         return this;
@@ -163,8 +163,8 @@ public:
     }
 
 private:
-    int error_code_ = STATUS_OK;                     // 错误码信息
-    std::string error_info_;                         // 错误信息描述
+    int error_code_ { STATUS_OK };                     // 错误码信息
+    std::string error_info_;                           // 错误信息描述
 };
 
 CGRAPH_INTERNAL_NAMESPACE_END

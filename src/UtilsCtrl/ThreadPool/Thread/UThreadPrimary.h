@@ -161,7 +161,7 @@ protected:
      * @return
      */
     CBool popTask(UTaskRef task) {
-        auto result = primary_queue_.tryPop(task) || secondary_queue_.tryPop(task);
+        const auto& result = primary_queue_.tryPop(task) || secondary_queue_.tryPop(task);
         return result;
     }
 
@@ -173,7 +173,7 @@ protected:
      */
     CBool popTask(UTaskArrRef tasks) {
         CBool result = primary_queue_.tryPop(tasks, config_->max_local_batch_size_);
-        auto leftSize = config_->max_local_batch_size_ - tasks.size();
+        const auto& leftSize = config_->max_local_batch_size_ - tasks.size();
         if (leftSize > 0) {
             // 如果凑齐了，就不需要了。没凑齐的话，就继续
             result |= (secondary_queue_.tryPop(tasks, leftSize));
@@ -187,8 +187,8 @@ protected:
      * @param task
      * @return
      */
-    CBool stealTask(UTaskRef task) {
-        if (unlikely(pool_threads_->size() < (CSize)(config_->default_thread_size_))) {
+    CBool stealTask(UTaskRef task) const {
+        if (unlikely(pool_threads_->size() < static_cast<CSize>(config_->default_thread_size_))) {
             /**
              * 线程池还未初始化完毕的时候，无法进行steal。
              * 确保程序安全运行。
@@ -224,16 +224,16 @@ protected:
      * @param tasks
      * @return
      */
-    CBool stealTask(UTaskArrRef tasks) {
-        if (unlikely(pool_threads_->size() != (CSize)(config_->default_thread_size_))) {
+    CBool stealTask(UTaskArrRef tasks) const {
+        if (unlikely(pool_threads_->size() != static_cast<CSize>(config_->default_thread_size_))) {
             return false;
         }
 
         CBool result = false;
-        for (auto& target : steal_targets_) {
+        for (const auto& target : steal_targets_) {
             if (likely((*pool_threads_)[target])) {
                 result = ((*pool_threads_)[target])->secondary_queue_.trySteal(tasks, config_->max_steal_batch_size_);
-                auto leftSize = config_->max_steal_batch_size_ - tasks.size();
+                const auto& leftSize = config_->max_steal_batch_size_ - tasks.size();
                 if (leftSize > 0) {
                     result |= ((*pool_threads_)[target])->primary_queue_.trySteal(tasks, leftSize);
                 }
@@ -268,8 +268,8 @@ protected:
     }
 
 private:
-    CInt index_;                                                   // 线程index
-    CInt cur_empty_epoch_ = 0;                                     // 当前空转的轮数信息
+    CInt index_ {0};                                               // 线程index
+    CInt cur_empty_epoch_ {0};                                     // 当前空转的轮数信息
     UWorkStealingQueue<UTask> primary_queue_;                      // 内部队列信息
     UWorkStealingQueue<UTask> secondary_queue_;                    // 第二个队列，用于减少触锁概率，提升性能
     std::vector<UThreadPrimary *>* pool_threads_;                  // 用于存放线程池中的线程信息
