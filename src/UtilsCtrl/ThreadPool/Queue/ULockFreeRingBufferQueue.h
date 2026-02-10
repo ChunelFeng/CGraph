@@ -35,7 +35,7 @@ public:
      */
     CVoid push(T&& value) {
         int curTail = tail_.load(std::memory_order_relaxed);
-        int nextTail = (curTail + 1) % CAPACITY;
+        const int nextTail = (curTail + 1) % CAPACITY;
 
         while (nextTail == head_.load(std::memory_order_acquire)) {
             // 队列已满，等待其他线程出队
@@ -60,16 +60,16 @@ public:
 
         value = std::move(ring_buffer_[curHead]);
 
-        int nextHead = (curHead + 1) % CAPACITY;
+        const int nextHead = (curHead + 1) % CAPACITY;
         head_.store(nextHead, std::memory_order_release);
         return true;
     }
 
 
 private:
-    std::atomic<CInt> head_;                                // 开始元素（较早写入的）的位置
-    std::atomic<CInt> tail_;                                // 尾部的位置
-    std::vector<std::unique_ptr<T> > ring_buffer_;          // 环形队列
+    std::atomic<CInt> head_{};                                // 开始元素（较早写入的）的位置
+    std::atomic<CInt> tail_{};                                // 尾部的位置
+    std::vector<std::unique_ptr<T> > ring_buffer_;            // 环形队列
 };
 
 CGRAPH_NAMESPACE_END

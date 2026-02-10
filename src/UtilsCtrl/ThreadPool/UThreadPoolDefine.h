@@ -10,7 +10,6 @@
 #define CGRAPH_UTHREADPOOLDEFINE_H
 
 #include <thread>
-#include <mutex>
     #if __cplusplus >= 201703L
 #include <shared_mutex>
     #endif
@@ -19,7 +18,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-static const CInt CGRAPH_CPU_NUM = (CInt)std::thread::hardware_concurrency();
+static const CInt CGRAPH_CPU_NUM = static_cast<CInt>(std::thread::hardware_concurrency());
 static const CInt CGRAPH_THREAD_TYPE_PRIMARY = 1;
 static const CInt CGRAPH_THREAD_TYPE_SECONDARY = 2;
     #ifndef _WIN32

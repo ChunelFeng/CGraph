@@ -38,7 +38,7 @@ public:
      * @return
      * @notice 谨慎使用，push信息之后，不推荐使用
      */
-    UAtomicRingBufferQueue* setCapacity(CUInt size) {
+    UAtomicRingBufferQueue* setCapacity(const CUInt size) {
         capacity_ = size;
         ring_buffer_queue_.resize(capacity_);
         return this;
@@ -60,7 +60,7 @@ public:
      * @return
      */
     template<class TImpl = T>
-    CVoid push(const std::shared_ptr<TImpl>& value, URingBufferPushStrategy strategy) {
+    CVoid push(const std::shared_ptr<TImpl>& value, const URingBufferPushStrategy strategy) {
         {
             CGRAPH_UNIQUE_LOCK lk(mutex_);
             if (isFull()) {
@@ -90,7 +90,7 @@ public:
      * @return
      */
     template<class TImpl = T>
-    CStatus waitPopWithTimeout(std::shared_ptr<TImpl>& value, CMSec timeout) {
+    CStatus waitPopWithTimeout(std::shared_ptr<TImpl>& value, const CMSec timeout) {
         CGRAPH_FUNCTION_BEGIN
         {
             CGRAPH_UNIQUE_LOCK lk(mutex_);
@@ -101,11 +101,7 @@ public:
                 CGRAPH_RETURN_ERROR_STATUS("receive message timeout.")
             }
 
-            /**
-             * 当传入的内容，是智能指针的时候，
-             * 这里就直接通过 move转移过去好了，跟直接传值的方式，保持区别
-             */
-            value = ring_buffer_queue_[head_];
+            value = std::move(ring_buffer_queue_[head_]);
             head_ = (head_ + 1) % capacity_;
         }
         push_cv_.notify_one();
@@ -129,7 +125,7 @@ protected:
      * 当前队列是否为满
      * @return
      */
-    CBool isFull() {
+    CBool isFull() const {
         // 空出来一个位置，这个时候不让 tail写入
         return head_ == (tail_ + 1) % capacity_;
     }
@@ -138,7 +134,7 @@ protected:
      * 当前队列是否为空
      * @return
      */
-    CBool isEmpty() {
+    CBool isEmpty() const {
         return head_ == tail_;
     }
 

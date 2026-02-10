@@ -133,7 +133,7 @@ public:
 
     /**
      * 针对单个任务的情况，复用任务组信息，实现单个任务直接执行
-     * @param task
+     * @param func
      * @param ttl
      * @param onFinished
      * @return
