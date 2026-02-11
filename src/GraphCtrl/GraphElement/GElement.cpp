@@ -342,7 +342,7 @@ CBool GElement::isMacro() const {
 }
 
 
-CStatus GElement::crashed(const CException& ex) {
+CStatus GElement::crashed(const CException& ex) const {
     (void)(this);
     return CStatus(internal::STATUS_CRASH, ex.what());
 }
@@ -352,7 +352,7 @@ CIndex GElement::getThreadIndex() {
     CGRAPH_THROW_EXCEPTION_BY_CONDITION((nullptr == thread_pool_),    \
         this->getName() + " getThreadIndex with no thread pool")    // 理论不可能出现的情况
 
-    auto tid = (CSize)std::hash<std::thread::id>{}(std::this_thread::get_id());
+    const auto tid = (CSize)std::hash<std::thread::id>{}(std::this_thread::get_id());
     return thread_pool_->getThreadIndex(tid);
 }
 
@@ -452,12 +452,12 @@ CVoid GElement::checkSuspend() {
 
 CBool GElement::isGGroup() const {
     // 按位与 GROUP有值，表示是 GROUP的逻辑
-    return (long(element_type_) & long(GElementType::GROUP)) > 0;
+    return (static_cast<long>(element_type_) & static_cast<long>(GElementType::GROUP)) > 0;
 }
 
 
 CBool GElement::isGAdaptor() const {
-    return (long(element_type_) & long(GElementType::ADAPTER)) > 0;
+    return (static_cast<long>(element_type_) & static_cast<long>(GElementType::ADAPTER)) > 0;
 }
 
 
@@ -540,7 +540,7 @@ CStatus GElement::asyncRun() {
         return run();
     }, CGRAPH_POOL_TASK_STRATEGY);
 
-    auto futStatus = async_result_.wait_for(std::chrono::milliseconds(timeout_));
+    const auto& futStatus = async_result_.wait_for(std::chrono::milliseconds(timeout_));
     if (std::future_status::ready == futStatus) {
         status = getAsyncResult();
     } else {
@@ -642,7 +642,7 @@ std::string GElement::__str_4py() {
     // python 中 print 展示的格式
     std::string info = "<name=" + this->getName() +
                        ", session=" + this->getSession() + ", loop=" + std::to_string(this->getLoop());
-    auto relation = this->getRelation();
+    const auto& relation = this->getRelation();
     if (relation.belong_) {
         info += ", belong=" + relation.belong_->getName();
     }

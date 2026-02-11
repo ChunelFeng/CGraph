@@ -36,7 +36,7 @@ public:
         this->error_info_ = errorInfo;
     }
 
-    explicit CSTATUS(const int& errorCode, const std::string& errorInfo) {
+    explicit CSTATUS(const int errorCode, const std::string& errorInfo) {
         this->error_code_ = errorCode;
         this->error_info_ = errorInfo;
     }
@@ -145,7 +145,7 @@ public:
      * @param info
      * @return
      */
-    CSTATUS* setInfo(const int& code, const std::string& info) {
+    CSTATUS* setInfo(const int code, const std::string& info) {
         error_code_ = code;
         error_info_ = (STATUS_OK == error_code_) ? CGRAPH_EMPTY : info;
         return this;

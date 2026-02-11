@@ -225,7 +225,7 @@ protected:
      * @param ex
      * @return
      */
-    CStatus crashed(const CException& ex);
+    CStatus crashed(const CException& ex) const;
 
     /**
      * 获取当前element内部参数

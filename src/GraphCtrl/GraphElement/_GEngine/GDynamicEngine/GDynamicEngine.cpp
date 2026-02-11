@@ -278,7 +278,7 @@ CVoid GDynamicEngine::parallelRunOne(GElementPtr element) {
         }
     }
 
-    const auto& finishedSize = parallel_run_num_.fetch_add(1, std::memory_order_release) + 1;
+    const auto finishedSize = parallel_run_num_.fetch_add(1, std::memory_order_release) + 1;
     if (finishedSize >= total_end_size_ || cur_status_.isErr()) {
         CGRAPH_UNIQUE_LOCK lock(locker_.mtx_);
         locker_.cv_.notify_one();

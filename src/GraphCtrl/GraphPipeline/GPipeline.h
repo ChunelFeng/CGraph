@@ -164,6 +164,7 @@ public:
      * @tparam Args
      * @param elementRef
      * @param depends
+     * @param args
      * @return
      */
     template<typename TNode, typename ...Args,
@@ -174,7 +175,7 @@ public:
 
     /**
      * 注册一个 node
-     * @tparam T
+     * @tparam TNode
      * @param depends
      * @param name
      * @param loop
@@ -300,7 +301,7 @@ public:
 
     /**
      * 添加模板类型守护
-     * @tparam TAspect
+     * @tparam TDaemon
      * @tparam Args
      * @param ms
      * @param args
