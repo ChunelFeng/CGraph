@@ -14,6 +14,7 @@ CGRAPH_NAMESPACE_BEGIN
 
 CStatus GPipelineManager::init() {
     CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(false);
     if (!used_list_.empty()) {
         // 初始化的时候，不应该有 used 的内容
         CGRAPH_RETURN_ERROR_STATUS("used list status error")
@@ -49,6 +50,7 @@ CStatus GPipelineManager::run() {
 
 CStatus GPipelineManager::destroy() {
     CGRAPH_FUNCTION_BEGIN
+    CGRAPH_ASSERT_INIT(true);
     if (!used_list_.empty()) {
         CGRAPH_RETURN_ERROR_STATUS("used list status error")
     }
@@ -68,7 +70,11 @@ CStatus GPipelineManager::add(GPipelinePtr ptr) {
     CGRAPH_ASSERT_NOT_NULL(ptr)
     CGRAPH_ASSERT_INIT(false)
 
-    free_list_.push_back(ptr);
+    {
+        CGRAPH_LOCK_GUARD lk(mutex_);
+        free_list_.push_back(ptr);
+    }
+
     CGRAPH_FUNCTION_END
 }
 
@@ -77,12 +83,16 @@ CStatus GPipelineManager::clear() {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
 
-    /**
-     * 这里只是清空list中的信息，并不真正销毁 pipeline对象
-     * 因为pipeline 对象统一在 Factory中管控
-     */
-    used_list_.clear();
-    free_list_.clear();
+    {
+        CGRAPH_LOCK_GUARD lk(mutex_);
+        /**
+         * 这里只是清空list中的信息，并不真正销毁 pipeline对象
+         * 因为pipeline 对象统一在 Factory中管控
+         */
+        used_list_.clear();
+        free_list_.clear();
+    }
+
     CGRAPH_FUNCTION_END
 }
 
@@ -110,7 +120,11 @@ CStatus GPipelineManager::remove(GPipelinePtr ptr) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(ptr)
     CGRAPH_ASSERT_INIT(false)
-    free_list_.remove(ptr);    // 在非初始化的情况下，仅可能在 free_list 中包含
+
+    {
+        CGRAPH_LOCK_GUARD lk(mutex_);
+        free_list_.remove(ptr);    // 在非初始化的情况下，仅可能在 free_list 中包含
+    }
 
     CGRAPH_FUNCTION_END
 }

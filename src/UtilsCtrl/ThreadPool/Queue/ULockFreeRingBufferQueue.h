@@ -69,7 +69,7 @@ public:
 private:
     std::atomic<CInt> head_{};                                // 开始元素（较早写入的）的位置
     std::atomic<CInt> tail_{};                                // 尾部的位置
-    std::vector<std::unique_ptr<T> > ring_buffer_;            // 环形队列
+    std::vector<std::unique_ptr<T> > ring_buffer_ {};         // 环形队列
 };
 
 CGRAPH_NAMESPACE_END
