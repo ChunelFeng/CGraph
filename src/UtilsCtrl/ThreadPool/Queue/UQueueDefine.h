@@ -9,6 +9,8 @@
 #ifndef CGRAPH_UQUEUEDEFINE_H
 #define CGRAPH_UQUEUEDEFINE_H
 
+#include "../UThreadPoolDefine.h"
+
 CGRAPH_NAMESPACE_BEGIN
 
 /** 当环形队列满的时候，写入信息时候的策略 */

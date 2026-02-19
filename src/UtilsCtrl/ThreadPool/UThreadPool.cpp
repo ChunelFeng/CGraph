@@ -190,7 +190,7 @@ CStatus UThreadPool::releaseSecondaryThread(CInt size) {
         !(*iter)->done_ ? secondary_threads_.erase(iter++) : iter++;
     }
 
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((size > (CInt)secondary_threads_.size()),    \
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((size > static_cast<CInt>(secondary_threads_.size())),    \
                                             "cannot release [" + std::to_string(size) + "] secondary thread,"    \
                                             + "only [" + std::to_string(secondary_threads_.size()) + "] left.")
 
@@ -198,7 +198,7 @@ CStatus UThreadPool::releaseSecondaryThread(CInt size) {
     for (auto iter = secondary_threads_.begin();
          iter != secondary_threads_.end() && size-- > 0; ) {
         (*iter)->done_ = false;
-        iter++;
+        ++iter;
     }
     CGRAPH_FUNCTION_END
 }
@@ -222,8 +222,8 @@ CIndex UThreadPool::dispatch(CIndex origIndex) {
 CStatus UThreadPool::createSecondaryThread(CInt size) {
     CGRAPH_FUNCTION_BEGIN
 
-    int leftSize = (int)(config_.max_thread_size_ - config_.default_thread_size_ - secondary_threads_.size());
-    int realSize = std::min(size, leftSize);    // 使用 realSize 来确保所有的线程数量之和，不会超过设定max值
+    const int leftSize = static_cast<int>(config_.max_thread_size_ - config_.default_thread_size_ - secondary_threads_.size());
+    const int realSize = std::min(size, leftSize);    // 使用 realSize 来确保所有的线程数量之和，不会超过设定max值
 
     CGRAPH_LOCK_GUARD lock(st_mutex_);
     for (int i = 0; i < realSize; i++) {

@@ -29,9 +29,8 @@ public:
                 deque_.emplace_back(std::forward<T>(value));
                 mutex_.unlock();
                 break;
-            } else {
-                CGRAPH_YIELD();
             }
+            CGRAPH_YIELD();
         }
     }
 
@@ -40,7 +39,7 @@ public:
      * 有条件的写入数据信息
      * @param value
      * @param enable
-     * @param state
+     * @param lockable
      * @return
      */
     CVoid push(T&& value, CBool enable, CBool lockable) {
@@ -82,9 +81,8 @@ public:
                 }
                 mutex_.unlock();
                 break;
-            } else {
-                CGRAPH_YIELD();
             }
+            CGRAPH_YIELD();
         }
     }
 
@@ -133,7 +131,7 @@ public:
 
     /**
      * 窃取节点，从尾部进行
-     * @param task
+     * @param value
      * @return
      */
     CBool trySteal(T& value) {
@@ -154,6 +152,7 @@ public:
     /**
      * 批量窃取节点，从尾部进行
      * @param values
+     * @param maxStealBatchSize
      * @return
      */
     CBool trySteal(std::vector<T>& values, int maxStealBatchSize) {
@@ -175,7 +174,7 @@ public:
     CGRAPH_NO_ALLOWED_COPY(UWorkStealingQueue)
 
 private:
-    std::deque<T> deque_;            // 存放任务的双向队列
+    std::deque<T> deque_ {};            // 存放任务的双向队列
 };
 
 CGRAPH_NAMESPACE_END
