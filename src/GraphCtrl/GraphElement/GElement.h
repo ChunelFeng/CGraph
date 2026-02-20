@@ -372,14 +372,14 @@ private:
      * @param oss
      * @return
      */
-    CVoid dumpElementHeader(std::ostream& oss);
+    CVoid dumpElementHeader(std::ostream& oss) const;
 
     /**
      * graphviz dump perf逻辑
      * @param oss
      * @return
      */
-    CVoid dumpPerfInfo(std::ostream& oss);
+    CVoid dumpPerfInfo(std::ostream& oss) const;
 
     /**
      * 判断是否进入 suspend 状态。如果是的话，则等待恢复。未进入 suspend 状态，则继续运行

@@ -413,7 +413,7 @@ CVoid GElement::dumpElement(std::ostream& oss) {
 }
 
 
-CVoid GElement::dumpElementHeader(std::ostream& oss) {
+CVoid GElement::dumpElementHeader(std::ostream& oss) const {
     oss << 'p' << this << "[label=\"";
     if (this->name_.empty()) {
         oss << 'p' << this;    // 如果没有名字，则通过当前指针位置来代替
@@ -423,7 +423,7 @@ CVoid GElement::dumpElementHeader(std::ostream& oss) {
 }
 
 
-CVoid GElement::dumpPerfInfo(std::ostream& oss) {
+CVoid GElement::dumpPerfInfo(std::ostream& oss) const {
     if (perf_info_ && perf_info_->loop_ > 0) {
         // 包含 perf信息的情况
         oss << "\n";

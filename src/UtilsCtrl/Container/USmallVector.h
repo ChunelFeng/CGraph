@@ -17,7 +17,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<class T, CSize CAPACITY=8>
+template<class T, CSize CAPACITY=4>
 class USmallVector : public UtilsObject {
 public:
     explicit USmallVector() {
@@ -51,7 +51,7 @@ public:
             data_ = curData;
             capacity_ = curCapacity;
         }
-        data_[cur_index_++] = val;
+        data_[cur_index_++] = std::move(val);
     }
 
     CSize size() const {
@@ -107,7 +107,7 @@ public:
      * @return
      */
     std::vector<T> asVector() const {
-        std::vector<T> vec;
+        std::vector<T> vec{};
         if (!data_) {
             return vec;
         }
