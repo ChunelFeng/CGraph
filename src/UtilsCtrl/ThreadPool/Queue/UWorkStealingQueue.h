@@ -42,7 +42,7 @@ public:
      * @param lockable
      * @return
      */
-    CVoid push(T&& value, CBool enable, CBool lockable) {
+    CVoid push(T&& value, const CBool enable, const CBool lockable) {
         if (enable && lockable) {
             mutex_.lock();
         }

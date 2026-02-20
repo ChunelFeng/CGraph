@@ -79,7 +79,7 @@ protected:
      * 执行单个任务
      * @param task
      */
-    CVoid runTask(UTask& task) {
+    CVoid runTask(const UTask& task) {
         is_running_ = true;
         task();
         total_task_num_++;
@@ -91,7 +91,7 @@ protected:
      * 批量执行任务
      * @param tasks
      */
-    CVoid runTasks(UTaskArr& tasks) {
+    CVoid runTasks(const UTaskArr& tasks) {
         is_running_ = true;
         for (auto& task : tasks) {
             task();

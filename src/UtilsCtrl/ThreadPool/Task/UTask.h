@@ -27,23 +27,23 @@ class UTask : public CStruct {
     // 退化以获得实际类型，修改思路参考：https://github.com/ChunelFeng/CThreadPool/pull/3
     template<typename F, typename T = typename std::decay<F>::type>
     struct TaskDerided : TaskBased {
-        T func_;
+        T func_ {};
         explicit TaskDerided(F&& func) : func_(std::forward<F>(func)) {}
         CVoid call() final { func_(); }
     };
 
 public:
     template<typename F>
-    UTask(F&& func, int priority = 0)
+    UTask(F&& func, const int priority = 0)
         : impl_(new TaskDerided<F>(std::forward<F>(func)))
         , priority_(priority) {}
 
-    CVoid operator()() {
+    CVoid operator()() const {
         // impl_ 理论上不可能为空
         impl_->call();
     }
 
-    UTask() = default;
+    explicit UTask() = default;
 
     UTask(UTask&& task) noexcept:
             impl_(std::move(task.impl_)),
@@ -66,8 +66,8 @@ public:
     CGRAPH_NO_ALLOWED_COPY(UTask)
 
 private:
-    std::unique_ptr<TaskBased> impl_ = nullptr;
-    CInt priority_ = 0;                                 // 任务的优先级信息
+    std::unique_ptr<TaskBased> impl_ { nullptr };
+    CInt priority_ { 0 };                                 // 任务的优先级信息
 };
 
 

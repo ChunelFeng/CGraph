@@ -10,7 +10,7 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-UThreadPool::UThreadPool(CBool autoInit, const UThreadPoolConfig& config) noexcept {
+UThreadPool::UThreadPool(const CBool autoInit, const UThreadPoolConfig& config) noexcept {
     cur_index_ = 0;
     is_init_ = false;
     this->setConfig(config);    // setConfig 函数，用在 is_init_ 设定之后
@@ -55,7 +55,7 @@ CStatus UThreadPool::init() {
         monitor_thread_ = std::thread(&UThreadPool::monitor, this);
     }
     thread_record_map_.clear();
-    thread_record_map_[(CSize)std::hash<std::thread::id>{}(std::this_thread::get_id())] = CGRAPH_MAIN_THREAD_ID;
+    thread_record_map_[std::hash<std::thread::id>{}(std::this_thread::get_id())] = CGRAPH_MAIN_THREAD_ID;
     task_queue_.setup();
     primary_threads_.reserve(config_.default_thread_size_);
     for (int i = 0; i < config_.default_thread_size_; i++) {
@@ -72,8 +72,8 @@ CStatus UThreadPool::init() {
      */
     for (int i = 0; i < config_.default_thread_size_; i++) {
         status += primary_threads_[i]->init();
-        thread_record_map_[(CSize)std::hash<std::thread::id>{}(primary_threads_[i]->thread_.get_id())] = i;
-     }
+        thread_record_map_[std::hash<std::thread::id>{}(primary_threads_[i]->thread_.get_id())] = i;
+    }
     CGRAPH_FUNCTION_CHECK_STATUS
 
     /**
@@ -89,7 +89,7 @@ CStatus UThreadPool::init() {
 }
 
 
-CStatus UThreadPool::submit(const UTaskGroup& taskGroup, CMSec ttl) {
+CStatus UThreadPool::submit(const UTaskGroup& taskGroup, const CMSec ttl) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(true)
 
@@ -100,7 +100,7 @@ CStatus UThreadPool::submit(const UTaskGroup& taskGroup, CMSec ttl) {
     }
 
     // 计算最终运行时间信息
-    auto deadline = std::chrono::steady_clock::now()
+    const auto& deadline = std::chrono::steady_clock::now()
                     + std::chrono::milliseconds(std::min(taskGroup.getTtl(), ttl));
 
     for (auto& fut : futures) {
@@ -121,15 +121,15 @@ CStatus UThreadPool::submit(const UTaskGroup& taskGroup, CMSec ttl) {
 }
 
 
-CStatus UThreadPool::submit(CGRAPH_DEFAULT_CONST_FUNCTION_REF func, CMSec ttl,
+CStatus UThreadPool::submit(CGRAPH_DEFAULT_CONST_FUNCTION_REF func, const CMSec ttl,
                             CGRAPH_CALLBACK_CONST_FUNCTION_REF onFinished) {
     return submit(UTaskGroup(func, ttl, onFinished));
 }
 
 
-CIndex UThreadPool::getThreadIndex(CSize tid) {
+CIndex UThreadPool::getThreadIndex(const CSize tid) {
     int index = CGRAPH_SECONDARY_THREAD_COMMON_ID;
-    auto result = thread_record_map_.find(tid);
+    const auto result = thread_record_map_.find(tid);
     if (result != thread_record_map_.end()) {
         index = result->second;
     }
@@ -145,7 +145,8 @@ CStatus UThreadPool::destroy() {
     }
 
     // primary 线程是普通指针，需要delete
-    for (auto &pt : primary_threads_) {
+    for (const auto& pt : primary_threads_) {
+        CGRAPH_ASSERT_NOT_NULL(pt);
         status += pt->destroy();
     }
     CGRAPH_FUNCTION_CHECK_STATUS
@@ -165,6 +166,7 @@ CStatus UThreadPool::destroy() {
     // secondary 线程是智能指针，不需要delete
     task_queue_.reset();
     for (auto &st : secondary_threads_) {
+        CGRAPH_ASSERT_NOT_NULL(st.get());
         status += st->destroy();
     }
     CGRAPH_FUNCTION_CHECK_STATUS
@@ -204,7 +206,7 @@ CStatus UThreadPool::releaseSecondaryThread(CInt size) {
 }
 
 
-CIndex UThreadPool::dispatch(CIndex origIndex) {
+CIndex UThreadPool::dispatch(const CIndex origIndex) {
     CIndex realIndex = 0;
     if (CGRAPH_DEFAULT_TASK_STRATEGY == origIndex) {
         realIndex = cur_index_++;
@@ -219,7 +221,7 @@ CIndex UThreadPool::dispatch(CIndex origIndex) {
 }
 
 
-CStatus UThreadPool::createSecondaryThread(CInt size) {
+CStatus UThreadPool::createSecondaryThread(const CInt size) {
     CGRAPH_FUNCTION_BEGIN
 
     const int leftSize = static_cast<int>(config_.max_thread_size_ - config_.default_thread_size_ - secondary_threads_.size());
@@ -250,7 +252,7 @@ CVoid UThreadPool::monitor() {
         }
 
         // 如果 primary线程都在执行，则表示忙碌
-        bool busy = !primary_threads_.empty() && std::all_of(primary_threads_.begin(), primary_threads_.end(),
+        const bool busy = !primary_threads_.empty() && std::all_of(primary_threads_.begin(), primary_threads_.end(),
                                 [](UThreadPrimaryPtr ptr) { return ptr && ptr->is_running_; });
 
         // 如果忙碌或者priority_task_queue_中有任务，则需要添加 secondary线程
@@ -267,7 +269,7 @@ CVoid UThreadPool::monitor() {
 }
 
 
-CVoid UThreadPool::wakeupAllThread() {
+CVoid UThreadPool::wakeupAllThread() const {
     for (auto& pt : primary_threads_) {
         pt->wakeup();
     }

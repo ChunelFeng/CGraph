@@ -44,7 +44,7 @@ protected:
      */
     CStatus setThreadPoolInfo(UAtomicQueue<UTask>* poolTaskQueue,
                               UAtomicPriorityQueue<UTask>* poolPriorityTaskQueue,
-                              UThreadPoolConfigPtr config) {
+                              const UThreadPoolConfigPtr config) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(false)    // 初始化之前，设置参数
         CGRAPH_ASSERT_NOT_NULL(poolTaskQueue, poolPriorityTaskQueue, config)
@@ -92,8 +92,8 @@ protected:
      * @return
      * @notice 目的是降低cpu的占用率
      */
-    CVoid waitRunTask(CMSec ms) {
-        auto task = this->pool_task_queue_->popWithTimeout(ms);
+    CVoid waitRunTask(const CMSec ms) {
+        const auto& task = pool_task_queue_->popWithTimeout(ms);
         if (nullptr != task) {
             runTask(*task);
         }
@@ -116,7 +116,7 @@ protected:
     }
 
 private:
-    CSec cur_ttl_ = 0;                                                      // 当前最大生存周期
+    CSec cur_ttl_ { 0 };                                                      // 当前最大生存周期
 
     friend class UThreadPool;
 };

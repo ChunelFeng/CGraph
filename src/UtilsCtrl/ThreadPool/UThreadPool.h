@@ -14,7 +14,6 @@
 #include <map>
 #include <future>
 #include <thread>
-#include <algorithm>
 #include <memory>
 #include <functional>
 
@@ -180,7 +179,7 @@ public:
      * 通知所有thread 开启
      * @return
      */
-    CVoid wakeupAllThread();
+    CVoid wakeupAllThread() const;
 
 protected:
     /**
