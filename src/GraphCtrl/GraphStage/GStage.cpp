@@ -31,19 +31,16 @@ GStagePtr GStage::setThreshold(CInt threshold) {
 
 
 CVoid GStage::waiting() {
-    {
-        CGRAPH_LOCK_GUARD wm(waiting_mutex_);
-        cur_value_++;
-        if (cur_value_ >= threshold_) {
-            // 如果超过了 threshold，则打开全部
-            launch(param_);
-            cur_value_ = 0;
-            locker_.cv_.notify_all();
-            return;
-        }
+    CGRAPH_UNIQUE_LOCK lk(locker_.mtx_);
+    cur_value_++;
+    if (cur_value_ >= threshold_) {
+        // 如果超过了 threshold，则打开全部
+        launch(param_);
+        cur_value_ = 0;
+        locker_.cv_.notify_all();
+        return;
     }
 
-    CGRAPH_UNIQUE_LOCK lk(locker_.mtx_);
     locker_.cv_.wait(lk, [this] {
         return 0 == cur_value_ || cur_value_ >= threshold_;
     });

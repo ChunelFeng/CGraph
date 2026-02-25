@@ -63,7 +63,6 @@ private:
     CInt cur_value_ { 0 };                // 当前值
     GStageParamPtr param_ { nullptr };    // 参数信息
     UCvMutex locker_;
-    std::mutex waiting_mutex_;
 
     friend class GStageManager;
     friend class CAllocator;
