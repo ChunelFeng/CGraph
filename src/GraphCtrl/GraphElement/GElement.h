@@ -445,7 +445,7 @@ private:
 
 private:
     /** 状态相关信息 */
-    CBool done_ { false };                                                    // 判定被执行结束
+    std::atomic<CBool> done_ { false };                                       // 判定被执行结束
     CBool visible_ { true };                                                  // 判定可见的，如果被删除的话，则认为是不可见的
     CBool is_init_ { false };                                                 // 判断是否init
     GElementType element_type_ { GElementType::ELEMENT };                     // 用于区分element 内部类型
