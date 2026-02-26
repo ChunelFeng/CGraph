@@ -35,7 +35,7 @@ public:
     CVoid wait() {
         CGRAPH_UNIQUE_LOCK lk(mutex_);
         cnt_--;
-        if (cnt_ < 0) {
+        while (cnt_ < 0) {
             cv_.wait(lk);
         }
     }
