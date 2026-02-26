@@ -35,13 +35,13 @@ public:
     CVoid wait() {
         CGRAPH_UNIQUE_LOCK lk(mutex_);
         cnt_--;
-        while (cnt_ < 0) {
-            cv_.wait(lk);
-        }
+        cv_.wait(lk, [this] {
+            return cnt_ < 0;
+        });
     }
 
 private:
-    CInt cnt_ = 0;    // 记录当前的次数
+    CInt cnt_ { 0 };    // 记录当前的次数
     std::mutex mutex_;
     std::condition_variable cv_;
 };
