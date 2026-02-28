@@ -169,6 +169,15 @@ public:
         return result;    // 如果非空，表示盗取成功
     }
 
+
+    /**
+     * 判断当前队列是否为空
+     * @return
+     */
+    CBool isEmpty() const {
+        return deque_.empty();
+    }
+
     UWorkStealingQueue() = default;
 
     CGRAPH_NO_ALLOWED_COPY(UWorkStealingQueue)

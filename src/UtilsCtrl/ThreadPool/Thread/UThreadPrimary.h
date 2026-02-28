@@ -114,12 +114,12 @@ protected:
      * 休眠一定时间后，然后恢复执行状态，避免出现异常情况导致无法唤醒
      */
     CVoid fatWait() {
-        cur_empty_epoch_++;
+        ++cur_empty_epoch_;
         CGRAPH_YIELD();
         if (cur_empty_epoch_ >= config_->primary_thread_busy_epoch_) {
             CGRAPH_UNIQUE_LOCK lk(mutex_);
             cv_.wait_for(lk, std::chrono::milliseconds(config_->primary_thread_empty_interval_),
-                         [this] { return 0 == cur_empty_epoch_; });
+                         [this] { return 0 == cur_empty_epoch_ || !wsq_.isEmpty(); });
             cur_empty_epoch_ = 0;
         }
     }
@@ -131,9 +131,7 @@ protected:
      * @return
      */
     CVoid pushTask(UTask&& task) {
-        while (!wsq_.tryPush(std::move(task))) {
-            CGRAPH_YIELD();
-        }
+        wsq_.push(std::move(task));
         {
             CGRAPH_LOCK_GUARD lk(mutex_);
             cur_empty_epoch_ = 0;
@@ -257,7 +255,7 @@ protected:
 
 private:
     CInt index_ {0};                                                  // 线程index
-    std::atomic<CInt> cur_empty_epoch_ {0};                           // 当前空转的轮数信息
+    std::atomic<CInt> cur_empty_epoch_ {0 };                       // 当前空转的轮数信息
     UWorkStealingQueue<UTask> wsq_ {};                                // 内部队列信息
     std::vector<UThreadPrimary *>* pool_threads_ {};                  // 用于存放线程池中的线程信息
     std::vector<CInt> steal_targets_ {};                              // 被偷的目标信息
