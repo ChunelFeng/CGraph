@@ -121,7 +121,7 @@ CVoid GDynamicEngine::analysisParallelMatrix() {
 }
 
 
-CVoid GDynamicEngine::process(GElementPtr element, CBool affinity) {
+CVoid GDynamicEngine::process(GElementPtr element, const CBool affinity) {
     if (unlikely(cur_status_.isErr())) {
         return;
     }
@@ -147,7 +147,6 @@ CVoid GDynamicEngine::innerExec(GElementPtr element) {
             CGRAPH_LOCK_GUARD lk(status_lock_);
             cur_status_ += curStatus;
         }
-        CGRAPH_LOCK_GUARD lk(locker_.mtx_);
         locker_.cv_.notify_one();
     }
 }
@@ -193,8 +192,11 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
             }
             break;
         default:
-            CGRAPH_LOCK_GUARD lk(status_lock_);
-            cur_status_.setErrorInfo("element shape type error");
+            {
+                CGRAPH_LOCK_GUARD lk(status_lock_);
+                cur_status_.setErrorInfo("element shape type error");
+            }
+            locker_.cv_.notify_one();
             break;
     }
 }
@@ -240,7 +242,7 @@ CVoid GDynamicEngine::parallelRunAll() {
     for (CIndex i = 0; i < totalSize; i++) {
         auto& curArr = parallel_element_matrix_[i];
         if (curArr.size() > 1) {
-            for (const auto& element : curArr) {
+            for (auto* element : curArr) {
                 thread_pool_->executeWithTid([this, element] { parallelRunOne(element); }, i,
                                              element == curArr.front() || element == curArr.back(),
                                              element == curArr.front());
