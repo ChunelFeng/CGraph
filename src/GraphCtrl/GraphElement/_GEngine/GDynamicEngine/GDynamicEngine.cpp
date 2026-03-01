@@ -143,8 +143,11 @@ CVoid GDynamicEngine::innerExec(GElementPtr element) {
         afterElementRun(element);
     } else {
         // 遇到异常情况，结束整体逻辑
-        CGRAPH_LOCK_GUARD lk(status_lock_);
-        cur_status_ += curStatus;
+        {
+            CGRAPH_LOCK_GUARD lk(status_lock_);
+            cur_status_ += curStatus;
+        }
+        CGRAPH_LOCK_GUARD lk(locker_.mtx_);
         locker_.cv_.notify_one();
     }
 }
