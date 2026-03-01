@@ -43,7 +43,7 @@ CStatus GSome<TriggerNum>::run()  {
     CGRAPH_FUNCTION_BEGIN
 
     left_num_ = TriggerNum;    // 还剩n个，就完成当前GSome的执行逻辑
-    cur_status_ = CStatus();
+    cur_status_.reset();
 
     /**
      * 1. 并发的执行，其中的所有逻辑信息
@@ -53,8 +53,8 @@ CStatus GSome<TriggerNum>::run()  {
      */
     for (auto* element : group_elements_arr_) {
         thread_pool_->commit([this, element] {
-            auto curStatus = element->fatProcessor(CFunctionType::RUN);
             {
+                const auto& curStatus = element->fatProcessor(CFunctionType::RUN);
                 CGRAPH_UNIQUE_LOCK lock(lock_);
                 cur_status_ += curStatus;
                 left_num_--;
@@ -68,7 +68,7 @@ CStatus GSome<TriggerNum>::run()  {
         return left_num_ <= 0 || cur_status_.isErr();
     });
 
-    for (GElementPtr element : group_elements_arr_) {
+    for (auto* element : group_elements_arr_) {
         if (!element->done_) {
             element->cur_state_.store(GElementState::TIMEOUT, std::memory_order_release);
         }

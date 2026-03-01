@@ -254,8 +254,8 @@ protected:
     }
 
 private:
-    CInt index_ {0};                                                  // 线程index
-    std::atomic<CInt> cur_empty_epoch_ {0 };                       // 当前空转的轮数信息
+    CInt index_ { 0 };                                                // 线程index
+    std::atomic<CInt> cur_empty_epoch_ { 0 };                      // 当前空转的轮数信息
     UWorkStealingQueue<UTask> wsq_ {};                                // 内部队列信息
     std::vector<UThreadPrimary *>* pool_threads_ {};                  // 用于存放线程池中的线程信息
     std::vector<CInt> steal_targets_ {};                              // 被偷的目标信息
