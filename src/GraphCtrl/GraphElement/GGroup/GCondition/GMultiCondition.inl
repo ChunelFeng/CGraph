@@ -43,7 +43,7 @@ template<GMultiConditionType type>
 CStatus GMultiCondition<type>::serialRun() {
     CGRAPH_FUNCTION_BEGIN
 
-    for (auto cur: this->group_elements_arr_) {
+    for (auto* cur: this->children_) {
         if (cur->isMatch()) {
             // 仅依次执行 match 的逻辑
             status = cur->fatProcessor(CFunctionType::RUN);
@@ -59,7 +59,7 @@ template<GMultiConditionType type>
 CStatus GMultiCondition<type>::parallelRun() {
     CGRAPH_FUNCTION_BEGIN
     std::vector<std::future<CStatus> > futures;
-    for (GElementPtr cur : this->group_elements_arr_) {
+    for (auto* cur : this->children_) {
         if (!cur->isMatch()) {
             continue;    // 不满足条件，则不执行
         }
@@ -91,7 +91,7 @@ CIndex GMultiCondition<type>::choose() {
 
 template<GMultiConditionType type>
 CBool GMultiCondition<type>::isSerializable() const {
-    if (GMultiConditionType::PARALLEL == type && group_elements_arr_.size() > 1) {
+    if (GMultiConditionType::PARALLEL == type && children_.size() > 1) {
         /**
          * 如果是PARALLEL模式的话，并且其中的元素个数大于1，则一定不可以串行执行
          * PARALLEL模式中，仅有一个元素的情况，和 SERIAL模式的判断方式一样，

@@ -18,7 +18,7 @@ GCluster::GCluster() {
 
 CStatus GCluster::run() {
     CGRAPH_FUNCTION_BEGIN
-    for (GElementPtr element : this->group_elements_arr_) {
+    for (GElementPtr element : this->children_) {
         status = element->fatProcessor(CFunctionType::RUN);
         CGRAPH_FUNCTION_CHECK_STATUS
     }
@@ -34,8 +34,8 @@ CVoid GCluster::dump(std::ostream& oss) {
     oss << "color=blue;\n";
 
     GElementPtr pre = nullptr;
-    for (CSize i = 0; i < group_elements_arr_.size(); i++) {
-        const auto& element = group_elements_arr_[i];
+    for (CSize i = 0; i < children_.size(); i++) {
+        const auto& element = children_[i];
         element->dump(oss);
 
         if (0 != i) {

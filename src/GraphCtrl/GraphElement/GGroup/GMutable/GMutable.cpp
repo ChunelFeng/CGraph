@@ -42,17 +42,17 @@ CStatus GMutable::run() {
      * 3. 通过 manager 执行
      */
     setup();
-    status = reshape(group_elements_arr_);
+    status = reshape(children_);
     CGRAPH_FUNCTION_CHECK_STATUS
 
-    status = manager_->process({group_elements_arr_.begin(), group_elements_arr_.end()});
+    status = manager_->process({children_.begin(), children_.end()});
     CGRAPH_FUNCTION_END
 }
 
 
 CStatus GMutable::destroy() {
     CGRAPH_FUNCTION_BEGIN
-    for (auto* element : group_elements_arr_) {
+    for (auto* element : children_) {
         // 链路中，可能会将部分内容设置为 visible 的信息。这里统一恢复一下
         element->setVisible(true);
     }
@@ -76,7 +76,7 @@ GElementPtr GMutable::setThreadPoolEx(UThreadPoolPtr ptr) {
 
 
 CVoid GMutable::setup() {
-    for (auto* element : group_elements_arr_) {
+    for (auto* element : children_) {
         element->run_before_.clear();
         element->dependence_.clear();
         element->setLoop(1);

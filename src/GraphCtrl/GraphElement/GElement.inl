@@ -65,7 +65,7 @@ GElementPtr GElement::addEParam(const std::string& key, T* param) {
 template<typename T,
         c_enable_if_t<std::is_base_of<GElementParam, T>::value, int>>
 T* GElement::getEParam(const std::string& key) {
-    auto iter = local_params_.find(key);
+    const auto iter = local_params_.find(key);
     if (iter == local_params_.end()) {
         return nullptr;
     }

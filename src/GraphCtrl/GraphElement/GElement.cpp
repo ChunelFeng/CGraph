@@ -504,7 +504,7 @@ GElementRelation GElement::getRelation() const {
     GElementRelation relation;
     relation.predecessors_ = this->dependence_.asVector();    // 前驱
     relation.successors_ = this->run_before_.asVector();    // 后继
-    relation.children_ = this->getChildren();
+    relation.children_ = this->children_;
     relation.belong_ = this->belong_;    // 从属信息
 
     return relation;
@@ -592,12 +592,6 @@ GElementPtrArr GElement::getDeepPath(CBool reverse) const {
         std::reverse(path.begin(), path.end());
     }
     return path;
-}
-
-
-GElementPtrArr GElement::getChildren() const {
-    (void)(this);
-    return GElementPtrArr{};
 }
 
 

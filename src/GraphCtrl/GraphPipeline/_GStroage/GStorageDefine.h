@@ -119,7 +119,7 @@ struct _GElementStorage : public _GStorageBasic {
         for (const auto* dep : element->dependence_) {
             dependence_sessions_.emplace_back(dep->getSession());
         }
-        for (const auto* child : element->getChildren()) {
+        for (const auto* child : element->children_) {
             children_.emplace_back(child);
         }
         if (element->aspect_manager_) {

@@ -436,12 +436,6 @@ private:
      */
     GElement* updateAspectInfo();
 
-    /**
-     * 获取其中包含的内容
-     * @return
-     * @notice 仅在为 group 的情况下有意义
-     */
-    virtual std::vector<GElement *> getChildren() const;
 
 private:
     /** 状态相关信息 */
@@ -472,6 +466,7 @@ private:
     USmallVector<GElement *> run_before_ {};                                  // 被依赖的节点（后继）
     USmallVector<GElement *> dependence_ {};                                  // 依赖的节点信息（前驱）
     GElement* belong_ { nullptr };                                            // 从属的element 信息，如为nullptr，则表示从属于 pipeline
+    std::vector<GElement *> children_ {};                                     // 子节点，适用于group类型
 
     /** 异步执行相关信息 */
     std::future<CStatus> async_result_;                                       // 用于记录当前节点的异步执行情况

@@ -51,7 +51,7 @@ CStatus GSome<TriggerNum>::run()  {
      * 3. 将所有未执行完的element 设置为timeout
      * 4. 赋返回值
      */
-    for (auto* element : group_elements_arr_) {
+    for (auto* element : children_) {
         thread_pool_->commit([this, element] {
             {
                 const auto& curStatus = element->fatProcessor(CFunctionType::RUN);
@@ -68,7 +68,7 @@ CStatus GSome<TriggerNum>::run()  {
         return left_num_ <= 0 || cur_status_.isErr();
     });
 
-    for (auto* element : group_elements_arr_) {
+    for (auto* element : children_) {
         if (!element->done_) {
             element->cur_state_.store(GElementState::TIMEOUT, std::memory_order_release);
         }
@@ -91,7 +91,7 @@ CVoid GSome<TriggerNum>::dump(std::ostream& oss) {
     oss << 'p' << this << "[shape=point height=0];\n";
     oss << "color=blue;style=dashed;\n";    // 蓝色虚线
 
-    for (const auto& element : group_elements_arr_) {
+    for (const auto& element : children_) {
         element->dump(oss);
     }
 
@@ -118,9 +118,9 @@ CStatus GSome<TriggerNum>::checkSuitable() {
 
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((CGRAPH_DEFAULT_LOOP_TIMES != loop_), "GSome cannot set loop > 1.")
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((0 >= TriggerNum), "trigger num must bigger than 0.")
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((group_elements_arr_.size() < TriggerNum),     \
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((children_.size() < TriggerNum),     \
                                             "this GSome need at least [" + std::to_string(TriggerNum) + "] element.")
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(std::any_of(group_elements_arr_.begin(), group_elements_arr_.end(), [](GElementPtr ptr) {
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(std::any_of(children_.begin(), children_.end(), [](GElementPtr ptr) {
         return !ptr->isAsync();
     }), "GSome contains async node only.")
 

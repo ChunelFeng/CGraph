@@ -95,7 +95,7 @@ CVoid GElementRepository::fetch(GElementPtr element) {
     if (element->isGGroup()) {
         auto group = dynamic_cast<GGroupPtr>(element);
         CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(group)
-        for (auto* cur : group->group_elements_arr_) {
+        for (auto* cur : group->children_) {
             fetch(cur);
         }
     }

@@ -46,8 +46,6 @@ private:
 
     CStatus destroy() override;
 
-    GElementPtrArr getChildren() const override;
-
     /**
      * 生成graphviz中 group对应的label 的开头信息
      * @param oss
@@ -70,9 +68,6 @@ private:
      * @notice 如果返回 true，则表示一定有前后依赖关系，不可能并发执行。否则表示不确定，原因是并发情况无法完全确定
      */
     virtual CBool isSeparate(GElementCPtr a, GElementCPtr b) const;
-
-private:
-    GElementPtrArr group_elements_arr_;    // 存放 element的数组
 
     friend class GPipeline;
     friend class GCluster;
