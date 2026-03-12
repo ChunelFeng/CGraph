@@ -116,7 +116,7 @@ protected:
     CVoid fatWait() {
         ++cur_empty_epoch_;
         CGRAPH_YIELD();
-        if (cur_empty_epoch_ >= config_->primary_thread_busy_epoch_) {
+        if (cur_empty_epoch_ >= config_->primary_thread_busy_epoch_ && wsq_.isEmpty()) {
             CGRAPH_UNIQUE_LOCK lk(mutex_);
             cv_.wait_for(lk, std::chrono::milliseconds(config_->primary_thread_empty_interval_),
                          [this] { return 0 == cur_empty_epoch_ || !wsq_.isEmpty() || !done_; });
