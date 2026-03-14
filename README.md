@@ -168,6 +168,7 @@ if __name__ == '__main__':
 * [CGraph作者想知道，您是否需要一款eDAG调度框架](http://www.chunel.cn/archives/cgraph-extended-dag)
 * [降边增效：CGraph中冗余边剪裁思路总结](http://www.chunel.cn/archives/cgraph-remove-redundancy-link)
 * [最新码坛爽文：重生之我在国外写CGraph(python版本)](http://www.chunel.cn/archives/cgraph-pycgraph-v1)
+* [做之前不敢想的 CGraph](http://www.chunel.cn/archives/cgraph-unbelievable-2025)
   <br>
 
 ----
