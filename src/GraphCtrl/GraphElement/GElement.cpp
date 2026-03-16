@@ -251,8 +251,8 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                          * 默认所有element的isHold条件均为false，即不hold，即执行一次
                          * 可以根据需求，对任意element类型，添加特定的isHold条件
                          * */
-                    } while (checkSuspend(), this->isHold() && status.isOK());
-                    doAspect(internal::GAspectType::FINISH_RUN, status);
+                    } while (checkSuspend(), isHold() && status.isOK());
+                    (void)doAspect(internal::GAspectType::FINISH_RUN, status);
                 }
 
                 CGRAPH_THROW_EXCEPTION_BY_STATUS(checkRunResult())
@@ -264,21 +264,21 @@ CStatus GElement::fatProcessor(const CFunctionType& type) {
                 status = doAspect(internal::GAspectType::BEGIN_INIT);
                 CGRAPH_FUNCTION_CHECK_STATUS
                 status = init();
-                doAspect(internal::GAspectType::FINISH_INIT, status);
+                (void)doAspect(internal::GAspectType::FINISH_INIT, status);
                 break;
             }
             case CFunctionType::DESTROY: {
                 status = doAspect(internal::GAspectType::BEGIN_DESTROY);
                 CGRAPH_FUNCTION_CHECK_STATUS
                 status = destroy();
-                doAspect(internal::GAspectType::FINISH_DESTROY, status);
+                (void)doAspect(internal::GAspectType::FINISH_DESTROY, status);
                 break;
             }
             default:
                 CGRAPH_RETURN_ERROR_STATUS("get function type error")
         }
     } catch (const CException& ex) {
-        doAspect(internal::GAspectType::ENTER_CRASHED);
+        (void)doAspect(internal::GAspectType::ENTER_CRASHED);
         status = crashed(ex);
     }
 
