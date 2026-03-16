@@ -20,8 +20,10 @@ template<typename T, CUInt capacity = CGRAPH_DEFAULT_RINGBUFFER_SIZE,
         c_enable_if_t<std::is_base_of<GMessageParam, T>::value, int> = 0>
 class GMessage : public GMessageObject {
 public:
-    explicit GMessage(CUInt size = capacity) {
+    explicit GMessage(CUInt size = capacity,
+        const CIndex connId = 0) {
         queue_.setCapacity(size);
+        conn_id_ = connId;
     }
 
     /**
@@ -65,8 +67,17 @@ public:
         return queue_.getCapacity();
     }
 
+    /**
+     * 获取 connId 信息
+     * @return
+     */
+    CIndex getConnId() const {
+        return conn_id_;
+    }
+
 private:
-    UAtomicRingBufferQueue<T, capacity> queue_;
+    UAtomicRingBufferQueue<T, capacity> queue_ {};
+    CIndex conn_id_ {0};                            // 用于记录message的唯一标识，用于 pub-sub场景
 };
 
 

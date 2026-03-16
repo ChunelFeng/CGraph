@@ -36,7 +36,7 @@ public:
     CStatus createTopic(const std::string& topic, CUInt size) {
         CGRAPH_FUNCTION_BEGIN
 
-        auto innerTopic = internal::SEND_RECV_PREFIX + topic;    // 中间做一层映射，用来区分是 PubSub的，还是SendRecv的
+        const std::string& innerTopic = internal::SEND_RECV_PREFIX + topic;    // 中间做一层映射，用来区分是 PubSub的，还是SendRecv的
         CGRAPH_LOCK_GUARD lk(send_recv_mutex_);
         auto result = send_recv_message_map_.find(innerTopic);
         if (result != send_recv_message_map_.end()) {
@@ -60,7 +60,7 @@ public:
      */
     CStatus removeTopic(const std::string& topic) {
         CGRAPH_FUNCTION_BEGIN
-        auto innerTopic = internal::SEND_RECV_PREFIX + topic;
+        const std::string& innerTopic = internal::SEND_RECV_PREFIX + topic;
         CGRAPH_LOCK_GUARD lk(send_recv_mutex_);
         auto result = send_recv_message_map_.find(innerTopic);
         if (result == send_recv_message_map_.end()) {
@@ -80,8 +80,6 @@ public:
      * @param value
      * @param timeout
      * @return
-     * @notice 这里的逻辑，跟上面的函数一致。里面调用了底层RingBuffer的同名不同入参的接口。
-     *         本人暂时没有能力完成接口的统一。如果有了解这一块内容的朋友，欢迎交流指正。
      */
     template<typename TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
@@ -89,7 +87,7 @@ public:
                            std::shared_ptr<TImpl>& value,
                            CMSec timeout = CGRAPH_MAX_BLOCK_TTL) {
         CGRAPH_FUNCTION_BEGIN
-        auto innerTopic = internal::SEND_RECV_PREFIX + topic;
+        const std::string& innerTopic = internal::SEND_RECV_PREFIX + topic;
         auto result = send_recv_message_map_.find(innerTopic);
         if (result == send_recv_message_map_.end()) {
             CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
@@ -116,7 +114,7 @@ public:
                            const std::shared_ptr<TImpl>& value,
                            GMessagePushStrategy strategy) {
         CGRAPH_FUNCTION_BEGIN
-        auto innerTopic = internal::SEND_RECV_PREFIX + topic;
+        const std::string& innerTopic = internal::SEND_RECV_PREFIX + topic;
         auto result = send_recv_message_map_.find(innerTopic);
         if (result == send_recv_message_map_.end()) {
             CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
@@ -139,11 +137,11 @@ public:
     template<typename TImpl,
             c_enable_if_t<std::is_base_of<T, TImpl>::value, int> = 0>
     CIndex bindTopic(const std::string& topic, CUInt size) {
-        auto innerTopic = internal::PUB_SUB_PREFIX + topic;
+        const std::string& innerTopic = internal::PUB_SUB_PREFIX + topic;
 
         CGRAPH_LOCK_GUARD lk(pub_sub_mutex_);
-        auto message = CAllocator::safeMallocTemplateCObject<GMessage<TImpl>>(size);
         CIndex connId = (++cur_conn_id_);
+        auto message = CAllocator::safeMallocTemplateCObject<GMessage<TImpl>>(size, connId);
         auto result = pub_sub_message_map_.find(innerTopic);
         if (result != pub_sub_message_map_.end()) {
             // 如果之前有的话，则在后面添加一个
@@ -151,12 +149,41 @@ public:
             messageSet.insert((GMessagePtr<T>)message);
         } else {
             // 如果是这个topic第一次被绑定，则创建一个对应的set信息
-            std::set<GMessagePtr<T>> messageSet;
+            std::set<GMessagePtr<T>> messageSet {};
             messageSet.insert((GMessagePtr<T>)message);
             pub_sub_message_map_[innerTopic] = messageSet;
         }
         conn_message_map_[connId] = (GMessagePtr<T>)message;
         return connId;
+    }
+
+    /**
+     * 取消特定的订阅，bindTopic的反向函数
+     * @param topic
+     * @param connId
+     * @return
+     */
+    CStatus detachConnId(const std::string& topic,
+                         const CIndex connId) {
+        CGRAPH_FUNCTION_BEGIN
+        const std::string& innerTopic = internal::PUB_SUB_PREFIX + topic;
+
+        CGRAPH_LOCK_GUARD lk(pub_sub_mutex_);
+        auto result = pub_sub_message_map_.find(innerTopic);
+        if (result == pub_sub_message_map_.end()) {
+            CGRAPH_RETURN_ERROR_STATUS("no find [" + topic + "] topic");
+        }
+
+        auto& messageSet = result->second;
+        for (auto* msg : messageSet) {
+            if (connId == msg->getConnId()) {
+                CGRAPH_DELETE_PTR(msg);
+                conn_message_map_.erase(connId);
+                break;
+            }
+        }
+
+        CGRAPH_FUNCTION_END
     }
 
     /**
@@ -214,7 +241,7 @@ public:
      */
     CStatus dropTopic(const std::string& topic) {
         CGRAPH_FUNCTION_BEGIN
-        auto innerTopic = internal::PUB_SUB_PREFIX + topic;
+        const std::string& innerTopic = internal::PUB_SUB_PREFIX + topic;
         CGRAPH_LOCK_GUARD lk(pub_sub_mutex_);
         auto result = pub_sub_message_map_.find(innerTopic);
         if (result == pub_sub_message_map_.end()) {
@@ -222,7 +249,7 @@ public:
         }
 
         auto& messageSet = result->second;
-        for (auto msg : messageSet) {
+        for (auto* msg : messageSet) {
             CGRAPH_DELETE_PTR(msg)
         }
         pub_sub_message_map_.erase(innerTopic);
@@ -246,11 +273,12 @@ public:
         {
             CGRAPH_LOCK_GUARD lk(pub_sub_mutex_);
             for (auto& cur : pub_sub_message_map_) {
-                for (auto iter : cur.second) {
+                for (auto* iter : cur.second) {
                     CGRAPH_DELETE_PTR(iter);
                 }
             }
             pub_sub_message_map_.clear();
+            conn_message_map_.clear();
             cur_conn_id_ = 0;
         }
 

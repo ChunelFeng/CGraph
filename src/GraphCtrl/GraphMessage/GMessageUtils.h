@@ -59,6 +59,10 @@ CGRAPH_NAMESPACE_BEGIN
 #define CGRAPH_DROP_MESSAGE_TOPIC(topic)                                                              \
     CGraph::GMessageManagerSingleton::get()->dropTopic(topic);                                        \
 
+/* 取消connId关联 */
+#define CGRAPH_DETACH_CONN_ID(topic, connId)                                                          \
+    CGraph::GMessageManagerSingleton::get()->detachConnId(topic, connId);                             \
+
 
 /****************************
  * 以下针对所有功能
