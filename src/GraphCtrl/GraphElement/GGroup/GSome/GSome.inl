@@ -16,6 +16,7 @@ CGRAPH_NAMESPACE_BEGIN
 template<CInt TriggerNum>
 GSome<TriggerNum>::GSome() {
     element_type_ = GElementType::SOME;
+    binding_index_ = CGRAPH_TRIGGER_ALL_THREAD_STRATEGY;
     session_ = URandom<>::generateSession(CGRAPH_STR_SOME);
 }
 

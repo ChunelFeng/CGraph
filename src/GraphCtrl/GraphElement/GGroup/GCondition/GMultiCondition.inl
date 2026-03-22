@@ -16,6 +16,10 @@ CGRAPH_NAMESPACE_BEGIN
 template<GMultiConditionType type>
 GMultiCondition<type>::GMultiCondition() {
     element_type_ = GElementType::MULTI_CONDITION;
+    if (type == GMultiConditionType::PARALLEL) {
+        // 多并发的情况下，需要触发线程唤醒
+        binding_index_ = CGRAPH_TRIGGER_ALL_THREAD_STRATEGY;
+    }
     session_ = URandom<>::generateSession(CGRAPH_STR_MULTI_CONDITION);
 }
 

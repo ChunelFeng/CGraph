@@ -81,7 +81,7 @@ public:
      * 阻塞式等待弹出
      * @return
      */
-    std::unique_ptr<T> popWithTimeout(CMSec ms) {
+    std::unique_ptr<T> popWithTimeout(const CMSec ms) {
         CGRAPH_UNIQUE_LOCK lk(mutex_);
         if (!cv_.wait_for(lk, std::chrono::milliseconds(ms),
                           [this] { return (!queue_.empty()) || (!ready_flag_); })) {
@@ -123,9 +123,8 @@ public:
                 queue_.push(std::move(task));
                 mutex_.unlock();
                 break;
-            } else {
-                CGRAPH_YIELD();
             }
+            CGRAPH_YIELD();
         }
         cv_.notify_one();
     }

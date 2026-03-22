@@ -12,7 +12,6 @@
 #include "UThreadPool.h"
 
 CGRAPH_NAMESPACE_BEGIN
-
 template<typename FunctionType>
 auto UThreadPool::commit(const FunctionType& func, CIndex index)
 -> std::future<decltype(std::declval<FunctionType>()())> {
@@ -62,6 +61,9 @@ CVoid UThreadPool::execute(FunctionType&& task, const CIndex index) {
         primary_threads_[realIndex]->pushTask(std::forward<FunctionType>(task));
     } else if (CGRAPH_LONG_TIME_TASK_STRATEGY == realIndex) {
         priority_task_queue_.push(std::forward<FunctionType>(task), CGRAPH_LONG_TIME_TASK_STRATEGY);
+    } else if (CGRAPH_TRIGGER_ALL_THREAD_STRATEGY == realIndex) {
+        task_queue_.push(std::forward<FunctionType>(task));
+        (void)wakeupAllThread();
     } else {
         task_queue_.push(std::forward<FunctionType>(task));
     }

@@ -38,9 +38,10 @@ static const CUInt CGRAPH_DEFAULT_RINGBUFFER_SIZE = 64;                         
 static const CIndex CGRAPH_MAIN_THREAD_ID = -1;                                             // 启动线程id标识（非上述主线程）
 static const CIndex CGRAPH_SECONDARY_THREAD_COMMON_ID = -2;                                 // 辅助线程统一id标识
 
-static const CInt CGRAPH_DEFAULT_TASK_STRATEGY = -1;                                         // 默认线程调度策略
-static const CInt CGRAPH_POOL_TASK_STRATEGY = -2;                                            // 固定用pool中的队列的调度策略
-static const CInt CGRAPH_LONG_TIME_TASK_STRATEGY = -101;                                     // 长时间任务调度策略
+static const CIndex CGRAPH_DEFAULT_TASK_STRATEGY = -1;                                      // 默认线程调度策略
+static const CIndex CGRAPH_POOL_TASK_STRATEGY = -2;                                         // 固定用pool中的队列的调度策略
+static const CIndex CGRAPH_LONG_TIME_TASK_STRATEGY = -101;                                  // 长时间任务调度策略
+static const CIndex CGRAPH_TRIGGER_ALL_THREAD_STRATEGY = -102;                              // 触发线程逻辑调度策略
 
 /**
  * 以下为线程池配置信息

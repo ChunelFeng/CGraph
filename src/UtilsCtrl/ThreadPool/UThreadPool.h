@@ -179,7 +179,7 @@ public:
      * 通知所有thread 开启
      * @return
      */
-    CVoid wakeupAllThread() const;
+    CSize wakeupAllThread() const;
 
 protected:
     /**

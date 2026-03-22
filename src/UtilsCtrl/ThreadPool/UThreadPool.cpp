@@ -210,6 +210,12 @@ CIndex UThreadPool::dispatch(const CIndex origIndex) {
     CIndex realIndex = 0;
     if (CGRAPH_DEFAULT_TASK_STRATEGY == origIndex) {
         realIndex = cur_index_++;
+        if (realIndex >= 0 && realIndex < config_.default_thread_size_
+            && primary_threads_[realIndex]->is_running_) {
+            // 如果是默认调度，并且被放置到 正在running 的pt中，则切换为 trigger_one 的策略，防止阻塞
+            realIndex = CGRAPH_TRIGGER_ALL_THREAD_STRATEGY;
+        }
+
         if (cur_index_ >= config_.max_thread_size_ || cur_index_ < 0) {
             cur_index_ = 0;
         }
@@ -269,14 +275,21 @@ CVoid UThreadPool::monitor() {
 }
 
 
-CVoid UThreadPool::wakeupAllThread() const {
+CSize UThreadPool::wakeupAllThread() const {
+    CSize size = 0;
     for (auto& pt : primary_threads_) {
-        pt->wakeup();
+        if (pt->wakeup()) {
+            ++size;
+        }
     }
 
     for (auto& st : secondary_threads_) {
-        st->wakeup();
+        if (st->wakeup()) {
+            ++size;
+        }
     }
+
+    return size;
 }
 
 CGRAPH_NAMESPACE_END

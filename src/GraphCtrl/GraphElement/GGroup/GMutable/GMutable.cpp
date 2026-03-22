@@ -13,6 +13,7 @@ CGRAPH_NAMESPACE_BEGIN
 GMutable::GMutable() {
     element_type_ = GElementType::MUTABLE;
     session_ = URandom<>::generateSession(CGRAPH_STR_MUTABLE);
+    binding_index_ = CGRAPH_TRIGGER_ALL_THREAD_STRATEGY;
     manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
 }
 

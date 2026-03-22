@@ -105,7 +105,12 @@ protected:
      * 清空所有任务内容
      */
     CVoid reset() {
-        done_ = false;
+        {
+            // 这里必须要加 lock，避免退出的时候，cv_.wait_for() 的 pred竞争
+            CGRAPH_UNIQUE_LOCK lk(mutex_);
+            done_ = false;
+        }
+
         cv_.notify_one();    // 防止主线程 wait时间过长，导致的结束缓慢问题
         if (thread_.joinable()) {
             thread_.join();    // 等待线程结束
@@ -176,9 +181,9 @@ protected:
             policy = config_->secondary_thread_policy_;
         }
 
-        auto handle = thread_.native_handle();
-        sched_param param = { calcPriority(priority) };
-        int ret = pthread_setschedparam(handle, calcPolicy(policy), &param);
+        const auto handle = thread_.native_handle();
+        const sched_param& param = { calcPriority(priority) };
+        const int ret = pthread_setschedparam(handle, calcPolicy(policy), &param);
         if (0 != ret) {
             CGRAPH_ECHO("warning : set thread sched param failed, system error code is [%d]", ret);
         }
@@ -214,7 +219,7 @@ private:
      * @param policy
      * @return
      */
-    static CInt calcPolicy(int policy) {
+    static CInt calcPolicy(const int policy) {
         return (CGRAPH_THREAD_SCHED_OTHER == policy
                 || CGRAPH_THREAD_SCHED_RR == policy
                 || CGRAPH_THREAD_SCHED_FIFO == policy)
@@ -228,7 +233,7 @@ private:
      * @param priority
      * @return
      */
-    static CInt calcPriority(int priority) {
+    static CInt calcPriority(const int priority) {
         return (priority >= CGRAPH_THREAD_MIN_PRIORITY
                 && priority <= CGRAPH_THREAD_MAX_PRIORITY)
                ? priority : CGRAPH_THREAD_MIN_PRIORITY;
@@ -236,17 +241,17 @@ private:
 
 
 protected:
-    CBool done_;                                                       // 线程状态标记
-    CBool is_init_;                                                    // 标记初始化状态
-    CBool is_running_;                                                 // 是否正在执行
-    CInt type_ = 0;                                                    // 用于区分线程类型（主线程、辅助线程）
-    CULong total_task_num_ = 0;                                        // 处理的任务的数字
+    CBool done_;                                                         // 线程状态标记
+    CBool is_init_;                                                      // 标记初始化状态
+    CBool is_running_;                                                   // 是否正在执行
+    CInt type_ = 0;                                                      // 用于区分线程类型（主线程、辅助线程）
+    CULong total_task_num_ = 0;                                          // 处理的任务的数字
 
-    UAtomicQueue<UTask>* pool_task_queue_;                             // 用于存放线程池中的普通任务
-    UAtomicPriorityQueue<UTask>* pool_priority_task_queue_;            // 用于存放线程池中的包含优先级任务的队列，仅辅助线程可以执行
-    UThreadPoolConfigPtr config_ = nullptr;                            // 配置参数信息
+    UAtomicQueue<UTask>* pool_task_queue_ { nullptr };                   // 用于存放线程池中的普通任务
+    UAtomicPriorityQueue<UTask>* pool_priority_task_queue_ { nullptr };  // 用于存放线程池中的包含优先级任务的队列，仅辅助线程可以执行
+    UThreadPoolConfigPtr config_ { nullptr };                            // 配置参数信息
 
-    std::thread thread_;                                               // 线程类
+    std::thread thread_;                                                 // 线程类
     std::mutex mutex_;
     std::condition_variable cv_;
 };

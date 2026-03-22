@@ -11,11 +11,11 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-GRegion::GRegion() : GGroup() {
-    is_init_ = false;
-    manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
+GRegion::GRegion() {
     element_type_ = GElementType::REGION;
+    binding_index_ = CGRAPH_TRIGGER_ALL_THREAD_STRATEGY;
     session_ = URandom<>::generateSession(CGRAPH_STR_REGION);
+    manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GElementManager)
 }
 
 

@@ -56,7 +56,7 @@ CVoid GDynamicEngine::commonRunAll() {
      */
     finished_end_size_ = 0;
     for (const auto& element : front_element_arr_) {
-        process(element, element == front_element_arr_.back());
+        process(element, element == front_element_arr_.back() && element->isDefaultBinding());
     }
 
     fatWait();
@@ -257,7 +257,7 @@ CVoid GDynamicEngine::parallelRunAll() {
 
     if (parallel_element_matrix_.size() < static_cast<CSize>(thread_pool_->getConfig().default_thread_size_)) {
         // 确保所有的 pt 都可以被唤醒，从而快速执行
-        thread_pool_->wakeupAllThread();
+        (void)thread_pool_->wakeupAllThread();
     }
 
     {

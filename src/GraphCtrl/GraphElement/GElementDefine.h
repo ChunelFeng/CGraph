@@ -13,10 +13,10 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-const static CSize CGRAPH_DEFAULT_LOOP_TIMES = 1;               // 默认循环次数信息
-const static CLevel CGRAPH_DEFAULT_ELEMENT_LEVEL = 0;           // 默认的element级别，用于控制init函数
-const static CIndex CGRAPH_DEFAULT_BINDING_INDEX = -1;          // 默认绑定线程id，-1表示不绑定
-const static CMSec CGRAPH_DEFAULT_ELEMENT_TIMEOUT = 0;          // 默认element的超时时间
+const static CSize CGRAPH_DEFAULT_LOOP_TIMES = 1;                                     // 默认循环次数信息
+const static CLevel CGRAPH_DEFAULT_ELEMENT_LEVEL = 0;                                 // 默认的element级别，用于控制init函数
+const static CMSec CGRAPH_DEFAULT_ELEMENT_TIMEOUT = 0;                                // 默认element的超时时间
+const static CIndex CGRAPH_DEFAULT_BINDING_INDEX = CGRAPH_DEFAULT_TASK_STRATEGY;      // 默认绑定线程id，-1表示不绑定
 
 enum class GElementType {
     ELEMENT = 0x00000000,                    // 元素
