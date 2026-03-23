@@ -94,7 +94,7 @@ protected:
      */
     CVoid waitRunTask(const CMSec ms) {
         const auto& task = pool_task_queue_->popWithTimeout(ms);
-        if (nullptr != task) {
+        if (task) {
             runTask(*task);
         }
     }

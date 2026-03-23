@@ -145,7 +145,10 @@ public:
      * @return
      */
     CVoid reset() {
-        ready_flag_ = false;
+        {
+            CGRAPH_UNIQUE_LOCK lk(mutex_);
+            ready_flag_ = false;
+        }
         cv_.notify_all();
     }
 
@@ -155,7 +158,10 @@ public:
      * @return
      */
     CVoid setup() {
-        ready_flag_ = true;
+        {
+            CGRAPH_UNIQUE_LOCK lk(mutex_);
+            ready_flag_ = true;
+        }
         queue_ = {};
     }
 
