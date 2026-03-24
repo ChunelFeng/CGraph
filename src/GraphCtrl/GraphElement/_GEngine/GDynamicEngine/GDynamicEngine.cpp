@@ -55,8 +55,8 @@ CVoid GDynamicEngine::commonRunAll() {
      * 3. 等待异步执行结束
      */
     finished_end_size_ = 0;
-    for (const auto& element : front_element_arr_) {
-        process(element, element == front_element_arr_.back() && element->isDefaultBinding());
+    for (auto* element : front_element_arr_) {
+        process(element, element == front_element_arr_.back());
     }
 
     fatWait();
