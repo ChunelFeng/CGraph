@@ -417,6 +417,10 @@ if __name__ == '__main__':
 * 提供 本地保存和加载 功能
 * 修改 `PyCGraph` 为 `pycgraph`，支持 `pip3 install pycgraph` 安装
 
+[2026.03.24 - v3.2.3 - Chunel]
+* 优化 `message` 功能
+* 优化 稳定性
+
 </details>
 
 ------------
