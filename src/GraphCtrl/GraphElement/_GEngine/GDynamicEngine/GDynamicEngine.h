@@ -107,11 +107,10 @@ private:
     GElementPtrArr total_element_arr_ {};                                                // pipeline中所有的元素信息集合
     GElementPtrArr front_element_arr_ {};                                                // 没有依赖的元素信息
     CSize total_end_size_ = 0;                                                           // 图结束节点数量
-    CSize finished_end_size_ = 0;                                                        // 执行结束节点数量
-    CStatus cur_status_;                                                                 // 当前全局的状态信息
-    std::atomic<CSize> parallel_run_num_ {0};                                            // 纯并行时，执行的个数信息
+    std::atomic<CSize> finished_end_size_ {0};                                        // 执行结束节点数量
+    CStatus cur_status_ {};                                                              // 当前全局的状态信息
+    std::atomic<CSize> parallel_run_num_ {0};                                         // 纯并行时，执行的个数信息
     GElementPtrMat2D parallel_element_matrix_ {};                                        // 纯并行时，记录分解后的数据
-
     internal::GEngineDagType dag_type_ = { internal::GEngineDagType::COMMON };           // 当前元素的排布形式
 
     UCvMutex locker_;

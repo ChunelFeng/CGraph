@@ -54,7 +54,7 @@ CVoid GDynamicEngine::commonRunAll() {
      * 2. 在element执行完成之后，进行裂变，直到所有的element执行完成
      * 3. 等待异步执行结束
      */
-    finished_end_size_ = 0;
+    finished_end_size_.store(0, std::memory_order_release);
     for (auto* element : front_element_arr_) {
         process(element, element == front_element_arr_.back());
     }
@@ -185,8 +185,9 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
             break;
         case internal::GElementShape::TAIL:
             {
-                CGRAPH_LOCK_GUARD lock(locker_.mtx_);
-                if ((++finished_end_size_ >= total_end_size_)) {
+                const auto curEndSize = finished_end_size_.fetch_add(1, std::memory_order_acq_rel) + 1;
+                if (curEndSize == total_end_size_) {
+                    CGRAPH_LOCK_GUARD lock(locker_.mtx_);
                     locker_.cv_.notify_one();
                 }
             }
@@ -210,7 +211,7 @@ CVoid GDynamicEngine::fatWait() {
          * 1，执行结束
          * 2，状态异常
          */
-        return (finished_end_size_ >= total_end_size_) || cur_status_.isErr();
+        return (finished_end_size_.load(std::memory_order_acquire) >= total_end_size_) || cur_status_.isErr();
     });
 }
 
