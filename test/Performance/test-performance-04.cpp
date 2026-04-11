@@ -15,7 +15,7 @@ void test_performance_04() {
 
     const int layer = 8;
     const int nodePerLayer = 8;
-    const int runTimes = 100000;
+    const int runTimes = 300000;
 
     UThreadPoolConfig config;
     config.default_thread_size_ = nodePerLayer;

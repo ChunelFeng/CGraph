@@ -42,7 +42,7 @@ void tutorial_simple() {
 
     /* 运行流图信息。初始化后，支持多次循环计算 */
     for (int i = 0; i < 3; i++) {
-        status += pipeline->run();
+        status = pipeline->run();
         CGRAPH_ECHO("==== tutorial_simple, loop : [%d], and run status = [%d].", i + 1, status.getCode());
     }
 

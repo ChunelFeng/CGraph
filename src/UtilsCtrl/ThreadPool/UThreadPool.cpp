@@ -209,15 +209,11 @@ CStatus UThreadPool::releaseSecondaryThread(CInt size) {
 CIndex UThreadPool::dispatch(const CIndex origIndex) {
     CIndex realIndex = 0;
     if (CGRAPH_DEFAULT_TASK_STRATEGY == origIndex) {
-        realIndex = cur_index_++;
+        realIndex = cur_index_.fetch_add(1, std::memory_order_relaxed) % config_.max_thread_size_;
         if (realIndex >= 0 && realIndex < config_.default_thread_size_
             && primary_threads_[realIndex]->is_running_) {
             // 如果是默认调度，并且被放置到 正在running 的pt中，则切换为 trigger_one 的策略，防止阻塞
             realIndex = CGRAPH_TRIGGER_ALL_THREAD_STRATEGY;
-        }
-
-        if (cur_index_ >= config_.max_thread_size_ || cur_index_ < 0) {
-            cur_index_ = 0;
         }
     } else {
         realIndex = origIndex;
