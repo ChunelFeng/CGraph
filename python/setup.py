@@ -6,6 +6,7 @@
 @Desc:
 """
 
+import sys
 import glob
 from setuptools import setup, Extension
 import pybind11
@@ -33,10 +34,12 @@ _extra_compile_args = ["-pthread",
                        "-fvisibility=hidden"]
 _include_dirs = [pybind11.get_include(),
                  "../src"]
+_extra_link_args = ["-pthread"] if sys.platform != "win32" else []
 _ext_modules = [
     Extension(
         name=__PYCGRAPH_NAME__,
         sources=_sources,
+        extra_link_args=_extra_link_args,
         extra_compile_args=_extra_compile_args,
         include_dirs=_include_dirs,
     ),

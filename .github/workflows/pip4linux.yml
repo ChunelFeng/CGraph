@@ -12,38 +12,33 @@ on:
 
 jobs:
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: [ubuntu-latest]
-        python-version: ["3.9",
-                         "3.10",
-                         "3.11",
-                         "3.12",
-                         "3.13",
-                         "3.14"]
-
-    runs-on: ${{ matrix.platform }}
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.12"
 
-      - name: Update requirements
+      - name: Install build tools
         run: |
           python -m pip install --upgrade pip
-          pip install pybind11 setuptools wheel twine auditwheel
+          python -m pip install cibuildwheel twine
 
-      - name: Build and install for linux
+      - name: Build linux wheels
+        env:
+          CIBW_BUILD: "cp38-* cp39-* cp310-* cp311-* cp312-* cp313-*"
+          CIBW_SKIP: "*-musllinux_*"
+          CIBW_ARCHS_LINUX: "x86_64"
         run: |
-          cd python
-          python setup.py bdist_wheel --plat-name manylinux2014_x86_64
-          auditwheel repair dist/*.whl --wheel-dir auditwheel_dist
+          python -m cibuildwheel --output-dir wheelhouse python
+
+      - name: Check wheels
+        run: |
+          twine check wheelhouse/*
 
       - name: Upload to pypi when release
         if: github.event_name == 'release' && github.event.action == 'published'
@@ -51,6 +46,4 @@ jobs:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_PYCGRAPH_TOKEN }}
         run: |
-          cd python
-          twine check dist/*
-          twine upload --verbose --skip-existing dist/*
+          twine upload --verbose --skip-existing wheelhouse/*
