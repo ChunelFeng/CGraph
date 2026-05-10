@@ -28,6 +28,9 @@ __PYCGRAPH_KEYWORDS__ = [__PYCGRAPH_NAME__,
                          "scheduler",
                          "concurrency",
                          "pipeline",
+                         "cross-platform",
+                         "lightweight",
+                         "langgraph",
                          "pybind11"]
 
 _sources = ['PyCGraph.cpp'] + glob.glob("../src/**/*.cpp", recursive=True)
@@ -41,9 +44,9 @@ _ext_modules = [
     Extension(
         name=__PYCGRAPH_NAME__,
         sources=_sources,
-        extra_link_args=_extra_link_args,
         extra_compile_args=_extra_compile_args,
         include_dirs=_include_dirs,
+        extra_link_args=_extra_link_args,
     ),
 ]
 
@@ -78,5 +81,8 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Natural Language :: Chinese (Simplified)",
         "Natural Language :: English",
+        "Topic :: Software Development",
+        "Topic :: Scientific/Engineering",
+        "Topic :: Utilities",
     ]
 )
