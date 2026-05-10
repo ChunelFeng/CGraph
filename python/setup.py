@@ -12,7 +12,7 @@ from setuptools import setup, Extension
 import pybind11
 
 __PYCGRAPH_NAME__ = "pycgraph"
-__PYCGRAPH_VERSION__ = "3.2.3"
+__PYCGRAPH_VERSION__ = "3.2.4"
 __PYCGRAPH_AUTHOR__ = "Chunel"
 __PYCGRAPH_AUTHOR_EMAIL__ = "chunel@foxmail.com"
 __PYCGRAPH_DESCRIPTION__ = "CGraph with python api wrapper by pybind11"
@@ -22,10 +22,12 @@ __PYCGRAPH_LONG_DESCRIPTION__ = 'You can get everything in CGraph github main pa
 __PYCGRAPH_KEYWORDS__ = [__PYCGRAPH_NAME__,
                          "CGraph",
                          "dag",
-                         "parallel",
-                         "airflow",
+                         "hpc",
+                         "graph-computing",
                          "taskflow",
-                         "workflow",
+                         "scheduler",
+                         "concurrency",
+                         "pipeline",
                          "pybind11"]
 
 _sources = ['PyCGraph.cpp'] + glob.glob("../src/**/*.cpp", recursive=True)

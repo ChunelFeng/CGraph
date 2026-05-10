@@ -421,6 +421,9 @@ if __name__ == '__main__':
 * 优化 `message` 功能
 * 优化 稳定性
 
+[2026.05.10 - v3.2.4 - Chunel]
+* 优化 `pycgraph` 功能
+
 </details>
 
 ------------
