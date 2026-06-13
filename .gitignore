@@ -18,3 +18,5 @@
 /python/PyCGraph.egg-info
 /python/src
 __pycache__
+.claude
+.codegraph
