@@ -129,6 +129,7 @@ PYBIND11_MODULE(pycgraph, cg) {
              py::arg("errorInfo"))
         .def("__iadd__", &CStatus::operator+=,
              py::return_value_policy::reference)
+        .def("__bool__", &CStatus::operator bool)
         .def("getCode", &CStatus::getCode)
         .def("getInfo", &CStatus::getInfo)
         .def("reset", &CStatus::reset)

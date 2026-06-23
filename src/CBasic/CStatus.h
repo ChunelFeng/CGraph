@@ -81,6 +81,10 @@ public:
         return (*this);
     }
 
+    explicit operator bool() const {
+        return this->isOK();
+    }
+
     /**
      * 恢复状态信息
      */
