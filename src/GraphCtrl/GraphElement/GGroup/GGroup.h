@@ -77,7 +77,7 @@ private:
     friend class GElementRepository;
     friend class GStorage;
     template<GMultiConditionType> friend class GMultiCondition;
-    template<CInt> friend class GSome;
+    friend class GSome;
 
 public:
     CStatus __addGElements_4py(const GElementPtrArr& elements);

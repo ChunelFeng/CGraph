@@ -478,7 +478,7 @@ private:
     friend class GRegion;
     friend class GCondition;
     friend class GMutable;
-    template<CInt> friend class GSome;
+    friend class GSome;
     template<GMultiConditionType> friend class GMultiCondition;
     friend class GPipeline;
     friend class GElementManager;

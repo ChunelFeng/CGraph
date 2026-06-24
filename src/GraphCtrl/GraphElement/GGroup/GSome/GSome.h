@@ -9,7 +9,6 @@
 #ifndef CGRAPH_GSOME_H
 #define CGRAPH_GSOME_H
 
-#include <memory>
 #include <mutex>
 #include <condition_variable>
 
@@ -17,8 +16,15 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<CInt TriggerNum = 1>
 class GSome : public GGroup {
+protected:
+    /**
+     * 设定 wait_num 个数
+     * 当前 group 执行完成 wait_num 个后，就可以继续执行
+     * @return
+     */
+    virtual CSize getWaitNum() = 0;
+
 protected:
     explicit GSome();
 
@@ -34,11 +40,10 @@ protected:
 
     CGRAPH_NO_ALLOWED_COPY(GSome)
 
-private:
-    CStatus addElementEx(GElementPtr element) final;
+    CStatus addElementEx(GElementPtr element) override;
 
 private:
-    CInt left_num_ = 0;                        // 还剩的触发结束的个数
+    CInt wait_num_ {0};                        // 还剩的触发结束的个数
     CStatus cur_status_ ;                      // 记录异步时刻的当前状态信息
 
     std::mutex lock_;
@@ -51,7 +56,5 @@ private:
 };
 
 CGRAPH_NAMESPACE_END
-
-#include "GSome.inl"
 
 #endif //CGRAPH_GSOME_H

@@ -6,23 +6,21 @@
 @Desc:
 ***************************/
 
-#ifndef CGRAPH_GSOME_INL
-#define CGRAPH_GSOME_INL
+#ifndef CGRAPH_GSOME_CPP
+#define CGRAPH_GSOME_CPP
 
 #include "GSome.h"
 
 CGRAPH_NAMESPACE_BEGIN
 
-template<CInt TriggerNum>
-GSome<TriggerNum>::GSome() {
+GSome::GSome() {
     element_type_ = GElementType::SOME;
     binding_index_ = CGRAPH_TRIGGER_ALL_THREAD_STRATEGY;
     session_ = URandom<>::generateSession(CGRAPH_STR_SOME);
 }
 
 
-template<CInt TriggerNum>
-CStatus GSome<TriggerNum>::addElementEx(GElementPtr element) {
+CStatus GSome::addElementEx(GElementPtr element) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_INIT(false)
     CGRAPH_ASSERT_NOT_NULL(element)
@@ -39,11 +37,12 @@ CStatus GSome<TriggerNum>::addElementEx(GElementPtr element) {
 }
 
 
-template<CInt TriggerNum>
-CStatus GSome<TriggerNum>::run()  {
+CStatus GSome::run()  {
     CGRAPH_FUNCTION_BEGIN
 
-    left_num_ = TriggerNum;    // 还剩n个，就完成当前GSome的执行逻辑
+    wait_num_ = static_cast<CInt>(getWaitNum());
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(wait_num_ > children_.size(),
+        "num is bigger than elements size.");
     cur_status_.reset();
 
     /**
@@ -53,20 +52,21 @@ CStatus GSome<TriggerNum>::run()  {
      * 4. 赋返回值
      */
     for (auto* element : children_) {
-        thread_pool_->commit([this, element] {
+        thread_pool_->execute([this, element] {
             {
                 const auto& curStatus = element->fatProcessor(CFunctionType::RUN);
                 CGRAPH_UNIQUE_LOCK lock(lock_);
                 cur_status_ += curStatus;
-                left_num_--;
+                if (--wait_num_ <= 0 || cur_status_.isErr()) {
+                    cv_.notify_one();
+                }
             }
-            cv_.notify_one();
-        }, CGRAPH_POOL_TASK_STRATEGY);
+        }, binding_index_);
     }
 
     CGRAPH_UNIQUE_LOCK lock(lock_);
     cv_.wait(lock, [this] {
-        return left_num_ <= 0 || cur_status_.isErr();
+        return wait_num_ <= 0 || cur_status_.isErr();
     });
 
     for (auto* element : children_) {
@@ -79,14 +79,12 @@ CStatus GSome<TriggerNum>::run()  {
 }
 
 
-template<CInt TriggerNum>
-CBool GSome<TriggerNum>::isSerializable() const {
+CBool GSome::isSerializable() const {
     return false;    // 情况较为复杂，默认不可以
 }
 
 
-template<CInt TriggerNum>
-CVoid GSome<TriggerNum>::dump(std::ostream& oss) {
+CVoid GSome::dump(std::ostream& oss) {
     dumpElement(oss);
     dumpGroupLabelBegin(oss);
     oss << 'p' << this << "[shape=point height=0];\n";
@@ -104,23 +102,18 @@ CVoid GSome<TriggerNum>::dump(std::ostream& oss) {
 }
 
 
-template<CInt TriggerNum>
-CBool GSome<TriggerNum>::isHold() {
+CBool GSome::isHold() {
     // 这里固定是不可以 hold的
     return false;
 }
 
 
-template<CInt TriggerNum>
-CStatus GSome<TriggerNum>::checkSuitable() {
+CStatus GSome::checkSuitable() {
     CGRAPH_FUNCTION_BEGIN
     status = GElement::checkSuitable();
     CGRAPH_FUNCTION_CHECK_STATUS
 
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((CGRAPH_DEFAULT_LOOP_TIMES != loop_), "GSome cannot set loop > 1.")
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((0 >= TriggerNum), "trigger num must bigger than 0.")
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((children_.size() < TriggerNum),     \
-                                            "this GSome need at least [" + std::to_string(TriggerNum) + "] element.")
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(std::any_of(children_.begin(), children_.end(), [](GElementPtr ptr) {
         return !ptr->isAsync();
     }), "GSome contains async node only.")
@@ -130,4 +123,4 @@ CStatus GSome<TriggerNum>::checkSuitable() {
 
 CGRAPH_NAMESPACE_END
 
-#endif //CGRAPH_GSOME_INL
+#endif //CGRAPH_GSOME_CPP
