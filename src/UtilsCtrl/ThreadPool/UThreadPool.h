@@ -14,6 +14,8 @@
 #include <map>
 #include <future>
 #include <thread>
+#include <atomic>
+#include <mutex>
 #include <memory>
 #include <functional>
 
@@ -179,7 +181,7 @@ public:
      * 通知所有thread 开启
      * @return
      */
-    CSize wakeupAllThread() const;
+    CSize wakeupAllThread();
 
 protected:
     /**
@@ -208,6 +210,7 @@ private:
     std::thread monitor_thread_;                                                    // 监控线程
     std::map<CSize, int> thread_record_map_;                                        // 线程记录的信息
     std::mutex st_mutex_;                                                           // 辅助线程发生变动的时候，加的mutex信息
+    std::mutex wakeup_mutex_;                                                       // 防止wakeupAllThread并发重入
 };
 
 using UThreadPoolPtr = UThreadPool *;

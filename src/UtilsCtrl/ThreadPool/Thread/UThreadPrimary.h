@@ -118,8 +118,15 @@ protected:
         CGRAPH_YIELD();
         if (cur_empty_epoch_ >= config_->primary_thread_busy_epoch_) {
             CGRAPH_UNIQUE_LOCK lk(mutex_);
-            cv_.wait_for(lk, std::chrono::milliseconds(config_->primary_thread_empty_interval_),
-                         [this] { return 0 == cur_empty_epoch_ || !wsq_.isEmpty() || !pool_task_queue_->empty() || !done_; });
+            const auto ready = [this] {
+                return 0 == cur_empty_epoch_ || !wsq_.isEmpty() || !pool_task_queue_->empty() || !done_;
+            };
+
+            if (!ready()) {
+                is_running_ = false;
+                cv_.wait_for(lk, std::chrono::milliseconds(config_->primary_thread_empty_interval_), ready);
+                is_running_ = true;
+            }
             cur_empty_epoch_ = 0;
         }
     }

@@ -93,7 +93,9 @@ protected:
      * @notice 目的是降低cpu的占用率
      */
     CVoid waitRunTask(const CMSec ms) {
+        is_running_ = false;
         const auto& task = pool_task_queue_->popWithTimeout(ms);
+        is_running_ = true;
         if (task) {
             runTask(*task);
         }
@@ -105,7 +107,7 @@ protected:
      * @return
      */
     bool freeze() {
-        if (likely(is_running_)) {
+        if (likely(is_running_.load(std::memory_order_relaxed))) {
             cur_ttl_++;
             cur_ttl_ = (std::min)(cur_ttl_, config_->secondary_thread_ttl_);
         } else {

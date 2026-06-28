@@ -9,6 +9,7 @@
 #ifndef CGRAPH_UTHREADBASE_H
 #define CGRAPH_UTHREADBASE_H
 
+#include <atomic>
 #include <thread>
 
 #include "../UThreadObject.h"
@@ -80,10 +81,8 @@ protected:
      * @param task
      */
     CVoid runTask(const UTask& task) {
-        is_running_ = true;
         task();
         total_task_num_++;
-        is_running_ = false;
     }
 
 
@@ -92,12 +91,10 @@ protected:
      * @param tasks
      */
     CVoid runTasks(const UTaskArr& tasks) {
-        is_running_ = true;
         for (auto& task : tasks) {
             task();
         }
         total_task_num_ += tasks.size();
-        is_running_ = false;
     }
 
 
@@ -127,7 +124,7 @@ protected:
      */
     CBool wakeup() {
         CBool result = false;
-        if (!is_running_) {
+        if (!is_running_.load(std::memory_order_relaxed)) {
             cv_.notify_one();
             result = true;
         }
@@ -154,6 +151,7 @@ protected:
      */
     CVoid loopProcess() {
         CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(config_)
+        is_running_ = true;
         if (config_->batch_task_enable_) {
             while (done_) {
                 processTasks();    // 批量任务获取执行接口
@@ -243,7 +241,7 @@ private:
 protected:
     CBool done_;                                                         // 线程状态标记
     CBool is_init_;                                                      // 标记初始化状态
-    CBool is_running_;                                                   // 是否正在执行
+    std::atomic<bool> is_running_;                                       // 是否正在执行
     CInt type_ = 0;                                                      // 用于区分线程类型（主线程、辅助线程）
     CULong total_task_num_ = 0;                                          // 处理的任务的数字
 

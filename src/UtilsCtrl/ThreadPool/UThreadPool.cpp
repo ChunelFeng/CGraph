@@ -211,7 +211,7 @@ CIndex UThreadPool::dispatch(const CIndex origIndex) {
     if (CGRAPH_DEFAULT_TASK_STRATEGY == origIndex) {
         realIndex = cur_index_.fetch_add(1, std::memory_order_relaxed) % config_.max_thread_size_;
         if (realIndex >= 0 && realIndex < config_.default_thread_size_
-            && primary_threads_[realIndex]->is_running_) {
+            && primary_threads_[realIndex]->is_running_.load(std::memory_order_relaxed)) {
             // 如果是默认调度，并且被放置到 正在running 的pt中，则切换为 trigger_one 的策略，防止阻塞
             realIndex = CGRAPH_TRIGGER_ALL_THREAD_STRATEGY;
         }
@@ -255,7 +255,7 @@ CVoid UThreadPool::monitor() {
 
         // 如果 primary线程都在执行，则表示忙碌
         const bool busy = !primary_threads_.empty() && std::all_of(primary_threads_.begin(), primary_threads_.end(),
-                                [](UThreadPrimaryPtr ptr) { return ptr && ptr->is_running_; });
+                                [](UThreadPrimaryPtr ptr) { return ptr && ptr->is_running_.load(std::memory_order_relaxed); });
 
         // 如果忙碌或者priority_task_queue_中有任务，则需要添加 secondary线程
         if (busy || !priority_task_queue_.empty()) {
@@ -271,18 +271,21 @@ CVoid UThreadPool::monitor() {
 }
 
 
-CSize UThreadPool::wakeupAllThread() const {
+CSize UThreadPool::wakeupAllThread() {
     CSize size = 0;
-    for (auto& pt : primary_threads_) {
-        if (pt->wakeup()) {
-            ++size;
+    if (wakeup_mutex_.try_lock()) {
+        for (const auto& pt : primary_threads_) {
+            if (pt->wakeup()) {
+                ++size;
+            }
         }
-    }
 
-    for (auto& st : secondary_threads_) {
-        if (st->wakeup()) {
-            ++size;
+        for (const auto& st : secondary_threads_) {
+            if (st->wakeup()) {
+                ++size;
+            }
         }
+       wakeup_mutex_.unlock();
     }
 
     return size;
