@@ -226,27 +226,6 @@ CVoid GDynamicEngine::fatWait() {
 }
 
 
-#ifdef _CGRAPH_PARALLEL_MICRO_BATCH_ENABLE_
-CVoid GDynamicEngine::parallelRunAll() {
-    // 微任务模式，主要用于性能测试的场景下
-    std::vector<std::future<CStatus>> futures;
-    for (auto& elements : parallel_element_matrix_) {
-        auto curFut = thread_pool_->commit([elements] {
-            CGRAPH_FUNCTION_BEGIN
-            for (auto* element : elements) {
-                status += element->fatProcessor(CFunctionType::RUN);
-                CGRAPH_FUNCTION_CHECK_STATUS
-            }
-            CGRAPH_FUNCTION_END;
-        });
-        futures.emplace_back(std::move(curFut));
-    }
-
-    for (auto& fut : futures) {
-        cur_status_ += fut.get();
-    }
-}
-#else
 CVoid GDynamicEngine::parallelRunAll() {
     parallel_run_num_ = 0;
     const CIndex& totalSize = static_cast<CIndex>(parallel_element_matrix_.size());
@@ -286,7 +265,6 @@ CVoid GDynamicEngine::parallelRunAll() {
         });
     }
 }
-#endif
 
 
 CVoid GDynamicEngine::parallelRunOne(GElementPtr element) {
