@@ -204,6 +204,16 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
 
 
 CVoid GDynamicEngine::fatWait() {
+    const auto epoch = thread_pool_->getConfig().pipeline_wait_busy_epoch_;
+    for (CInt i = 0; i < epoch; i++) {
+        // 对于 pipeline 运行耗时很短的情况，在 进入 cv.wait() 之前，轮询等到一会
+        // 如果遇到 isErr() 的情况，还是走进入 mutex 的逻辑
+        if (finished_end_size_.load(std::memory_order_acquire) >= total_end_size_) {
+            return;
+        }
+        CGRAPH_YIELD();
+    }
+
     CGRAPH_UNIQUE_LOCK lock(locker_.mtx_);
     locker_.cv_.wait(lock, [this] {
         /**
@@ -259,6 +269,14 @@ CVoid GDynamicEngine::parallelRunAll() {
     if (parallel_element_matrix_.size() < static_cast<CSize>(thread_pool_->getConfig().default_thread_size_)) {
         // 确保所有的 pt 都可以被唤醒，从而快速执行
         (void)thread_pool_->wakeupAllThread();
+    }
+
+    const auto epoch = thread_pool_->getConfig().pipeline_wait_busy_epoch_;
+    for (CInt i = 0; i < epoch; i++) {
+        if (parallel_run_num_ >= total_end_size_) {
+            return;
+        }
+        CGRAPH_YIELD();
     }
 
     {

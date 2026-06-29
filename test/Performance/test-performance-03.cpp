@@ -22,8 +22,9 @@ void test_performance_03() {
     config.secondary_thread_size_ = 0;
     config.max_task_steal_range_ = 1;
     config.max_thread_size_ = 2;
+    config.pipeline_wait_busy_epoch_ = 100;
     config.primary_thread_empty_interval_ = 0;
-    config.primary_thread_busy_epoch_ = 500;
+    config.primary_thread_busy_epoch_ = 100;
     config.monitor_enable_ = false;    // 关闭扩缩容机制
     pipeline->setUniqueThreadPoolConfig(config);
     pipeline->registerGElement<TestAdd1GNode>(&a);

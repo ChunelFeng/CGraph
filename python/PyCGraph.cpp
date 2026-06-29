@@ -28,6 +28,7 @@ PYBIND11_MODULE(pycgraph, cg) {
         .def_readwrite("max_local_batch_size", &UThreadPoolConfig::max_local_batch_size_)
         .def_readwrite("max_pool_batch_size", &UThreadPoolConfig::max_pool_batch_size_)
         .def_readwrite("max_steal_batch_size", &UThreadPoolConfig::max_steal_batch_size_)
+        .def_readwrite("pipeline_wait_busy_epoch", &UThreadPoolConfig::pipeline_wait_busy_epoch_)
         .def_readwrite("primary_thread_busy_epoch", &UThreadPoolConfig::primary_thread_busy_epoch_)
         .def_readwrite("primary_thread_empty_interval", &UThreadPoolConfig::primary_thread_empty_interval_)
         .def_readwrite("secondary_thread_ttl", &UThreadPoolConfig::secondary_thread_ttl_)

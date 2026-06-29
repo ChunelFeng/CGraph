@@ -24,7 +24,8 @@ void test_performance_01() {
     config.max_task_steal_range_ = 7;
     config.max_thread_size_ = 8;
     config.primary_thread_empty_interval_ = 0;
-    config.primary_thread_busy_epoch_ = 500;
+    config.primary_thread_busy_epoch_ = 10;
+    config.pipeline_wait_busy_epoch_ = 100;
     pipeline->setUniqueThreadPoolConfig(config);
     for (auto& i : arr) {
         pipeline->registerGElement<TestAdd1GNode>(&i);

@@ -25,6 +25,7 @@ struct UThreadPoolConfig : public CStruct {
     CInt max_local_batch_size_ = CGRAPH_MAX_LOCAL_BATCH_SIZE;
     CInt max_pool_batch_size_ = CGRAPH_MAX_POOL_BATCH_SIZE;
     CInt max_steal_batch_size_ = CGRAPH_MAX_STEAL_BATCH_SIZE;
+    CInt pipeline_wait_busy_epoch_ = CGRAPH_PIPIELINE_WAIT_BUSY_EPOCH;
     CInt primary_thread_busy_epoch_ = CGRAPH_PRIMARY_THREAD_BUSY_EPOCH;
     CMSec primary_thread_empty_interval_ = CGRAPH_PRIMARY_THREAD_EMPTY_INTERVAL;
     CSec secondary_thread_ttl_ = CGRAPH_SECONDARY_THREAD_TTL;

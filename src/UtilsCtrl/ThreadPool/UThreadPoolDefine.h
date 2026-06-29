@@ -54,6 +54,7 @@ static const CBool CGRAPH_BATCH_TASK_ENABLE = false;                            
 static const CInt CGRAPH_MAX_LOCAL_BATCH_SIZE = 2;                                           // 批量执行本地任务最大值
 static const CInt CGRAPH_MAX_POOL_BATCH_SIZE = 2;                                            // 批量执行通用任务最大值
 static const CInt CGRAPH_MAX_STEAL_BATCH_SIZE = 2;                                           // 批量盗取任务最大值
+static const CInt CGRAPH_PIPIELINE_WAIT_BUSY_EPOCH = 0;                                      // pipeline 开始wait结束时，等待轮数。在多个小任务的情况下，极大提升性能
 static const CInt CGRAPH_PRIMARY_THREAD_BUSY_EPOCH = 3;                                      // 主线程进入wait状态的轮数，数值越大，理论性能越高，但空转可能性也越大
 static const CMSec CGRAPH_PRIMARY_THREAD_EMPTY_INTERVAL = 1000;                              // 主线程进入休眠状态的默认时间
 static const CSec CGRAPH_SECONDARY_THREAD_TTL = 10;                                          // 辅助线程ttl，单位为s
