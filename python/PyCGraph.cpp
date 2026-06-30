@@ -40,7 +40,8 @@ PYBIND11_MODULE(pycgraph, cg) {
         .def_readwrite("secondary_thread_priority", &UThreadPoolConfig::secondary_thread_priority_)
         .def_readwrite("bind_cpu_enable", &UThreadPoolConfig::bind_cpu_enable_)
         .def_readwrite("batch_task_enable", &UThreadPoolConfig::batch_task_enable_)
-        .def_readwrite("monitor_enable", &UThreadPoolConfig::monitor_enable_);
+        .def_readwrite("monitor_enable", &UThreadPoolConfig::monitor_enable_)
+        .def_readwrite("deliver_running_primary_thread_enable", &UThreadPoolConfig::deliver_running_primary_thread_enable_);
 
     py::class_<GElementRelation>(cg, "GElementRelation")
         .def(py::init<>())

@@ -210,9 +210,10 @@ CIndex UThreadPool::dispatch(const CIndex origIndex) {
     CIndex realIndex = 0;
     if (CGRAPH_DEFAULT_TASK_STRATEGY == origIndex) {
         realIndex = cur_index_.fetch_add(1, std::memory_order_relaxed) % config_.max_thread_size_;
-        if (realIndex >= 0 && realIndex < config_.default_thread_size_
+        if (!config_.deliver_running_primary_thread_enable_
+            && realIndex >= 0 && realIndex < config_.default_thread_size_
             && primary_threads_[realIndex]->is_running_.load(std::memory_order_relaxed)) {
-            // 如果是默认调度，并且被放置到 正在running 的pt中，则切换为 trigger_one 的策略，防止阻塞
+            // 如果是默认调度，并且被放置到 正在running 的pt中，则切换为 trigger_all 的策略，防止阻塞
             realIndex = CGRAPH_TRIGGER_ALL_THREAD_STRATEGY;
         }
     } else {
@@ -274,7 +275,7 @@ CVoid UThreadPool::monitor() {
 CSize UThreadPool::wakeupAllThread() {
     CSize size = 0;
     if (wakeup_mutex_.try_lock()) {
-        for (const auto& pt : primary_threads_) {
+        for (auto* pt : primary_threads_) {
             if (pt->wakeup()) {
                 ++size;
             }
@@ -285,7 +286,7 @@ CSize UThreadPool::wakeupAllThread() {
                 ++size;
             }
         }
-       wakeup_mutex_.unlock();
+        wakeup_mutex_.unlock();
     }
 
     return size;

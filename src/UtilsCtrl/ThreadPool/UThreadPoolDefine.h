@@ -62,6 +62,7 @@ static const CBool CGRAPH_MONITOR_ENABLE = false;                               
 static const CSec CGRAPH_MONITOR_SPAN = 5;                                                   // 监控线程执行间隔，单位为s
 static const CMSec CGRAPH_QUEUE_EMPTY_INTERVAL = 1000;                                       // 队列为空时，等待的时间。仅针对辅助线程，单位为ms
 static const CBool CGRAPH_BIND_CPU_ENABLE = false;                                           // 是否开启绑定cpu模式（仅针对主线程）
+static const CBool CGRAPH_DELIVER_RUNNING_PRIMARY_THREAD_ENABLE = false;                     // 是否可以将任务投递到正在运行主线程的队列中。开启后，遇到描述情况，则退化为投递到公共队列，并且触发所有线程
 static const CInt CGRAPH_PRIMARY_THREAD_POLICY = CGRAPH_THREAD_SCHED_OTHER;                  // 主线程调度策略
 static const CInt CGRAPH_SECONDARY_THREAD_POLICY = CGRAPH_THREAD_SCHED_OTHER;                // 辅助线程调度策略
 static const CInt CGRAPH_PRIMARY_THREAD_PRIORITY = CGRAPH_THREAD_MIN_PRIORITY;               // 主线程调度优先级（取值范围0~99，配合调度策略一起使用，不建议不了解相关内容的童鞋做修改）

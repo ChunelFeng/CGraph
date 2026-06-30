@@ -38,6 +38,7 @@ struct UThreadPoolConfig : public CStruct {
     CBool bind_cpu_enable_ = CGRAPH_BIND_CPU_ENABLE;
     CBool batch_task_enable_ = CGRAPH_BATCH_TASK_ENABLE;
     CBool monitor_enable_ = CGRAPH_MONITOR_ENABLE;
+    CBool deliver_running_primary_thread_enable_ = CGRAPH_DELIVER_RUNNING_PRIMARY_THREAD_ENABLE;
 
     CStatus check() const {
         CGRAPH_FUNCTION_BEGIN

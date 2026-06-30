@@ -23,6 +23,7 @@ void test_performance_04() {
     config.max_task_steal_range_ = nodePerLayer - 1;
     config.primary_thread_busy_epoch_ = 500;
     config.primary_thread_empty_interval_ = 0;
+    config.deliver_running_primary_thread_enable_ = true;
     pipeline->setUniqueThreadPoolConfig(config);
 
     // 实现一个全连接
