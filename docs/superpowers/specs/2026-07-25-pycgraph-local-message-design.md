@@ -54,9 +54,9 @@ class GMessageParam:
 
 
 class GMessagePushStrategy(Enum):
-    WAIT = ...
-    REPLACE = ...
-    DROP = ...
+    WAIT = 1
+    REPLACE = 2
+    DROP = 3
 
 
 class GMessageError(RuntimeError):
@@ -156,9 +156,19 @@ from pycgraph import (
 
 
 conn_id = bind_message_topic("pub-sub", capacity=64)
+message = object()
 pub_message("pub-sub", message, GMessagePushStrategy.WAIT)
 message = sub_message(conn_id, timeout_ms=1000)
 ```
+
+### 5.6 参数规则
+
+- `topic` 必须是 `str`，与 C++ `std::string` topic 一致，不额外禁止空字符串。
+- `capacity` 必须是大于等于 `1` 的 `int`，表示实际可保存的消息数量。
+- `timeout_ms` 必须是 `None` 或大于等于 `0` 的 `int`。
+- `conn_id` 必须是大于 `0` 的 `int`。
+- `strategy` 必须是 `GMessagePushStrategy` 成员。
+- `message` 接受任意 Python 对象，不做类型和值校验。
 
 ## 6. 文件与打包
 
@@ -349,7 +359,7 @@ pub/sub 使用只读契约：
 
 ```text
 message topic [topic] not found
-message topic [topic] capacity mismatch, expect [64], actual [32]
+message topic [topic] capacity mismatch, existing [64], requested [32]
 message connection [3] not found
 message connection [3] does not belong to topic [topic]
 receive message timeout, topic [topic], timeout [1000] ms
@@ -454,7 +464,7 @@ topic 创建、删除、bind、detach、drop、clear 不允许与同一 topic �
 - payload 序列化。
 - payload 浅拷贝或深拷贝。
 - 每条消息的 Python -> C++ -> Python 转发。
-- 每条消息的 wrapper 或 result object 分配。
+- 每条消息的 payload wrapper 或结构化 result object 分配。
 
 `pub_message()` 对每个 subscriber 必须进行一次入队和唤醒，O(N) fan-out 是语义要求带来的必要成本。
 
