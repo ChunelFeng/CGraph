@@ -23,7 +23,7 @@ CGraph C++ 已提供两类 message 语义：
 2. 支持单进程内跨 node、跨 pipeline 的 `pub/sub`。
 3. 支持 `WAIT`、`REPLACE`、`DROP` 三种 push strategy。
 4. hot path 只传递 Python 对象引用，不序列化、不复制 payload。
-5. 保持现有 `pycgraph` 扩展模块名称和已有导入方式，不移动或重命名现有文件；允许按实现需要新增一个或多个内部 Python 文件。
+5. 保持现有 `pycgraph` 扩展模块名称和已有导入方式，不移动或重命名现有文件；允许按实现需要新增一个或多个内部 Python 文件，但全部 message 实现源码必须位于 `python/src/`。
 6. 纯 Python message API 通过唯一入口 `from pycgraph import GMessage` 公开。
 7. 实现保持小而清晰，容易 debug 和维护。
 
@@ -168,22 +168,30 @@ message = GMessage.sub_message(conn_id, timeout_ms=1000)
 
 ## 6. 内部文件组织与打包
 
-保持当前 `pycgraph` 扩展模块名称和现有文件位置，不移动或重命名已有模块。纯 Python message 实现不限制为单文件，可根据最终代码规模选择：
+保持当前 `pycgraph` 扩展模块名称和现有文件位置，不移动或重命名已有模块。全部新增的 message 实现源码统一放在 `python/src/`，不在 `python/` 根目录或其他目录散落实现场景代码。
 
-- 单个 `_pycgraph_message.py` module；或
-- 以 `_pycgraph_message` 为内部入口、按 queue、topic、manager、facade 等职责拆分的多个 Python module；内部入口本身可以是 module 或 package。
+纯 Python message 实现不限制为单文件，可根据最终代码规模选择：
+
+- 单个 `python/src/_pycgraph_message.py` module；或
+- 以 `python/src/_pycgraph_message` 为内部入口、按 queue、topic、manager、facade 等职责拆分的多个 Python module；内部入口本身可以是 module 或 package。
 
 内部拆分遵循两个约束：
 
 1. 文件按明确职责拆分，不为了形式增加无收益层级。
-2. 无论单文件还是多文件，必须提供一个可导入的 `_pycgraph_message` 内部入口，并从该入口取得 `GMessage`。
+2. 无论单文件还是多文件，必须在 `python/src/` 下提供一个可导入的 `_pycgraph_message` 内部入口，并从该入口取得 `GMessage`。
 
 打包和导出要求：
 
-1. `setup.py` 必须声明所有新增的内部 module 或 package，确保它们完整进入 wheel。
+1. `setup.py` / `pyproject.toml` 必须将 `python/src/` 配置为纯 Python source root，并声明所有新增的内部 module 或 package，确保它们完整进入 wheel。
 2. `PyCGraph.cpp` 保持 `PYBIND11_MODULE(pycgraph, cg)` 和扩展名 `pycgraph` 不变。
 3. `PyCGraph.cpp` 在模块初始化末尾导入 `_pycgraph_message` 内部入口，只将 `GMessage` class 挂到 `pycgraph`。
 4. `GMessage` 及其嵌套公开类型的 `__module__` 规范为 `pycgraph`，不向用户暴露内部 helper module 名称。
+
+目录职责：
+
+- `python/src/`：全部新增的 message 运行时实现源码。
+- `python/tests/`：message 单元测试和集成测试，不进入运行时安装源码。
+- `python/tutorial/`：T16/T17 教程，保持现有 tutorial 目录结构。
 
 胶水层只在 `import pycgraph` 时转发一次 `GMessage` class 引用。之后调用 `GMessage.send_message()`、`GMessage.recv_message()`、`GMessage.pub_message()`、`GMessage.sub_message()` 时直接执行纯 Python static method，不发生逐消息的 Python -> C++ -> Python 转发。
 
@@ -434,6 +442,7 @@ topic 创建、删除、bind、detach、drop、clear 不允许与同一 topic �
 - 验证 message static method 不再作为 `pycgraph` 顶层函数公开。
 - 验证 `GMessage` 及嵌套类型不暴露内部 helper module 名称。
 - 验证 wheel 包含 `_pycgraph_message` 依赖的全部内部 Python 文件。
+- 验证全部 message 运行时 `.py` 源码均来自 `python/src/`，没有在 `python/` 根目录或 tutorial/test 目录中放置运行时实现。
 
 ### 14.4 教程
 
@@ -481,4 +490,4 @@ topic 创建、删除、bind、detach、drop、clear 不允许与同一 topic �
 5. 只使用一个 `GMessage.Error` 报告 message 错误。
 6. 生命周期、并发、打包和 tutorial 测试通过。
 7. 实现不包含跨进程、asyncio、metrics 或 benchmark 等范围外能力。
-8. 无论内部使用一个还是多个 Python 文件，wheel 均包含完整实现，`from pycgraph import GMessage` 可直接使用全部 message 功能。
+8. 无论内部使用一个还是多个 Python 文件，全部 message 实现源码均位于 `python/src/`，wheel 包含完整实现，`from pycgraph import GMessage` 可直接使用全部 message 功能。
