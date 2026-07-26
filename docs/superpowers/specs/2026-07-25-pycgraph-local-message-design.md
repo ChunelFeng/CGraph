@@ -170,22 +170,31 @@ message = GMessage.sub_message(conn_id, timeout_ms=1000)
 
 保持当前 `pycgraph` 扩展模块名称和现有文件位置，不移动或重命名已有模块。全部新增的 message 实现源码统一放在 `python/src/`，不在 `python/` 根目录或其他目录散落实现场景代码。
 
-纯 Python message 实现不限制为单文件，可根据最终代码规模选择：
+纯 Python message 实现不限制为单文件，可根据最终代码规模选择一个或多个平铺 module：
 
 - 单个 `python/src/_pycgraph_message.py` module；或
-- 以 `python/src/_pycgraph_message` 为内部入口、按 queue、topic、manager、facade 等职责拆分的多个 Python module；内部入口本身可以是 module 或 package。
+- `python/src/_pycgraph_message.py` 作为内部入口，并按 queue、topic、manager 等职责增加 `_pycgraph_message_*.py` module。
 
-内部拆分遵循两个约束：
+内部拆分遵循三个约束：
 
 1. 文件按明确职责拆分，不为了形式增加无收益层级。
-2. 无论单文件还是多文件，必须在 `python/src/` 下提供一个可导入的 `_pycgraph_message` 内部入口，并从该入口取得 `GMessage`。
+2. 全部运行时 `.py` 文件直接位于 `python/src/`，不为 message 实现增加嵌套源码目录。
+3. 无论单文件还是多文件，必须由 `python/src/_pycgraph_message.py` 作为唯一内部入口，并从该入口取得 `GMessage`。
 
 打包和导出要求：
 
-1. `setup.py` / `pyproject.toml` 必须将 `python/src/` 配置为纯 Python source root，并声明所有新增的内部 module 或 package，确保它们完整进入 wheel。
+1. `setup.py` / `pyproject.toml` 必须将 `python/src/` 配置为纯 Python source root，并声明所有新增的平铺 module，确保它们完整进入 wheel。
 2. `PyCGraph.cpp` 保持 `PYBIND11_MODULE(pycgraph, cg)` 和扩展名 `pycgraph` 不变。
 3. `PyCGraph.cpp` 在模块初始化末尾导入 `_pycgraph_message` 内部入口，只将 `GMessage` class 挂到 `pycgraph`。
 4. `GMessage` 及其嵌套公开类型的 `__module__` 规范为 `pycgraph`，不向用户暴露内部 helper module 名称。
+
+`PyCGraph.cpp` 的修改严格限制为模块初始化胶水：
+
+- 只执行一次 `_pycgraph_message` import。
+- 只向 `pycgraph` 添加一个 `GMessage` attribute。
+- 不绑定 queue、topic、manager 或任何 message 收发函数。
+- 不修改现有 C++ `GMessageManager`、`GMessage` 或 ring buffer 实现。
+- 不让任何单条消息进入 C++。
 
 目录职责：
 
@@ -198,7 +207,7 @@ message = GMessage.sub_message(conn_id, timeout_ms=1000)
 安装后，wheel 中必须同时包含：
 
 - 现有 `pycgraph.cpython-<version>-<platform>.so`；
-- `_pycgraph_message` 内部入口；
+- `_pycgraph_message.py` 内部入口；
 - 该入口依赖的全部内部 Python module。
 
 现有使用方式保持不变：
@@ -441,8 +450,8 @@ topic 创建、删除、bind、detach、drop、clear 不允许与同一 topic �
 - 验证 `GMessage` 可以从 `pycgraph` 顶层导入。
 - 验证 message static method 不再作为 `pycgraph` 顶层函数公开。
 - 验证 `GMessage` 及嵌套类型不暴露内部 helper module 名称。
-- 验证 wheel 包含 `_pycgraph_message` 依赖的全部内部 Python 文件。
-- 验证全部 message 运行时 `.py` 源码均来自 `python/src/`，没有在 `python/` 根目录或 tutorial/test 目录中放置运行时实现。
+- 验证 wheel 包含 `_pycgraph_message.py` 依赖的全部内部 Python 文件。
+- 验证全部 message 运行时 `.py` 源码直接位于 `python/src/`，没有在 `python/` 根目录、嵌套源码目录或 tutorial/test 目录中放置运行时实现。
 
 ### 14.4 教程
 
@@ -490,4 +499,5 @@ topic 创建、删除、bind、detach、drop、clear 不允许与同一 topic �
 5. 只使用一个 `GMessage.Error` 报告 message 错误。
 6. 生命周期、并发、打包和 tutorial 测试通过。
 7. 实现不包含跨进程、asyncio、metrics 或 benchmark 等范围外能力。
-8. 无论内部使用一个还是多个 Python 文件，全部 message 实现源码均位于 `python/src/`，wheel 包含完整实现，`from pycgraph import GMessage` 可直接使用全部 message 功能。
+8. 无论内部使用一个还是多个 Python 文件，全部 message 实现源码均直接位于 `python/src/`，wheel 包含完整实现，`from pycgraph import GMessage` 可直接使用全部 message 功能。
+9. `PyCGraph.cpp` 只包含一次性 `GMessage` 导出胶水；所有消息收发和生命周期逻辑均由 Python 实现。
