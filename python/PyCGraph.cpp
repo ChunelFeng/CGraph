@@ -336,4 +336,7 @@ PYBIND11_MODULE(pycgraph, cg) {
     PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GParallelMultiCondition);
     PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GSome);
     PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(GMutable);
+
+    py::module_ message_module = py::module_::import("_pycgraph_message");
+    cg.attr("GMessage") = message_module.attr("GMessage");
 }

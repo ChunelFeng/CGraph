@@ -239,10 +239,13 @@ from pycgraph import GMessage
 
 ```python
 push(message, strategy) -> int
-pop(timeout_ms) -> object
+pop(timeout_ms, timeout_error) -> object
 ```
 
 不实现 `queue.Queue` 的 MPMC、`task_done()`、`join()` 等无关能力。
+
+queue 超时时直接抛出携带 `timeout_error` 描述的 `GMessage.Error`，不定义
+或转换内部 timeout 异常类型。
 
 ### 7.2 `_SendRecvTopic`
 
@@ -363,7 +366,9 @@ pub/sub 使用只读契约：
 
 ## 11. 错误处理
 
-所有 message 错误统一抛出 `GMessage.Error`。不定义 topic、connection、timeout 等细分异常类型。
+所有 message 错误统一抛出 `GMessage.Error`。内部唯一实现类型为
+`PyCGraphException`，`GMessage.Error` 是该类型的公开别名。不定义
+topic、connection、timeout 等细分异常类型。
 
 错误原因通过稳定、可读的字符串提供，例如：
 

@@ -16,7 +16,7 @@
 /python/build
 /python/dist
 /python/PyCGraph.egg-info
-/python/src
+/python/src/*.egg-info/
 __pycache__
 .claude
 .codegraph

@@ -59,6 +59,12 @@ setup(
     url=__PYCGRAPH_URL__,
     license=__PYCGRAPH_LICENSE__,
     ext_modules=_ext_modules,
+    package_dir={"": "src"},
+    py_modules=[
+        "_pycgraph_message",
+        "_pycgraph_message_primitives",
+        "_pycgraph_message_manager",
+    ],
     zip_safe=False,
     long_description=__PYCGRAPH_LONG_DESCRIPTION__,
     long_description_content_type="text/markdown",

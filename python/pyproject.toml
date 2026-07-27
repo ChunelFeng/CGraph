@@ -11,4 +11,9 @@ dependencies = [
 ]
 
 [tool.setuptools]
-package-dir = {"" = "."}
+package-dir = {"" = "src"}
+py-modules = [
+    "_pycgraph_message",
+    "_pycgraph_message_primitives",
+    "_pycgraph_message_manager",
+]
