@@ -1,62 +1,56 @@
-# PyCGraph `GMessagePy` Rename Design
+# PyCGraph `GMessagePy` 改名设计
 
-**Date:** 2026-07-29
+**日期：** 2026-07-29
 
-## Goal
+## 目标
 
-Rename the pure-Python message API from `GMessage` to `GMessagePy` so that
-its runtime implementation is explicit and a future C++-backed Python API can
-use a distinct name such as `GMessageCpp`.
+将纯 Python 消息接口从 `GMessage` 改名为 `GMessagePy`，明确表达其
+runtime 实现。今后如果增加基于 C++ 的 Python 消息接口，可以使用
+`GMessageCpp` 等独立名称。
 
-## Public API
+## 公开接口
 
-- Replace `pycgraph.GMessage` with `pycgraph.GMessagePy`.
-- Do not keep a `GMessage` compatibility alias.
-- Preserve all message methods, arguments, return values, exception behavior,
-  queue semantics, and runtime performance characteristics.
-- Rename nested public metadata consistently:
+- 使用 `pycgraph.GMessagePy` 替换 `pycgraph.GMessage`。
+- 不保留 `GMessage` 兼容别名。
+- 所有消息方法、参数、返回值、异常行为、队列语义和 runtime 性能特征
+  均保持不变。
+- 统一修改嵌套公开类型的元数据：
   - `GMessagePy.PushStrategy`
   - `GMessagePy.Error`
 
-## Python Source and Packaging
+## Python 源码与打包
 
-- Keep the internal entry module named `_pycgraph_message.py`; only its public
-  façade class changes from `GMessage` to `GMessagePy`.
-- Keep `_pycgraph_message_primitives` and `_pycgraph_message_manager`
-  unchanged because they describe implementation responsibilities rather than
-  a public backend name.
-- Keep the pybind11 import of `_pycgraph_message` and export only
-  `GMessagePy`.
-- Keep both setuptools module lists unchanged and verify that
-  `_pycgraph_message` remains included in source distributions and wheels.
+- 内部入口文件继续使用 `_pycgraph_message.py`，只将其中的公开 façade
+  class 从 `GMessage` 改为 `GMessagePy`。
+- `_pycgraph_message_primitives` 和 `_pycgraph_message_manager` 保持不变。
+  这两个名称描述的是实现职责，不需要携带公开 backend 名称。
+- pybind11 继续导入 `_pycgraph_message`，但只向 `pycgraph` 导出
+  `GMessagePy`。
+- 两处 setuptools 模块清单保持不变，并验证源码包和 wheel 中仍然包含
+  `_pycgraph_message`。
 
-## Tests and Tutorials
+## 测试与教程
 
-- Change unit and integration tests to import and exercise `GMessagePy`.
-- Add an integration assertion that `pycgraph.GMessage` is absent, preventing
-  an accidental compatibility alias.
-- Update all Python tutorials and tutorial helper nodes to use `GMessagePy`.
-- Update existing message design and implementation-plan documents so their
-  recorded API matches the codebase.
+- 单元测试和集成测试统一导入并使用 `GMessagePy`。
+- 集成测试增加 `pycgraph.GMessage` 不存在的断言，防止意外保留兼容别名。
+- 所有 Python tutorial 及其辅助 node 统一使用 `GMessagePy`。
+- 更新现有消息设计文档和实施计划中的接口名称，使文档记录与代码一致。
 
-## Compatibility and Runtime Impact
+## 兼容性与 Runtime 影响
 
-This is an intentional source-incompatible API rename. Existing callers must
-replace `GMessage` with `GMessagePy`.
+这是一次有意进行的源码不兼容改名。现有调用方需要将 `GMessage` 替换为
+`GMessagePy`。
 
-The change adds no runtime abstraction, backend selection, allocation, lock,
-copy, or hot-path branch. Module import and attribute forwarding remain
-one-time initialization work; message send/receive and publish/subscribe paths
-are unchanged.
+本次修改不会增加 runtime 抽象、backend 自动选择、内存分配、锁、数据
+拷贝或热路径分支。模块导入和属性转发仍然只在初始化时执行一次；消息
+收发和发布订阅路径保持不变。
 
-## Verification
+## 验证方式
 
-- First change the tests and confirm they fail because `GMessagePy` is not yet
-  available.
-- Apply the production export rename and validate the unchanged packaging
-  declarations.
-- Run message unit tests, extension integration tests, and tutorial tests.
-- Build/install the package through its normal test path to verify that
-  `_pycgraph_message` remains packaged correctly and exports `GMessagePy`.
-- Search the Python source, tests, tutorials, and active design/plan documents
-  for stale standalone `GMessage` references.
+- 先修改测试，确认测试因为 `GMessagePy` 尚未导出而按预期失败。
+- 修改生产代码导出名称，并检查保持不变的打包声明。
+- 运行消息单元测试、扩展集成测试和 tutorial 测试。
+- 通过项目正常的构建和安装测试路径验证 `_pycgraph_message` 仍被正确
+  打包，并能够导出 `GMessagePy`。
+- 检查 Python 源码、测试、tutorial 以及当前有效的设计和计划文档，
+  确认不存在遗漏的独立 `GMessage` 引用。
