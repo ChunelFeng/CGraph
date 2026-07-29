@@ -21,22 +21,23 @@ class PyCGraphMessageIntegrationTest(unittest.TestCase):
         cls.pycgraph = pycgraph
 
     def setUp(self):
-        self.pycgraph.GMessage.clear_messages()
+        self.pycgraph.GMessagePy.clear_messages()
 
     def tearDown(self):
-        self.pycgraph.GMessage.clear_messages()
+        self.pycgraph.GMessagePy.clear_messages()
 
     def test_existing_extension_api_and_message_facade_are_available(self):
         self.assertTrue(hasattr(self.pycgraph, "GNode"))
         self.assertTrue(hasattr(self.pycgraph, "GPipeline"))
-        self.assertTrue(hasattr(self.pycgraph, "GMessage"))
+        self.assertTrue(hasattr(self.pycgraph, "GMessagePy"))
+        self.assertFalse(hasattr(self.pycgraph, "GMessage"))
 
         self.assertFalse(hasattr(self.pycgraph, "send_message"))
         self.assertFalse(hasattr(self.pycgraph, "recv_message"))
         self.assertFalse(hasattr(self.pycgraph, "pub_message"))
         self.assertFalse(hasattr(self.pycgraph, "sub_message"))
 
-        message_api = self.pycgraph.GMessage
+        message_api = self.pycgraph.GMessagePy
         self.assertEqual("pycgraph", message_api.__module__)
         self.assertEqual("pycgraph", message_api.PushStrategy.__module__)
         self.assertEqual("pycgraph", message_api.Error.__module__)
@@ -50,7 +51,7 @@ class PyCGraphMessageIntegrationTest(unittest.TestCase):
         )
 
     def test_send_recv_and_pub_sub_stay_in_python_object_space(self):
-        message_api = self.pycgraph.GMessage
+        message_api = self.pycgraph.GMessagePy
         send_message = object()
         message_api.create_message_topic("send-recv", capacity=1)
 

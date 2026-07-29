@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:executing-plans` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Add pure-Python, single-process `send/recv` and `pub/sub` message support behind the sole public façade `pycgraph.GMessage`.
+**Goal:** Add pure-Python, single-process `send/recv` and `pub/sub` message support behind the sole public façade `pycgraph.GMessagePy`.
 
 **Architecture:** A single flat `python/src/_pycgraph_message.py` module owns the bounded SPSC queue, send/recv and pub/sub topic records, the interpreter-global manager, and the public static façade. Queue locks protect message state; a manager registry lock protects lifecycle mutation only, so send/recv/pub/sub hot paths perform a dictionary lookup and per-queue synchronization without taking the global lock.
 
@@ -12,7 +12,7 @@
 
 - Keep the extension module and `PYBIND11_MODULE(pycgraph, cg)` name unchanged.
 - Put every message runtime `.py` file directly under `python/src/`.
-- Export only `GMessage` from `pycgraph`; do not export message methods or internal helpers at module level.
+- Export only `GMessagePy` from `pycgraph`; do not export message methods or internal helpers at module level.
 - Pass Python object references only; do not serialize, copy, wrap, or enter the C++ message manager.
 - Support only the documented SPSC send/recv and single-publisher/multi-subscriber contracts.
 - Do not add IPC, `asyncio`, metrics, tracing, benchmarks, payload validation, or pipeline-destroy cleanup.
@@ -31,7 +31,7 @@
 - Produces: `_LocalMessageQueue(capacity: int)`, `push(message: object, strategy: _PushStrategy) -> int`, and `pop(timeout_ms: Optional[int], timeout_error: str) -> object`.
 - Produces: `_PushStrategy` values `WAIT=1`, `REPLACE=2`, and `DROP=3`.
 - Produces: one `PyCGraphException` implementation type, publicly exposed as
-  `GMessage.Error`.
+  `GMessagePy.Error`.
 
 - [x] **Step 1: Make `python/src/` trackable and write failing queue tests**
 
@@ -88,32 +88,32 @@
 
   Expected: all manager tests pass.
 
-### Task 3: Public `GMessage` façade and validation
+### Task 3: Public `GMessagePy` façade and validation
 
 **Files:**
 - Modify: `python/tests/test_pycgraph_message.py`
 - Modify: `python/src/_pycgraph_message.py`
 
 **Interfaces:**
-- Produces: `GMessage.PushStrategy`, `GMessage.Error`, and these static methods:
+- Produces: `GMessagePy.PushStrategy`, `GMessagePy.Error`, and these static methods:
   `create_message_topic`, `remove_message_topic`, `send_message`, `recv_message`,
   `bind_message_topic`, `pub_message`, `sub_message`,
   `detach_message_subscription`, `drop_message_topic`, and `clear_messages`.
-- Enforces: topic is `str`; capacity is a non-boolean `int >= 1`; timeout is `None` or a non-boolean `int >= 0`; connection ID is a non-boolean `int > 0`; strategy is a `GMessage.PushStrategy` member.
+- Enforces: topic is `str`; capacity is a non-boolean `int >= 1`; timeout is `None` or a non-boolean `int >= 0`; connection ID is a non-boolean `int > 0`; strategy is a `GMessagePy.PushStrategy` member.
 
 - [x] **Step 1: Write failing façade tests**
 
-  Test static invocation, exact enum values, a single `GMessage.Error` type for operational and argument failures, rejection of booleans as integer parameters, arbitrary payload acceptance including `None`, and `__module__ == "pycgraph"` for the façade and both nested public types.
+  Test static invocation, exact enum values, a single `GMessagePy.Error` type for operational and argument failures, rejection of booleans as integer parameters, arbitrary payload acceptance including `None`, and `__module__ == "pycgraph"` for the façade and both nested public types.
 
 - [x] **Step 2: Verify façade tests fail**
 
   Run: `python3.13 -m unittest python.tests.test_pycgraph_message.GMessageFacadeTest -v`
 
-  Expected: failures because `GMessage` is not implemented.
+  Expected: failures because `GMessagePy` is not implemented.
 
 - [x] **Step 3: Implement validation and façade forwarding**
 
-  Define one internal enum and one internal runtime-error class, attach them as `GMessage.PushStrategy` and `GMessage.Error`, normalize their public metadata to `pycgraph`, and expose only static methods that validate arguments before forwarding to `_MANAGER`.
+  Define one internal enum and one internal runtime-error class, attach them as `GMessagePy.PushStrategy` and `GMessagePy.Error`, normalize their public metadata to `pycgraph`, and expose only static methods that validate arguments before forwarding to `_MANAGER`.
 
 - [x] **Step 4: Verify all pure-Python tests**
 
@@ -130,22 +130,22 @@
 - Create: `python/tests/test_pycgraph_integration.py`
 
 **Interfaces:**
-- `PyCGraph.cpp` imports `_pycgraph_message` once at module initialization and assigns only its `GMessage` attribute to `pycgraph`.
+- `PyCGraph.cpp` imports `_pycgraph_message` once at module initialization and assigns only its `GMessagePy` attribute to `pycgraph`.
 - Setuptools treats `python/src/` as the source root and packages the flat `_pycgraph_message` module alongside the `pycgraph` extension.
 
 - [x] **Step 1: Write the failing installed-module integration test**
 
-  Assert existing `GNode` and `GPipeline` imports, top-level `GMessage`, absence of top-level message functions, public `__module__` metadata, and a real send/recv plus pub/sub flow through the installed extension.
+  Assert existing `GNode` and `GPipeline` imports, top-level `GMessagePy`, absence of top-level message functions, public `__module__` metadata, and a real send/recv plus pub/sub flow through the installed extension.
 
-- [x] **Step 2: Verify the current extension lacks `GMessage`**
+- [x] **Step 2: Verify the current extension lacks `GMessagePy`**
 
   Build/install the pre-glue wheel in a temporary environment and run the integration test.
 
-  Expected: failure importing `GMessage` from `pycgraph`.
+  Expected: failure importing `GMessagePy` from `pycgraph`.
 
 - [x] **Step 3: Add minimal pybind11 glue and packaging configuration**
 
-  Append one `_pycgraph_message` import and one `cg.attr("GMessage")` assignment at the end of module initialization. Configure `package_dir={"": "src"}` and `py_modules=["_pycgraph_message"]` consistently in setuptools metadata.
+  Append one `_pycgraph_message` import and one `cg.attr("GMessagePy")` assignment at the end of module initialization. Configure `package_dir={"": "src"}` and `py_modules=["_pycgraph_message"]` consistently in setuptools metadata.
 
 - [x] **Step 4: Build and inspect the wheel**
 
@@ -178,7 +178,7 @@
   iterations.
 - T17 runs one publisher and three subscriber pipelines concurrently for five
   iterations.
-- Each tutorial demonstrates the normal path, catches `GMessage.Error` for a finite timeout, and cleans up resources in `finally`.
+- Each tutorial demonstrates the normal path, catches `GMessagePy.Error` for a finite timeout, and cleans up resources in `finally`.
 
 - [x] **Step 1: Add the two focused tutorials**
 

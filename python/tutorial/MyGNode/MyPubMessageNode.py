@@ -8,7 +8,7 @@
 
 import time
 
-from pycgraph import CStatus, GMessage, GNode
+from pycgraph import CStatus, GMessagePy, GNode
 
 from MyParams.MyMessageParam import MyMessageParam
 
@@ -34,11 +34,11 @@ class MyPubMessageNode(GNode):
         self._num += 1
 
         try:
-            GMessage.pub_message(
+            GMessagePy.pub_message(
                 "pub-sub",
                 message,
-                GMessage.PushStrategy.WAIT,
+                GMessagePy.PushStrategy.WAIT,
             )
-        except GMessage.Error as error:
+        except GMessagePy.Error as error:
             return CStatus(-1, str(error))
         return CStatus()

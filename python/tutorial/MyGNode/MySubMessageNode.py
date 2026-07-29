@@ -6,7 +6,7 @@
 @Desc: Subscribe to messages from a CGraph node
 """
 
-from pycgraph import CStatus, GMessage, GNode
+from pycgraph import CStatus, GMessagePy, GNode
 
 
 class MySubMessageNode(GNode):
@@ -25,8 +25,8 @@ class MySubMessageNode(GNode):
 
     def run(self):
         try:
-            message = GMessage.sub_message(self._conn_id)
-        except GMessage.Error as error:
+            message = GMessagePy.sub_message(self._conn_id)
+        except GMessagePy.Error as error:
             print("[{}] recv message error: {}".format(self.getName(), error))
             return CStatus(-1, str(error))
 

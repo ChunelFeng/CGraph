@@ -15,7 +15,7 @@ WAIT 可能造成业务死锁。
 
 import threading
 
-from pycgraph import GMessage, GPipeline
+from pycgraph import GMessagePy, GPipeline
 
 from MyGNode.MyNode1 import MyNode1
 from MyGNode.MyNode2 import MyNode2
@@ -34,7 +34,7 @@ def pub_message():
 
 
 def sub_message(conn_ids):
-    conn_id = GMessage.bind_message_topic("pub-sub", capacity=1024)
+    conn_id = GMessagePy.bind_message_topic("pub-sub", capacity=1024)
     conn_ids.append(conn_id)
 
     pipeline = GPipeline()
@@ -84,11 +84,11 @@ def tutorial_message_pub_sub():
         )
 
         try:
-            GMessage.sub_message(conn_ids[0], timeout_ms=10)
-        except GMessage.Error as error:
+            GMessagePy.sub_message(conn_ids[0], timeout_ms=10)
+        except GMessagePy.Error as error:
             print("handled timeout:", error)
     finally:
-        GMessage.clear_messages()
+        GMessagePy.clear_messages()
 
 
 if __name__ == "__main__":

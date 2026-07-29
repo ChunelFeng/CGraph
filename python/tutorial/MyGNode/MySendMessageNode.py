@@ -6,7 +6,7 @@
 @Desc: Send a message from a CGraph node
 """
 
-from pycgraph import CStatus, GMessage, GNode
+from pycgraph import CStatus, GMessagePy, GNode
 
 from MyParams.MyMessageParam import MyMessageParam
 
@@ -25,11 +25,11 @@ class MySendMessageNode(GNode):
         self._num += 1
 
         try:
-            GMessage.send_message(
+            GMessagePy.send_message(
                 "send-recv",
                 message,
-                GMessage.PushStrategy.WAIT,
+                GMessagePy.PushStrategy.WAIT,
             )
-        except GMessage.Error as error:
+        except GMessagePy.Error as error:
             return CStatus(-1, str(error))
         return CStatus()

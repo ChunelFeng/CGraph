@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Split the pure-Python message runtime into three responsibility-focused flat modules without changing public behavior, hot-path behavior, or the `pycgraph.GMessage` API.
+**Goal:** Split the pure-Python message runtime into three responsibility-focused flat modules without changing public behavior, hot-path behavior, or the `pycgraph.GMessagePy` API.
 
 **Architecture:** `_pycgraph_message_primitives.py` owns the strategy, exception, and bounded queue; `_pycgraph_message_manager.py` owns topic records and registry/lifecycle behavior; `_pycgraph_message.py` remains the sole extension-facing entry and owns validation, the interpreter-global manager, and the public façade. Dependencies are one-way: primitives → manager → entry, with no runtime import cycles.
 
@@ -10,10 +10,10 @@
 
 ## Global Constraints
 
-- Keep `PYBIND11_MODULE(pycgraph, cg)`, the extension filename, and `from pycgraph import GMessage` unchanged.
+- Keep `PYBIND11_MODULE(pycgraph, cg)`, the extension filename, and `from pycgraph import GMessagePy` unchanged.
 - Keep every message runtime `.py` file directly under `python/src/`.
 - Use `_pycgraph_message_*` names because these helpers are installed as top-level flat modules.
-- Export only `GMessage` from the `pycgraph` extension.
+- Export only `GMessagePy` from the `pycgraph` extension.
 - Pass Python object references directly; do not serialize, copy, wrap, or enter the C++ message manager.
 - Preserve the existing queue locking, timeout, registry locking, and cached subscriber tuple behavior exactly.
 - Do not add dependencies, package nesting, metrics, tracing, or unrelated refactoring.
@@ -87,7 +87,7 @@ Expected: FAIL because `_pycgraph_message_primitives` does not exist.
 **Interfaces:**
 - Produces from primitives: `_PushStrategy`, `PyCGraphException`, and `_LocalMessageQueue(capacity)` with unchanged `push(message, strategy)` and `pop(timeout_ms, timeout_error)` behavior.
 - Produces from manager: `_SendRecvTopic`, `_PubSubTopic`, and `_LocalMessageManager` with the existing ten manager operations.
-- Produces from entry: the same `GMessage`, `_MANAGER`, validation functions, and compatibility bindings for the four internal types imported by existing tests.
+- Produces from entry: the same `GMessagePy`, `_MANAGER`, validation functions, and compatibility bindings for the four internal types imported by existing tests.
 
 - [x] **Step 1: Create the primitives module**
 
@@ -118,7 +118,7 @@ from _pycgraph_message_primitives import (
 
 - [x] **Step 3: Reduce the entry module to façade responsibilities**
 
-Keep validation functions, `_MANAGER`, `GMessage`, and public metadata
+Keep validation functions, `_MANAGER`, `GMessagePy`, and public metadata
 normalization in `_pycgraph_message.py`. Replace the removed implementation
 with:
 

@@ -14,7 +14,7 @@ PYTHON_ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PYTHON_ROOT / "src"))
 
 from _pycgraph_message import (  # noqa: E402
-    GMessage,
+    GMessagePy,
     _LocalMessageQueue,
     _LocalMessageManager,
     PyCGraphException,
@@ -458,24 +458,27 @@ class LocalMessageManagerTest(unittest.TestCase):
             self.manager.detach_message_subscription("missing", 99)
 
 
-class GMessageFacadeTest(unittest.TestCase):
+class GMessagePyFacadeTest(unittest.TestCase):
     def setUp(self):
-        GMessage.clear_messages()
+        GMessagePy.clear_messages()
 
     def tearDown(self):
-        GMessage.clear_messages()
+        GMessagePy.clear_messages()
 
     def test_public_types_have_expected_values_and_metadata(self):
-        self.assertEqual(1, GMessage.PushStrategy.WAIT.value)
-        self.assertEqual(2, GMessage.PushStrategy.REPLACE.value)
-        self.assertEqual(3, GMessage.PushStrategy.DROP.value)
-        self.assertTrue(issubclass(GMessage.Error, RuntimeError))
-        self.assertIs(GMessage.Error, PyCGraphException)
-        self.assertEqual("pycgraph", GMessage.__module__)
-        self.assertEqual("pycgraph", GMessage.PushStrategy.__module__)
-        self.assertEqual("pycgraph", GMessage.Error.__module__)
-        self.assertEqual("GMessage.PushStrategy", GMessage.PushStrategy.__qualname__)
-        self.assertEqual("GMessage.Error", GMessage.Error.__qualname__)
+        self.assertEqual(1, GMessagePy.PushStrategy.WAIT.value)
+        self.assertEqual(2, GMessagePy.PushStrategy.REPLACE.value)
+        self.assertEqual(3, GMessagePy.PushStrategy.DROP.value)
+        self.assertTrue(issubclass(GMessagePy.Error, RuntimeError))
+        self.assertIs(GMessagePy.Error, PyCGraphException)
+        self.assertEqual("pycgraph", GMessagePy.__module__)
+        self.assertEqual("pycgraph", GMessagePy.PushStrategy.__module__)
+        self.assertEqual("pycgraph", GMessagePy.Error.__module__)
+        self.assertEqual(
+            "GMessagePy.PushStrategy",
+            GMessagePy.PushStrategy.__qualname__,
+        )
+        self.assertEqual("GMessagePy.Error", GMessagePy.Error.__qualname__)
 
     def test_methods_are_static_and_default_to_wait(self):
         method_names = (
@@ -493,81 +496,84 @@ class GMessageFacadeTest(unittest.TestCase):
         for method_name in method_names:
             with self.subTest(method_name=method_name):
                 self.assertIsInstance(
-                    GMessage.__dict__[method_name], staticmethod
+                    GMessagePy.__dict__[method_name], staticmethod
                 )
 
         message = object()
-        GMessage.create_message_topic("topic", capacity=1)
-        self.assertEqual(1, GMessage.send_message("topic", message))
-        self.assertIs(message, GMessage.recv_message("topic", timeout_ms=0))
+        GMessagePy.create_message_topic("topic", capacity=1)
+        self.assertEqual(1, GMessagePy.send_message("topic", message))
+        self.assertIs(
+            message,
+            GMessagePy.recv_message("topic", timeout_ms=0),
+        )
 
     def test_none_is_a_valid_payload_for_both_modes(self):
-        GMessage.create_message_topic("send-recv", capacity=1)
+        GMessagePy.create_message_topic("send-recv", capacity=1)
         self.assertEqual(
-            1, GMessage.send_message("send-recv", None)
+            1, GMessagePy.send_message("send-recv", None)
         )
         self.assertIsNone(
-            GMessage.recv_message("send-recv", timeout_ms=0)
+            GMessagePy.recv_message("send-recv", timeout_ms=0)
         )
 
-        conn_id = GMessage.bind_message_topic("pub-sub", capacity=1)
-        self.assertEqual(1, GMessage.pub_message("pub-sub", None))
-        self.assertIsNone(GMessage.sub_message(conn_id, timeout_ms=0))
+        conn_id = GMessagePy.bind_message_topic("pub-sub", capacity=1)
+        self.assertEqual(1, GMessagePy.pub_message("pub-sub", None))
+        self.assertIsNone(GMessagePy.sub_message(conn_id, timeout_ms=0))
 
     def test_empty_topic_is_valid_in_both_modes(self):
         message = object()
-        GMessage.create_message_topic("", capacity=1)
-        conn_id = GMessage.bind_message_topic("", capacity=1)
+        GMessagePy.create_message_topic("", capacity=1)
+        conn_id = GMessagePy.bind_message_topic("", capacity=1)
 
-        self.assertEqual(1, GMessage.send_message("", message))
-        self.assertIs(message, GMessage.recv_message("", timeout_ms=0))
-        self.assertEqual(1, GMessage.pub_message("", message))
-        self.assertIs(message, GMessage.sub_message(conn_id, timeout_ms=0))
+        self.assertEqual(1, GMessagePy.send_message("", message))
+        self.assertIs(message, GMessagePy.recv_message("", timeout_ms=0))
+        self.assertEqual(1, GMessagePy.pub_message("", message))
+        self.assertIs(message, GMessagePy.sub_message(conn_id, timeout_ms=0))
 
     def test_topic_validation_is_shared_by_all_topic_methods(self):
         topic_calls = (
-            lambda: GMessage.create_message_topic(1, 1),
-            lambda: GMessage.remove_message_topic(1),
-            lambda: GMessage.send_message(1, object()),
-            lambda: GMessage.recv_message(1),
-            lambda: GMessage.bind_message_topic(1, 1),
-            lambda: GMessage.pub_message(1, object()),
-            lambda: GMessage.detach_message_subscription(1, 1),
-            lambda: GMessage.drop_message_topic(1),
+            lambda: GMessagePy.create_message_topic(1, 1),
+            lambda: GMessagePy.remove_message_topic(1),
+            lambda: GMessagePy.send_message(1, object()),
+            lambda: GMessagePy.recv_message(1),
+            lambda: GMessagePy.bind_message_topic(1, 1),
+            lambda: GMessagePy.pub_message(1, object()),
+            lambda: GMessagePy.detach_message_subscription(1, 1),
+            lambda: GMessagePy.drop_message_topic(1),
         )
         for call in topic_calls:
             with self.subTest(call=call):
                 with self.assertRaisesRegex(
-                    GMessage.Error, r"^message topic must be str$"
+                    GMessagePy.Error, r"^message topic must be str$"
                 ):
                     call()
 
     def test_capacity_must_be_positive_non_boolean_int(self):
         for capacity in (0, -1, 1.0, True, None):
             for call in (
-                lambda: GMessage.create_message_topic("send", capacity),
-                lambda: GMessage.bind_message_topic("pub", capacity),
+                lambda: GMessagePy.create_message_topic("send", capacity),
+                lambda: GMessagePy.bind_message_topic("pub", capacity),
             ):
                 with self.subTest(capacity=capacity, call=call):
                     with self.assertRaisesRegex(
-                        GMessage.Error,
+                        GMessagePy.Error,
                         r"^message capacity must be an int "
                         r"greater than or equal to 1$",
                     ):
                         call()
 
     def test_timeout_must_be_none_or_non_negative_non_boolean_int(self):
-        GMessage.create_message_topic("send", capacity=1)
-        conn_id = GMessage.bind_message_topic("pub", capacity=1)
+        GMessagePy.create_message_topic("send", capacity=1)
+        conn_id = GMessagePy.bind_message_topic("pub", capacity=1)
 
         for timeout_ms in (-1, 1.0, True, "1"):
             for call in (
-                lambda: GMessage.recv_message("send", timeout_ms),
-                lambda: GMessage.sub_message(conn_id, timeout_ms),
+                lambda: GMessagePy.recv_message("send", timeout_ms),
+                lambda: GMessagePy.sub_message(conn_id, timeout_ms),
             ):
                 with self.subTest(timeout_ms=timeout_ms, call=call):
                     with self.assertRaisesRegex(
-                        GMessage.Error,
+                        GMessagePy.Error,
                         r"^message timeout must be None or an int "
                         r"greater than or equal to 0$",
                     ):
@@ -576,40 +582,40 @@ class GMessageFacadeTest(unittest.TestCase):
     def test_connection_id_must_be_positive_non_boolean_int(self):
         for conn_id in (0, -1, 1.0, True, None):
             for call in (
-                lambda: GMessage.sub_message(conn_id, timeout_ms=0),
-                lambda: GMessage.detach_message_subscription(
+                lambda: GMessagePy.sub_message(conn_id, timeout_ms=0),
+                lambda: GMessagePy.detach_message_subscription(
                     "topic", conn_id
                 ),
             ):
                 with self.subTest(conn_id=conn_id, call=call):
                     with self.assertRaisesRegex(
-                        GMessage.Error,
+                        GMessagePy.Error,
                         r"^message connection must be an int greater than 0$",
                     ):
                         call()
 
     def test_strategy_must_be_push_strategy_member(self):
-        GMessage.create_message_topic("send", capacity=1)
-        conn_id = GMessage.bind_message_topic("pub", capacity=1)
+        GMessagePy.create_message_topic("send", capacity=1)
+        conn_id = GMessagePy.bind_message_topic("pub", capacity=1)
 
         for strategy in (1, None, "WAIT"):
             for call in (
-                lambda: GMessage.send_message("send", object(), strategy),
-                lambda: GMessage.pub_message("pub", object(), strategy),
+                lambda: GMessagePy.send_message("send", object(), strategy),
+                lambda: GMessagePy.pub_message("pub", object(), strategy),
             ):
                 with self.subTest(strategy=strategy, call=call):
                     with self.assertRaisesRegex(
-                        GMessage.Error,
+                        GMessagePy.Error,
                         r"^message push strategy must be "
-                        r"GMessage\.PushStrategy$",
+                        r"GMessagePy\.PushStrategy$",
                     ):
                         call()
 
-        GMessage.detach_message_subscription("pub", conn_id)
+        GMessagePy.detach_message_subscription("pub", conn_id)
 
     def test_operational_failures_use_public_error_type(self):
-        with self.assertRaises(GMessage.Error):
-            GMessage.recv_message("missing", timeout_ms=0)
+        with self.assertRaises(GMessagePy.Error):
+            GMessagePy.recv_message("missing", timeout_ms=0)
 
 
 if __name__ == "__main__":

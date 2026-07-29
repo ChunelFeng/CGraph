@@ -1,7 +1,7 @@
 """
 Single-process message support for pycgraph.
 
-The public entry point is ``pycgraph.GMessage``. Everything else in this
+The public entry point is ``pycgraph.GMessagePy``. Everything else in this
 module is an implementation detail.
 """
 
@@ -50,11 +50,11 @@ def _validate_conn_id(conn_id):
 def _validate_strategy(strategy):
     if not isinstance(strategy, _PushStrategy):
         raise PyCGraphException(
-            "message push strategy must be GMessage.PushStrategy"
+            "message push strategy must be GMessagePy.PushStrategy"
         )
 
 
-class GMessage:
+class GMessagePy:
     """Static façade for single-process Python message operations."""
 
     PushStrategy = _PushStrategy
@@ -131,10 +131,10 @@ class GMessage:
         _MANAGER.clear_messages()
 
 
-GMessage.__module__ = "pycgraph"
+GMessagePy.__module__ = "pycgraph"
 _PushStrategy.__name__ = "PushStrategy"
-_PushStrategy.__qualname__ = "GMessage.PushStrategy"
+_PushStrategy.__qualname__ = "GMessagePy.PushStrategy"
 _PushStrategy.__module__ = "pycgraph"
 PyCGraphException.__name__ = "Error"
-PyCGraphException.__qualname__ = "GMessage.Error"
+PyCGraphException.__qualname__ = "GMessagePy.Error"
 PyCGraphException.__module__ = "pycgraph"

@@ -15,6 +15,14 @@ class _SendRecvTopic:
         self.queue = _LocalMessageQueue(capacity)
 
 
+class _Subscription:
+    __slots__ = ("topic", "queue")
+
+    def __init__(self, topic, queue):
+        self.topic = topic
+        self.queue = queue
+
+
 class _PubSubTopic:
     def __init__(self):
         self.subscribers = {}
@@ -97,7 +105,7 @@ class _LocalMessageManager:
             self._next_conn_id += 1
             queue = _LocalMessageQueue(capacity)
             pub_sub_topic.add(conn_id, queue)
-            self._subscriptions[conn_id] = (topic, queue)
+            self._subscriptions[conn_id] = _Subscription(topic, queue)
             return conn_id
 
     def pub_message(self, topic, message, strategy):
@@ -111,21 +119,21 @@ class _LocalMessageManager:
         return pushed
 
     def sub_message(self, conn_id, timeout_ms):
-        subscription = self._subscriptions.get(conn_id)
-        if subscription is None:
+        suber = self._subscriptions.get(conn_id)
+        if suber is None:
             raise self._connection_not_found(conn_id)
         timeout_error = (
             "subscribe message timeout, connection [{}], "
             "timeout [{}] ms".format(conn_id, timeout_ms)
         )
-        return subscription[1].pop(timeout_ms, timeout_error)
+        return suber.queue.pop(timeout_ms, timeout_error)
 
     def detach_message_subscription(self, topic, conn_id):
         with self._registry_lock:
-            subscription = self._subscriptions.get(conn_id)
-            if subscription is None:
+            suber = self._subscriptions.get(conn_id)
+            if suber is None:
                 raise self._connection_not_found(conn_id)
-            if subscription[0] != topic:
+            if suber.topic != topic:
                 raise PyCGraphException(
                     "message connection [{}] does not belong to "
                     "topic [{}]".format(conn_id, topic)

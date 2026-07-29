@@ -24,7 +24,7 @@ CGraph C++ 已提供两类 message 语义：
 3. 支持 `WAIT`、`REPLACE`、`DROP` 三种 push strategy。
 4. hot path 只传递 Python 对象引用，不序列化、不复制 payload。
 5. 保持现有 `pycgraph` 扩展模块名称和已有导入方式，不移动或重命名现有文件；允许按实现需要新增一个或多个内部 Python 文件，但全部 message 实现源码必须位于 `python/src/`。
-6. 纯 Python message API 通过唯一入口 `from pycgraph import GMessage` 公开。
+6. 纯 Python message API 通过唯一入口 `from pycgraph import GMessagePy` 公开。
 7. 实现保持小而清晰，容易 debug 和维护。
 
 ## 4. 非目标
@@ -48,41 +48,41 @@ CGraph C++ 已提供两类 message 语义：
 
 ### 5.1 单一入口
 
-只从 `pycgraph` 顶层公开一个 `GMessage` façade class。用户不实例化该类，所有操作均通过 static method 调用。
+只从 `pycgraph` 顶层公开一个 `GMessagePy` façade class。用户不实例化该类，所有操作均通过 static method 调用。
 
-`GMessage` 同时提供：
+`GMessagePy` 同时提供：
 
-- `GMessage.PushStrategy`：唯一的 push strategy enum。
-- `GMessage.Error`：唯一的 message 异常类型，继承 `RuntimeError`。
+- `GMessagePy.PushStrategy`：唯一的 push strategy enum。
+- `GMessagePy.Error`：唯一的 message 异常类型，继承 `RuntimeError`。
 - 全部 message 生命周期和收发 static method。
 
 `PushStrategy` 的值与 C++ `GMessagePushStrategy` 保持一致：
 
 ```python
-GMessage.PushStrategy.WAIT = 1
-GMessage.PushStrategy.REPLACE = 2
-GMessage.PushStrategy.DROP = 3
+GMessagePy.PushStrategy.WAIT = 1
+GMessagePy.PushStrategy.REPLACE = 2
+GMessagePy.PushStrategy.DROP = 3
 ```
 
 ### 5.2 Send/Recv Static Method
 
 ```python
-GMessage.create_message_topic(topic: str, capacity: int) -> None
-GMessage.remove_message_topic(topic: str) -> None
+GMessagePy.create_message_topic(topic: str, capacity: int) -> None
+GMessagePy.remove_message_topic(topic: str) -> None
 
-GMessage.send_message(
+GMessagePy.send_message(
     topic: str,
     message: object,
-    strategy: GMessage.PushStrategy = GMessage.PushStrategy.WAIT,
+    strategy: GMessagePy.PushStrategy = GMessagePy.PushStrategy.WAIT,
 ) -> int
 
-GMessage.recv_message(
+GMessagePy.recv_message(
     topic: str,
     timeout_ms: Optional[int] = None,
 ) -> object
 ```
 
-`GMessage.send_message()` 返回成功入队数量，只可能为：
+`GMessagePy.send_message()` 返回成功入队数量，只可能为：
 
 - `1`：消息成功写入。
 - `0`：使用 `DROP` 且队列已满。
@@ -90,26 +90,26 @@ GMessage.recv_message(
 ### 5.3 Pub/Sub Static Method
 
 ```python
-GMessage.bind_message_topic(topic: str, capacity: int) -> int
+GMessagePy.bind_message_topic(topic: str, capacity: int) -> int
 
-GMessage.pub_message(
+GMessagePy.pub_message(
     topic: str,
     message: object,
-    strategy: GMessage.PushStrategy = GMessage.PushStrategy.WAIT,
+    strategy: GMessagePy.PushStrategy = GMessagePy.PushStrategy.WAIT,
 ) -> int
 
-GMessage.sub_message(
+GMessagePy.sub_message(
     conn_id: int,
     timeout_ms: Optional[int] = None,
 ) -> object
 
-GMessage.detach_message_subscription(topic: str, conn_id: int) -> None
-GMessage.drop_message_topic(topic: str) -> None
+GMessagePy.detach_message_subscription(topic: str, conn_id: int) -> None
+GMessagePy.drop_message_topic(topic: str) -> None
 ```
 
-`GMessage.bind_message_topic()` 返回全局单调递增的 `conn_id`。
+`GMessagePy.bind_message_topic()` 返回全局单调递增的 `conn_id`。
 
-`GMessage.pub_message()` 返回本次成功写入的 subscriber 队列数量：
+`GMessagePy.pub_message()` 返回本次成功写入的 subscriber 队列数量：
 
 - `WAIT` 完成后，返回当前 subscriber 总数。
 - `REPLACE` 中替换旧消息后写入新消息，计为成功。
@@ -121,40 +121,40 @@ GMessage.drop_message_topic(topic: str) -> None
 ### 5.4 全局清理
 
 ```python
-GMessage.clear_messages() -> None
+GMessagePy.clear_messages() -> None
 ```
 
 ### 5.5 使用示例
 
 ```python
-from pycgraph import GMessage
+from pycgraph import GMessagePy
 
 
 class MyMessage:
     pass
 
 
-GMessage.create_message_topic("send-recv", capacity=64)
-GMessage.send_message(
+GMessagePy.create_message_topic("send-recv", capacity=64)
+GMessagePy.send_message(
     "send-recv",
     MyMessage(),
-    GMessage.PushStrategy.WAIT,
+    GMessagePy.PushStrategy.WAIT,
 )
-message = GMessage.recv_message("send-recv", timeout_ms=1000)
+message = GMessagePy.recv_message("send-recv", timeout_ms=1000)
 ```
 
 ```python
-from pycgraph import GMessage
+from pycgraph import GMessagePy
 
 
-conn_id = GMessage.bind_message_topic("pub-sub", capacity=64)
+conn_id = GMessagePy.bind_message_topic("pub-sub", capacity=64)
 message = object()
-GMessage.pub_message(
+GMessagePy.pub_message(
     "pub-sub",
     message,
-    GMessage.PushStrategy.WAIT,
+    GMessagePy.PushStrategy.WAIT,
 )
-message = GMessage.sub_message(conn_id, timeout_ms=1000)
+message = GMessagePy.sub_message(conn_id, timeout_ms=1000)
 ```
 
 ### 5.6 参数规则
@@ -163,7 +163,7 @@ message = GMessage.sub_message(conn_id, timeout_ms=1000)
 - `capacity` 必须是大于等于 `1` 的 `int`，表示实际可保存的消息数量。
 - `timeout_ms` 必须是 `None` 或大于等于 `0` 的 `int`。
 - `conn_id` 必须是大于 `0` 的 `int`。
-- `strategy` 必须是 `GMessage.PushStrategy` 成员。
+- `strategy` 必须是 `GMessagePy.PushStrategy` 成员。
 - `message` 接受任意 Python 对象，不做类型和值校验。
 
 ## 6. 内部文件组织与打包
@@ -179,19 +179,19 @@ message = GMessage.sub_message(conn_id, timeout_ms=1000)
 
 1. 文件按明确职责拆分，不为了形式增加无收益层级。
 2. 全部运行时 `.py` 文件直接位于 `python/src/`，不为 message 实现增加嵌套源码目录。
-3. 无论单文件还是多文件，必须由 `python/src/_pycgraph_message.py` 作为唯一内部入口，并从该入口取得 `GMessage`。
+3. 无论单文件还是多文件，必须由 `python/src/_pycgraph_message.py` 作为唯一内部入口，并从该入口取得 `GMessagePy`。
 
 打包和导出要求：
 
 1. `setup.py` / `pyproject.toml` 必须将 `python/src/` 配置为纯 Python source root，并声明所有新增的平铺 module，确保它们完整进入 wheel。
 2. `PyCGraph.cpp` 保持 `PYBIND11_MODULE(pycgraph, cg)` 和扩展名 `pycgraph` 不变。
-3. `PyCGraph.cpp` 在模块初始化末尾导入 `_pycgraph_message` 内部入口，只将 `GMessage` class 挂到 `pycgraph`。
-4. `GMessage` 及其嵌套公开类型的 `__module__` 规范为 `pycgraph`，不向用户暴露内部 helper module 名称。
+3. `PyCGraph.cpp` 在模块初始化末尾导入 `_pycgraph_message` 内部入口，只将 `GMessagePy` class 挂到 `pycgraph`。
+4. `GMessagePy` 及其嵌套公开类型的 `__module__` 规范为 `pycgraph`，不向用户暴露内部 helper module 名称。
 
 `PyCGraph.cpp` 的修改严格限制为模块初始化胶水：
 
 - 只执行一次 `_pycgraph_message` import。
-- 只向 `pycgraph` 添加一个 `GMessage` attribute。
+- 只向 `pycgraph` 添加一个 `GMessagePy` attribute。
 - 不绑定 queue、topic、manager 或任何 message 收发函数。
 - 不修改现有 C++ `GMessageManager`、`GMessage` 或 ring buffer 实现。
 - 不让任何单条消息进入 C++。
@@ -202,7 +202,7 @@ message = GMessage.sub_message(conn_id, timeout_ms=1000)
 - `python/tests/`：message 单元测试和集成测试，不进入运行时安装源码。
 - `python/tutorial/`：T16/T17 教程，保持现有 tutorial 目录结构。
 
-胶水层只在 `import pycgraph` 时转发一次 `GMessage` class 引用。之后调用 `GMessage.send_message()`、`GMessage.recv_message()`、`GMessage.pub_message()`、`GMessage.sub_message()` 时直接执行纯 Python static method，不发生逐消息的 Python -> C++ -> Python 转发。
+胶水层只在 `import pycgraph` 时转发一次 `GMessagePy` class 引用。之后调用 `GMessagePy.send_message()`、`GMessagePy.recv_message()`、`GMessagePy.pub_message()`、`GMessagePy.sub_message()` 时直接执行纯 Python static method，不发生逐消息的 Python -> C++ -> Python 转发。
 
 安装后，wheel 中必须同时包含：
 
@@ -219,7 +219,7 @@ from pycgraph import GNode, GPipeline
 新增 message API 只导入一个 façade class：
 
 ```python
-from pycgraph import GMessage
+from pycgraph import GMessagePy
 ```
 
 ## 7. 内部架构
@@ -244,7 +244,7 @@ pop(timeout_ms, timeout_error) -> object
 
 不实现 `queue.Queue` 的 MPMC、`task_done()`、`join()` 等无关能力。
 
-queue 超时时直接抛出携带 `timeout_error` 描述的 `GMessage.Error`，不定义
+queue 超时时直接抛出携带 `timeout_error` 描述的 `GMessagePy.Error`，不定义
 或转换内部 timeout 异常类型。
 
 ### 7.2 `_SendRecvTopic`
@@ -265,7 +265,7 @@ queue 超时时直接抛出携带 `timeout_error` 描述的 `GMessage.Error`，�
 - `conn_id -> _LocalMessageQueue` 映射。
 - 一个缓存的 subscriber queue tuple。
 
-bind/detach 时重建缓存 tuple。`GMessage.pub_message()` 直接遍历该 tuple，避免每次 publish 构造临时 snapshot。
+bind/detach 时重建缓存 tuple。`GMessagePy.pub_message()` 直接遍历该 tuple，避免每次 publish 构造临时 snapshot。
 
 约束：
 
@@ -318,7 +318,7 @@ fan-out 只复制引用，不复制 payload，复杂度为 O(subscriber 数量)�
 
 pub/sub 使用只读契约：
 
-- publisher 调用 `GMessage.pub_message()` 后不得修改已发布对象。
+- publisher 调用 `GMessagePy.pub_message()` 后不得修改已发布对象。
 - subscriber 不得修改收到的对象。
 - 需要修改时，由业务显式构造新对象或执行 copy。
 - runtime 不包装代理、不执行浅拷贝或深拷贝，也不校验对象是否可变。
@@ -353,21 +353,21 @@ pub/sub 使用只读契约：
 
 ## 10. Timeout
 
-`GMessage.recv_message()` 与 `GMessage.sub_message()` 使用相同规则：
+`GMessagePy.recv_message()` 与 `GMessagePy.sub_message()` 使用相同规则：
 
 - `timeout_ms=None`：一直等待。
 - `timeout_ms=0`：非阻塞尝试。
 - `timeout_ms>0`：最多等待指定毫秒数。
-- `timeout_ms<0`：抛出 `GMessage.Error`。
+- `timeout_ms<0`：抛出 `GMessagePy.Error`。
 
 有超时时间时，内部基于 monotonic deadline 循环检查队列，正确处理虚假唤醒。
 
-超时抛出 `GMessage.Error`，不返回 `None` 或 sentinel。payload 不做特殊值限制。
+超时抛出 `GMessagePy.Error`，不返回 `None` 或 sentinel。payload 不做特殊值限制。
 
 ## 11. 错误处理
 
-所有 message 错误统一抛出 `GMessage.Error`。内部唯一实现类型为
-`PyCGraphException`，`GMessage.Error` 是该类型的公开别名。不定义
+所有 message 错误统一抛出 `GMessagePy.Error`。内部唯一实现类型为
+`PyCGraphException`，`GMessagePy.Error` 是该类型的公开别名。不定义
 topic、connection、timeout 等细分异常类型。
 
 错误原因通过稳定、可读的字符串提供，例如：
@@ -380,28 +380,28 @@ message connection [3] does not belong to topic [topic]
 receive message timeout, topic [topic], timeout [1000] ms
 ```
 
-公开 API 的非法 topic、capacity、timeout、conn_id 和 strategy 参数也统一转为 `GMessage.Error`。
+公开 API 的非法 topic、capacity、timeout、conn_id 和 strategy 参数也统一转为 `GMessagePy.Error`。
 
 ## 12. Topic 生命周期
 
 ### 12.1 Send/Recv
 
-- `GMessage.create_message_topic()` 首次调用创建 topic。
+- `GMessagePy.create_message_topic()` 首次调用创建 topic。
 - 相同 topic、相同 capacity 重复创建视为成功。
-- 相同 topic、不同 capacity 抛出 `GMessage.Error`。
-- `GMessage.remove_message_topic()` 只删除 send/recv topic。
+- 相同 topic、不同 capacity 抛出 `GMessagePy.Error`。
+- `GMessagePy.remove_message_topic()` 只删除 send/recv topic。
 
 ### 12.2 Pub/Sub
 
-- `GMessage.bind_message_topic()` 在 topic 下创建 subscriber queue，并返回新 conn_id。
+- `GMessagePy.bind_message_topic()` 在 topic 下创建 subscriber queue，并返回新 conn_id。
 - 同一 topic 的不同 subscriber 可以配置不同 capacity。
-- `GMessage.detach_message_subscription()` 同时删除 topic 下的 subscriber 和 conn_id registry 项。
-- 最后一个 subscriber detach 后，空 topic 继续存在，`GMessage.pub_message()` 返回 `0`；由 `GMessage.drop_message_topic()` 显式删除 topic。
-- `GMessage.drop_message_topic()` 删除 topic、全部 subscriber queue 和对应 conn_id registry 项。
+- `GMessagePy.detach_message_subscription()` 同时删除 topic 下的 subscriber 和 conn_id registry 项。
+- 最后一个 subscriber detach 后，空 topic 继续存在，`GMessagePy.pub_message()` 返回 `0`；由 `GMessagePy.drop_message_topic()` 显式删除 topic。
+- `GMessagePy.drop_message_topic()` 删除 topic、全部 subscriber queue 和对应 conn_id registry 项。
 
 ### 12.3 Clear 与 Conn ID
 
-- `GMessage.clear_messages()` 清空两类 topic、全部 subscriber 和 conn_id registry。
+- `GMessagePy.clear_messages()` 清空两类 topic、全部 subscriber 和 conn_id registry。
 - conn_id counter 不重置，继续单调递增，避免旧 conn_id 在 clear 后错误指向新 subscription。
 
 ### 12.4 生命周期并发限制
@@ -438,7 +438,7 @@ topic 创建、删除、bind、detach、drop、clear 不允许与同一 topic �
 - send/recv 完整流程。
 - pub/sub 的 1 个和多个 subscriber。
 - subscriber 使用不同 capacity。
-- `GMessage.pub_message()` 成功入队数量。
+- `GMessagePy.pub_message()` 成功入队数量。
 - 重复创建 topic。
 - 同名 send/recv 与 pub/sub topic 并存。
 - remove、bind、detach、drop、clear。
@@ -452,9 +452,9 @@ topic 创建、删除、bind、detach、drop、clear 不允许与同一 topic �
 - 从 `_pycgraph_message` 内部入口直接运行纯 Python 单元测试。
 - 构建 wheel 后安装到干净环境。
 - 验证现有 `GNode`、`GPipeline` 等 API 导入不变。
-- 验证 `GMessage` 可以从 `pycgraph` 顶层导入。
+- 验证 `GMessagePy` 可以从 `pycgraph` 顶层导入。
 - 验证 message static method 不再作为 `pycgraph` 顶层函数公开。
-- 验证 `GMessage` 及嵌套类型不暴露内部 helper module 名称。
+- 验证 `GMessagePy` 及嵌套类型不暴露内部 helper module 名称。
 - 验证 wheel 包含 `_pycgraph_message.py` 依赖的全部内部 Python 文件。
 - 验证全部 message 运行时 `.py` 源码直接位于 `python/src/`，没有在 `python/` 根目录、嵌套源码目录或 tutorial/test 目录中放置运行时实现。
 
@@ -484,7 +484,7 @@ topic 创建、删除、bind、detach、drop、clear 不允许与同一 topic �
 - 每条消息的 Python -> C++ -> Python 转发。
 - 每条消息的 payload wrapper 或结构化 result object 分配。
 
-`GMessage.pub_message()` 对每个 subscriber 必须进行一次入队和唤醒，O(N) fan-out 是语义要求带来的必要成本。
+`GMessagePy.pub_message()` 对每个 subscriber 必须进行一次入队和唤醒，O(N) fan-out 是语义要求带来的必要成本。
 
 主要 trade-off：
 
@@ -498,11 +498,11 @@ topic 创建、删除、bind、detach、drop、clear 不允许与同一 topic �
 满足以下条件时，功能实现完成：
 
 1. 现有 `pycgraph` 模块名、扩展名、现有文件位置和已有导入方式不变。
-2. `GMessage` 是 `pycgraph` 顶层唯一的公开 message 入口，message static method 不单独导出。
+2. `GMessagePy` 是 `pycgraph` 顶层唯一的公开 message 入口，message static method 不单独导出。
 3. send/recv、pub/sub 和三种 push strategy 行为符合本文档。
 4. hot path 只传递对象引用，不序列化、不复制 payload、不进入 C++ message manager。
-5. 只使用一个 `GMessage.Error` 报告 message 错误。
+5. 只使用一个 `GMessagePy.Error` 报告 message 错误。
 6. 生命周期、并发、打包和 tutorial 测试通过。
 7. 实现不包含跨进程、asyncio、metrics 或 benchmark 等范围外能力。
-8. 无论内部使用一个还是多个 Python 文件，全部 message 实现源码均直接位于 `python/src/`，wheel 包含完整实现，`from pycgraph import GMessage` 可直接使用全部 message 功能。
-9. `PyCGraph.cpp` 只包含一次性 `GMessage` 导出胶水；所有消息收发和生命周期逻辑均由 Python 实现。
+8. 无论内部使用一个还是多个 Python 文件，全部 message 实现源码均直接位于 `python/src/`，wheel 包含完整实现，`from pycgraph import GMessagePy` 可直接使用全部 message 功能。
+9. `PyCGraph.cpp` 只包含一次性 `GMessagePy` 导出胶水；所有消息收发和生命周期逻辑均由 Python 实现。

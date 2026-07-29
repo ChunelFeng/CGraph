@@ -12,7 +12,7 @@ WAIT 可能造成业务死锁。
 
 import threading
 
-from pycgraph import GMessage, GPipeline
+from pycgraph import GMessagePy, GPipeline
 
 from MyGNode.MyNode1 import MyNode1
 from MyGNode.MyNode2 import MyNode2
@@ -68,17 +68,17 @@ def _run_concurrently(functions):
 
 def tutorial_message_send_recv():
     topic = "send-recv"
-    GMessage.create_message_topic(topic, capacity=48)
+    GMessagePy.create_message_topic(topic, capacity=48)
 
     try:
         _run_concurrently((send_message, recv_message))
 
         try:
-            GMessage.recv_message(topic, timeout_ms=10)
-        except GMessage.Error as error:
+            GMessagePy.recv_message(topic, timeout_ms=10)
+        except GMessagePy.Error as error:
             print("handled timeout:", error)
     finally:
-        GMessage.clear_messages()
+        GMessagePy.clear_messages()
 
 
 if __name__ == "__main__":

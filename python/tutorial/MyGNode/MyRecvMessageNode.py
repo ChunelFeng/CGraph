@@ -6,14 +6,14 @@
 @Desc: Receive a message from a CGraph node
 """
 
-from pycgraph import CStatus, GMessage, GNode
+from pycgraph import CStatus, GMessagePy, GNode
 
 
 class MyRecvMessageNode(GNode):
     def run(self):
         try:
-            message = GMessage.recv_message("send-recv")
-        except GMessage.Error as error:
+            message = GMessagePy.recv_message("send-recv")
+        except GMessagePy.Error as error:
             print("MyRecvMessageNode recv message error:", error)
             return CStatus(-1, str(error))
 

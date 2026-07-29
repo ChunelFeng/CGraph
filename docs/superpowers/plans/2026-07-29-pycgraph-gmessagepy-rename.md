@@ -35,7 +35,7 @@
 - 产出：测试要求 `_pycgraph_message.GMessagePy` 和
   `pycgraph.GMessagePy` 存在，并要求 `pycgraph.GMessage` 不存在。
 
-- [ ] **Step 1：修改纯 Python façade 测试**
+- [x] **Step 1：修改纯 Python façade 测试**
 
   将入口模块导入改为：
 
@@ -61,7 +61,7 @@
   self.assertEqual("GMessagePy.Error", GMessagePy.Error.__qualname__)
   ```
 
-- [ ] **Step 2：修改安装包集成测试**
+- [x] **Step 2：修改安装包集成测试**
 
   setUp/tearDown 和消息调用统一使用 `self.pycgraph.GMessagePy`。公开接口
   测试必须包含：
@@ -71,7 +71,7 @@
   self.assertFalse(hasattr(self.pycgraph, "GMessage"))
   ```
 
-- [ ] **Step 3：运行纯 Python 测试并确认预期失败**
+- [x] **Step 3：运行纯 Python 测试并确认预期失败**
 
   运行：
 
@@ -98,7 +98,7 @@
 - 产出：`_pycgraph_message.GMessagePy` 与顶层
   `pycgraph.GMessagePy`。
 
-- [ ] **Step 1：完成最小 Python façade 改名**
+- [x] **Step 1：完成最小 Python façade 改名**
 
   在 `_pycgraph_message.py` 中进行以下精确修改：
 
@@ -123,7 +123,7 @@
 
   文件头说明改为 `pycgraph.GMessagePy`。所有 static method 逻辑不改。
 
-- [ ] **Step 2：修改 pybind11 顶层导出**
+- [x] **Step 2：修改 pybind11 顶层导出**
 
   保持内部 module import 不变，只修改导出 attribute：
 
@@ -132,7 +132,7 @@
   cg.attr("GMessagePy") = message_module.attr("GMessagePy");
   ```
 
-- [ ] **Step 3：运行纯 Python message 测试**
+- [x] **Step 3：运行纯 Python message 测试**
 
   运行：
 
@@ -162,7 +162,7 @@
 - 产出：tutorial 和当前设计/计划文档只使用新的纯 Python API 名称；
   C++ `GMessage` 类型名保持不变。
 
-- [ ] **Step 1：更新所有 Python tutorial**
+- [x] **Step 1：更新所有 Python tutorial**
 
   将六个 tutorial 文件中的：
 
@@ -179,7 +179,7 @@
   同时将方法调用、`PushStrategy` 和 `Error` 引用统一改为
   `GMessagePy`，不修改 topic、capacity、timeout 或 pipeline 行为。
 
-- [ ] **Step 2：更新当前消息设计和计划文档**
+- [x] **Step 2：更新当前消息设计和计划文档**
 
   将文档中描述 pycgraph 纯 Python 公开接口的 `GMessage` 改为
   `GMessagePy`，包括导入示例、类型元数据、异常类型和测试说明。以下
@@ -191,7 +191,7 @@
   GMessage.h
   ```
 
-- [ ] **Step 3：检查 Python 范围内的残留名称**
+- [x] **Step 3：检查 Python 范围内的残留名称**
 
   运行：
 
@@ -220,7 +220,7 @@
 - 产出：包含 `_pycgraph_message.py` 和 `pycgraph` 扩展的 wheel，且
   安装后仅公开 `GMessagePy`。
 
-- [ ] **Step 1：构建 wheel**
+- [x] **Step 1：构建 wheel**
 
   从 `python/` 目录运行：
 
@@ -233,7 +233,7 @@
   预期：构建成功，证明两处 setuptools 配置仍能找到
   `_pycgraph_message.py`。
 
-- [ ] **Step 2：检查 wheel 内容**
+- [x] **Step 2：检查 wheel 内容**
 
   运行：
 
@@ -246,7 +246,7 @@
   `_pycgraph_message_primitives.py`、`_pycgraph_message_manager.py` 和
   `pycgraph` 平台扩展，不包含 `_pycgraph_message_py.py`。
 
-- [ ] **Step 3：在干净虚拟环境中运行集成测试**
+- [x] **Step 3：在干净虚拟环境中运行集成测试**
 
   创建 `/tmp/pycgraph-gmessagepy-venv`，安装新 wheel 后运行：
 
@@ -259,7 +259,7 @@
   预期：全部通过，`GNode`、`GPipeline`、`GMessagePy` 可用，
   `GMessage` 不存在。
 
-- [ ] **Step 4：运行 tutorial 集成测试**
+- [x] **Step 4：运行 tutorial 集成测试**
 
   运行：
 
@@ -271,7 +271,7 @@
 
   预期：T16 和 T17 全部通过，收发与发布订阅输出保持原行为。
 
-- [ ] **Step 5：最终静态检查**
+- [x] **Step 5：最终静态检查**
 
   运行：
 
