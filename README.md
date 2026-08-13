@@ -197,7 +197,7 @@ if __name__ == '__main__':
   * [【B站视频】pybind11落地实战——PyCGraph是怎样练成的](https://www.bilibili.com/video/BV1ofLdz5EzX) | [飞书文档链接](https://ilyryn6yei.feishu.cn/docx/YDfHdU9mfoTlnqxaTkscRob6nGe)
 
 
-[![Star History Chart](https://api.star-history.com/svg?repos=ChunelFeng/CGraph&type=Date)](https://star-history.com/#ChunelFeng/CGraph&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=ChunelFeng/CGraph&type=Date)](https://star-history.dera.page/#ChunelFeng/CGraph&Date)
 
 ------------
 <details>
