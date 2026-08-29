@@ -37,23 +37,6 @@ auto UThreadPool::commitWithTid(FunctionType&& func, CIndex tid, CBool enable, C
 }
 
 
-template<typename FunctionType>
-auto UThreadPool::commitWithPriority(const FunctionType& func, int priority)
--> std::future<decltype(std::declval<FunctionType>()())> {
-    using ResultType = decltype(std::declval<FunctionType>()());
-
-    std::packaged_task<ResultType()> task(func);
-    std::future<ResultType> result(task.get_future());
-
-    if (secondary_threads_.empty()) {
-        createSecondaryThread(1);    // 如果没有开启辅助线程，则直接开启一个
-    }
-
-    priority_task_queue_.push(UTask(std::move(task)), priority);
-    return result;
-}
-
-
 template<typename FunctionType,
     typename std::enable_if<!std::is_same<typename std::decay<FunctionType>::type, UTask>::value, int>::type>
 CVoid UThreadPool::execute(FunctionType&& task, const CIndex index) {

@@ -35,10 +35,9 @@ class UTask : public CStruct {
 public:
     template<typename F,
         typename std::enable_if<!std::is_same<typename std::decay<F>::type, UTask>::value, int>::type = 0>
-    explicit UTask(F&& func, const CInt priority = 0, const CBool owner = true)
-        : impl_(new TaskDerided<F>(std::forward<F>(func)))
-        , priority_(priority)
-        , owner_(owner) {
+    explicit UTask(F&& func, const CBool owner = true)
+        : impl_(new TaskDerided<F>(std::forward<F>(func))),
+          owner_(owner) {
     }
 
     CVoid operator()() const {
@@ -52,7 +51,6 @@ public:
     explicit UTask(const UTask* task) {
         if (likely(task)) {
             impl_ = task->impl_;
-            priority_ = task->priority_;
             owner_ = false;
         }
     }
@@ -60,7 +58,6 @@ public:
     explicit UTask(UTask* task) {
         if (likely(task)) {
             impl_ = task->impl_;
-            priority_ = task->priority_;
             owner_ = false;
         }
     }
@@ -73,15 +70,6 @@ public:
 
     UTask(UTask&& task) noexcept:
             impl_(task.impl_),
-            priority_(task.priority_),
-            owner_(task.owner_) {
-        task.impl_ = nullptr;
-        task.owner_ = false;
-    }
-
-    UTask(UTask&& task, const int priority) noexcept:
-            impl_(task.impl_),
-            priority_(priority),
             owner_(task.owner_) {
         task.impl_ = nullptr;
         task.owner_ = false;
@@ -94,7 +82,6 @@ public:
             }
 
             impl_ = task.impl_;
-            priority_ = task.priority_;
             owner_ = task.owner_;
 
             task.impl_ = nullptr;
@@ -104,21 +91,10 @@ public:
         return *this;
     }
 
-    CBool operator>(const UTask& task) const {
-        return priority_ < task.priority_;    // 新加入的，放到后面
-    }
-
-    CBool operator<(const UTask& task) const {
-        return priority_ >= task.priority_;
-    }
-
     CGRAPH_NO_ALLOWED_COPY(UTask)
 
 private:
-    friend class UThreadPool;
-
     TaskBased* impl_ { nullptr };
-    CInt priority_ { 0 };                                 // 任务的优先级信息
     CBool owner_ { true };                                // impl_ 是否归属当前对象
 };
 

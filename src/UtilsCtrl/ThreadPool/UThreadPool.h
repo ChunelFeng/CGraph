@@ -88,19 +88,6 @@ public:
     -> std::future<decltype(std::declval<typename std::decay<FunctionType>::type>()())>;
 
     /**
-     * 根据优先级，执行任务
-     * @tparam FunctionType
-     * @param func
-     * @param priority 优先级别。自然序从大到小依次执行
-     * @return
-     * @notice 建议，priority 范围在 [-100, 100] 之间
-     */
-    template<typename FunctionType>
-    auto commitWithPriority(const FunctionType& func,
-                            int priority)
-    -> std::future<decltype(std::declval<FunctionType>()())>;
-
-    /**
      * 异步执行任务
      * @tparam FunctionType
      * @param task
@@ -220,7 +207,7 @@ private:
     CBool is_init_ { false };                                                       // 是否初始化
     std::atomic<CIndex> cur_index_ { 0 };                                        // 记录被轮询到的线程index的位置
     UAtomicQueue<UTask> task_queue_ {};                                             // 用于存放普通任务
-    UAtomicPriorityQueue<UTask> priority_task_queue_;                               // 运行时间较长的任务队列，仅在辅助线程中执行
+    UAtomicQueue<UTask> long_time_task_queue_ {};                                   // 运行时间较长的任务队列，仅在辅助线程中执行
     std::vector<UThreadPrimaryPtr> primary_threads_;                                // 记录所有的主线程
     std::list<std::unique_ptr<UThreadSecondary>> secondary_threads_;                // 用于记录所有的辅助线程
     UThreadPoolConfig config_;                                                      // 线程池设置值

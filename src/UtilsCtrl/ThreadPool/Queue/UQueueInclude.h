@@ -11,7 +11,6 @@
 
 #include "UAtomicQueue.h"
 #include "UWorkStealingQueue.h"
-#include "UAtomicPriorityQueue.h"
 #include "UAtomicRingBufferQueue.h"
 #include "ULockFreeRingBufferQueue.h"
 

@@ -38,19 +38,19 @@ protected:
     /**
      * 设置pool的信息
      * @param poolTaskQueue
-     * @param poolPriorityTaskQueue
+     * @param poolLongTimeTaskQueue
      * @param config
      * @return
      */
     CStatus setThreadPoolInfo(UAtomicQueue<UTask>* poolTaskQueue,
-                              UAtomicPriorityQueue<UTask>* poolPriorityTaskQueue,
+                              UAtomicQueue<UTask>* poolLongTimeTaskQueue,
                               const UThreadPoolConfigPtr config) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_INIT(false)    // 初始化之前，设置参数
-        CGRAPH_ASSERT_NOT_NULL(poolTaskQueue, poolPriorityTaskQueue, config)
+        CGRAPH_ASSERT_NOT_NULL(poolTaskQueue, poolLongTimeTaskQueue, config)
 
         this->pool_task_queue_ = poolTaskQueue;
-        this->pool_priority_task_queue_ = poolPriorityTaskQueue;
+        this->pool_long_time_task_queue_ = poolLongTimeTaskQueue;
         this->config_ = config;
         CGRAPH_FUNCTION_END
     }

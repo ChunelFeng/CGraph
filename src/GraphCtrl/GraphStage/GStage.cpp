@@ -11,6 +11,7 @@
 CGRAPH_NAMESPACE_BEGIN
 
 CVoid GStage::launch(GStageParamPtr param) {
+    (void)param;
 }
 
 

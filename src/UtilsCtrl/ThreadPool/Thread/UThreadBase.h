@@ -26,7 +26,7 @@ protected:
         is_init_ = false;
         is_running_.store(false, std::memory_order_relaxed);
         pool_task_queue_ = nullptr;
-        pool_priority_task_queue_ = nullptr;
+        pool_long_time_task_queue_ = nullptr;
         config_ = nullptr;
         total_task_num_ = 0;
     }
@@ -55,7 +55,7 @@ protected:
         CBool result = pool_task_queue_->tryPop(task);
         if (!result && CGRAPH_THREAD_TYPE_SECONDARY == type_) {
             // 如果辅助线程没有获取到的话，还需要再尝试从长时间任务队列中，获取一次
-            result = pool_priority_task_queue_->tryPop(task);
+            result = pool_long_time_task_queue_->tryPop(task);
         }
         return result;
     }
@@ -69,7 +69,7 @@ protected:
     virtual CBool popPoolTask(UTaskArrRef tasks) {
         CBool result = pool_task_queue_->tryPop(tasks, config_->max_pool_batch_size_);
         if (!result && CGRAPH_THREAD_TYPE_SECONDARY == type_) {
-            result = pool_priority_task_queue_->tryPop(tasks, 1);    // 从优先队列里，最多pop出来一个
+            result = pool_long_time_task_queue_->tryPop(tasks, 1);    // 从长时间任务队列里，最多pop出来一个
         }
 
         return result;
@@ -245,9 +245,9 @@ protected:
     CInt type_ = 0;                                                      // 用于区分线程类型（主线程、辅助线程）
     CULong total_task_num_ = 0;                                          // 处理的任务的数字
 
-    UAtomicQueue<UTask>* pool_task_queue_ { nullptr };                   // 用于存放线程池中的普通任务
-    UAtomicPriorityQueue<UTask>* pool_priority_task_queue_ { nullptr };  // 用于存放线程池中的包含优先级任务的队列，仅辅助线程可以执行
-    UThreadPoolConfigPtr config_ { nullptr };                            // 配置参数信息
+    UAtomicQueue<UTask>* pool_task_queue_ { nullptr };                    // 用于存放线程池中的普通任务
+    UAtomicQueue<UTask>* pool_long_time_task_queue_ { nullptr };          // 用于存放线程池中的长时间任务，仅辅助线程可以执行
+    UThreadPoolConfigPtr config_ { nullptr };                             // 配置参数信息
 
     std::thread thread_;                                                 // 线程类
     std::mutex mutex_;

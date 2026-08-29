@@ -57,6 +57,7 @@ CStatus UThreadPool::init() {
     thread_record_map_.clear();
     thread_record_map_[std::hash<std::thread::id>{}(std::this_thread::get_id())] = CGRAPH_MAIN_THREAD_ID;
     task_queue_.setup();
+    long_time_task_queue_.setup();
     primary_threads_.reserve(config_.default_thread_size_);
     for (int i = 0; i < config_.default_thread_size_; i++) {
         auto* pt = CGRAPH_SAFE_MALLOC_COBJECT(UThreadPrimary);    // 创建核心线程数
@@ -78,7 +79,7 @@ CStatus UThreadPool::init() {
 
     /**
      * 策略更新：
-     * 初始化的时候，也可以创建n个辅助线程。目的是为了配合仅使用 pool中 priority_queue 的场景
+     * 初始化的时候，也可以创建n个辅助线程。目的是为了配合仅使用长时间任务队列的场景
      * 一般情况下，建议为0。
      */
     status = createSecondaryThread(config_.secondary_thread_size_);
@@ -138,7 +139,7 @@ CVoid UThreadPool::envokeTask(UTask&& task, const CIndex index) {
     if (likely(realIndex >= 0 && realIndex < config_.default_thread_size_)) {
         primary_threads_[realIndex]->pushTask(std::move(task));
     } else if (CGRAPH_LONG_TIME_TASK_STRATEGY == realIndex) {
-        priority_task_queue_.push(std::move(task), CGRAPH_LONG_TIME_TASK_STRATEGY);
+        long_time_task_queue_.push(std::move(task));
     } else if (CGRAPH_TRIGGER_ALL_THREAD_STRATEGY == realIndex) {
         task_queue_.push(std::move(task));
         (void)wakeupAllThread();
@@ -186,6 +187,7 @@ CStatus UThreadPool::destroy() {
 
     // secondary 线程是智能指针，不需要delete
     task_queue_.reset();
+    long_time_task_queue_.reset();
     for (auto &st : secondary_threads_) {
         CGRAPH_ASSERT_NOT_NULL(st.get());
         status += st->destroy();
@@ -254,7 +256,7 @@ CStatus UThreadPool::createSecondaryThread(const CInt size) {
     CGRAPH_LOCK_GUARD lock(st_mutex_);
     for (int i = 0; i < realSize; i++) {
         auto ptr = CGRAPH_MAKE_UNIQUE_COBJECT(UThreadSecondary)
-        ptr->setThreadPoolInfo(&task_queue_, &priority_task_queue_, &config_);
+        ptr->setThreadPoolInfo(&task_queue_, &long_time_task_queue_, &config_);
         status += ptr->init();
         secondary_threads_.emplace_back(std::move(ptr));
     }
@@ -279,8 +281,8 @@ CVoid UThreadPool::monitor() {
         const bool busy = !primary_threads_.empty() && std::all_of(primary_threads_.begin(), primary_threads_.end(),
                                 [](UThreadPrimaryPtr ptr) { return ptr && ptr->is_running_.load(std::memory_order_relaxed); });
 
-        // 如果忙碌或者priority_task_queue_中有任务，则需要添加 secondary线程
-        if (busy || !priority_task_queue_.empty()) {
+        // 如果忙碌或者 long_time_task_queue_ 中有任务，则需要添加 secondary线程
+        if (busy || !long_time_task_queue_.empty()) {
             createSecondaryThread(1);
         }
 
