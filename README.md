@@ -108,13 +108,13 @@ from pycgraph import GNode, GPipeline, CStatus
 
 class MyNode1(GNode):
     def run(self):
-        print("[{0}] {1}, enter MyNode1 run function. Sleep for 1 second ... ".format(datetime.now(), self.getName()))
+        print("[{0}] {1}, sleep for 1 second ... ".format(datetime.now(), self.getName()))
         time.sleep(1)
         return CStatus()
 
 class MyNode2(GNode):
     def run(self):
-        print("[{0}] {1}, enter MyNode2 run function. Sleep for 2 second ... ".format(datetime.now(), self.getName()))
+        print("[{0}] {1}, sleep for 2 second ... ".format(datetime.now(), self.getName()))
         time.sleep(2)
         return CStatus()
 

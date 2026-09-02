@@ -9,26 +9,24 @@
 #ifndef CGRAPH_GRAPHDEFINE_H
 #define CGRAPH_GRAPHDEFINE_H
 
-#include "../CBasic/CBasicInclude.h"
-
 CGRAPH_NAMESPACE_BEGIN
 
-static const char* CGRAPH_STR_PIPELINE = "pipeline";
-static const char* CGRAPH_STR_NODE = "node";
-static const char* CGRAPH_STR_CLUSTER = "cluster";
-static const char* CGRAPH_STR_REGION = "region";
-static const char* CGRAPH_STR_CONDITION = "condition";
-static const char* CGRAPH_STR_MULTI_CONDITION = "multi_condition";
-static const char* CGRAPH_STR_SOME = "some";
-static const char* CGRAPH_STR_MUTABLE = "mutable";
-static const char* CGRAPH_STR_FUNCTION = "function";
-static const char* CGRAPH_STR_SINGLETON = "singleton";
-static const char* CGRAPH_STR_DAEMON = "daemon";
-static const char* CGRAPH_STR_ASPECT = "aspect";
-static const char* CGRAPH_STR_EVENT = "event";
-static const char* CGRAPH_STR_FENCE = "fence";
-static const char* CGRAPH_STR_COORDINATOR = "coordinator";
-static const char* CGRAPH_STR_STAGE = "stage";
+static auto CGRAPH_STR_PIPELINE = "pipeline";
+static auto CGRAPH_STR_NODE = "node";
+static auto CGRAPH_STR_CLUSTER = "cluster";
+static auto CGRAPH_STR_REGION = "region";
+static auto CGRAPH_STR_CONDITION = "condition";
+static auto CGRAPH_STR_MULTI_CONDITION = "multi_condition";
+static auto CGRAPH_STR_SOME = "some";
+static auto CGRAPH_STR_MUTABLE = "mutable";
+static auto CGRAPH_STR_FUNCTION = "function";
+static auto CGRAPH_STR_SINGLETON = "singleton";
+static auto CGRAPH_STR_DAEMON = "daemon";
+static auto CGRAPH_STR_ASPECT = "aspect";
+static auto CGRAPH_STR_EVENT = "event";
+static auto CGRAPH_STR_FENCE = "fence";
+static auto CGRAPH_STR_COORDINATOR = "coordinator";
+static auto CGRAPH_STR_STAGE = "stage";
 
 CGRAPH_NAMESPACE_END
 
