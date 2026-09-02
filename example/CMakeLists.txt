@@ -5,6 +5,7 @@ set(CGRAPH_EXAMPLE_LIST
         E03-ThirdFlow
         E04-MapReduce
         E05-HttpServer
+        E06-ParallelSort
         )
 
 foreach(example ${CGRAPH_EXAMPLE_LIST})
