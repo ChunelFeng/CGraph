@@ -9,6 +9,8 @@
 #ifndef CGRAPH_GRAPHDEFINE_H
 #define CGRAPH_GRAPHDEFINE_H
 
+#include "../CBasic/CBasicInclude.h"
+
 CGRAPH_NAMESPACE_BEGIN
 
 static auto CGRAPH_STR_PIPELINE = "pipeline";
