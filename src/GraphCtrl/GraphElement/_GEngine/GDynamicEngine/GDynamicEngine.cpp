@@ -126,8 +126,7 @@ CVoid GDynamicEngine::analysisParallelMatrix() {
 
 CVoid GDynamicEngine::makeCommonTask() {
     for (auto* element : total_element_arr_) {
-        CGRAPH_DELETE_PTR(element->run_task_)
-        element->run_task_ = new UTask([this, element] {
+        element->run_task_ = UTask([this, element] {
             this->innerExec(element);
         });
     }
@@ -143,7 +142,7 @@ CVoid GDynamicEngine::process(GElementPtr element, const CBool affinity) {
         // 如果 affinity=true，表示用当前的线程，执行这个逻辑。以便增加亲和性
         innerExec(element);
     } else {
-        thread_pool_->execute(element->run_task_, element->binding_index_);
+        thread_pool_->execute(&element->run_task_, element->binding_index_);
     }
 }
 

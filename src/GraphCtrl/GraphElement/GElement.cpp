@@ -14,7 +14,6 @@
 CGRAPH_NAMESPACE_BEGIN
 
 GElement::~GElement() {
-    CGRAPH_DELETE_PTR(run_task_)
     CGRAPH_DELETE_PTR(perf_info_)
     CGRAPH_DELETE_PTR(aspect_manager_)
     for (auto& param : local_params_) {
