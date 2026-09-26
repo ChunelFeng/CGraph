@@ -10,6 +10,7 @@
 #define CGRAPH_GPARAMUTILS_H
 
 #include "../GraphObject.h"
+#include <mutex>
 
 CGRAPH_NAMESPACE_BEGIN
 
@@ -40,6 +41,14 @@ CGRAPH_NAMESPACE_BEGIN
 /** 上参数读锁 */
 #define CGRAPH_PARAM_READ_CODE_BLOCK(param)                                   \
     CGraph::CGRAPH_READ_LOCK __paramRLock__((param)->_param_shared_lock_);    \
+
+/** 上范围锁 */
+#if __cplusplus >= 201703L
+#define CGRAPH_PARAM_SCOPED_CODE_BLOCK(p1, p2)                                \
+    std::scoped_lock __paramSLock__((p1)->_param_shared_lock_,                \
+                                         (p2)->_param_shared_lock_);          \
+
+#endif
 
 CGRAPH_NAMESPACE_END
 
