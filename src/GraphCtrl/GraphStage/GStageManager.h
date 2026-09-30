@@ -96,7 +96,7 @@ private:
     friend class GStorage;
 
 private:
-    CStatus __create_4py(GStagePtr stage, const std::string& key, CInt threshold) {
+    CStatus __create_4expose(GStagePtr stage, const std::string& key, CInt threshold) {
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_NOT_NULL(stage)
         CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(stage_map_.find(key) != stage_map_.end(),

@@ -15,7 +15,7 @@
 class PywGRegion : public CGraph::GRegion {
 public:
     explicit PywGRegion(const CGraph::GElementPtrArr& elements = CGraph::GElementPtrArr{}) {
-        __addGElements_4py(elements);
+        __addGElements_4expose(elements);
     };
 
     ~PywGRegion() override = default;

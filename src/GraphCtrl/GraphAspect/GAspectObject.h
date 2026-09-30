@@ -70,8 +70,8 @@ private:
     friend class GAspect;
     friend class GElement;
 
-public:
-    const std::string& __getName_4py() const {
+CGRAPH_INTERNAL_ACCESS:
+    const std::string& __getName_4expose() const {
         return getName();
     }
 };

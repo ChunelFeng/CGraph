@@ -507,11 +507,11 @@ private:
     CGRAPH_DECLARE_GEVENT_MANAGER_WRAPPER_WITH_MEMBER
     CGRAPH_DECLARE_GSTAGE_MANAGER_WRAPPER_WITH_MEMBER
 
-public:
-    GElement* __addGAspect_4py(GAspectPtr aspect);
-    CStatus __enterStage_4py(const std::string& key);
-    CBool __isTimeout_4py();
-    std::string __str_4py();
+CGRAPH_INTERNAL_ACCESS:
+    GElement* __addGAspect_4expose(GAspectPtr aspect);
+    CStatus __enterStage_4expose(const std::string& key);
+    CBool __isTimeout_4expose();
+    std::string __str_4expose();
 };
 
 using GElementRef = GElement &;

@@ -79,8 +79,8 @@ private:
     template<GMultiConditionType> friend class GMultiCondition;
     friend class GSome;
 
-public:
-    CStatus __addGElements_4py(const GElementPtrArr& elements);
+CGRAPH_INTERNAL_ACCESS:
+    CStatus __addGElements_4expose(const GElementPtrArr& elements);
 };
 
 using GGroupPtr = GGroup *;

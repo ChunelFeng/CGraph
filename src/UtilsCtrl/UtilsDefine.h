@@ -43,6 +43,11 @@ using CGRAPH_UNIQUE_LOCK = std::unique_lock<std::mutex>;
     using CGRAPH_WRITE_LOCK = std::lock_guard<std::recursive_mutex>;
 #endif
 
+#ifdef CGRAPH_EXPOSE_INTERNALS
+    #define CGRAPH_INTERNAL_ACCESS public
+#else
+    #define CGRAPH_INTERNAL_ACCESS private
+#endif
 
 #define __IS_NULLPTR(t) (unlikely(std::is_pointer<decltype(t)>::value && !(t)))
 

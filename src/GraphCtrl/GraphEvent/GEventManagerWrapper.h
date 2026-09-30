@@ -52,13 +52,13 @@ CGRAPH_NAMESPACE_BEGIN
         return this->event_manager_->asyncTrigger(key, strategy);                                                       \
     }                                                                                                                   \
                                                                                                   \
-public:                                                                                           \
-    CStatus __notify_4py(const std::string& key, GEventType type,                                 \
+CGRAPH_INTERNAL_ACCESS:                                                                           \
+    CStatus __notify_4expose(const std::string& key, GEventType type,                             \
         GEventAsyncStrategy strategy = GEventAsyncStrategy::PIPELINE_RUN_FINISH) {                \
         return this->notify(key, type, strategy);                                                 \
     }                                                                                             \
                                                                                                   \
-    std::shared_future<CVoid> __asyncNotify_4py(const std::string& key,                           \
+    std::shared_future<CVoid> __asyncNotify_4expose(const std::string& key,                       \
         GEventAsyncStrategy strategy = GEventAsyncStrategy::PIPELINE_RUN_FINISH) {                \
         return asyncNotify(key, strategy);                                                        \
     }                                                                                             \

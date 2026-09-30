@@ -76,7 +76,7 @@ private:
     friend class GStorage;
 
 private:
-    CStatus __create_4py(GEventPtr event, const std::string& key);
+    CStatus __create_4expose(GEventPtr event, const std::string& key);
 };
 
 using GEventManagerPtr = GEventManager *;

@@ -15,7 +15,7 @@
 class PywGCluster : public CGraph::GCluster {
 public:
     explicit PywGCluster(const CGraph::GElementPtrArr& elements = CGraph::GElementPtrArr{}) {
-        __addGElements_4py(elements);
+        __addGElements_4expose(elements);
     }
 
     ~PywGCluster() override = default;

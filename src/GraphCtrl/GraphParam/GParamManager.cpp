@@ -102,7 +102,7 @@ std::vector<std::string> GParamManager::getKeys() {
 }
 
 
-CStatus GParamManager::__create_4py(GParamPtr param, const std::string& key) {
+CStatus GParamManager::__create_4expose(GParamPtr param, const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_LOCK_GUARD lock(this->mutex_);
     const auto& iter = params_map_.find(key);
@@ -115,7 +115,7 @@ CStatus GParamManager::__create_4py(GParamPtr param, const std::string& key) {
 }
 
 
-GParamPtr GParamManager::__get_4py(const std::string& key) {
+GParamPtr GParamManager::__get_4expose(const std::string& key) {
     const auto& iter = params_map_.find(key);
     if (iter == params_map_.end()) {
         return nullptr;
@@ -125,7 +125,7 @@ GParamPtr GParamManager::__get_4py(const std::string& key) {
 }
 
 
-CStatus GParamManager::__remove_4py(const std::string& key) {
+CStatus GParamManager::__remove_4expose(const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_LOCK_GUARD lock(this->mutex_);
     const auto& iter = params_map_.find(key);
@@ -139,7 +139,7 @@ CStatus GParamManager::__remove_4py(const std::string& key) {
 }
 
 
-CBool GParamManager::__has_4py(const std::string& key) {
+CBool GParamManager::__has_4expose(const std::string& key) {
     CGRAPH_LOCK_GUARD lock(this->mutex_);
     return params_map_.find(key) != params_map_.end();
 }

@@ -38,7 +38,7 @@ CMSec GDaemon::modify(GDaemonParamPtr param) {
 }
 
 
-CMSec GDaemon::__getInterval_4py() const {
+CMSec GDaemon::__getInterval_4expose() const {
     return getInterval();
 }
 

@@ -17,7 +17,7 @@
 class PywGCondition : public CGraph::GCondition {
 public:
     explicit PywGCondition(const CGraph::GElementPtrArr& elements = CGraph::GElementPtrArr{}) {
-        __addGElements_4py(elements);
+        __addGElements_4expose(elements);
     }
     ~PywGCondition() override = default;
 

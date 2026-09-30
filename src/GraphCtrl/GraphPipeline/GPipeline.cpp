@@ -396,24 +396,24 @@ CStatus GPipeline::innerRegister(GElementPtr element, const GElementPtrSet &depe
 }
 
 
-CStatus GPipeline::__registerGElement_4py(CGraph::GElementPtr element, const CGraph::GElementPtrSet &depends,
+CStatus GPipeline::__registerGElement_4expose(CGraph::GElementPtr element, const CGraph::GElementPtrSet &depends,
                                          const std::string &name, CSize loop) {
     return innerRegister(element, depends, name, loop);
 }
 
 
-GPipelinePtr GPipeline::__addGEvent_4py(GEventPtr event, const std::string& key) {
+GPipelinePtr GPipeline::__addGEvent_4expose(GEventPtr event, const std::string& key) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(event, event_manager_, param_manager_)
     event_manager_->param_manager_ = this->param_manager_;
-    status = event_manager_->__create_4py(event, key);
+    status = event_manager_->__create_4expose(event, key);
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status)
 
     return this;
 }
 
 
-GPipelinePtr GPipeline::__addGDaemon_4py(GDaemonPtr daemon, CMSec ms) {
+GPipelinePtr GPipeline::__addGDaemon_4expose(GDaemonPtr daemon, CMSec ms) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(daemon, param_manager_, event_manager_, daemon_manager_)
     daemon->setGParamManager(this->param_manager_);
@@ -425,16 +425,16 @@ GPipelinePtr GPipeline::__addGDaemon_4py(GDaemonPtr daemon, CMSec ms) {
 }
 
 
-GPipelinePtr GPipeline::__addGStage_4py(GStagePtr stage, const std::string& key, CInt threshold) {
+GPipelinePtr GPipeline::__addGStage_4expose(GStagePtr stage, const std::string& key, CInt threshold) {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(stage, param_manager_, stage_manager_)
     stage_manager_->setGParamManager(param_manager_);
-    stage_manager_->__create_4py(stage, key, threshold);
+    stage_manager_->__create_4expose(stage, key, threshold);
     return this;
 }
 
 
-std::string GPipeline::__dump_4py() {
+std::string GPipeline::__dump_4expose() {
     std::ostringstream oss;
     auto status = this->dump(oss);
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status);
@@ -442,7 +442,7 @@ std::string GPipeline::__dump_4py() {
 }
 
 
-std::string GPipeline::__perf_4py() {
+std::string GPipeline::__perf_4expose() {
     std::ostringstream oss;
     auto status = this->perf(oss);
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status);

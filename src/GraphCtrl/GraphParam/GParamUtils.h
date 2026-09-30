@@ -46,7 +46,7 @@ CGRAPH_NAMESPACE_BEGIN
 #if __cplusplus >= 201703L
 #define CGRAPH_PARAM_SCOPED_CODE_BLOCK(p1, p2)                                \
     std::scoped_lock __paramSLock__((p1)->_param_shared_lock_,                \
-                                         (p2)->_param_shared_lock_);          \
+                                    (p2)->_param_shared_lock_);               \
 
 #endif
 

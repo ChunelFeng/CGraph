@@ -455,14 +455,14 @@ private:
     friend class GPerf;
     friend class GStorage;
 
-public:
-    CStatus __registerGElement_4py(GElementPtr element, const GElementPtrSet &depends,
+CGRAPH_INTERNAL_ACCESS:
+    CStatus __registerGElement_4expose(GElementPtr element, const GElementPtrSet &depends,
                                    const std::string &name, CSize loop);
-    GPipeline* __addGEvent_4py(GEventPtr event, const std::string& key);
-    GPipeline* __addGDaemon_4py(GDaemonPtr daemon, CMSec ms);
-    GPipeline* __addGStage_4py(GStagePtr stage, const std::string& key, CInt threshold);
-    std::string __dump_4py();
-    std::string __perf_4py();
+    GPipeline* __addGEvent_4expose(GEventPtr event, const std::string& key);
+    GPipeline* __addGDaemon_4expose(GDaemonPtr daemon, CMSec ms);
+    GPipeline* __addGStage_4expose(GStagePtr stage, const std::string& key, CInt threshold);
+    std::string __dump_4expose();
+    std::string __perf_4expose();
 };
 
 using GPipelinePtr = GPipeline *;

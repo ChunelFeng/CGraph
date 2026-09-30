@@ -16,8 +16,8 @@ CGRAPH_NAMESPACE_BEGIN
 using GMessagePushStrategy = URingBufferPushStrategy;
 
 CGRAPH_INTERNAL_NAMESPACE_BEGIN
-static const char* PUB_SUB_PREFIX = "PS_PRE_";
-static const char* SEND_RECV_PREFIX = "SR_PRE_";
+static auto PUB_SUB_PREFIX = "PS_PRE_";
+static auto SEND_RECV_PREFIX = "SR_PRE_";
 CGRAPH_INTERNAL_NAMESPACE_END
 
 CGRAPH_NAMESPACE_END

@@ -15,7 +15,7 @@
 class PywGSerialMultiCondition : public CGraph::GMultiCondition<CGraph::GMultiConditionType::SERIAL> {
 public:
     explicit PywGSerialMultiCondition(const CGraph::GElementPtrArr& elements = CGraph::GElementPtrArr{}) {
-        CGraph::GMultiCondition<CGraph::GMultiConditionType::SERIAL>::__addGElements_4py(elements);
+        CGraph::GMultiCondition<CGraph::GMultiConditionType::SERIAL>::__addGElements_4expose(elements);
     };
 
     ~PywGSerialMultiCondition() override = default;

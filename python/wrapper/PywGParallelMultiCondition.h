@@ -15,7 +15,7 @@
 class PywGParallelMultiCondition : public CGraph::GMultiCondition<CGraph::GMultiConditionType::PARALLEL> {
 public:
     explicit PywGParallelMultiCondition(const CGraph::GElementPtrArr& elements = CGraph::GElementPtrArr{}) {
-        CGraph::GMultiCondition<CGraph::GMultiConditionType::PARALLEL>::__addGElements_4py(elements);
+        CGraph::GMultiCondition<CGraph::GMultiConditionType::PARALLEL>::__addGElements_4expose(elements);
     };
 
     ~PywGParallelMultiCondition() override = default;

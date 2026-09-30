@@ -17,7 +17,7 @@
 class PywGSome : public CGraph::GSome {
 public:
     explicit PywGSome(const CGraph::GElementPtrArr& elements = CGraph::GElementPtrArr{}) {
-        __addGElements_4py(elements);
+        __addGElements_4expose(elements);
     }
     ~PywGSome() override = default;
 

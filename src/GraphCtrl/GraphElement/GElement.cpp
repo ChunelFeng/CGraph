@@ -641,7 +641,7 @@ GElementPtr GElement::updateAspectInfo() {
 }
 
 
-GElementPtr GElement::__addGAspect_4py(GAspectPtr aspect) {
+GElementPtr GElement::__addGAspect_4expose(GAspectPtr aspect) {
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(aspect)
     if (!aspect_manager_) {
         aspect_manager_ = CGRAPH_SAFE_MALLOC_COBJECT(GAspectManager)
@@ -652,17 +652,17 @@ GElementPtr GElement::__addGAspect_4py(GAspectPtr aspect) {
 }
 
 
-CStatus GElement::__enterStage_4py(const std::string& key) {
+CStatus GElement::__enterStage_4expose(const std::string& key) {
     return enterStage(key);
 }
 
 
-CBool GElement::__isTimeout_4py() {
+CBool GElement::__isTimeout_4expose() {
     return isTimeout();
 }
 
 
-std::string GElement::__str_4py() {
+std::string GElement::__str_4expose() {
     // python 中 print 展示的格式
     std::string info = "<name=" + this->getName() +
                        ", session=" + this->getSession() + ", loop=" + std::to_string(this->getLoop());

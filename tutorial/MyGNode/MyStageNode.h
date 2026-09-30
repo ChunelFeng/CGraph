@@ -11,10 +11,11 @@
 
 #include "CGraph.h"
 
-const static char* kStageKey = "stage";
+static auto kStageKey = "stage";
 
 template<int before, int after>
 class MyStageNode : public CGraph::GNode {
+public:
     CStatus run() override {
         CGRAPH_SLEEP_SECOND(before);
         CGraph::CGRAPH_ECHO("[%s] wait for stage", getName().c_str());

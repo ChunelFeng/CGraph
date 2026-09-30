@@ -44,6 +44,7 @@ _ext_modules = [
     Extension(
         name=__PYCGRAPH_NAME__,
         sources=_sources,
+        define_macros=[("CGRAPH_EXPOSE_INTERNALS", None)],
         extra_compile_args=_extra_compile_args,
         include_dirs=_include_dirs,
         extra_link_args=_extra_link_args,

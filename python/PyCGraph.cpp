@@ -141,13 +141,13 @@ PYBIND11_MODULE(pycgraph, cg) {
 
     py::class_<GAspect, PywGAspect, std::unique_ptr<GAspect, py::nodelete> >(cg, "GAspect")
         .def(py::init<>())
-        .def("getName", &GAspect::__getName_4py)
+        .def("getName", &GAspect::__getName_4expose)
         .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(GAspect)
         .PYCGRAPH_DEF_GEVENT_PYBIND11_FUNCTIONS(GAspect);
 
     py::class_<GDaemon, PywGDaemon, std::unique_ptr<GDaemon, py::nodelete> >(cg, "GDaemon")
         .def(py::init<>())
-        .def("getInterval", &GDaemon::__getInterval_4py)
+        .def("getInterval", &GDaemon::__getInterval_4expose)
         .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(GDaemon)
         .PYCGRAPH_DEF_GEVENT_PYBIND11_FUNCTIONS(GDaemon);
 
@@ -212,15 +212,15 @@ PYBIND11_MODULE(pycgraph, cg) {
              py::arg("runTimes") = 1,
              py::call_guard<py::gil_scoped_release>())
         .def("destroy", &GPipeline::destroy)
-        .def("addGEvent", &GPipeline::__addGEvent_4py,
+        .def("addGEvent", &GPipeline::__addGEvent_4expose,
              py::arg("event"),
              py::arg("key"),
              py::keep_alive<1, 2>())
-        .def("addGDaemon", &GPipeline::__addGDaemon_4py,
+        .def("addGDaemon", &GPipeline::__addGDaemon_4expose,
              py::arg("daemon"),
              py::arg("ms"),
              py::keep_alive<1, 2>())
-        .def("addGStage", &GPipeline::__addGStage_4py,
+        .def("addGStage", &GPipeline::__addGStage_4expose,
              py::arg("stage"),
              py::arg("key"),
              py::arg("threshold"),
@@ -238,9 +238,9 @@ PYBIND11_MODULE(pycgraph, cg) {
              py::call_guard<py::gil_scoped_release>())
         .def("resume", &GPipeline::resume,
              py::call_guard<py::gil_scoped_release>())
-        .def("perf", &GPipeline::__perf_4py,
+        .def("perf", &GPipeline::__perf_4expose,
              py::call_guard<py::gil_scoped_release>())
-        .def("dump", &GPipeline::__dump_4py)
+        .def("dump", &GPipeline::__dump_4expose)
         .def("trim", &GPipeline::trim)
         .def("makeSerial", &GPipeline::makeSerial)
         .def("getMaxPara", &GPipeline::getMaxPara)
@@ -248,7 +248,7 @@ PYBIND11_MODULE(pycgraph, cg) {
         .def("checkSeparate", &GPipeline::checkSeparate,
              py::arg("fst"),
              py::arg("snd"))
-        .def("registerGElement", &GPipeline::__registerGElement_4py,
+        .def("registerGElement", &GPipeline::__registerGElement_4expose,
              py::arg("element"),
              py::arg("depends") = GElementPtrSet{},
              py::arg("name") = CGRAPH_EMPTY,
@@ -278,10 +278,10 @@ PYBIND11_MODULE(pycgraph, cg) {
 
     py::class_<GElement, PywGElement, std::unique_ptr<GElement, py::nodelete> >(cg, "GElement")
         .def(py::init<>())
-        .def("__str__", &GElement::__str_4py)
+        .def("__str__", &GElement::__str_4expose)
         .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(GElement)
         .PYCGRAPH_DEF_GEVENT_PYBIND11_FUNCTIONS(GElement)
-        .def("enterStage", &GElement::__enterStage_4py,
+        .def("enterStage", &GElement::__enterStage_4expose,
              py::arg("key"),
              py::call_guard<py::gil_scoped_release>())
         .def("getName", &GElement::getName)
@@ -302,11 +302,11 @@ PYBIND11_MODULE(pycgraph, cg) {
         .def("setTimeout", &GElement::setTimeout,
              py::arg("timeout"),
              py::arg("strategy") = GElementTimeoutStrategy::AS_ERROR)
-        .def("isTimeout", &GElement::__isTimeout_4py)
+        .def("isTimeout", &GElement::__isTimeout_4expose)
         .def("isGGroup", &GElement::isGGroup)
         .def("isGAdaptor", &GElement::isGAdaptor)
         .def("isGNode", &GElement::isGNode)
-        .def("addGAspect", &GElement::__addGAspect_4py,
+        .def("addGAspect", &GElement::__addGAspect_4expose,
              py::arg("aspect"),
              py::keep_alive<1, 2>())
         .def("addDependGElements", &GElement::addDependGElements,
