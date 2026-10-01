@@ -14,13 +14,13 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-#define CGRAPH_DECLARE_GSTAGE_MANAGER_WRAPPER_WITH_MEMBER             \
+#define CGRAPH_DECLARE_GSTAGE_MANAGER_WRAPPER_WITH_MEMBER            \
 protected:                                                           \
     /**
      * 进入特定阶段，等待同步
      * @param key
      */                                                              \
-    CStatus enterStage(const std::string& key) {                     \
+    CStatus waitGStage(const std::string& key) {                     \
         CGRAPH_FUNCTION_BEGIN                                        \
         CGRAPH_ASSERT_NOT_NULL(stage_manager_);                      \
         status = stage_manager_->waitForReady(key);                  \

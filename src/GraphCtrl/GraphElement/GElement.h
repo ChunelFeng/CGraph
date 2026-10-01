@@ -509,7 +509,7 @@ private:
 
 CGRAPH_INTERNAL_ACCESS:
     GElement* __addGAspect_4expose(GAspectPtr aspect);
-    CStatus __enterStage_4expose(const std::string& key);
+    CStatus __waitGStage_4expose(const std::string& key);
     CBool __isTimeout_4expose();
     std::string __str_4expose();
 };

@@ -21,7 +21,7 @@ public:
         CGraph::CGRAPH_ECHO("[%s] wait for stage", getName().c_str());
 
         // 等到所有的流程，都完成等待之后，会统一往下执行
-        enterStage(kStageKey);
+        waitGStage(kStageKey);
         CGraph::CGRAPH_ECHO("[%s] finish stage, before [%d]s, after [%d]s", getName().c_str(), before, after);
         CGRAPH_SLEEP_SECOND(after);
         return CStatus();

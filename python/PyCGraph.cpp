@@ -281,7 +281,7 @@ PYBIND11_MODULE(pycgraph, cg) {
         .def("__str__", &GElement::__str_4expose)
         .PYCGRAPH_DEF_GPARAM_PYBIND11_FUNCTIONS(GElement)
         .PYCGRAPH_DEF_GEVENT_PYBIND11_FUNCTIONS(GElement)
-        .def("enterStage", &GElement::__enterStage_4expose,
+        .def("waitGStage", &GElement::__waitGStage_4expose,
              py::arg("key"),
              py::call_guard<py::gil_scoped_release>())
         .def("getName", &GElement::getName)

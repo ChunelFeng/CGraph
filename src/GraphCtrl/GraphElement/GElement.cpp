@@ -652,8 +652,8 @@ GElementPtr GElement::__addGAspect_4expose(GAspectPtr aspect) {
 }
 
 
-CStatus GElement::__enterStage_4expose(const std::string& key) {
-    return enterStage(key);
+CStatus GElement::__waitGStage_4expose(const std::string& key) {
+    return waitGStage(key);
 }
 
 
