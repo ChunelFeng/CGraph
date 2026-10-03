@@ -40,11 +40,13 @@ _extra_compile_args = ["-pthread",
 _include_dirs = [pybind11.get_include(),
                  "../src"]
 _extra_link_args = ["-pthread"] if sys.platform != "win32" else []
-_ext_modules = [
+_define_macros = [("CGRAPH_EXPOSE_INTERNALS", None)]
+
+__EXT_MODULES__ = [
     Extension(
         name=__PYCGRAPH_NAME__,
         sources=_sources,
-        define_macros=[("CGRAPH_EXPOSE_INTERNALS", None)],
+        define_macros=_define_macros,
         extra_compile_args=_extra_compile_args,
         include_dirs=_include_dirs,
         extra_link_args=_extra_link_args,
@@ -59,7 +61,7 @@ setup(
     description=__PYCGRAPH_DESCRIPTION__,
     url=__PYCGRAPH_URL__,
     license=__PYCGRAPH_LICENSE__,
-    ext_modules=_ext_modules,
+    ext_modules=__EXT_MODULES__,
     zip_safe=False,
     long_description=__PYCGRAPH_LONG_DESCRIPTION__,
     long_description_content_type="text/markdown",
