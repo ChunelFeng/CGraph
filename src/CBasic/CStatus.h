@@ -32,13 +32,22 @@ public:
     explicit CSTATUS() = default;
 
     explicit CSTATUS(const std::string &errorInfo) {
-        this->error_code_ = STATUS_ERR;    // 默认的error code信息
-        this->error_info_ = errorInfo;
+        if (!errorInfo.empty()) {
+            this->error_code_ = STATUS_ERR;    // 默认的error code信息
+            this->error_info_ = errorInfo;
+        }
     }
 
     explicit CSTATUS(const int errorCode, const std::string& errorInfo) {
         this->error_code_ = errorCode;
         this->error_info_ = errorInfo;
+    }
+
+    explicit CSTATUS(const int errorCode) {
+        this->error_code_ = errorCode;
+        if (errorCode < STATUS_OK) {
+            this->error_info_ = CGRAPH_DEFAULT_ERROR_INFO;
+        }
     }
 
     CSTATUS(const CSTATUS& status) {

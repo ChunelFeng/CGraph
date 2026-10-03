@@ -13,11 +13,12 @@
 
 CGRAPH_NAMESPACE_BEGIN
 
-static const char* CGRAPH_EMPTY = "";
-static const char* CGRAPH_DEFAULT = "default";
-static const char* CGRAPH_UNKNOWN = "unknown";
-static const char* CGRAPH_FUNCTION_NO_SUPPORT = "function no support";
-static const char* CGRAPH_INPUT_IS_NULL = "input is nullptr";
+static auto CGRAPH_EMPTY = "";
+static auto CGRAPH_DEFAULT = "default";
+static auto CGRAPH_UNKNOWN = "unknown";
+static auto CGRAPH_FUNCTION_NO_SUPPORT = "function no support";
+static auto CGRAPH_INPUT_IS_NULL = "input is nullptr";
+static auto CGRAPH_DEFAULT_ERROR_INFO = "default error";
 
 CGRAPH_NAMESPACE_END
 

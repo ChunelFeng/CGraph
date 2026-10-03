@@ -126,6 +126,10 @@ PYBIND11_MODULE(pycgraph, cg) {
 
     py::class_<CStatus>(cg, "CStatus")
         .def(py::init<>())
+        .def(py::init<int>(),
+             py::arg("errorCode"))
+        .def(py::init<const std::string&>(),
+             py::arg("errorInfo"))
         .def(py::init<int, const std::string&>(),
              py::arg("errorCode"),
              py::arg("errorInfo"))
@@ -138,6 +142,9 @@ PYBIND11_MODULE(pycgraph, cg) {
         .def("isOK", &CStatus::isOK)
         .def("isErr", &CStatus::isErr)
         .def("isCrash", &CStatus::isCrash);
+
+    py::implicitly_convertible<int, CStatus>();
+    py::implicitly_convertible<std::string, CStatus>();
 
     py::class_<GAspect, PywGAspect, std::unique_ptr<GAspect, py::nodelete> >(cg, "GAspect")
         .def(py::init<>())
