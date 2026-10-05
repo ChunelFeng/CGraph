@@ -38,6 +38,9 @@ protected:
     }
 
     CStatus run() override {
+        pybind11::gil_scoped_acquire gil;
+        pybind11::detail::loader_life_support lls;    // support python function return 0 or "" directly
+
         PYBIND11_OVERLOAD_PURE(CStatus, GNode, run);
     }
 
