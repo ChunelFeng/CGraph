@@ -86,4 +86,23 @@ protected:                                                                      
         py::call_guard<py::gil_scoped_release>())                                         \
                                                                                           \
 
+
+// declare decorator for python
+#define PYCGRAPH_DECLARE_PYBIND11_DECORATOR(module, decoratorName, nativeName)            \
+    do {                                                                                  \
+        py::object nativeCls = (module).attr(nativeName);                                 \
+        (module).def(decoratorName,                                                       \
+            [nativeCls](py::type userCls) -> py::object {                                 \
+                auto decorated =                                                          \
+                    py::module_::import("types").attr("new_class")(                       \
+                        userCls.attr("__name__"),                                         \
+                        py::make_tuple(nativeCls, userCls));                              \
+                decorated.attr("__module__") = userCls.attr("__module__");                \
+                decorated.attr("__qualname__") = userCls.attr("__qualname__");            \
+                return decorated;                                                         \
+            }                                                                             \
+        );                                                                                \
+    } while (0)                                                                           \
+
+
 #endif //CGRAPH_PYWRAPPERDEFINE_H
