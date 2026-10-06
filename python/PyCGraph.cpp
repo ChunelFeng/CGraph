@@ -361,4 +361,11 @@ PYBIND11_MODULE(pycgraph, cg) {
     PYCGRAPH_DECLARE_PYBIND11_DECORATOR(cg, "aspect", "GAspect");
     PYCGRAPH_DECLARE_PYBIND11_DECORATOR(cg, "daemon", "GDaemon");
     PYCGRAPH_DECLARE_PYBIND11_DECORATOR(cg, "stage", "GStage");
+    PYCGRAPH_DECLARE_PYBIND11_DECORATOR(cg, "cluster", "GCluster");
+    PYCGRAPH_DECLARE_PYBIND11_DECORATOR(cg, "region", "GRegion");
+    PYCGRAPH_DECLARE_PYBIND11_DECORATOR(cg, "condition", "GCondition");
+    PYCGRAPH_DECLARE_PYBIND11_DECORATOR(cg, "serial_multi_condition", "GSerialMultiCondition");
+    PYCGRAPH_DECLARE_PYBIND11_DECORATOR(cg, "parallel_multi_condition", "GParallelMultiCondition");
+    PYCGRAPH_DECLARE_PYBIND11_DECORATOR(cg, "some", "GSome");
+    PYCGRAPH_DECLARE_PYBIND11_DECORATOR(cg, "mutable", "GMutable");
 }
