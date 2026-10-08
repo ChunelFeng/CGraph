@@ -45,7 +45,9 @@
 ----
 
 ## 二. 入门Demo
-> <b>C++ 版本</b>
+<details open>
+<summary><b>C++ 版本</b></summary>
+
 ```cpp
 #include "CGraph.h"
 
@@ -91,11 +93,14 @@ int main() {
 }
 ```
 
+</details>
+
 ![CGraph Demo](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Demo.jpg)
 <br>
 如上图所示，图结构执行的时候，首先执行`a`节点。`a`节点执行完毕后，并行执行`b`和`c`节点。`b`和`c`节点全部执行完毕后，再执行`d`节点。
 
-> <b>Python 版本</b>
+<details>
+<summary><b>Python 版本</b></summary>
 
 ```python
 # pip install pycgraph
@@ -131,12 +136,17 @@ if __name__ == '__main__':
     pipeline.process()
 ```
 
-> <b>其他版本</b>
+</details>
+
+<details>
+<summary><b>其他版本</b></summary>
 
 * [CsCGraph](https://github.com/ChunelFeng/CsCGraph) : A CSharp native, CGraph-API-liked DAG project
 * [JaCGraph](https://github.com/ChunelFeng/JaCGraph) : A Java native, CGraph-API-liked DAG project
 * [GoCGraph](https://github.com/AsunaU2/GoCGraph) : A Go native, CGraph-API-liked DAG project
 * [CGraph-lite](https://github.com/ChunelFeng/CGraph-lite) : A one-header-only, CGraph-API-liked DAG project, lite version by C++
+
+</details>
 
 ----
 

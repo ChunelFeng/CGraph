@@ -45,7 +45,9 @@ For detailed feature introductions and usage, please refer to the articles on [C
 ----
 
 ## 2. Getting Started Demo
-> <b>C++ Version</b>
+<details open>
+<summary><b>C++ Version</b></summary>
+
 ```cpp
 #include "CGraph.h"
 
@@ -91,11 +93,14 @@ int main() {
 }
 ```
 
+</details>
+
 ![CGraph Demo](https://github.com/ChunelFeng/CGraph/blob/main/doc/image/CGraph%20Demo.jpg)
 <br>
 As shown above, when the graph structure is executed, node `a` runs first. After node `a` finishes, nodes `b` and `c` run in parallel. After both `b` and `c` finish, node `d` runs.
 
-> <b>Python Version</b>
+<details>
+<summary><b>Python Version</b></summary>
 
 ```python
 import time
@@ -129,12 +134,17 @@ if __name__ == '__main__':
     pipeline.process()
 ```
 
-> <b>Other Versions</b>
+</details>
+
+<details>
+<summary><b>Other Versions</b></summary>
 
 * [CsCGraph](https://github.com/ChunelFeng/CsCGraph) : A CSharp native, CGraph-API-liked DAG project
 * [JaCGraph](https://github.com/ChunelFeng/JaCGraph) : A Java native, CGraph-API-liked DAG project
 * [GoCGraph](https://github.com/AsunaU2/GoCGraph) : A Go native, CGraph-API-liked DAG project
 * [CGraph-lite](https://github.com/ChunelFeng/CGraph-lite) : A one-header-only, CGraph-API-liked DAG project, lite version by C++
+
+</details>
 
 ----
 
