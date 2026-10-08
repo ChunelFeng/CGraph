@@ -158,6 +158,8 @@ CVoid GDynamicEngine::innerExec(GElementPtr element) {
             CGRAPH_LOCK_GUARD lk(status_lock_);
             cur_status_ += curStatus;
         }
+        // 必须持有 locker_.mtx_ 再通知，避免与 fatWait 之间丢失唤醒
+        CGRAPH_UNIQUE_LOCK lock(locker_.mtx_);
         locker_.cv_.notify_one();
     }
 }
@@ -208,6 +210,8 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
                 CGRAPH_LOCK_GUARD lk(status_lock_);
                 cur_status_.setErrorInfo("element shape type error");
             }
+            // 必须持有 locker_.mtx_ 再通知，避免丢失唤醒
+            CGRAPH_UNIQUE_LOCK lock(locker_.mtx_);
             locker_.cv_.notify_one();
             break;
     }
