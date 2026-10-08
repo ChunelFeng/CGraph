@@ -44,8 +44,8 @@ protected:                                                                      
                                                                                           \
 
 
-#define PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(PCGG)                                  \
-    py::class_<Pyw##PCGG, GElement, Pyw##PCGG##Interface, std::unique_ptr<Pyw##PCGG, py::nodelete> >(cg, #PCGG) \
+#define PYCGRAPH_DECLARE_GGROUP_PYBIND11_FUNCTIONS(module, PCGG)                          \
+    py::class_<Pyw##PCGG, GElement, Pyw##PCGG##Interface, std::unique_ptr<Pyw##PCGG, py::nodelete> >(module, #PCGG) \
         .def(py::init<const GElementPtrArr&>(),                                           \
             py::arg("elements") = GElementPtrArr{},                                       \
             py::keep_alive<1, 2>())                                                       \
