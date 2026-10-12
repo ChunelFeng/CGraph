@@ -26,7 +26,7 @@ public:
     CVoid push(T&& value) {
         while (true) {
             if (mutex_.try_lock()) {
-                deque_.emplace_back(std::forward<T>(value));
+                deque_.emplace_back(std::move(value));
                 mutex_.unlock();
                 break;
             }
@@ -46,7 +46,7 @@ public:
         if (enable && lockable) {
             mutex_.lock();
         }
-        deque_.emplace_back(std::forward<T>(value));
+        deque_.emplace_back(std::move(value));
         if (enable && !lockable) {
             mutex_.unlock();
         }
@@ -61,7 +61,7 @@ public:
     CBool tryPush(T&& value) {
         CBool result = false;
         if (mutex_.try_lock()) {
-            deque_.emplace_back(std::forward<T>(value));
+            deque_.emplace_back(std::move(value));
             mutex_.unlock();
             result = true;
         }
@@ -97,7 +97,7 @@ public:
         bool result = false;
         if (!deque_.empty() && mutex_.try_lock()) {
             if (!deque_.empty()) {
-                value = std::forward<T>(deque_.front());    // 从前方弹出
+                value = std::move(deque_.front());    // 从前方弹出
                 deque_.pop_front();
                 result = true;
             }
@@ -118,7 +118,7 @@ public:
         bool result = false;
         if (!deque_.empty() && mutex_.try_lock()) {
             while (!deque_.empty() && maxLocalBatchSize--) {
-                values.emplace_back(std::forward<T>(deque_.front()));
+                values.emplace_back(std::move(deque_.front()));
                 deque_.pop_front();
                 result = true;
             }
@@ -138,7 +138,7 @@ public:
         bool result = false;
         if (!deque_.empty() && mutex_.try_lock()) {
             if (!deque_.empty()) {
-                value = std::forward<T>(deque_.back());    // 从后方窃取
+                value = std::move(deque_.back());    // 从后方窃取
                 deque_.pop_back();
                 result = true;
             }
@@ -159,7 +159,7 @@ public:
         bool result = false;
         if (!deque_.empty() && mutex_.try_lock()) {
             while (!deque_.empty() && maxStealBatchSize--) {
-                values.emplace_back(std::forward<T>(deque_.back()));
+                values.emplace_back(std::move(deque_.back()));
                 deque_.pop_back();
                 result = true;
             }
