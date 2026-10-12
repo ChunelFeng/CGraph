@@ -197,7 +197,7 @@ CStatus GPipeline::resume() {
 }
 
 
-CStatus GPipeline::dump(std::ostream& oss) {
+CStatus GPipeline::dump(std::ostream& oss) const {
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL(element_manager_)
     oss << std::fixed << std::setprecision(2);    // 小数点最多展示2位数字
@@ -257,14 +257,14 @@ GPipelinePtr GPipeline::setSharedThreadPool(UThreadPoolPtr ptr) {
 }
 
 
-CSize GPipeline::getMaxPara() {
+CSize GPipeline::getMaxPara() const {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element_manager_)
     return element_manager_->calcMaxParaSize();
 }
 
 
-CSize GPipeline::trim() {
+CSize GPipeline::trim() const {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element_manager_)
     return element_manager_->trim();
@@ -436,7 +436,7 @@ GPipelinePtr GPipeline::__addGStage_4expose(GStagePtr stage, const std::string& 
 
 std::string GPipeline::__dump_4expose() {
     std::ostringstream oss;
-    auto status = this->dump(oss);
+    const auto status = this->dump(oss);
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status);
     return oss.str();
 }
@@ -444,7 +444,7 @@ std::string GPipeline::__dump_4expose() {
 
 std::string GPipeline::__perf_4expose() {
     std::ostringstream oss;
-    auto status = this->perf(oss);
+    const auto status = this->perf(oss);
     CGRAPH_THROW_EXCEPTION_BY_STATUS(status);
     return oss.str();
 }

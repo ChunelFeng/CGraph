@@ -60,7 +60,7 @@ TNode* GPipeline::registerGNode(const GElementPtrSet &depends,
                                 const std::string &name, CSize loop) {
     GElementPtr node = nullptr;
     CGRAPH_THROW_EXCEPTION_BY_STATUS(registerGElement<TNode>(&node, depends, name, loop))
-    return (TNode *)node;
+    return static_cast<TNode *>(node);
 }
 
 
@@ -70,7 +70,7 @@ TNode* GPipeline::registerGNode(const GElementPtrSet &depends,
                                 Args... args) {
     GTemplateNodePtr<Args ...> node = nullptr;
     CGRAPH_THROW_EXCEPTION_BY_STATUS(registerGElement<TNode>(&node, depends, args...))
-    return (TNode *)node;
+    return static_cast<TNode *>(node);
 }
 
 
@@ -97,7 +97,7 @@ CStatus GPipeline::registerGElement(GFunctionPPtr functionRef,
                                     const std::string &name,
                                     CSize loop) {
     // 通过模板特化的方式，简化 GFunction 的注册方式
-    return this->registerGElement<GFunction>((GElementPtr *)(functionRef), depends, name, loop);
+    return this->registerGElement<GFunction>(reinterpret_cast<GElementPtr *>(functionRef), depends, name, loop);
 }
 
 
@@ -106,7 +106,7 @@ CStatus GPipeline::registerGElement(GFencePPtr fenceRef,
                                     const GElementPtrSet &depends,
                                     const std::string &name,
                                     CSize loop) {
-    return this->registerGElement<GFence>((GElementPtr *)(fenceRef), depends, name, loop);
+    return this->registerGElement<GFence>(reinterpret_cast<GElementPtr *>(fenceRef), depends, name, loop);
 }
 
 
@@ -115,7 +115,7 @@ CStatus GPipeline::registerGElement(GCoordinatorPPtr<SIZE> coordinatorRef,
                                     const GElementPtrSet &depends,
                                     const std::string &name,
                                     CSize loop) {
-    return this->registerGElement<GCoordinator, SIZE>((GElementPtr *)(coordinatorRef), depends, name, loop);
+    return this->registerGElement<GCoordinator, SIZE>(reinterpret_cast<GElementPtr *>(coordinatorRef), depends, name, loop);
 }
 
 
@@ -138,8 +138,8 @@ TNode* GPipeline::createGNode(const GNodeInfo &info, Args&&... args) {
 template<typename TNode, typename ...Args,
         c_enable_if_t<std::is_base_of<GNode, TNode>::value, int>>
 TNode* GPipeline::createGNode(const GElementPtrSet& dependence, const std::string& name,
-                                CSize loop, Args&&... args) {
-    const GNodeInfo& info = GNodeInfo(dependence, name, loop);
+                              CSize loop, Args&&... args) {
+    const auto &info = GNodeInfo(dependence, name, loop);
     return createGNode<TNode>(info, std::forward<Args>(args)...);
 }
 

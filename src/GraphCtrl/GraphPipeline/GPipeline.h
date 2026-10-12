@@ -64,17 +64,17 @@ public:
      */
     CStatus cancel();
 
-     /**
-      * 暂停当前pipeline的执行，多用于异步执行流程中
-      * @return
-      */
-     CStatus suspend();
+    /**
+     * 暂停当前pipeline的执行，多用于异步执行流程中
+     * @return
+     */
+    CStatus suspend();
 
-     /**
-      * 恢复当前pipeline的执行，多用于异步执行流程中
-      * @return
-      */
-     CStatus resume();
+    /**
+     * 恢复当前pipeline的执行，多用于异步执行流程中
+     * @return
+     */
+    CStatus resume();
 
     /**
      * 生成图可视化 graphviz 信息
@@ -82,7 +82,7 @@ public:
      * @return
      * @notice 将输出的内容，复制到 https://dreampuf.github.io/GraphvizOnline/ 中查看效果
     */
-    CStatus dump(std::ostream& oss = std::cout);
+    CStatus dump(std::ostream& oss = std::cout) const;
 
     /**
      * 查看性能分析
@@ -109,7 +109,7 @@ public:
 
     /**
      * 根据传入的信息，创建node节点
-     * @tparam T
+     * @tparam TNode
      * @tparam Args
      * @param name
      * @param loop
@@ -126,7 +126,7 @@ public:
 
     /**
      * 根据传入的信息，创建Group信息
-     * @tparam T
+     * @tparam TGroup
      * @param elements
      * @param depends
      * @param name
@@ -365,13 +365,13 @@ public:
      * @return
      * @notice 暂时仅支持dag中所有内容均为 node的情况下计算。返回的值，是理论最大线程数，不是最优值
      */
-    CSize getMaxPara();
+    CSize getMaxPara() const;
 
     /**
      * 针对图结构，做多余边剪裁
      * @return 返回值表示裁剪了多少条信息
      */
-    CSize trim();
+    CSize trim() const;
 
     /**
      * 将符合串行执行条件的pipeline，设定为串行执行的模式。可以大幅度提升运行性能。
