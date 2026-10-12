@@ -70,24 +70,6 @@ public:
 
 
     /**
-     * 向队列中写入信息
-     * @param values
-     */
-    CVoid push(const std::vector<T>& values) {
-        while (true) {
-            if (mutex_.try_lock()) {
-                for (auto& value : values) {
-                    deque_.emplace_back(value);
-                }
-                mutex_.unlock();
-                break;
-            }
-            CGRAPH_YIELD();
-        }
-    }
-
-
-    /**
      * 弹出节点，从头部进行
      * @param value
      * @return

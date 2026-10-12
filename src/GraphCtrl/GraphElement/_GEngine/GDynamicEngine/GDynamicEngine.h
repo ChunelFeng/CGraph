@@ -129,7 +129,6 @@ private:
     CInt wait_busy_epoch_ {0};                                                           // dag执行结束前，轮询等待的次数
 
     UCvMutex locker_;
-    std::mutex status_lock_;
 
     friend class CAllocator;
 };

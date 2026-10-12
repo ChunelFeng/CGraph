@@ -155,7 +155,7 @@ CVoid GDynamicEngine::innerExec(GElementPtr element) {
     } else {
         // 遇到异常情况，结束整体逻辑
         {
-            CGRAPH_LOCK_GUARD lk(status_lock_);
+            CGRAPH_LOCK_GUARD lk(locker_.mtx_);
             cur_status_ += curStatus;
         }
         locker_.cv_.notify_one();
@@ -205,7 +205,7 @@ CVoid GDynamicEngine::afterElementRun(GElementPtr element) {
             break;
         default:
             {
-                CGRAPH_LOCK_GUARD lk(status_lock_);
+                CGRAPH_LOCK_GUARD lk(locker_.mtx_);
                 cur_status_.setErrorInfo("element shape type error");
             }
             locker_.cv_.notify_one();
@@ -275,9 +275,11 @@ CVoid GDynamicEngine::parallelRunOne(GElementPtr element) {
     const auto& status = element->fatProcessor(CFunctionType::RUN);
     if (unlikely(status.isErr())) {
         {
-            CGRAPH_LOCK_GUARD lk(status_lock_);
+            CGRAPH_LOCK_GUARD lk(locker_.mtx_);
             cur_status_ += status;
         }
+        locker_.cv_.notify_one();
+        return;
     }
 
     const auto finishedSize = parallel_run_num_.fetch_add(1, std::memory_order_release) + 1;
