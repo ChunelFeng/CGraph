@@ -175,10 +175,12 @@ public:
         }
 
         auto& messageSet = result->second;
-        for (auto* msg : messageSet) {
+        for (auto iter = messageSet.begin(); iter != messageSet.end(); ++iter) {
+            auto* msg = *iter;
             if (connId == msg->getConnId()) {
-                CGRAPH_DELETE_PTR(msg);
+                messageSet.erase(iter);
                 conn_message_map_.erase(connId);
+                CGRAPH_DELETE_PTR(msg);
                 break;
             }
         }
@@ -250,6 +252,7 @@ public:
 
         auto& messageSet = result->second;
         for (auto* msg : messageSet) {
+            conn_message_map_.erase(msg->getConnId());
             CGRAPH_DELETE_PTR(msg)
         }
         pub_sub_message_map_.erase(innerTopic);
