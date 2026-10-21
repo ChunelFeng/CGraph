@@ -67,49 +67,46 @@ PYBIND11_MODULE(pycgraph, cg) {
     py::enum_<GEngineType>(cg, "GEngineType")
         .value("DYNAMIC", GEngineType::DYNAMIC)
         .value("TOPO", GEngineType::TOPO)
-        .value("STATIC", GEngineType::STATIC)
-        .export_values();
+        .value("STATIC", GEngineType::STATIC);
 
     py::enum_<GElementTimeoutStrategy>(cg, "GElementTimeoutStrategy")
         .value("AS_ERROR", GElementTimeoutStrategy::AS_ERROR)
         .value("HOLD_BY_PIPELINE", GElementTimeoutStrategy::HOLD_BY_PIPELINE)
-        .value("NO_HOLD", GElementTimeoutStrategy::NO_HOLD)
-        .export_values();
+        .value("NO_HOLD", GElementTimeoutStrategy::NO_HOLD);
 
     py::enum_<GMultiConditionType>(cg, "GMultiConditionType")
         .value("SERIAL", GMultiConditionType::SERIAL)
-        .value("PARALLEL", GMultiConditionType::PARALLEL)
-        .export_values();
+        .value("PARALLEL", GMultiConditionType::PARALLEL);
 
     py::enum_<GEventType>(cg, "GEventType")
         .value("SYNC", GEventType::SYNC)
-        .value("ASYNC", GEventType::ASYNC)
-        .export_values();
+        .value("ASYNC", GEventType::ASYNC);
 
     py::enum_<GEventAsyncStrategy>(cg, "GEventAsyncStrategy")
         .value("PIPELINE_RUN_FINISH", GEventAsyncStrategy::PIPELINE_RUN_FINISH)
         .value("PIPELINE_DESTROY", GEventAsyncStrategy::PIPELINE_DESTROY)
-        .value("NO_WAIT", GEventAsyncStrategy::NO_WAIT)
-        .export_values();
+        .value("NO_WAIT", GEventAsyncStrategy::NO_WAIT);
 
     py::enum_<CFunctionType>(cg, "CFunctionType")
         .value("INIT", CFunctionType::INIT)
         .value("RUN", CFunctionType::RUN)
-        .value("DESTROY", CFunctionType::DESTROY)
-        .export_values();
+        .value("DESTROY", CFunctionType::DESTROY);
 
     py::enum_<GElementState>(cg, "GElementState")
         .value("NORMAL", GElementState::NORMAL)
         .value("CANCEL", GElementState::CANCEL)
         .value("SUSPEND", GElementState::SUSPEND)
-        .value("TIMEOUT", GElementState::TIMEOUT)
-        .export_values();
+        .value("TIMEOUT", GElementState::TIMEOUT);
     cg.attr("GPipelineState") = cg.attr("GElementState");
 
     py::enum_<std::launch>(cg, "StdLaunchPolicy")
         .value("ASYNC", std::launch::async)
-        .value("DEFERRED", std::launch::deferred)
-        .export_values();
+        .value("DEFERRED", std::launch::deferred);
+
+    py::enum_<GMessagePushStrategy>(cg, "GMessagePushStrategy")
+        .value("WAIT", GMessagePushStrategy::WAIT)
+        .value("REPLACE", GMessagePushStrategy::REPLACE)
+        .value("DROP", GMessagePushStrategy::DROP);
 
     py::class_<std::shared_future<void> >(cg, "StdSharedFutureVoid")
         .def("wait", [] (std::shared_future<void>& fut) {
@@ -145,6 +142,32 @@ PYBIND11_MODULE(pycgraph, cg) {
 
     py::implicitly_convertible<int, CStatus>();
     py::implicitly_convertible<std::string, CStatus>();
+
+    py::class_<GMessageParam, PywGMessageParam, py::smart_holder>(cg, "GMessageParam")
+        .def(py::init<>());
+
+    py::class_<PywGMessage>(cg, "GMessage")
+        .def_static("createTopic", &PywGMessage::createTopic,
+             py::arg("topic"), py::arg("messageType"), py::arg("capacity"))
+        .def_static("removeTopic", &PywGMessage::removeTopic,
+             py::arg("topic"))
+        .def_static("sendMessage", &PywGMessage::sendMessage,
+             py::arg("topic"), py::arg("message").none(false), py::arg("strategy"))
+        .def_static("recvMessage", &PywGMessage::recvMessage,
+             py::arg("topic"), py::arg("timeout_ms") = CGRAPH_MAX_BLOCK_TTL)
+        .def_static("bindTopic", &PywGMessage::bindTopic,
+             py::arg("topic"), py::arg("messageType"), py::arg("capacity"))
+        .def_static("pubMessage", &PywGMessage::pubMessage,
+             py::arg("topic"), py::arg("message").none(false), py::arg("strategy"))
+        .def_static("subMessage", &PywGMessage::subMessage,
+             py::arg("conn_id"), py::arg("timeout_ms") = CGRAPH_MAX_BLOCK_TTL)
+        .def_static("detachTopic", &PywGMessage::detachTopic,
+             py::arg("topic"), py::arg("conn_id"))
+        .def_static("dropTopic", &PywGMessage::dropTopic,
+             py::arg("topic"))
+        .def_static("clear", &PywGMessage::clear);
+
+    py::module_::import("atexit").attr("register")(py::cpp_function(&PywGMessage::clear));
 
     py::class_<GAspect, PywGAspect, std::unique_ptr<GAspect, py::nodelete> >(cg, "GAspect")
         .def(py::init<>())

@@ -17,6 +17,8 @@
 #include "PywGRegion.h"
 #include "PywGCondition.h"
 #include "PywGParam.h"
+#include "PywGMessage.h"
+#include "PywGMessageParam.h"
 #include "PywGAspect.h"
 #include "PywGEvent.h"
 #include "PywGDaemon.h"

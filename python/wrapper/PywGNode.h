@@ -34,6 +34,9 @@ public:
 
 protected:
     CStatus init() override {
+        pybind11::gil_scoped_acquire gil;
+        pybind11::detail::loader_life_support lls;
+
         PYBIND11_OVERLOAD(CStatus, GNode, init);
     }
 
@@ -45,6 +48,9 @@ protected:
     }
 
     CStatus destroy() override {
+        pybind11::gil_scoped_acquire gil;
+        pybind11::detail::loader_life_support lls;
+
         PYBIND11_OVERLOAD(CStatus, GNode, destroy);
     }
 
