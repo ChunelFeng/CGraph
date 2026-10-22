@@ -6,10 +6,9 @@
 @Desc: 
 """
 
-from pycgraph import param, CStatus
+from pycgraph import GParam, CStatus
 
-@param
-class MyParam:
+class MyParam(GParam):
     value = 0
     count = 0
 

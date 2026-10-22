@@ -96,7 +96,7 @@ protected:                                                                      
                 auto decorated =                                                          \
                     py::module_::import("types").attr("new_class")(                       \
                         userCls.attr("__name__"),                                         \
-                        py::make_tuple(nativeCls, userCls));                              \
+                        py::make_tuple(userCls, nativeCls));                              \
                 decorated.attr("__module__") = userCls.attr("__module__");                \
                 decorated.attr("__qualname__") = userCls.attr("__qualname__");            \
                 return decorated;                                                         \
