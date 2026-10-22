@@ -43,7 +43,7 @@ public:
         this->error_info_ = errorInfo;
     }
 
-    explicit CSTATUS(const int errorCode) {
+    CSTATUS(const int errorCode) {
         this->error_code_ = errorCode;
         if (errorCode < STATUS_OK) {
             this->error_info_ = CGRAPH_DEFAULT_ERROR_INFO;

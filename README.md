@@ -442,9 +442,10 @@ if __name__ == '__main__':
 * 提供 lite 运行模式
 * 修改 `GSome` 使用方式
 
-[2026.08.22 - v3.3.0 - Chunel]
+[2026.10.22 - v3.3.0 - Chunel]
 * 优化 `GParam` 的 trace 功能
-* 优化 `pycgraph` 功能
+* 优化 `CStatus` 的返回值功能
+* 优化 `pycgraph` 功能，支持 `message` 功能
 
 </details>
 
