@@ -108,20 +108,19 @@ int main() {
 import time
 from datetime import datetime
 
-from pycgraph import GNode, GPipeline, CStatus
-
+from pycgraph import GNode, GPipeline
 
 class MyNode1(GNode):
     def run(self):
         print("[{0}] {1}, sleep for 1 second ... ".format(datetime.now(), self.getName()))
         time.sleep(1)
-        return CStatus()
+        return 0
 
 class MyNode2(GNode):
     def run(self):
         print("[{0}] {1}, sleep for 2 second ... ".format(datetime.now(), self.getName()))
         time.sleep(2)
-        return CStatus()
+        return 0
 
 
 if __name__ == '__main__':
@@ -207,6 +206,8 @@ if __name__ == '__main__':
 * [pybind11](https://github.com/pybind/pybind11) : Seamless operability between C++11 and Python
   * 本项目Python接口绑定功能，使用pybind11实现
   * [【B站视频】pybind11落地实战——PyCGraph是怎样练成的](https://www.bilibili.com/video/BV1ofLdz5EzX) | [飞书文档链接](https://ilyryn6yei.feishu.cn/docx/YDfHdU9mfoTlnqxaTkscRob6nGe)
+* [FlowX](https://github.com/AIpRoBuilder/FlowX) : MCP server and Python SDK that generates, runs and refines AI agent workflows from natural language (Generative Workflow, A2A, FastAPI).
+  * [【B站视频】生成式工作流探索-FlowX实践和技术展望](https://www.bilibili.com/video/BV1nBJB68EVW)
 
 
 [![Star History Chart](https://star-history.dera.page/svg?repos=ChunelFeng/CGraph&type=Date)](https://star-history.dera.page/#ChunelFeng/CGraph&Date)
@@ -445,7 +446,7 @@ if __name__ == '__main__':
 [2026.10.22 - v3.3.0 - Chunel]
 * 优化 `GParam` 的 trace 功能
 * 优化 `CStatus` 的返回值功能
-* 优化 `pycgraph` 功能，支持 `message` 功能
+* 优化 `pycgraph` 功能，提供 `message` 功能，提供装饰器功能
 
 </details>
 

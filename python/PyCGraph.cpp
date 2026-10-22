@@ -380,6 +380,7 @@ PYBIND11_MODULE(pycgraph, cg) {
 
     PYCGRAPH_DECLARE_PYBIND11_DECORATOR(cg, "node", "GNode");
     PYCGRAPH_DECLARE_PYBIND11_DECORATOR(cg, "param", "GParam");
+    PYCGRAPH_DECLARE_PYBIND11_DECORATOR(cg, "message_param", "GMessageParam");
     PYCGRAPH_DECLARE_PYBIND11_DECORATOR(cg, "event", "GEvent");
     PYCGRAPH_DECLARE_PYBIND11_DECORATOR(cg, "aspect", "GAspect");
     PYCGRAPH_DECLARE_PYBIND11_DECORATOR(cg, "daemon", "GDaemon");

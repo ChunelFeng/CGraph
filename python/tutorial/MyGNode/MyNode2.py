@@ -9,9 +9,10 @@
 from datetime import datetime
 import time
 
-from pycgraph import GNode, CStatus
+from pycgraph import node, CStatus
 
-class MyNode2(GNode):
+@node
+class MyNode2:
     def init(self):
         print("[INIT] [{0}], enter MyNode2 init function.".format(self.getName()))
         return ""
