@@ -113,7 +113,8 @@ PYBIND11_MODULE(pycgraph, cg) {
             fut.wait();
         }, py::call_guard<py::gil_scoped_release>());
 
-    py::class_<std::future<CStatus> >(cg, "StdFutureCStatus")
+    py::class_<std::future<CStatus> >(cg, "StdFutureCStatus",
+                                      py::release_gil_before_calling_cpp_dtor())
         .def("get", [] (std::future<CStatus>& fut) {
             return fut.get();
         }, py::call_guard<py::gil_scoped_release>())
@@ -257,10 +258,12 @@ PYBIND11_MODULE(pycgraph, cg) {
              py::keep_alive<1, 2>())
         .def("asyncRun", &GPipeline::asyncRun,
              py::arg("policy") = std::launch::async,
+             py::keep_alive<0, 1>(),
              py::call_guard<py::gil_scoped_release>())
         .def("asyncProcess", &GPipeline::asyncProcess,
              py::arg("runTimes") = CGRAPH_DEFAULT_LOOP_TIMES,
              py::arg("policy") = std::launch::async,
+             py::keep_alive<0, 1>(),
              py::call_guard<py::gil_scoped_release>())
         .def("cancel", &GPipeline::cancel,
             py::call_guard<py::gil_scoped_release>())

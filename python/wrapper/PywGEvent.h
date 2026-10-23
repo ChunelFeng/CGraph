@@ -12,6 +12,7 @@
 #include <pybind11/pybind11.h>
 
 #include "CGraph.h"
+#include "PyWrapperMacro.h"
 
 class PywGEvent : public CGraph::GEvent {
 public:
@@ -23,11 +24,11 @@ protected:
     }
 
     CStatus init() override {
-        PYBIND11_OVERLOAD(CStatus, GEvent, init);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(GEvent, init);
     }
 
     CStatus destroy() override {
-        PYBIND11_OVERLOAD(CStatus, GEvent, destroy);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(GEvent, destroy);
     }
 };
 

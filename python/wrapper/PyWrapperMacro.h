@@ -13,6 +13,24 @@
 
 #include "CGraph.h"
 
+#define PYCGRAPH_OVERRIDE_RET_CSTATUS(...)                  \
+    do {                                                    \
+        pybind11::gil_scoped_acquire gil;                   \
+        pybind11::detail::loader_life_support lls;          \
+        PYBIND11_OVERRIDE(CStatus, __VA_ARGS__);            \
+    } while (false)                                         \
+                                                            \
+
+
+#define PYCGRAPH_OVERRIDE_PURE_RET_CSTATUS(...)             \
+    do {                                                    \
+        pybind11::gil_scoped_acquire gil;                   \
+        pybind11::detail::loader_life_support lls;          \
+        PYBIND11_OVERRIDE_PURE(CStatus, __VA_ARGS__);       \
+    } while (false)                                         \
+                                                            \
+
+
 #define PYCGRAPH_DECLARE_GELEMENT_COMMON_FUNCTIONS(PCGE)    \
     CBool isHold() override {                               \
         PYBIND11_OVERLOAD(CBool, PCGE, isHold);             \
@@ -23,11 +41,11 @@
     }                                                       \
                                                             \
     CStatus prepareRun() override {                         \
-        PYBIND11_OVERLOAD(CStatus, PCGE, prepareRun);       \
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(PCGE, prepareRun);    \
     }                                                       \
                                                             \
     CStatus checkRunResult() override {                     \
-        PYBIND11_OVERLOAD(CStatus, PCGE, checkRunResult);   \
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(PCGE, checkRunResult);\
     }                                                       \
                                                             \
 

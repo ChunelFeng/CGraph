@@ -22,13 +22,13 @@ public:
     ~PywGMutable() override = default;
 
     CStatus reshape(CGraph::GElementPtrArr& elements) override {
-        PYBIND11_OVERLOAD_PURE(CStatus, PywGMutable, reshape, elements);
+        PYCGRAPH_OVERRIDE_PURE_RET_CSTATUS(PywGMutable, reshape, elements);
     }
 };
 
 PYCGRAPH_DECLARE_GGROUP_INTERFACE_CLASS(PywGMutable,
     CStatus reshape(CGraph::GElementPtrArr& elements) override {
-        PYBIND11_OVERLOAD_PURE(CStatus, PywGMutableInterface, reshape, elements);
+        PYCGRAPH_OVERRIDE_PURE_RET_CSTATUS(PywGMutableInterface, reshape, elements);
     });
 
 #endif //CGRAPH_PYWGMUTABLE_H

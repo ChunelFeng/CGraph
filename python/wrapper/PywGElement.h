@@ -12,11 +12,12 @@
 #include <pybind11/pybind11.h>
 
 #include "CGraph.h"
+#include "PyWrapperMacro.h"
 
 class PywGElement : public CGraph::GElement {
 protected:
     CStatus run() override {
-        PYBIND11_OVERLOAD_PURE(CStatus, GElement, run);
+        PYCGRAPH_OVERRIDE_PURE_RET_CSTATUS(GElement, run);
     }
 };
 

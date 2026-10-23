@@ -34,24 +34,15 @@ public:
 
 protected:
     CStatus init() override {
-        pybind11::gil_scoped_acquire gil;
-        pybind11::detail::loader_life_support lls;
-
-        PYBIND11_OVERLOAD(CStatus, GNode, init);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(GNode, init);
     }
 
     CStatus run() override {
-        pybind11::gil_scoped_acquire gil;
-        pybind11::detail::loader_life_support lls;    // support python function return 0 or "" directly
-
-        PYBIND11_OVERLOAD_PURE(CStatus, GNode, run);
+        PYCGRAPH_OVERRIDE_PURE_RET_CSTATUS(GNode, run);
     }
 
     CStatus destroy() override {
-        pybind11::gil_scoped_acquire gil;
-        pybind11::detail::loader_life_support lls;
-
-        PYBIND11_OVERLOAD(CStatus, GNode, destroy);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(GNode, destroy);
     }
 
     PYCGRAPH_DECLARE_GELEMENT_COMMON_FUNCTIONS(CGraph::GNode)

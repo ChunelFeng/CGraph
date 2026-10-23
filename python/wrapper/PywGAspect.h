@@ -12,6 +12,7 @@
 #include <pybind11/pybind11.h>
 
 #include "CGraph.h"
+#include "PyWrapperMacro.h"
 
 class PywGAspect : public CGraph::GAspect {
 public:
@@ -20,7 +21,7 @@ public:
 
 protected:
     CStatus beginInit() override {
-        PYBIND11_OVERLOAD(CStatus, GAspect, beginInit);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(GAspect, beginInit);
     }
 
     CVoid finishInit(const CStatus& curStatus) override {
@@ -28,7 +29,7 @@ protected:
     }
 
     CStatus beginRun() override {
-        PYBIND11_OVERLOAD(CStatus, GAspect, beginRun);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(GAspect, beginRun);
     }
 
     CVoid finishRun(const CStatus& curStatus) override {
@@ -36,7 +37,7 @@ protected:
     }
 
     CStatus beginDestroy() override {
-        PYBIND11_OVERLOAD(CStatus, GAspect, beginDestroy);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(GAspect, beginDestroy);
     }
 
     CVoid finishDestroy(const CStatus& curStatus) override {

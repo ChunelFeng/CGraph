@@ -12,6 +12,7 @@
 #include <pybind11/pybind11.h>
 
 #include "CGraph.h"
+#include "PyWrapperMacro.h"
 
 class PywGParam : public CGraph::GParam {
 public:
@@ -19,15 +20,15 @@ public:
 
 protected:
     CStatus init() override {
-        PYBIND11_OVERLOAD(CStatus, CGraph::GParam, init);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(CGraph::GParam, init);
     }
 
     CStatus destroy() override {
-        PYBIND11_OVERLOAD(CStatus, CGraph::GParam, destroy);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(CGraph::GParam, destroy);
     }
 
     CStatus setup() override {
-        PYBIND11_OVERLOAD(CStatus, CGraph::GParam, setup);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(CGraph::GParam, setup);
     }
 
     CVoid reset(const CStatus& curStatus) override {
