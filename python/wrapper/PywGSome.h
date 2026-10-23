@@ -22,14 +22,14 @@ public:
     ~PywGSome() override = default;
 
     CSize getThreshold() override {
-        PYBIND11_OVERLOAD_PURE(CSize, PywGSome, getThreshold);
+        PYBIND11_OVERLOAD_PURE(CSize, PywGSome, getThreshold, );
     }
 };
 
 
 PYCGRAPH_DECLARE_GGROUP_INTERFACE_CLASS(PywGSome,
     CSize getThreshold() override {
-        PYBIND11_OVERLOAD_PURE(CSize, PywGSomeInterface, getThreshold);
+        PYBIND11_OVERLOAD_PURE(CSize, PywGSomeInterface, getThreshold, );
     });
 
 #endif //CGRAPH_PYWGSOME_H

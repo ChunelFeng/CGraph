@@ -21,7 +21,7 @@ public:
 
 protected:
     CStatus beginInit() override {
-        PYCGRAPH_OVERRIDE_RET_CSTATUS(GAspect, beginInit);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(GAspect, beginInit, );
     }
 
     CVoid finishInit(const CStatus& curStatus) override {
@@ -29,7 +29,7 @@ protected:
     }
 
     CStatus beginRun() override {
-        PYCGRAPH_OVERRIDE_RET_CSTATUS(GAspect, beginRun);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(GAspect, beginRun, );
     }
 
     CVoid finishRun(const CStatus& curStatus) override {
@@ -37,7 +37,7 @@ protected:
     }
 
     CStatus beginDestroy() override {
-        PYCGRAPH_OVERRIDE_RET_CSTATUS(GAspect, beginDestroy);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(GAspect, beginDestroy, );
     }
 
     CVoid finishDestroy(const CStatus& curStatus) override {
@@ -45,11 +45,11 @@ protected:
     }
 
     CVoid enterCrashed() override {
-        PYBIND11_OVERLOAD(CVoid, GAspect, enterCrashed);
+        PYBIND11_OVERLOAD(CVoid, GAspect, enterCrashed, );
     }
 
     CVoid enterTimeout() override {
-        PYBIND11_OVERLOAD(CVoid, GAspect, enterTimeout);
+        PYBIND11_OVERLOAD(CVoid, GAspect, enterTimeout, );
     }
 };
 

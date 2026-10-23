@@ -20,15 +20,15 @@ public:
 
 protected:
     CStatus init() override {
-        PYCGRAPH_OVERRIDE_RET_CSTATUS(CGraph::GParam, init);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(CGraph::GParam, init, );
     }
 
     CStatus destroy() override {
-        PYCGRAPH_OVERRIDE_RET_CSTATUS(CGraph::GParam, destroy);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(CGraph::GParam, destroy, );
     }
 
     CStatus setup() override {
-        PYCGRAPH_OVERRIDE_RET_CSTATUS(CGraph::GParam, setup);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(CGraph::GParam, setup, );
     }
 
     CVoid reset(const CStatus& curStatus) override {

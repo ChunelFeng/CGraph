@@ -18,7 +18,7 @@
         pybind11::gil_scoped_acquire gil;                   \
         pybind11::detail::loader_life_support lls;          \
         PYBIND11_OVERRIDE(CStatus, __VA_ARGS__);            \
-    } while (false)                                         \
+    } while (false);                                        \
                                                             \
 
 
@@ -27,27 +27,27 @@
         pybind11::gil_scoped_acquire gil;                   \
         pybind11::detail::loader_life_support lls;          \
         PYBIND11_OVERRIDE_PURE(CStatus, __VA_ARGS__);       \
-    } while (false)                                         \
+    } while (false);                                        \
                                                             \
 
 
-#define PYCGRAPH_DECLARE_GELEMENT_COMMON_FUNCTIONS(PCGE)    \
-    CBool isHold() override {                               \
-        PYBIND11_OVERLOAD(CBool, PCGE, isHold);             \
-    }                                                       \
-                                                            \
-    CBool isMatch() override {                              \
-        PYBIND11_OVERLOAD(CBool, PCGE, isMatch);            \
-    }                                                       \
-                                                            \
-    CStatus prepareRun() override {                         \
-        PYCGRAPH_OVERRIDE_RET_CSTATUS(PCGE, prepareRun);    \
-    }                                                       \
-                                                            \
-    CStatus checkRunResult() override {                     \
-        PYCGRAPH_OVERRIDE_RET_CSTATUS(PCGE, checkRunResult);\
-    }                                                       \
-                                                            \
+#define PYCGRAPH_DECLARE_GELEMENT_COMMON_FUNCTIONS(PCGE)        \
+    CBool isHold() override {                                   \
+        PYBIND11_OVERLOAD(CBool, PCGE, isHold, );               \
+    }                                                           \
+                                                                \
+    CBool isMatch() override {                                  \
+        PYBIND11_OVERLOAD(CBool, PCGE, isMatch, );              \
+    }                                                           \
+                                                                \
+    CStatus prepareRun() override {                             \
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(PCGE, prepareRun, );      \
+    }                                                           \
+                                                                \
+    CStatus checkRunResult() override {                         \
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(PCGE, checkRunResult, );  \
+    }                                                           \
+                                                                \
 
 
 #define PYCGRAPH_DECLARE_GGROUP_INTERFACE_CLASS(PCGG, PVFunc)                             \

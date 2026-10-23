@@ -17,7 +17,7 @@
 class PywGElement : public CGraph::GElement {
 protected:
     CStatus run() override {
-        PYCGRAPH_OVERRIDE_PURE_RET_CSTATUS(GElement, run);
+        PYCGRAPH_OVERRIDE_PURE_RET_CSTATUS(GElement, run, );
     }
 };
 

@@ -34,15 +34,15 @@ public:
 
 protected:
     CStatus init() override {
-        PYCGRAPH_OVERRIDE_RET_CSTATUS(GNode, init);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(GNode, init, );
     }
 
     CStatus run() override {
-        PYCGRAPH_OVERRIDE_PURE_RET_CSTATUS(GNode, run);
+        PYCGRAPH_OVERRIDE_PURE_RET_CSTATUS(GNode, run, );
     }
 
     CStatus destroy() override {
-        PYCGRAPH_OVERRIDE_RET_CSTATUS(GNode, destroy);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(GNode, destroy, );
     }
 
     PYCGRAPH_DECLARE_GELEMENT_COMMON_FUNCTIONS(CGraph::GNode)

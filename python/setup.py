@@ -34,11 +34,9 @@ __PYCGRAPH_KEYWORDS__ = [__PYCGRAPH_NAME__,
                          "pybind11"]
 
 _sources = ['PyCGraph.cpp'] + glob.glob("../src/**/*.cpp", recursive=True)
-_extra_compile_args = ["-pthread",
-                       "-std=c++11",
-                       "-fvisibility=hidden"]
-_include_dirs = [pybind11.get_include(),
-                 "../src"]
+_extra_compile_args = ["/Zc:preprocessor"]    \
+                      if sys.platform == "win32" else ["-pthread", "-std=c++11", "-fvisibility=hidden"]
+_include_dirs = [pybind11.get_include(), "../src"]
 _extra_link_args = ["-pthread"] if sys.platform != "win32" else []
 _define_macros = [("CGRAPH_EXPOSE_INTERNALS", None)]
 

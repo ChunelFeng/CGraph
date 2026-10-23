@@ -22,13 +22,13 @@ public:
     ~PywGCondition() override = default;
 
     CIndex choose() override {
-        PYBIND11_OVERLOAD_PURE(CIndex, PywGCondition, choose);
+        PYBIND11_OVERLOAD_PURE(CIndex, PywGCondition, choose, );
     }
 };
 
 PYCGRAPH_DECLARE_GGROUP_INTERFACE_CLASS(PywGCondition,
     CIndex choose() override {
-        PYBIND11_OVERLOAD_PURE(CIndex, PywGConditionInterface, choose);
+        PYBIND11_OVERLOAD_PURE(CIndex, PywGConditionInterface, choose, );
     });
 
 #endif //CGRAPH_PYWGCONDITION_H

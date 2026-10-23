@@ -24,11 +24,11 @@ protected:
     }
 
     CStatus init() override {
-        PYCGRAPH_OVERRIDE_RET_CSTATUS(GEvent, init);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(GEvent, init, );
     }
 
     CStatus destroy() override {
-        PYCGRAPH_OVERRIDE_RET_CSTATUS(GEvent, destroy);
+        PYCGRAPH_OVERRIDE_RET_CSTATUS(GEvent, destroy, );
     }
 };
 
