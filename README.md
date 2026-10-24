@@ -443,7 +443,7 @@ if __name__ == '__main__':
 * 提供 lite 运行模式
 * 修改 `GSome` 使用方式
 
-[2026.10.22 - v3.3.0 - Chunel]
+[2026.10.24 - v3.3.0 - Chunel]
 * 优化 `GParam` 的 trace 功能
 * 优化 `CStatus` 的返回值功能
 * 优化 `pycgraph` 功能，提供 `message` 功能，提供装饰器功能
@@ -477,3 +477,5 @@ if __name__ == '__main__':
 * 论坛： www.chunel.cn
 
 </details>
+
+----
