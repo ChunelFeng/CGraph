@@ -57,6 +57,7 @@ void test_performance_04() {
     GPipelineFactory::remove(pipeline);
 }
 
+
 int main() {
     test_performance_04();
     return 0;

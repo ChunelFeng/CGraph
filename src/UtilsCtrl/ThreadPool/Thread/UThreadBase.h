@@ -16,7 +16,6 @@
 #include "../Queue/UQueueInclude.h"
 #include "../Task/UTaskInclude.h"
 
-
 CGRAPH_NAMESPACE_BEGIN
 
 class UThreadBase : public UThreadObject {

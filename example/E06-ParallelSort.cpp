@@ -142,6 +142,7 @@ void example_parallel_sort() {
     GPipelineFactory::clear();
 }
 
+
 int main() {
     example_parallel_sort();
     return 0;

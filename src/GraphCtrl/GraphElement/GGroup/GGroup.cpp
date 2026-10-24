@@ -14,6 +14,7 @@ GGroup::GGroup() {
     element_type_ = GElementType::GROUP;
 }
 
+
 CStatus GGroup::init() {
     CGRAPH_FUNCTION_BEGIN
 

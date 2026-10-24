@@ -33,6 +33,7 @@ void tutorial_storage_save(const std::string& path) {
     GPipelineFactory::remove(pipeline);    // 析构当前pipeline即可
 }
 
+
 void tutorial_storage_load(const std::string& path) {
     // 需要通过如下方式，提前注册所有的使用到的 meta 信息
     CGRAPH_REGISTER_META_TYPE(MyNode1);
@@ -52,6 +53,7 @@ void tutorial_storage_load(const std::string& path) {
     // 删除存储文件
     std::remove(path.c_str());
 }
+
 
 void tutorial_storage() {
     const std::string& path = "storage.cgraph";

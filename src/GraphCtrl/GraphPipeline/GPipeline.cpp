@@ -225,7 +225,6 @@ CStatus GPipeline::perf(std::ostream& oss) {
 }
 
 
-
 GPipelinePtr GPipeline::setGEngineType(GEngineType type) {
     CGRAPH_ASSERT_INIT_THROW_ERROR(false)
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(element_manager_)

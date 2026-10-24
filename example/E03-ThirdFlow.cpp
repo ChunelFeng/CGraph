@@ -118,6 +118,7 @@ void example_third_flow() {
     GPipelineFactory::clear();
 }
 
+
 int main() {
     example_third_flow();
     return 0;

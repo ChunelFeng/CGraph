@@ -118,6 +118,7 @@ CVoidPtr GAspectManager::setGEventManager(GEventManagerPtr em) {
     return this;
 }
 
+
 CVoidPtr GAspectManager::setBelong(GElement* belong) {
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(belong)
     for (auto *cur : aspect_arr_) {
