@@ -27,7 +27,7 @@ public:
      * @param onFinished
      */
     explicit UTaskGroup(CGRAPH_DEFAULT_CONST_FUNCTION_REF task,
-                        CMSec ttl = CGRAPH_MAX_BLOCK_TTL,
+                        const CMSec ttl = CGRAPH_MAX_BLOCK_TTL,
                         CGRAPH_CALLBACK_CONST_FUNCTION_REF onFinished = nullptr) noexcept {
         this->addTask(task)
             ->setTtl(ttl)
@@ -47,7 +47,7 @@ public:
      * 设置任务最大超时时间
      * @param ttl
      */
-    UTaskGroup* setTtl(CMSec ttl) {
+    UTaskGroup* setTtl(const CMSec ttl) {
         this->ttl_ = ttl;
         return this;
     }
@@ -82,7 +82,7 @@ public:
      * @return
      */
     CSize getSize() const {
-        auto size = task_arr_.size();
+        const auto size = task_arr_.size();
         return size;
     }
 

@@ -18,26 +18,25 @@
 CGRAPH_NAMESPACE_BEGIN
 
 class UTask : public CStruct {
-    struct TaskBased {
-        explicit TaskBased() = default;
+    struct TaskBase {
+        explicit TaskBase() = default;
         virtual CVoid call() = 0;
-        virtual ~TaskBased() = default;
+        virtual ~TaskBase() = default;
     };
 
     // 退化以获得实际类型，修改思路参考：https://github.com/ChunelFeng/CThreadPool/pull/3
     template<typename F, typename T = typename std::decay<F>::type>
-    struct TaskDerided : TaskBased {
+    struct TaskImpl : TaskBase {
         T func_ {};
-        explicit TaskDerided(F&& func) : func_(std::forward<F>(func)) {}
+        explicit TaskImpl(F&& func) : func_(std::forward<F>(func)) {}
         CVoid call() final { func_(); }
     };
 
 public:
     template<typename F,
         typename std::enable_if<!std::is_same<typename std::decay<F>::type, UTask>::value, int>::type = 0>
-    explicit UTask(F&& func, const CBool owner = true)
-        : impl_(new TaskDerided<F>(std::forward<F>(func))),
-          owner_(owner) {
+    explicit UTask(F&& func)
+        : impl_(new TaskImpl<F>(std::forward<F>(func))) {
     }
 
     CVoid operator()() const {
@@ -94,7 +93,7 @@ public:
     CGRAPH_NO_ALLOWED_COPY(UTask)
 
 private:
-    TaskBased* impl_ { nullptr };
+    TaskBase* impl_ { nullptr };
     CBool owner_ { true };                                // impl_ 是否归属当前对象
 };
 
