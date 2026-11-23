@@ -130,7 +130,7 @@ CStatus GParamManager::__remove_4expose(const std::string& key) {
     CGRAPH_LOCK_GUARD lock(this->mutex_);
     const auto& iter = params_map_.find(key);
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(iter == params_map_.end(),
-                                            "param [" + key + "] no find")
+                                            "param [" << key << "] no find")
 
     CGRAPH_DELETE_PTR(iter->second);
     params_map_.erase(key);

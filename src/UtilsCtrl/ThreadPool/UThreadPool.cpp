@@ -215,9 +215,9 @@ CStatus UThreadPool::releaseSecondaryThread(CInt size) {
         !(*iter)->done_ ? secondary_threads_.erase(iter++) : iter++;
     }
 
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((size > static_cast<CInt>(secondary_threads_.size())),    \
-                                            "cannot release [" + std::to_string(size) + "] secondary thread,"    \
-                                            + "only [" + std::to_string(secondary_threads_.size()) + "] left.")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((size > static_cast<CInt>(secondary_threads_.size())),
+                                            "cannot release [" << size << "] secondary thread,"
+                                            << "only [" << secondary_threads_.size() << "] left.")
 
     // 再标记几个需要删除的信息
     for (auto iter = secondary_threads_.begin();

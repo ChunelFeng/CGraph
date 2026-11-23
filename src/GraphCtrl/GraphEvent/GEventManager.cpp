@@ -46,7 +46,7 @@ CStatus GEventManager::trigger(const std::string &key, GEventType type, GEventAs
     CGRAPH_FUNCTION_BEGIN
     auto result = events_map_.find(key);
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(events_map_.end() == result,
-                                            "event key [" + key + "] no find")
+                                            "event key [" << key << "] no find")
 
     auto event = result->second;
     CGRAPH_ASSERT_NOT_NULL(event)
@@ -58,7 +58,7 @@ CStatus GEventManager::trigger(const std::string &key, GEventType type, GEventAs
 std::shared_future<CVoid> GEventManager::asyncTrigger(const std::string &key, GEventAsyncStrategy strategy) {
     auto result = events_map_.find(key);
     CGRAPH_THROW_EXCEPTION_BY_CONDITION(events_map_.end() == result || !result->second,
-                                        "event key [" + key + "] no find");
+                                        "event key [" << key << "] no find");
 
     auto event = result->second;
     return event->asyncProcess(strategy);
@@ -94,7 +94,7 @@ CStatus GEventManager::__create_4expose(GEventPtr event, const std::string& key)
     CGRAPH_FUNCTION_BEGIN
     CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(event)
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(events_map_.find(key) != events_map_.end(),
-                                            "event key [" + key + "] duplicate.");
+                                            "event key [" << key << "] duplicate.");
 
     events_map_[key] = event;
     CGRAPH_FUNCTION_END

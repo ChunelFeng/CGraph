@@ -10,6 +10,7 @@
 #define CGRAPH_CFUNCTYPE_H
 
 #include <functional>
+#include <sstream>
 
 #include "CValType.h"
 
@@ -57,7 +58,11 @@ enum class CFunctionType {
 
 /** 根据条件判断是否返回错误状态 */
 #define CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(cond, info)             \
-    if (unlikely(cond)) { CGRAPH_RETURN_ERROR_STATUS(info); }           \
+    if (unlikely(cond)) {                                               \
+        std::ostringstream __oss;                                       \
+        __oss << info;                                                  \
+        return CStatus(__oss.str());                                    \
+    }                                                                   \
 
 /** 不支持当前功能 */
 #define CGRAPH_NO_SUPPORT                                               \
@@ -70,7 +75,11 @@ enum class CFunctionType {
 
 /** 抛出异常 */
 #define CGRAPH_THROW_EXCEPTION(info)                                    \
-    throw CException(info, CGRAPH_GET_LOCATE);                          \
+    {                                                                   \
+        std::ostringstream __oss;                                       \
+        __oss << info;                                                  \
+        throw CException(__oss.str(), CGRAPH_GET_LOCATE);               \
+    }                                                                   \
 
 /** 在异常状态的情况下，抛出异常 */
 #define CGRAPH_THROW_EXCEPTION_BY_STATUS(status)                        \
@@ -79,7 +88,7 @@ enum class CFunctionType {
 
 /** 根据条件判断是否抛出异常 */
 #define CGRAPH_THROW_EXCEPTION_BY_CONDITION(cond, info)                 \
-    if (unlikely(cond)) { CGRAPH_THROW_EXCEPTION(info); }               \
+    if (unlikely(cond)) { CGRAPH_THROW_EXCEPTION(info) }                \
 
 CGRAPH_NAMESPACE_END
 

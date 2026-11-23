@@ -81,7 +81,7 @@ protected:
         CGRAPH_FUNCTION_BEGIN
         auto iter = stage_map_.find(key);
         CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(stage_map_.end() == iter,
-                                                "[" + key + "] is not a valid stage key")
+                                                "[" << key << "] is not a valid stage key")
         iter->second->waiting();
         CGRAPH_FUNCTION_END
     }
@@ -100,7 +100,7 @@ private:
         CGRAPH_FUNCTION_BEGIN
         CGRAPH_ASSERT_NOT_NULL(stage)
         CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(stage_map_.find(key) != stage_map_.end(),
-                                                "[" + key + "] add stage duplicate");
+                                                "[" << key << "] add stage duplicate");
         stage_map_[key] = stage;
         stage->setGParamManager(param_manager_);
         stage->setThreshold(threshold);

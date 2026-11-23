@@ -29,7 +29,7 @@ public:
 
         auto relation = getRelation();
         int range = (int)relation.children_.size();
-        CGRAPH_THROW_EXCEPTION_BY_CONDITION(range == 0, getName() + " has 0 element.");
+        CGRAPH_THROW_EXCEPTION_BY_CONDITION(range == 0, getName() << " has 0 element.");
         return (cnt % range);
     }
 };

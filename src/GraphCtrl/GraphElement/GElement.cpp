@@ -160,8 +160,8 @@ CStatus GElement::addDependGElements(const GElementPtrSet& elements) {
 
     for (GElementPtr element: elements) {
         CGRAPH_ASSERT_NOT_NULL(element)
-        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((element->belong_ != this->belong_),    \
-        element->getName() + " cannot depend because not same belong info")
+        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION((element->belong_ != this->belong_),
+        element->getName() << " cannot depend because not same belong info")
         if (this == element) {
             continue;
         }
@@ -379,8 +379,8 @@ CStatus GElement::crashed(const CException& ex) const {
 
 
 CIndex GElement::getThreadIndex() const {
-    CGRAPH_THROW_EXCEPTION_BY_CONDITION((nullptr == thread_pool_),    \
-        this->getName() + " getThreadIndex with no thread pool")    // 理论不可能出现的情况
+    CGRAPH_THROW_EXCEPTION_BY_CONDITION((nullptr == thread_pool_),
+        this->getName() << " getThreadIndex with no thread pool")    // 理论不可能出现的情况
 
     const auto tid = (CSize)std::hash<std::thread::id>{}(std::this_thread::get_id());
     return thread_pool_->getThreadIndex(tid);
@@ -521,7 +521,7 @@ CStatus GElement::removeDepend(GElementPtr element) {
     CGRAPH_ASSERT_NOT_NULL(element)
     CGRAPH_ASSERT_INIT(false)
     CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!dependence_.hasValue(element),
-                                            element->getName() + " is not in [" + getName() + "]'s depends.")
+                                            element->getName() << " is not in [" << getName() << "]'s depends.")
 
     dependence_.remove(element);
     element->run_before_.remove(this);
@@ -564,7 +564,7 @@ CStatus GElement::popLastAspect() {
 
 CStatus GElement::asyncRun() {
     CGRAPH_FUNCTION_BEGIN
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!isAsync(), "[" + name_ + "] cannot async run.")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!isAsync(), "[" << name_ << "] cannot async run.")
 
     async_result_ = thread_pool_->commit([this] {
         return run();
@@ -575,8 +575,8 @@ CStatus GElement::asyncRun() {
         status = getAsyncResult();
     } else {
         (void)doAspect(internal::GAspectType::ENTER_TIMEOUT);
-        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(GElementTimeoutStrategy::AS_ERROR == timeout_strategy_,    \
-        "[" + name_ + "] running time more than [" + std::to_string(timeout_) + "]ms")
+        CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(GElementTimeoutStrategy::AS_ERROR == timeout_strategy_,
+        "[" << name_ << "] running time more than [" << timeout_ << "]ms")
         cur_state_.store(GElementState::TIMEOUT, std::memory_order_release);
     }
 
@@ -599,8 +599,8 @@ CStatus GElement::checkSuitable() {
     CGRAPH_ASSERT_NOT_NULL(thread_pool_)
 
     // 包含异步执行的逻辑，不可以loop超过1次
-    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(loop_ > CGRAPH_DEFAULT_LOOP_TIMES && this->isAsync(),     \
-    "[" + this->getName() + "] can set loop <= 1 only for the reason of async run")
+    CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(loop_ > CGRAPH_DEFAULT_LOOP_TIMES && this->isAsync(),
+    "[" << this->getName() << "] can set loop <= 1 only for the reason of async run")
     if (!this->isRegistered()) {
         CGRAPH_ECHO("[notice] [%s] is created but not registered into pipeline, so it will not work.", this->getName().c_str());
     }

@@ -254,9 +254,9 @@ CStatus GStorage::loadElement(GPipelinePtr pipeline, const _GPipelineStorage& st
     for (const auto& cur : storage.element_storages_) {
         auto element = dynamic_cast<GElementPtr>(GStorageFactory::createByType(cur.clz_name_));
         CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!element,
-                                                cur.name_ + " element do not register, please check")
+                                                cur.name_ << " element do not register, please check")
         CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(element->element_type_ != cur.element_type_,
-                                                cur.name_ + " check type failed when load");
+                                                cur.name_ << " check type failed when load");
         status = cur.recover(element);
         CGRAPH_FUNCTION_CHECK_STATUS
 
@@ -311,7 +311,7 @@ CStatus GStorage::loadEvent(GPipelinePtr pipeline, const _GPipelineStorage& stor
     for (const auto& ges : storage.event_storages_) {
         GEventPtr event = dynamic_cast<GEventPtr>(GStorageFactory::createByType(ges.clz_name_));
         CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!event,
-                                                ges.key_ + " event type do not register, please check");
+                                                ges.key_ << " event type do not register, please check");
         pipeline->event_manager_->events_map_[ges.key_] = event;
     }
 
@@ -326,7 +326,7 @@ CStatus GStorage::loadParam(GPipelinePtr pipeline, const _GPipelineStorage& stor
     for (const auto& gps : storage.param_storages_) {
         GParamPtr param = dynamic_cast<GParamPtr>(GStorageFactory::createByType(gps.clz_name_));
         CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!param,
-                                                gps.key_ + " param type do not register, please check");
+                                                gps.key_ << " param type do not register, please check");
         param->key_ = gps.key_;
         pipeline->param_manager_->params_map_[gps.key_] = param;
     }
@@ -345,7 +345,7 @@ CStatus GStorage::loadDaemon(GPipelinePtr pipeline, const _GPipelineStorage& sto
     for (const auto& gds : storage.daemon_storages_) {
         GDaemonPtr daemon = dynamic_cast<GDaemonPtr>(GStorageFactory::createByType(gds.clz_name_));
         CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!daemon,
-                                                gds.clz_name_ + " daemon type do not register, please check");
+                                                gds.clz_name_ << " daemon type do not register, please check");
         daemon->setInterval(gds.msec_);
         daemon->setGEventManager(pipeline->event_manager_);
         daemon->setGParamManager(pipeline->param_manager_);
@@ -366,7 +366,7 @@ CStatus GStorage::loadStage(GPipelinePtr pipeline, const _GPipelineStorage& stor
     for (const auto& gss : storage.stage_storages_) {
         GStagePtr stage = dynamic_cast<GStagePtr>(GStorageFactory::createByType(gss.clz_name_));
         CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!stage,
-                                                gss.key_ + " stage type do not register, please check");
+                                                gss.key_ << " stage type do not register, please check");
         stage->threshold_ = gss.threshold_;
         stage->param_manager_ = pipeline->param_manager_;
         pipeline->stage_manager_->stage_map_[gss.key_] = stage;
@@ -385,7 +385,7 @@ CStatus GStorage::loadAspect(GElementPtr element, const std::vector<_GAspectStor
         for (const auto &gas: aspStorages) {
             GAspectPtr aspect = dynamic_cast<GAspectPtr>(GStorageFactory::createByType(gas.clz_name_));
             CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!aspect,
-                                                    gas.clz_name_ + " type create aspect failed.");
+                                                    gas.clz_name_ << " type create aspect failed.");
             element->aspect_manager_->add(aspect);
         }
     }
@@ -401,7 +401,7 @@ CStatus GStorage::loadEParam(GElementPtr element, const std::vector<_GPassedPara
     for (const auto& pps : psdParamStorages) {
         GPassedParamPtr ep = dynamic_cast<GPassedParamPtr>(GStorageFactory::createByType(pps.clz_name_));
         CGRAPH_RETURN_ERROR_STATUS_BY_CONDITION(!ep,
-                                                pps.clz_name_ + " type create passed param failed.");
+                                                pps.clz_name_ << " type create passed param failed.");
         element->local_params_[pps.key_] = ep;
     }
 

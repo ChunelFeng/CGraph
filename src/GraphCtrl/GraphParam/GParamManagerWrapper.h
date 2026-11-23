@@ -55,7 +55,7 @@ CGRAPH_NAMESPACE_BEGIN
     TGParam* getGParamWithNoEmpty(const std::string& key) {                             \
         auto* param = getGParam<TGParam>(key);                                          \
         if (nullptr == param) {                                                         \
-            CGRAPH_THROW_EXCEPTION("param [" + key + "] is null")                       \
+            CGRAPH_THROW_EXCEPTION("param [" << key << "] is null")                     \
         }                                                                               \
         return param;                                                                   \
     }                                                                                   \
@@ -87,7 +87,7 @@ CGRAPH_INTERNAL_ACCESS:                                                         
     GParamPtr __getGParamWithNoEmpty_4expose(const std::string& key) {                  \
         CGRAPH_ASSERT_NOT_NULL_THROW_ERROR(param_manager_);                             \
         auto param = param_manager_->__get_4expose(key);                                \
-        CGRAPH_THROW_EXCEPTION_BY_CONDITION(!param, "param [" + key + "] is null");     \
+        CGRAPH_THROW_EXCEPTION_BY_CONDITION(!param, "param [" << key << "] is null");   \
         return param;                                                                   \
     }                                                                                   \
                                                                                         \
